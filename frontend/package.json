@@ -1,63 +1,38 @@
 {
-  "name": "ssafy-vue",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
   "dependencies": {
-    "@mdi/font": "5.9.55",
-    "axios": "^0.21.1",
-    "core-js": "^3.6.5",
-    "element-plus": "^1.0.2-beta.44",
-    "node-sass": "^6.0.0",
-    "roboto-fontface": "*",
-    "sass-loader": "^10.2.0",
-    "stylus-loader": "^3.0.2",
-    "vue": "^3.0.0",
-    "vue-axios": "^3.2.4",
-    "vue-i18n": "^9.1.6",
-    "vue-router": "^4.0.6",
-    "vuex": "^4.0.0"
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0",
+    "web-vitals": "^2.1.0"
   },
-  "devDependencies": {
-    "@babel/core": "^7.14.0",
-    "@babel/preset-env": "^7.14.1",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.2.2",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-vue": "^7.10.0",
-    "html-webpack-plugin": "^4.5.2",
-    "prettier": "^1.19.1",
-    "stylus": "^0.54.8",
-    "vue-cli-plugin-vuetify": "~2.4.0",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^4.7.0"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
     "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
+      "react-app",
+      "react-app/jest"
+    ]
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
