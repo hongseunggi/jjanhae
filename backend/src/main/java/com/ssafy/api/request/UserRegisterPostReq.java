@@ -19,41 +19,41 @@ import java.time.LocalDateTime;
 @ApiModel("UserRegisterPostRequest")
 public class UserRegisterPostReq {
 
-	@ApiModelProperty(name="유저 ID", example="ssafy_web")
+	@ApiModelProperty(name="유저 ID", example="ssafy1234")
 	String userId;
 
-	@ApiModelProperty(name="유저 이름", example="ssafy_web")
+	@ApiModelProperty(name="유저 이름", example="김싸피")
 	String name;
 
-	@ApiModelProperty(name="email", example="ssafy_web")
+	@ApiModelProperty(name="email", example="ssafy1234@ssafy.com")
 	String email;
 
-	@ApiModelProperty(name="생년월일", example="ssafy_web")
+	@ApiModelProperty(name="생년월일", example="1996-01-20")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	LocalDate birthday;
 
-	@ApiModelProperty(name="탈퇴여부", example="ssafy_web")
+	@ApiModelProperty(name="탈퇴여부", example="N")
 	String delYn;
 
-	@ApiModelProperty(name="프로필 이미지", example="ssafy_web")
+	@ApiModelProperty(name="프로필 이미지", example="images/ssafy_profile.png")
 	String imageUrl;
 
-	@ApiModelProperty(name="주류", example="ssafy_web")
+	@ApiModelProperty(name="주류", example="soju")
 	String drink;
 
-	@ApiModelProperty(name="주량", example="ssafy_web")
+	@ApiModelProperty(name="주량", example="3")
 	int drinkLimit;
 
-	@ApiModelProperty(name="인증여부", example="ssafy_web")
+	@ApiModelProperty(name="인증여부", example="Y")
 	@Column(name = "auth_yn")
 	String authYn;
 
-	@ApiModelProperty(name="이메일인증코드", example="ssafy_web")
+	@ApiModelProperty(name="이메일인증코드", example="224ad")
 	String authCode;
 
-	@ApiModelProperty(name="유저 Password", example="your_password")
+	@ApiModelProperty(name="유저 Password", example="ssafy")
 	String password;
 
-	@ApiModelProperty(name="로그인플랫폼", example="ssafy_web")
+	@ApiModelProperty(name="로그인플랫폼", example="local")
 	String provider;
 }
