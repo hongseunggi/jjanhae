@@ -42,9 +42,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@PostMapping()
-	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
+	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
@@ -53,12 +53,10 @@ public class UserController {
     })
 	public ResponseEntity<? extends BaseResponseBody> register(
 			@RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
-		
+
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-<<<<<<< HEAD
+
 		System.out.println("auth_yn : "+registerInfo.getAuthYn());
-=======
->>>>>>> eb0f126b61249c48f6df6812661bd66ff7070095
 		User user = userService.createUser(registerInfo);
 		System.out.println("register : "+user.getUserId());
 
@@ -67,7 +65,7 @@ public class UserController {
 
 
 	@GetMapping("/me")
-	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.") 
+	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
@@ -83,7 +81,7 @@ public class UserController {
 		System.out.println("getUserInfo : "+userDetails.getUser());
 		String userId = userDetails.getUsername();
 		User user = userService.getUserByUserId(userId);
-		
+
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
 

@@ -19,14 +19,6 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
-<<<<<<< HEAD:backend-java/src/main/generated/com/ssafy/db/entity/QUser.java
-<<<<<<< Updated upstream:backend-java/src/main/generated/com/ssafy/db/entity/QUser.java
-    public final QBaseEntity _super = new QBaseEntity(this);
-
-=======
->>>>>>> eb0f126b61249c48f6df6812661bd66ff7070095:backend/src/main/generated/com/ssafy/db/entity/QUser.java
-    public final StringPath department = createString("department");
-=======
     public final StringPath authCode = createString("authCode");
 
     public final StringPath authYn = createString("authYn");
@@ -42,7 +34,6 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath email = createString("email");
 
     public final StringPath imageUrl = createString("imageUrl");
->>>>>>> Stashed changes:backend/src/main/generated/com/ssafy/db/entity/QUser.java
 
     public final StringPath name = createString("name");
 

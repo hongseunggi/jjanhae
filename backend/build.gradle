@@ -99,27 +99,6 @@ processResources {
 }
 
 //이클립스인 경우를 위한 QueryDSL 설정. IntelliJ는 불필요. [시작]
-<<<<<<< HEAD:backend-java/build.gradle
-<<<<<<< Updated upstream:backend-java/build.gradle
-=======
-/**
->>>>>>> eb0f126b61249c48f6df6812661bd66ff7070095:backend/build.gradle
-def querydslDir = 'src/main/generated'
-querydsl {
-    library = "com.querydsl:querydsl-apt"
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', querydslDir]
-        }
-    }
-}
-=======
->>>>>>> Stashed changes:backend/build.gradle
 
 //def querydslDir = 'src/main/generated'
 //querydsl {
@@ -144,16 +123,6 @@ sourceSets {
 //    querydsl.extendsFrom compileClasspath
 //}
 
-<<<<<<< Updated upstream:backend-java/build.gradle
-configurations {
-    querydsl.extendsFrom compileClasspath
-}
-<<<<<<< HEAD:backend-java/build.gradle
-=======
->>>>>>> Stashed changes:backend/build.gradle
-=======
-*/
->>>>>>> eb0f126b61249c48f6df6812661bd66ff7070095:backend/build.gradle
 //[끝]
 
 dependencies {
@@ -204,7 +173,7 @@ dependencies {
     testImplementation("com.jayway.jsonpath:json-path:2.4.0")
 
     implementation("com.auth0:java-jwt:3.10.3")
-    
+
     implementation("io.springfox:springfox-swagger2:3.0.0")
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
     implementation("io.springfox:springfox-data-rest:3.0.0")
