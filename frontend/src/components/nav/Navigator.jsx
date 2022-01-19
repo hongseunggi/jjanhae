@@ -1,5 +1,8 @@
 import React,{ useEffect, useState } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import {Link} from 'react-router-dom'
+import styles from "./Navigator.module.css";
+import Logo from "../../assets/logo.png";
 function Navigator(props) {
   const {status, isLogin} = props;
 
@@ -9,19 +12,44 @@ function Navigator(props) {
   switch(status){
     case "1" :
       return(
-        <nav><Link to = "/" >Logo</Link>
-        <Link to = "/login" >로그인</Link></nav>
+        <Container fluid>
+          <Row className='nav'>
+            <Col>
+              <Link to = "/" className={styles.logo}><img src={Logo} className={styles.logo}></img></Link>
+            </Col>
+            <Col>
+              <Link to = "/login" className={styles.link} >LOGIN</Link>
+            </Col>
+          </Row>
+        </Container>
       )
     case "2" :
       return(
-        <nav><Link to = "/" >Logo</Link>
-        <Link to = "/profile">프로필</Link>
-        <p onClick={handleLogOut}>로그아웃</p></nav>
+        <Container fluid>
+          <Row className='nav'>
+            <Col>
+              <Link to = "/" className={styles.logo}><img src={Logo} className={styles.logo}></img></Link>
+            </Col>
+            <Col>
+              <Link to = "/" onClick={handleLogOut} className={styles.link}>LOGOUT</Link>
+              <Link to = "/profile" className={styles.link_profile}>PROFILE</Link>
+            
+            </Col>
+          </Row>
+        </Container>
       )
     case "3" :
       return(
-        <nav><Link to = "/" >Logo</Link>
-        <Link to = "/conferences" >exit</Link></nav>
+        <Container fluid>
+          <Row className='nav'>
+            <Col>
+              <Link to = "/" className={styles.logo}><img src={Logo} className={styles.logo}></img></Link>
+            </Col>
+            <Col>
+              <Link to = "/conferences" className={styles.link}>EXIT</Link>
+            </Col>
+          </Row>
+        </Container>
       )
   }
 }
