@@ -1,0 +1,102 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+    background: #000;
+  }
+  .fwelcome_text{
+    margin-top: 30%;
+    position: relative;
+    font-size: 50px;
+    color: #FF2E63;
+    ;
+  }
+  .swelcome_text{
+    position: absolute;
+    font-size: 50px;
+    top: 28%;
+    color: #08D9D6;
+  }
+  .slider {
+    overflow: hidden;
+    position: relative;
+    height: 100vh;
+    color: #fff;
+    text-align: center;
+  }
+
+  .slider__slides {
+    margin-top: 10%;
+    position: relative;
+    width: 85%;
+    height: 60%;
+    display: inline-block;
+    /* border: 2px solid black;
+    border-radius: 15px; */
+  }
+
+  .slider__slide-parts {
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    
+  }
+  .slider__slide-part {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    
+  }
+  .slider__slide-part-inner {
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    background-size: 0 0;
+    background-repeat: no-repeat;
+    transition: transform 0.5s ease-in-out;
+  }
+  .slider__slide-part-inner:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: inherit;
+    background-size: cover;
+    background-position: center center;
+    transition: opacity 0.25s;
+    opacity: 0;
+  }
+  .slider__slide-part:nth-child(1) .slider__slide-part-inner {
+    transition-delay: 0.24s;
+    transform: translateX(0%);
+  }
+  .slider__slide.s--active .slider__slide-part:nth-child(1) .slider__slide-part-inner {
+    transition-delay: 0.28s;
+  }
+  .slider__slide-part:nth-child(1) .slider__slide-part-inner:before {
+    left: 0vw;
+    transition-delay: 0.365s;
+  }
+  .slider__slide.s--active .slider__slide-part:nth-child(1) .slider__slide-part-inner:before {
+    transition-delay: 0.28s;
+  }
+  .slider__slide.s--active .slider__slide-part:nth-child(4) .slider__slide-part-inner:before {
+    transition-delay: 0.52s;
+  }
+  .slider__slide.s--active .slider__slide-part-inner {
+    transform: translateX(0);
+    transition-timing-function: ease;
+  }
+  .slider__slide.s--active .slider__slide-part-inner:before {
+    opacity: 1;
+  }
