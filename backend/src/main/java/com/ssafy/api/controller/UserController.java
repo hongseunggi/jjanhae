@@ -36,14 +36,14 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/user")
 public class UserController {
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Autowired
 	UserService userService;
 
-	@PostMapping()
+	@PostMapping("/register")
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
