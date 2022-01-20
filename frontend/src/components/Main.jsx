@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
-function Main() {
+import { Link } from "react-router-dom";
+function Main(props) {
+
+    const {status} = props;
+    console.log(status)
     const slide = [{
         img: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg' },
       
@@ -21,15 +25,16 @@ function Main() {
 
     let changeTo = null;
     let AUTOCHANGE_TIME = 4000;
-    console.log("랜더")
+
     const [activeSlide, setActiveSlide] = useState(-1);
     const [prevSlide , setPreSlide] = useState(-1);
     const [sliderReady, setSliderReady] = useState(false);
-    console.log("밖 ", activeSlide);
+
     const activeSlideRef = useRef(activeSlide);
     activeSlideRef.current = activeSlide;
     const prevSlideRef = useRef(prevSlide);
     prevSlideRef.current = prevSlide;
+
     useEffect(()=>{
         console.log("??????????")
         runAutochangeTo();
@@ -38,16 +43,17 @@ function Main() {
             console.log("마운트", activeSlide);
             setSliderReady(true);
         }, 0);
-        
         return(()=>{console.log("???")
             window.clearTimeout(changeTo)});
     },[])
+
     const runAutochangeTo = () =>{
         changeTo = setTimeout(()=>{
             changeSlides(1);
             runAutochangeTo();
         }, AUTOCHANGE_TIME);
     }
+
     const changeSlides = (change) =>{
         window.clearTimeout(changeTo);
         
@@ -66,18 +72,34 @@ function Main() {
         setActiveSlide(actSlide);
         setPreSlide(pSlide);
     }
+    const buttonRender = () => {
+        switch(status){
+            case "1":
+                return <Link to= "/login"><button className="create_room">방 만들기</button></Link>
+            default : return <button className="create_room">방 만들기</button>
+        }
+    }
     return (
-        <Container fluid>
-        <div>
-            <h1></h1>
-            <Row>
-                <Col lg={5} >
-                    <div className="fwelcome_text">
-                        우리가 짠해? <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 아니 우린 짠해!
+        <Container fluid className="body">
+            <Row fluid className="h-100">
+                <Col lg={1} className="dummy" ></Col>
+                <Col lg={4} className="h-25" >
+                    <div className="intro_text">WELCOME OUR MEET</div>
+                
+                    <div className="welcome_text">
+                        우리가 짠해?
                     </div>
                     <div className="swelcome_text">
-                        우리가 짠해? <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 아니 우린 짠해!
+                        아니 우린 짠해!
                     </div>
+                    <Row className="buttonbox">
+                        <Col>
+                        {buttonRender()}
+                        </Col>
+                        <Col>
+                        <button className="into_room">방 입장하기</button>
+                        </Col>
+                    </Row>
                 </Col>
                 <Col>
                     <div className={classNames("slider", { "s--ready": sliderReady })}>
@@ -99,7 +121,6 @@ function Main() {
                     </div>
                 </Col>
             </Row>
-        </div>
         </Container>
 
     );
