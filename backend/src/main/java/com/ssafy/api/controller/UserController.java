@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.*;
+import com.ssafy.api.response.CheckIdRes;
 import com.ssafy.api.response.FindIdResponse;
 import com.ssafy.api.service.EmailService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
@@ -149,7 +150,7 @@ public class UserController {
 	}
 
 
-	@GetMapping("/{userId}")
+	@GetMapping("/checkid")
 	@ApiOperation(value = "유저 정보", notes = "존재하는 회원 확인용")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -157,19 +158,18 @@ public class UserController {
 			@ApiResponse(code = 409, message = "이미 존재하는 유저"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity checkUser(@PathVariable("userId") String userId) {
+	public ResponseEntity<?> checkId(@RequestBody String userId) {
 		/**
 		 * 아이디 중복확인
 		 * 권한 : 모두사용
-		 * 이미 로그인한 사용자가 아닌 경우에만 응답을 하고, 그 외에는 409에러를 발생시킨다.
 		 * */
-		System.out.println("checkUser : "+userId);
+		System.out.println("checkId : "+userId);
 		User user = userService.getUserByUserId(userId);
-		System.out.println("이미존재하는 유저입니까? "+user);
+		System.out.println("user " + user);
 		if(user != null) {
-			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 유저"));
+			return ResponseEntity.status(409).body(CheckIdRes.of("false"));
 		} else {
-			return ResponseEntity.status(200).body(UserRes.of(user));
+			return ResponseEntity.status(200).body(CheckIdRes.of("true"));
 		}
 	}
 
