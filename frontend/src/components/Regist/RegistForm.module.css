@@ -4,19 +4,19 @@
 }
 
 .logo {
-  width: 250px;
-  height: 250px;
+  width: 100px;
+  height: 100px;
   background-color: transparent;
-  position: absolute;
-  top: 0;
+  /* position: absolute; */
+  /* top: 0; */
 }
 .icon {
   display: flex;
 }
-
+/* 
 .icon.top {
   margin-top: 100px;
-}
+} */
 .inputAndMsg {
   display: flex;
   flex-direction: column;
@@ -32,6 +32,7 @@ input {
   border: none;
   color: #eee;
   width: 200px;
+  padding: 0;
 }
 input::placeholder {
   color: #eee;

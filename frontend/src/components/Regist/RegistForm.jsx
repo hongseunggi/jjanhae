@@ -85,8 +85,8 @@ const Regist = () => {
   return (
     <>
       <div className={styles.formBorder}>
-        <img src={logo} alt="logo" className={styles.logo} />
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <img src={logo} alt="logo" className={styles.logo} />
           <div className={`${styles.icon} ${styles.top}`}>
             <div>
               <IdIcon fill="#EEE" width="20" height="20" />
