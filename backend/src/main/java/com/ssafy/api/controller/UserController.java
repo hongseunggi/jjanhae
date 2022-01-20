@@ -75,7 +75,7 @@ public class UserController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
-	@PostMapping("/findid")
+	@GetMapping("/findid")
 	@ApiOperation(value = "이메일 인증(코드)", notes = "이메일로 인증코드를 보낸다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -101,7 +101,7 @@ public class UserController {
 
 	}
 
-	@PostMapping("/findpwd")
+	@GetMapping("/findpwd")
 	@ApiOperation(value = "이메일 인증(버튼)", notes = "이메일로 인증 url를 보낸다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
