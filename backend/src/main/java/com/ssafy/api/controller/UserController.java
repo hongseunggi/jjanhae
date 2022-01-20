@@ -1,8 +1,11 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.UserInfoPostReq;
+import com.ssafy.api.response.FindIdResponse;
+import com.ssafy.api.service.EmailService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,6 +33,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -42,6 +47,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	EmailService emailService;
 
 	@PostMapping("/register")
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
@@ -59,7 +67,6 @@ public class UserController {
 		System.out.println("=========== 회원가입 ===========\n");
 		System.out.println("인증 여부 : " + registerInfo.getAuthYn());
 		System.out.println("아이디 : " + registerInfo.getUserId());
-//		String userId = userService.getUserByUserId(registerInfo.getUserId()).getUserId();
 		User user = userService.getUserByUserId(registerInfo.getUserId());
 		System.out.println("user : " + user);
 		if(user != null){
@@ -70,6 +77,31 @@ public class UserController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
+	@GetMapping("/findid")
+	@ApiOperation(value = "이메일 인증(코드)", notes = "이메일로 인증코드를 보낸다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "존재하지 않는 사용자"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<FindIdResponse> findId(
+			@RequestParam("name") String name, @RequestParam("email") String email)  throws Exception {
+
+		System.out.println("=========== 이메일 인증(코드)으로 아이디 찾기 ===========\n");
+		// 이름, 이메일이 일치한 회원이 있는지 확인
+		User user = userService.getUserByNameAndEmail(name, email);
+		if(user != null) {
+			System.out.println("유효한 사용자");
+			// 이메일 전송
+			String authCode = emailService.sendSimpleMessage(email);
+			return ResponseEntity.ok(FindIdResponse.of(200, "Success", authCode, user.getUserId()));
+		} else {
+			System.out.println("유효하지 사용자");
+			// 유효하지 않은 사용자입니다.
+			return ResponseEntity.status(404).body(FindIdResponse.of(401, "유효하지 않은 사용자", null, null));
+		}
+
+	}
 
 	@GetMapping("/me")
 	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")

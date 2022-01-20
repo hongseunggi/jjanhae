@@ -62,7 +62,18 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    // 이메일 중복 확인
+    // 아이디 찾기
+    @Override
+    public User getUserByNameAndEmail(String name, String email) {
+        System.out.println("====== getUserByNameAndEmail =====");
+        System.out.printf("name : %s, eamil : %s\n", name, email);
+        Optional<User> res = userRepositorySupport.findUserByNameAndEmail(name, email);
+        User user = null;
+        if(res.isPresent()) {
+            user = userRepositorySupport.findUserByNameAndEmail(name, email).get();
+        }
+        return user;
+    }
 
 
     // 회원 수정
