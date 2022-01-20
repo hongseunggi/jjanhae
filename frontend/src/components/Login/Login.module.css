@@ -16,8 +16,10 @@
 }
 
 .logo {
-    width: 210px;
-    height: 210px;
+    /* width: 100px;
+    height: 100px; */
+    width: 150px;
+    height: 150px;
     background-color: transparent;
 }  
 
@@ -34,15 +36,15 @@
   }
   
 .form {
-    width: 500px;
-    height: 600px;
+    width: 600px;
+    height: 620px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     border: 3px solid;
     border-color: #EEEE;
-    margin-top: 50px;
+    /* margin-top: 50px; */
     padding: 0 50px 50px 50PX;
 
     border-image: linear-gradient(

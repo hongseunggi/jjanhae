@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import styles from "./Login.module.css";
 import axios from 'axios';
+import { Link } from "react-router-dom";
 import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import logo from "../../assets/icons/logo.png";
@@ -138,12 +139,15 @@ const Login = () => {
                 {/* 토큰 확인 */}
                 {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>}
 
-                <button className={styles.registBtn} onClick={ () => {}}> 
-                    회원가입
-                </button>
+                <Link to="/signup">
+                    <button className={styles.registBtn}> 
+                        회원가입
+                    </button>
+                </Link>
             </div>
 
             <div className={styles.findButtons}>
+            
                 <button className={styles.findIdBtn}>
                     아이디 찾기
                 </button>
