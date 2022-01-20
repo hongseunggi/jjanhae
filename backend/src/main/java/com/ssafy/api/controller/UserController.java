@@ -1,8 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.*;
-import com.ssafy.api.response.CheckIdRes;
-import com.ssafy.api.response.FindIdResponse;
+import com.ssafy.api.response.*;
 import com.ssafy.api.service.EmailService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.api.response.UserLoginPostRes;
-import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -158,18 +155,43 @@ public class UserController {
 			@ApiResponse(code = 409, message = "이미 존재하는 유저"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<?> checkId(@RequestBody String userId) {
+	public ResponseEntity<?> checkId(@RequestBody CheckIdRequest checkIdRequest) {
 		/**
 		 * 아이디 중복확인
 		 * 권한 : 모두사용
 		 * */
-		System.out.println("checkId : "+userId);
-		User user = userService.getUserByUserId(userId);
+		System.out.println("checkId : "+checkIdRequest.getUserId());
+		User user = userService.getUserByUserId(checkIdRequest.getUserId());
 		System.out.println("user " + user);
 		if(user != null) {
 			return ResponseEntity.status(409).body(CheckIdRes.of("false"));
 		} else {
 			return ResponseEntity.status(200).body(CheckIdRes.of("true"));
+		}
+	}
+
+	@GetMapping("/checkemail")
+	@ApiOperation(value = "이메일 중복확인", notes = "존재하는 회원 확인용")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 409, message = "이미 존재하는 유저"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<?> checkEmail(@RequestBody CheckEmailRequest checkEmailRequest) throws Exception {
+		/**
+		 * 이메일 중복확인
+		 * 권한 : 모두사용
+		 * */
+		System.out.println("checkEmail : "+checkEmailRequest.getEmail());
+		User user = userService.getUserByEmail(checkEmailRequest.getEmail());
+		System.out.println("user " + user);
+		if(user != null) {
+			return ResponseEntity.status(409).body(CheckEmailResponse.of(""));
+		} else {
+			// 인증코드 만들기
+			String authCode = emailService.sendAuthCode(checkEmailRequest.getEmail());
+			return ResponseEntity.status(200).body(CheckEmailResponse.of(authCode));
 		}
 	}
 
