@@ -1,14 +1,8 @@
 import "./App.css";
-import Navbar from "./components/Regist/Navbar";
 import Regist from "./components/Regist/RegistForm";
 
 function App() {
-  return (
-    <>
-      <Navbar />
-      <Regist />
-    </>
-  );
+  return <Regist />;
 }
 
 export default App;
