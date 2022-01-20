@@ -27,12 +27,34 @@ const Regist = () => {
   const [isConfirm, setIsConfirm] = useState(false); // 인증코드와 동일한지
   const [confirmErr, setConfirmErr] = useState(false);
   const [isBeer, setIsBeer] = useState(true); // 맥주인지
+  // const [isIdCheck, setIsIdCheck] = useState(false);
 
   const [certificationCode, setCertificationCode] = useState("");
 
   const onSubmit = (data) => {
+    if (idErrType !== "confirm") {
+      alert("아이디 중복 검사를 완료해주세요.");
+      return;
+    } else if (!isConfirm) {
+      alert("이메일 인증을 완료해주세요.");
+      return;
+    }
+
+    // if(!isIdCheck) {
+    //   return;
+    // }
     const formatedDate = date.toLocaleDateString();
-    console.log({ ...data, formatedDate });
+    // const data = { ...obj };
+    const requestData = {
+      id: data.id,
+      password: data.pwd,
+      email: data.email,
+      name: data.name,
+      birthday: formatedDate,
+      alcohol: data.alcohol,
+      amout: data.amount,
+    };
+    console.log(requestData);
   };
   const onChange = (date) => {
     setDate(date);
@@ -61,7 +83,7 @@ const Regist = () => {
   };
   const handleEmailConfirm = () => {
     const isValid =
-      /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+      /^([0-9a-zA-Z_.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
 
     const sendEmail = getValues("email");
     if (isValid.test(sendEmail)) {
@@ -113,7 +135,8 @@ const Regist = () => {
                   검사
                 </button>
               </div>
-              {idErrType === "required" && (
+              {(idErrType === "required" ||
+                errors.pwd?.type === "required") && (
                 <p className={styles.errorMsg}>아이디를 입력해주세요.</p>
               )}
               {idErrType === "pattern" && (
@@ -299,7 +322,14 @@ const Regist = () => {
               <option value="beer">맥주</option>
               <option value="soju">소주</option>
             </select>
-            <input className={styles.amount} type="number" placeholder="주량" />
+            <input
+              className={styles.amount}
+              type="number"
+              placeholder="주량"
+              {...register("amount", {
+                required: true,
+              })}
+            />
           </div>
           <button className={styles.registBtn} type="submit">
             회원가입

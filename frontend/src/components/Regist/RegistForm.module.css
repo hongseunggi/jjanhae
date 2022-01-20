@@ -1,11 +1,11 @@
-* {
+/* * {
   box-sizing: border-box;
-  background-color: #252a34;
-}
+  background-color: #282c34;
+} */
 
 .logo {
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   background-color: transparent;
 }
 .icon {
@@ -20,7 +20,7 @@
   width: 240px;
   border-bottom: 1px solid #eee;
   margin-left: 10px;
-  z-index: 1;
+  background-color: #252a34;
 }
 
 input {
@@ -28,6 +28,7 @@ input {
   color: #eee;
   width: 200px;
   padding: 0;
+  background-color: #252a34;
 }
 input::placeholder {
   color: #eee;
@@ -35,7 +36,7 @@ input::placeholder {
 }
 input:focus {
   outline: none;
-  background-color: none;
+  background-color: #252a34;
 }
 .formBorder {
   display: flex;
@@ -81,6 +82,7 @@ input:focus {
   margin-left: 5px;
   margin-right: 40px;
   border-bottom: 1px solid #eee;
+  background-color: #252a34;
 }
 .amount {
   width: 100px;
@@ -111,17 +113,6 @@ input:focus {
   margin: 0;
   font-size: 10px;
 }
-
-/* .checkBtn {
-  width: 40px;
-  height: 20px;
-  color: white;
-  background-color: #2db400;
-  border: none;
-  border-radius: 5px;
-  font-size: 10px;
-  cursor: pointer;
-} */
 
 .checkBtn,
 .sendBtn {
