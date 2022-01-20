@@ -28,7 +28,7 @@ public class UserRegisterPostReq {
 	@ApiModelProperty(name="email", example="ssafy1234@ssafy.com")
 	String email;
 
-	@ApiModelProperty(name="생년월일", example="1996-01-20")
+	@ApiModelProperty(name="생년월일", example="1996. 01. 20")
 	@DateTimeFormat(pattern = "yyyy. MM. dd")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy. MM. dd", timezone = "Asia/Seoul")
 	LocalDate birthday;
