@@ -11,6 +11,7 @@ import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -50,7 +51,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(String userId) {
         // 디비에 유저 정보 조회 (userId 를 통한 조회).
-        User user = userRepositorySupport.findUserByUserId(userId).get();
+        System.out.println("====== getUserByUserId =====");
+        System.out.println("userId : "+userId);
+        Optional<User> res = userRepositorySupport.findUserByUserId(userId);
+        User user = null;
+        if(res.isPresent()){
+            user = userRepositorySupport.findUserByUserId(userId).get();
+        }
+        System.out.println("user : " + user);
         return user;
     }
 

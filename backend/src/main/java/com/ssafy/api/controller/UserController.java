@@ -58,13 +58,15 @@ public class UserController {
 
 		System.out.println("=========== 회원가입 ===========\n");
 		System.out.println("인증 여부 : " + registerInfo.getAuthYn());
-		String userId = userService.getUserByUserId(registerInfo.getUserId()).getUserId();
-		if(!"".equals(userId)){
+		System.out.println("아이디 : " + registerInfo.getUserId());
+//		String userId = userService.getUserByUserId(registerInfo.getUserId()).getUserId();
+		User user = userService.getUserByUserId(registerInfo.getUserId());
+		System.out.println("user : " + user);
+		if(user != null){
 			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 사용자 ID"));
 		}
-		User user = userService.createUser(registerInfo);
-		System.out.println("userId : "+user.getUserId());
-
+		User res = userService.createUser(registerInfo);
+		System.out.println("userId : " + res.getUserId());
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
