@@ -1,0 +1,10 @@
+.App {
+  /* text-align: center; */
+  background-color: #282c34;
+}
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}

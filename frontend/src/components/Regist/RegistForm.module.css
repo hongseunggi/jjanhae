@@ -1,0 +1,147 @@
+* {
+  box-sizing: border-box;
+  background-color: #252a34;
+}
+
+.logo {
+  width: 200px;
+  height: 200px;
+  background-color: transparent;
+}
+.icon {
+  display: flex;
+}
+
+.inputAndMsg {
+  display: flex;
+  flex-direction: column;
+}
+.inputForm {
+  width: 240px;
+  border-bottom: 1px solid #eee;
+  margin-left: 10px;
+  z-index: 1;
+}
+
+input {
+  border: none;
+  color: #eee;
+  width: 200px;
+  padding: 0;
+}
+input::placeholder {
+  color: #eee;
+  font-size: 16px;
+}
+input:focus {
+  outline: none;
+  background-color: none;
+}
+.formBorder {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.form {
+  width: 600px;
+  height: 620px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 3px solid transparent;
+
+  border-image: linear-gradient(
+    #b04dfa 0%,
+    #08d9d6 22.92%,
+    #5aeba5 44.79%,
+    #e6e954 65.63%,
+    #ff5722 82.29%,
+    #ff2e63 100%
+  );
+  border-image-slice: 1;
+}
+
+.birth {
+  display: flex;
+}
+
+.birth input {
+  width: 240px;
+  border-bottom: 1px solid #eee;
+  margin-left: 10px;
+}
+
+.icon > select {
+  width: 100px;
+  border: none;
+  font-size: 16px;
+  color: #eee;
+  margin-left: 5px;
+  margin-right: 40px;
+  border-bottom: 1px solid #eee;
+}
+.amount {
+  width: 100px;
+  border-bottom: 1px solid #eee;
+}
+
+.registBtn {
+  width: 260px;
+  height: 40px;
+  background-color: #08d9d6;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+
+.errorMsg {
+  color: #ff5722;
+  padding: 5px 0 0 10px;
+  margin: 0;
+  font-size: 10px;
+  float: left;
+}
+
+.confirmMsg {
+  color: #2db400;
+  padding: 5px 0 0 10px;
+  margin: 0;
+  font-size: 10px;
+}
+
+/* .checkBtn {
+  width: 40px;
+  height: 20px;
+  color: white;
+  background-color: #2db400;
+  border: none;
+  border-radius: 5px;
+  font-size: 10px;
+  cursor: pointer;
+} */
+
+.checkBtn,
+.sendBtn {
+  width: 40px;
+  height: 20px;
+  color: white;
+  background-color: #ff2e63;
+  border: none;
+  border-radius: 5px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.confirmBtn {
+  width: 40px;
+  height: 20px;
+  color: black;
+  background-color: #08d9d6;
+  border: none;
+  border-radius: 5px;
+  font-size: 10px;
+  cursor: pointer;
+}
