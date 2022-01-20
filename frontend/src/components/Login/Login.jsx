@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import styles from "./Login.module.css";
 import axios from 'axios';
-import { ReactComponent as IdIcon } from "../assets/icons/userid.svg";
-import { ReactComponent as PwdIcon } from "../assets/icons/password.svg";
-import logo from "../assets/icons/logo.png";
+import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
+import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
+import logo from "../../assets/icons/logo.png";
 
 
 

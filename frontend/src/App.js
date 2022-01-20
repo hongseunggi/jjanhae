@@ -1,6 +1,6 @@
 import "./App.css";
 import Main from "./components/Main.jsx";
-// import Login from "./components/Login.jsx";
+import Login from "./components/Login/Login.jsx";
 import Navigator from "./components/nav/Navigator";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
@@ -17,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main status={code} />} />
           {/* <Route path="/login" element={<Login isLogin={handleIsLogin} />} /> */}
+          <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Regist />} />
         </Routes>
       </Router>

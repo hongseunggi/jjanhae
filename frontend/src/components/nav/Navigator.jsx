@@ -25,9 +25,9 @@ function Navigator(props) {
               <Link to="/signup" className={styles.link}>
                 Signup
               </Link>
-              {/* <Link to="/login" className={styles.link}>
+              <Link to="/login" className={styles.link}>
                 LOGIN
-              </Link> */}
+              </Link>
             </Col>
           </Row>
         </Container>
