@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
 import { Link } from "react-router-dom";
+
 function Main(props) {
   const { status } = props;
   console.log(status);
@@ -91,8 +92,8 @@ function Main(props) {
     }
   };
   return (
-    <Container fluid className="body">
-      <Row fluid className="h-100">
+    <Container fluid="true" className="body">
+      <Row fluid="true" className="h-100">
         <Col lg={1} className="dummy"></Col>
         <Col lg={4} className="h-25">
           <div className="intro_text">WELCOME OUR MEET</div>
