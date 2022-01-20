@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.FindIdRequest;
 import com.ssafy.api.request.UserInfoPostReq;
 import com.ssafy.api.response.FindIdResponse;
 import com.ssafy.api.service.EmailService;
@@ -77,7 +78,7 @@ public class UserController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
-	@GetMapping("/findid")
+	@PostMapping("/findid")
 	@ApiOperation(value = "이메일 인증(코드)", notes = "이메일로 인증코드를 보낸다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -85,15 +86,15 @@ public class UserController {
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<FindIdResponse> findId(
-			@RequestParam("name") String name, @RequestParam("email") String email)  throws Exception {
+			@RequestBody @ApiParam(value="아이디찾기 이메일인증 정보", required = true) FindIdRequest findIdRequest)  throws Exception {
 
 		System.out.println("=========== 이메일 인증(코드)으로 아이디 찾기 ===========\n");
 		// 이름, 이메일이 일치한 회원이 있는지 확인
-		User user = userService.getUserByNameAndEmail(name, email);
+		User user = userService.getUserByNameAndEmail(findIdRequest.getName(), findIdRequest.getEmail());
 		if(user != null) {
 			System.out.println("유효한 사용자");
 			// 이메일 전송
-			String authCode = emailService.sendSimpleMessage(email);
+			String authCode = emailService.sendSimpleMessage(findIdRequest.getEmail());
 			return ResponseEntity.ok(FindIdResponse.of(200, "Success", authCode, user.getUserId()));
 		} else {
 			System.out.println("유효하지 사용자");
