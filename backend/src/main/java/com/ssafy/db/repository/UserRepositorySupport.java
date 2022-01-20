@@ -35,6 +35,15 @@ public class UserRepositorySupport {
         return Optional.ofNullable(user);
     }
 
+    public Optional<User> findUserByUserIdAndNameAndEmail(String userId, String name, String email) {
+        User user = jpaQueryFactory.select(qUser).from(qUser)
+                .where(qUser.userId.eq(userId).and(qUser.name.eq(name).and(qUser.email.eq(email)))).fetchOne();
+        System.out.println("======= findUserByUserIdAndNameAndEmail =======");
+        System.out.println("user : " + user);
+        if(user == null) return Optional.empty();
+        return Optional.ofNullable(user);
+    }
+
     public Long deleteByUserId(String userId) {
         Long affectedRow = jpaQueryFactory.delete(qUser)
                 .where(qUser.userId.eq(userId))

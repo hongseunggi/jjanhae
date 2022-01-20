@@ -11,6 +11,7 @@ public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo);
 	User getUserByUserId(String userId);
 	User getUserByNameAndEmail(String name, String email);
+	User getUserByUserIdAndNameAndEmail(String userId, String name, String email);
 	String update(String userId, UserInfoPostReq userInfoPostReq);
 	void delete(String userId);
 }

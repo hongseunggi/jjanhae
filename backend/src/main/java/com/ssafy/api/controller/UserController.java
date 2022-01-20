@@ -1,7 +1,6 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.FindIdRequest;
-import com.ssafy.api.request.UserInfoPostReq;
+import com.ssafy.api.request.*;
 import com.ssafy.api.response.FindIdResponse;
 import com.ssafy.api.service.EmailService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
@@ -13,8 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.api.request.UserLoginPostReq;
-import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
@@ -88,18 +85,44 @@ public class UserController {
 	public ResponseEntity<FindIdResponse> findId(
 			@RequestBody @ApiParam(value="아이디찾기 이메일인증 정보", required = true) FindIdRequest findIdRequest)  throws Exception {
 
-		System.out.println("=========== 이메일 인증(코드)으로 아이디 찾기 ===========\n");
+		System.out.println("=========== 이메일 인증(코드)으로 아이디 찾기 ===========");
 		// 이름, 이메일이 일치한 회원이 있는지 확인
 		User user = userService.getUserByNameAndEmail(findIdRequest.getName(), findIdRequest.getEmail());
 		if(user != null) {
 			System.out.println("유효한 사용자");
 			// 이메일 전송
-			String authCode = emailService.sendSimpleMessage(findIdRequest.getEmail());
+			String authCode = emailService.sendSimpleMessage(findIdRequest);
 			return ResponseEntity.ok(FindIdResponse.of(200, "Success", authCode, user.getUserId()));
 		} else {
 			System.out.println("유효하지 사용자");
 			// 유효하지 않은 사용자입니다.
 			return ResponseEntity.status(404).body(FindIdResponse.of(401, "유효하지 않은 사용자", null, null));
+		}
+
+	}
+
+	@PostMapping("/findpwd")
+	@ApiOperation(value = "이메일 인증(버튼)", notes = "이메일로 인증 url를 보낸다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "존재하지 않는 사용자"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> findPwd(
+			@RequestBody FindPwdRequest findPwdRequest)  throws Exception {
+
+		System.out.println("=========== 이메일 인증(버튼)으로 비밀번호 찾기 ===========");
+		// 아이디, 이름, 이메일이 일치한 회원이 있는지 확인
+		User user = userService.getUserByUserIdAndNameAndEmail(findPwdRequest.getUserId(), findPwdRequest.getName(), findPwdRequest.getEmail());
+		if(user != null) {
+			System.out.println("유효한 사용자");
+			// 이메일 전송 (버튼 url)
+			emailService.sendSimpleMessageButton(findPwdRequest);
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		} else {
+			System.out.println("유효하지 사용자");
+			// 유효하지 않은 사용자입니다.
+			return ResponseEntity.status(404).body(BaseResponseBody.of(401, "유효하지 않은 사용자"));
 		}
 
 	}
