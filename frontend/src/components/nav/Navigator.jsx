@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./Navigator.module.css";
 import Logo from "../../assets/logo.png";
+
 function Navigator(props) {
   const { status, isLogin } = props;
 
   const handleLogOut = () => {
     isLogin("1");
   };
+
   switch (status) {
     case "1":
       return (
@@ -16,7 +18,7 @@ function Navigator(props) {
           <Row className="nav">
             <Col>
               <Link to="/" className={styles.logo}>
-                <img src={Logo} className={styles.logo}></img>
+                <img src={Logo} className={styles.logo} alt="logo"></img>
               </Link>
             </Col>
             <Col>
@@ -36,7 +38,7 @@ function Navigator(props) {
           <Row className="nav">
             <Col>
               <Link to="/" className={styles.logo}>
-                <img src={Logo} className={styles.logo}></img>
+                <img src={Logo} className={styles.logo} alt="logo"></img>
               </Link>
             </Col>
             <Col>
@@ -56,7 +58,7 @@ function Navigator(props) {
           <Row className="nav">
             <Col>
               <Link to="/" className={styles.logo}>
-                <img src={Logo} className={styles.logo}></img>
+                <img src={Logo} className={styles.logo} alt="logo"></img>
               </Link>
             </Col>
             <Col>
@@ -67,6 +69,8 @@ function Navigator(props) {
           </Row>
         </Container>
       );
+    default:
+      return console.log("error");
   }
 }
 
