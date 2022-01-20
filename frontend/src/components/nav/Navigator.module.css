@@ -46,7 +46,6 @@
     text-shadow: 0rem 1.5rem 2rem rgba(234,234,234,0.5);
     color: #EAEAEA;
     transform: translateY(-7px);
-
 }
 .logo{
     z-index: 1;
@@ -56,3 +55,29 @@
     height: 120px;
     margin-left: 2%;
 }
+@media screen and ( width <= 1500px) {
+    .logo{
+        z-index: 1;
+        position: relative;
+        float: left;
+        width: 100px;
+        height: 100px;
+        margin-left: 2%;
+    }
+    .link{
+        font-size: 16px;
+    }
+    .link_profile{
+        font-size: 16px;
+    }
+}
+/* @media screen and (width < 1366px) {
+    .logo{
+        z-index: 1;
+        position: relative;
+        float: left;
+        width: 64px;
+        height: 64px;
+        margin-left: 2%;
+    }
+} */
