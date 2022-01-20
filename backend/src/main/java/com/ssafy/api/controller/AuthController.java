@@ -46,16 +46,15 @@ public class AuthController {
 	public ResponseEntity<? extends BaseResponseBody> login(@RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq loginInfo) {
 		String userId = loginInfo.getId();
 		String password = loginInfo.getPassword();
-		System.out.println("어디서 걸리는거냐구ㅠㅠ");
 		User user = userService.getUserByUserId(userId);
-		System.out.println("여기" + user);
-//		if(user == null) {
-//			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자가 존재하지 않습니다."));
-//		}
-//		// 패스워드가 다를 경우
-//		if(!passwordEncoder.matches(password, user.getPassword())) {
-//			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Invalid Password"));
-//		}
+
+		if(user == null) {
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사용자가 존재하지 않습니다."));
+		}
+		// 패스워드가 다를 경우
+		if(!passwordEncoder.matches(password, user.getPassword())) {
+			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "비밀번호가 일치하지 않습니다."));
+		}
 		// 정상적인 경우
 		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success",	user.getUserId(), user.getName(), user.getEmail(),
 				JwtTokenUtil.getToken(userId), user.getDrink(), user.getDrinkLimit(),user.getBirthday(),	user.getImageUrl()));
