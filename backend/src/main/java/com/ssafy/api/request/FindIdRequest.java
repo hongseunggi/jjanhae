@@ -1,2 +1,13 @@
-package com.ssafy.api.request;public class FindIdRequest {
+package com.ssafy.api.request;
+
+import io.swagger.annotations.ApiModel;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@ApiModel("FindIdRequest")
+public class FindIdRequest {
+    String name;
+    String email;
 }
