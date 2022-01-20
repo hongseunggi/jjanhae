@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -22,18 +23,19 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long userSeq = null;
+    Long userSeq;
 
     String userId;
     String name;
     String email;
-    LocalDateTime birthday;
+    LocalDate birthday;
     String delYn;
     String imageUrl;
     String drink;
     int drinkLimit;
     String authYn;
     String authCode;
+    String provider;
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

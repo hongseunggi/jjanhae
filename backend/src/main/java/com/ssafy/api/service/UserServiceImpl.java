@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepositorySupport.findUserByUserId(userId).orElseThrow(
 				() -> new NullPointerException("수정해야 할 회원이 존재하지 않습니다.")
 		);
-		user.update(userInfoPostReq);
+//		user.update(userInfoPostReq);
 		return userId;
 	}
 

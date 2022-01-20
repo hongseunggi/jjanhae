@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("users")
 public class UserController {
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
