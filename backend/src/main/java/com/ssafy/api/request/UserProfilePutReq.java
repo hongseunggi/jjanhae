@@ -9,8 +9,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@ApiModel("UserModifyPutReq")
-public class UserModifyPutReq {
+@ApiModel("UserProfilePutReq")
+public class UserProfilePutReq {
     @ApiModelProperty(name="유저 이름", example="김싸피")
     String name;
     @ApiModelProperty(name="유저 email", example="ssafy@ssafy.com")
@@ -20,5 +20,5 @@ public class UserModifyPutReq {
     @ApiModelProperty(name="유저 선호 주종", example="맥주")
     String drink;
     @ApiModelProperty(name="유저 주량", example="1")
-    Integer amount;
+    Integer drinkLimit;
 }

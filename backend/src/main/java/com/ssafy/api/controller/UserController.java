@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import retrofit2.http.Path;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
@@ -196,50 +197,30 @@ public class UserController {
 		}
 	}
 
-	@PutMapping(value = "/{userId}")
-	@ApiOperation(value = "유저 정보 수정", notes = "유저의 정보를 수정한다")
+	@PatchMapping(value = "/{userId}/modify")
+	@ApiOperation(value = "유저 정보 수정", notes = "이름, 이메일, 생일, 주종, 주량을 수정한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity modifyUser(@PathVariable("userId") String userId, @RequestBody UserInfoPostReq userInfoPostReq) {
+	public ResponseEntity<BaseResponseBody> updateUser(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId,  @RequestBody UserProfilePutReq userProfilePutReq) {
 		/**
-		 * 권한 : 모두사용
-		 * 유저 정보 수정
+		 * 유저 프로필 정보 수정(이름, 이메일, 생일, 주종, 주량을 수정한다.
+		 * 권한 : 해당 유저
 		 * */
-		System.out.println("modifyUser : "+userId);
-		String id = userService.update(userId, userInfoPostReq);
-		System.out.println("수정완료? "+id);
+//		System.out.println("modifyUser : "+userId);
+//		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+//		System.out.println("getUserInfo : "+userDetails.getUser());
+		String id = userService.updateUserProfile(userId, userProfilePutReq);
+//		System.out.println("수정완료? "+id);
 		if("".equals(id)) {
 			// 수정해야할 아이디 존재하지않음
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "수정해야 할 유저 미존재"));
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "해당 사용자가 존재하지 않습니다."));
 		} else {
 			// 수정
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}
-	}
-
-	@DeleteMapping(value = "/{userId}")
-	@ApiOperation(value = "유저 정보 삭제", notes = "유저의 정보를 삭제한다")
-	@ApiResponses({
-			@ApiResponse(code = 204, message = "성공"),
-			@ApiResponse(code = 404, message = "사용자 없음"),
-			@ApiResponse(code = 500, message = "서버 오류")
-	})
-	public ResponseEntity deleteUser(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId) {
-		/**
-		 * 권한 : 로그인한 사용자
-		 * 유저 정보 삭제
-		 * 해당 유저가 생성한 방 모두 삭제
-		 * 해당 유저의 지난 회의 이력 모두 삭제
-		 * */
-		System.out.println("deleteUser : "+userId);
-
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-		System.out.println("getUserInfo : "+userDetails.getUser());
-		userService.delete(userId);
-		return ResponseEntity.status(200).body(BaseResponseBody.of(204, "Success"));
 	}
 
 	@PatchMapping(value = "/modifypwd")
@@ -263,5 +244,27 @@ public class UserController {
 			// 수정
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}
+	}
+
+	@DeleteMapping(value = "/{userId}")
+	@ApiOperation(value = "유저 정보 삭제", notes = "유저의 정보를 삭제한다")
+	@ApiResponses({
+			@ApiResponse(code = 204, message = "성공"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity deleteUser(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId) {
+		/**
+		 * 유저 정보 수정 - disable, 사실 지우는게 아니라 delete로 맵핑해도 되는가에 대한 의문?
+		 * 권한 : 로그인한 사용자 본인
+		 * 해당 유저가 생성한 방 모두 삭제 안됨
+		 * 해당 유저의 지난 회의 이력 모두 삭제 안됨
+		 * */
+		System.out.println("deleteUser : "+userId);
+
+//		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+//		System.out.println("getUserInfo : "+userDetails.getUser());
+		userService.disable(userId);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(204, "disable 처리"));
 	}
 }

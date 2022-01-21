@@ -1,7 +1,7 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.ModifyPasswordRequest;
-import com.ssafy.api.request.UserInfoPostReq;
+
+import com.ssafy.api.request.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,20 +48,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-	// 비번 수정
-	@Override
-	public int updatePassword(String userId, ModifyPasswordRequest modifyPasswordRequest) {
-		Optional<User> res = userRepositorySupport.findUserByUserId(userId);
-		User user = null;
-		if(res.isPresent()) {
-			user = res.get();
-			user.setPassword(passwordEncoder.encode(modifyPasswordRequest.getPassword()));
-			userRepository.save(user);
-			return 1;
-		}
-		return 0;
-	}
-
     // 아이디 중복 확인
     @Override
     public User getUserByUserId(String userId) {
@@ -77,7 +63,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    // 이메일 중복확인
+    // 이메일 중복 확인
     @Override
     public User getUserByEmail(String email) {
         // 디비에 유저 정보 조회 (userId 를 통한 조회).
@@ -105,6 +91,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    // 비밀번호 찾기
     @Override
     public User getUserByUserIdAndNameAndEmail(String userId, String name, String email) {
         System.out.println("====== getUserByUserIdAndNameAndEmail =====");
@@ -120,22 +107,48 @@ public class UserServiceImpl implements UserService {
     // 회원 수정
     @Override
     @Transactional
-    public String update(String userId, UserInfoPostReq userInfoPostReq) {
-        User user = userRepositorySupport.findUserByUserId(userId).orElseThrow(
-                () -> new NullPointerException("수정해야 할 회원이 존재하지 않습니다.")
-        );
-//		user.update(userInfoPostReq);
-        return userId;
+    public String updateUserProfile(String userId, UserProfilePutReq userProfilePutReq) {
+        Optional<User> res = userRepositorySupport.findUserByUserId(userId);
+        if(res.isPresent()) {
+            User user = res.get();
+		    user.setName(userProfilePutReq.getName());
+            user.setEmail(userProfilePutReq.getEmail());
+            user.setBirthday(userProfilePutReq.getBirthday());
+            user.setDrink(userProfilePutReq.getDrink());
+            user.setDrinkLimit(userProfilePutReq.getDrinkLimit());
+            userRepository.save(user);
+            return userId;
+        }
+        return null;
+    }
+
+
+    // 비번 수정
+    @Override
+    public int updatePassword(String userId, ModifyPasswordRequest modifyPasswordRequest) {
+        Optional<User> res = userRepositorySupport.findUserByUserId(userId);
+        User user = null;
+        if(res.isPresent()) {
+            user = res.get();
+            user.setPassword(passwordEncoder.encode(modifyPasswordRequest.getPassword()));
+            userRepository.save(user);
+            return 1;
+        }
+        return 0;
     }
 
     // 회원 탈퇴
     @Override
     @Transactional
-    public void delete(String userId) {
-        User user = userRepositorySupport.findUserByUserId(userId).orElseThrow(
-                () -> new NullPointerException("삭제해야 할 회원이 존재하지 않습니다.")
-        );
-        userRepositorySupport.deleteByUserId(userId);
+    public void disable(String userId) {
+        Optional<User> res = userRepositorySupport.findUserByUserId(userId);
+        User user = null;
+        if(res.isPresent()) {
+            user = res.get();
+            System.out.println(user);
+            user.setDelYn("Y");
+            userRepository.save(user);
+        }
     }
 
 }

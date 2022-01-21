@@ -1,7 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.ModifyPasswordRequest;
-import com.ssafy.api.request.UserInfoPostReq;
+import com.ssafy.api.request.UserProfilePutReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.db.entity.User;
 
@@ -14,7 +14,7 @@ public interface UserService {
 	User getUserByEmail(String email);
 	User getUserByNameAndEmail(String name, String email);
 	User getUserByUserIdAndNameAndEmail(String userId, String name, String email);
-	String update(String userId, UserInfoPostReq userInfoPostReq);
-	void delete(String userId);
+	String updateUserProfile(String userId, UserProfilePutReq userProfilePutReq);
+	void disable(String userId);
 	int updatePassword(String userId, ModifyPasswordRequest modifyPasswordRequest);
 }
