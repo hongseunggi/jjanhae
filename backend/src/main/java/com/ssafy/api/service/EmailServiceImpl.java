@@ -146,7 +146,7 @@ public class EmailServiceImpl implements EmailService {
                         "		감사합니다."																																															+
                         "	</p>"																																																	+
                         "	<a style=\"color: #FFF; text-decoration: none; text-align: center;\""																																	+
-                        "	href=\"http://localhost:8081/user/email/certified?userId=" + userId + "\" target=\"_blank\">"														+
+                        "	href=\"http://localhost:3000/user/resetpwd?userId=" + userId + "&authcode="+ ePw + "\" target=\"_blank\">"														+
                         "		<p"																																																	+
                         "			style=\"display: inline-block; width: 210px; height: 45px; margin: 30px 5px 40px; background: #02b875; line-height: 45px; vertical-align: middle; font-size: 16px;\">"							+
                         "			메일 인증</p>"																																														+
@@ -199,7 +199,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendSimpleMessageButton(FindPwdRequest findPwdRequest) throws Exception {
+    public String sendSimpleMessageButton(FindPwdRequest findPwdRequest) throws Exception {
         MimeMessage message = createMessageButton(findPwdRequest.getUserId(), findPwdRequest.getName(), findPwdRequest.getEmail());
         try{ //예외처리
             emailSender.send(message);
@@ -207,6 +207,7 @@ public class EmailServiceImpl implements EmailService {
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
+        return ePw;
     }
 
     @Override

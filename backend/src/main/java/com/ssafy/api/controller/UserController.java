@@ -106,7 +106,7 @@ public class UserController {
 			@ApiResponse(code = 401, message = "존재하지 않는 사용자"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<? extends BaseResponseBody> findPwd(
+	public ResponseEntity<?> findPwd(
 			@RequestBody FindPwdRequest findPwdRequest)  throws Exception {
 
 		System.out.println("=========== 이메일 인증(버튼)으로 비밀번호 찾기 ===========");
@@ -115,8 +115,8 @@ public class UserController {
 		if(user != null) {
 			System.out.println("유효한 사용자");
 			// 이메일 전송 (버튼 url)
-			emailService.sendSimpleMessageButton(findPwdRequest);
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			String authCode = emailService.sendSimpleMessageButton(findPwdRequest);
+			return ResponseEntity.status(200).body(FindPwdResponse.of("Success", authCode, findPwdRequest.getUserId()));
 		} else {
 			System.out.println("유효하지 사용자");
 			// 유효하지 않은 사용자입니다.
