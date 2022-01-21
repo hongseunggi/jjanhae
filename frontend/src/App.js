@@ -5,6 +5,7 @@ import Navigator from "./components/nav/Navigator";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
 import Register from "./components/Regist/Register";
+import FindId from "./components/FindId/FindId";
 function App() {
   const [code, setCode] = useState("1");
   const handleIsLogin = (data) => {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Main status={code} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
+          <Route path="/findId" element={<FindId />} />
         </Routes>
       </Router>
     </div>
