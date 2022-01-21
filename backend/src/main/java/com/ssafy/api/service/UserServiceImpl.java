@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> res = userRepositorySupport.findUserByUserId(userId);
         User user = null;
         if(res.isPresent()){
-            user = userRepositorySupport.findUserByUserId(userId).get();
+            user = res.get();
         }
         System.out.println("user : " + user);
         return user;
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> res = userRepositorySupport.findUserByEmail(email);
         User user = null;
         if(res.isPresent()){
-            user = userRepositorySupport.findUserByEmail(email).get();
+            user = res.get();
         }
         System.out.println("user : " + user);
         return user;
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> res = userRepositorySupport.findUserByNameAndEmail(name, email);
         User user = null;
         if(res.isPresent()) {
-            user = userRepositorySupport.findUserByNameAndEmail(name, email).get();
+            user = res.get();
         }
         return user;
     }
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> res = userRepositorySupport.findUserByUserIdAndNameAndEmail(userId, name, email);
         User user = null;
         if(res.isPresent()) {
-            user = userRepositorySupport.findUserByUserIdAndNameAndEmail(userId, name, email).get();
+            user = res.get();
         }
         return user;
     }
