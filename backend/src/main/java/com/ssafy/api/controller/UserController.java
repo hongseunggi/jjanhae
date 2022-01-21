@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.ModifyPasswordRequest;
 import com.ssafy.api.request.UserInfoPostReq;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,5 +153,28 @@ public class UserController {
 		System.out.println("getUserInfo : "+userDetails.getUser());
 		userService.delete(userId);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(204, "Success"));
+	}
+
+	@PatchMapping(value = "/modifypwd")
+	@ApiOperation(value = "비밀번호 수정", notes = "유저의 비밀번호를 수정한다")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 404, message = "비밀번호 변경 실패"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<?> modifyUser(@RequestBody ModifyPasswordRequest modifyPasswordRequest) {
+		/**
+		 * 권한 : 모두사용
+		 * 유저 정보 수정
+		 * */
+		System.out.println("modifyUser : " + modifyPasswordRequest.getUserId());
+		int res = userService.updatePassword(modifyPasswordRequest.getUserId(), modifyPasswordRequest);
+		if(res == 0) {
+			// 수정 실패
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "비밀번호 변경 실패"));
+		} else {
+			// 수정
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.ModifyPasswordRequest;
 import com.ssafy.api.request.UserInfoPostReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -49,6 +51,19 @@ public class UserServiceImpl implements UserService {
 
 	// 이메일 중복 확인
 
+	// 비번 수정
+	@Override
+	public int updatePassword(String userId, ModifyPasswordRequest modifyPasswordRequest) {
+		Optional<User> res = userRepositorySupport.findUserByUserId(userId);
+		User user = null;
+		if(res.isPresent()) {
+			user = res.get();
+			user.setPassword(passwordEncoder.encode(modifyPasswordRequest.getPassword()));
+			userRepository.save(user);
+			return 1;
+		}
+		return 0;
+	}
 
 	// 회원 수정
 	@Override
