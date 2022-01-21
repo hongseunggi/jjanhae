@@ -1,6 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); */
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'); */
-@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
 
 /* * {
     background-color: #252A34;
@@ -9,54 +9,33 @@
   } */
 
 .inputRow {
-  width: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+    width :400px;
+    display : flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .logo {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  width: 210px;
-  height: 210px;
-  background-color: transparent;
-}
-=======
     /* width: 100px;
     height: 100px; */
     width: 150px;
     height: 150px;
     background-color: transparent;
 }  
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
 
 .icon {
-  fill: #eee;
-  width: 30px;
-  height: 30px;
+    fill: #EEE;
+    width: 30px;
+    height: 30px;
 }
 
 .formBorder {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-}
-
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  
 .form {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  width: 500px;
-  height: 600px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  border: 3px solid;
-  border-color: #eeee;
-  margin-top: 50px;
-  padding: 0 50px 50px 50px;
-
-  border-image: linear-gradient(
-=======
     width: 600px;
     height: 620px;
     display: flex;
@@ -69,7 +48,6 @@
     padding: 0 50px 50px 50PX;
 
     border-image: linear-gradient(
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
     #ff2e63 0%,
     #ff5722 22.92%,
     #e6e954 44.79%,
@@ -78,74 +56,64 @@
     #b04dfa 100%
   );
   border-image-slice: 1;
+
+  }
+  
+.inputArea {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
-.inputArea {
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
 
 .input {
-  width: 320px;
-  height: 50px;
-  border: none;
-}
-
-.inputData {
-  width: 320px;
-  height: 30px;
-  font-size: 16px;
-  font-family: "Poppins", sans-serif;
-  border: none;
-  border-bottom: 2px solid;
-}
+    width : 320px;
+    height: 50px;
+    border: none;
+  }
+  
+  .inputData {
+    width: 320px;
+    height: 30px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    border-bottom: 2px solid;
+    background-color: transparent;
+    border-color: white;
+    margin-top: 5px;
+    color :white;
+  }
 
 .inputData::placeholder {
-  font-size: 16px;
-  color: #eee;
+    font-size: 16px;
+    color: #eee;
 }
+
+.inputData:focus {
+  outline: none;
+}
+
 .errorMsg {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  position: relative;
-  color: #ff5722;
-  font-size: 16px;
-  margin-bottom: 0px;
-  margin-top: 10px;
-=======
     position: relative;
     color : #FF5722;
     font-size: 15px;
     margin-bottom: 0px;
     margin-top: 10px;
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
 }
 
 .confirmButtons {
-  width: 410px;
-  display: flex;
-  justify-content: space-around;
+    width: 410px;
+    display: flex;
+    justify-content: space-around;
 }
 
 .findButtons {
-  display: flex;
+    display: flex;
 }
 
 .loginBtn {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  width: 180px;
-  height: 40px;
-  background-color: #ff2e63;
-  box-shadow: 0px 0.5rem 1.5rem rgba(255, 185, 203, 0.1);
-  border-radius: 10px;
-  border: none;
-  font-size: 18px;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-=======
     width: 180px;
     height: 40px;
     background-color: #FF2E63;
@@ -161,7 +129,6 @@
     transition : .2s;
     /* overflow: hidden; */
     text-align : center;
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
 }
 
 .btnText {
@@ -187,20 +154,6 @@
   }
 
 .registBtn {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  width: 180px;
-  height: 40px;
-  background-color: #08d9d6;
-  box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
-  border-radius: 10px;
-  border: none;
-  font-size: 18px;
-  color: #252a34;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-=======
     width: 180px;
     height: 40px;
     background-color: #08d9d6;
@@ -212,7 +165,6 @@
     font-weight: bold;
     cursor: pointer;
     outline: none;
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
 }
 
 
@@ -236,19 +188,6 @@ box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
 }
 
 .findIdBtn {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  border: none;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.findPwdBtn {
-  border: none;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-=======
     border: none;
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
@@ -276,5 +215,4 @@ box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
     width: 0.1px;
     height: 15px;
     margin: 5px 5px 0px 5px;
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
 }
