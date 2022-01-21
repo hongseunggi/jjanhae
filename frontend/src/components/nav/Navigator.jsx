@@ -22,9 +22,15 @@ function Navigator(props) {
               </Link>
             </Col>
             <Col>
+<<<<<<< HEAD
               {/* <Link to="/signup" className={styles.link}>
                 Signup
               </Link> */}
+=======
+              <Link to="/signup" className={styles.link}>
+                SIGN UP
+              </Link>
+>>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d
               <Link to="/login" className={styles.link}>
                 LOGIN
               </Link>
