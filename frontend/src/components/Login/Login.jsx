@@ -30,15 +30,15 @@ const Login = () => {
 
     //input 유효성 검사
     const handleInput = (event) => {
-        let pwdRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+        let pwdRule = /^.*(?=^.{5,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
         const { id, value } = event.target;
         setInput({ 
             ...input,
             [id]:value
         });
         if(id==="id") {
-            if(value.length<=8 && value.length>0) {
-                setIdMsg("8자 이상의 아이디를 입력해주세요.");
+            if(value.length<=5 && value.length>0) {
+                setIdMsg("5자 이상의 아이디를 입력해주세요.");
             }else if(value.length>16) {
                 setIdMsg("16자 이하의 아이디를 입력해주세요.");
             }else if(value==="") {
@@ -48,7 +48,7 @@ const Login = () => {
             }
         }else if(id==="password") {
             if(!pwdRule.test(value)&& value.length>0) {
-                setPwdMsg("비밀번호는  8~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요");
+                setPwdMsg("비밀번호는  5~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요");
             }else if(value.length===0) {
                 setPwdMsg("비밀번호를 입력해주세요");
             }else {
@@ -68,6 +68,8 @@ const Login = () => {
     };
 
     const handleSubmit = (event) => {
+        if(input.id==="") setIdMsg("아이디를 입력해주세요"); 
+        if(input.password==="") setPwdMsg("비밀번호를 입력해주세요"); 
         event.preventDefault();
         console.log(input);
         console.log("clicked");
@@ -132,7 +134,8 @@ const Login = () => {
             </div>
                 
             <div className={styles.confirmButtons}>
-                <button className={styles.loginBtn} disabled={disabled} type="submit">
+                {/* <button className={styles.loginBtn} disabled={disabled} type="submit"> */}
+                <button className={styles.loginBtn} type="submit">
                     로그인
                 </button>
 
@@ -151,7 +154,7 @@ const Login = () => {
                 <button className={styles.findIdBtn}>
                     아이디 찾기
                 </button>
-                |
+                ||
                 <button className={styles.findPwdBtn}>
                     비밀번호 찾기
                 </button>
