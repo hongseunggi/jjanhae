@@ -4,7 +4,6 @@ import Main from "./components/Main.jsx";
 import Navigator from "./components/nav/Navigator";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
-import Regist from "./components/Regist/RegistForm";
 import Login from "./components/Login";
 import Register from "./components/Regist/Register";
 function App() {
