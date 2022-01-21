@@ -23,11 +23,11 @@ function Navigator(props) {
             </Col>
             <Col>
               <Link to="/signup" className={styles.link}>
-                Signup
+                SIGN UP
               </Link>
-              {/* <Link to="/login" className={styles.link}>
+              <Link to="/login" className={styles.link}>
                 LOGIN
-              </Link> */}
+              </Link>
             </Col>
           </Row>
         </Container>

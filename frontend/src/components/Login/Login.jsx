@@ -1,9 +1,11 @@
 import React, {useState} from "react";
 import styles from "./Login.module.css";
 import axios from 'axios';
-import { ReactComponent as IdIcon } from "../assets/icons/userid.svg";
-import { ReactComponent as PwdIcon } from "../assets/icons/password.svg";
-import logo from "../assets/icons/logo.png";
+import { Link } from "react-router-dom";
+import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
+import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
+import logo from "../../assets/icons/logo.png";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 
 
@@ -18,8 +20,8 @@ const Login = () => {
     const [disabled, setDisabled] = useState(true);
 
     //input 유효성 검사 에러 메시지
-    const [idMsg, setIdMsg] = useState("");
-    const [pwdMsg, setPwdMsg] = useState("");
+    const [idMsg, setIdMsg] = useState(" ");
+    const [pwdMsg, setPwdMsg] = useState(" ");
 
     // const [idCheck, setIdCheck] = useState(false);
     // const [pwdCheck, setPwdCheck] = useState(false);
@@ -29,15 +31,26 @@ const Login = () => {
 
     //input 유효성 검사
     const handleInput = (event) => {
-        let pwdRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+        let pwdRule = /^.*(?=^.{5,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
         const { id, value } = event.target;
         setInput({ 
             ...input,
             [id]:value
         });
+
+        if(idMsg===""&&pwdMsg==="") {
+            setDisabled(false);
+        }else if(idMsg===""&&disabled===true){
+            setPwdMsg("비밀번호를 입력해주세요");
+        }else if(pwdMsg===""&&disabled===true) {
+            setIdMsg("아이디를 입력해주세요");
+        }else{
+            setDisabled(true);
+        }
+
         if(id==="id") {
-            if(value.length<=8 && value.length>0) {
-                setIdMsg("8자 이상의 아이디를 입력해주세요.");
+            if(value.length<=5 && value.length>0) {
+                setIdMsg("5자 이상의 아이디를 입력해주세요.");
             }else if(value.length>16) {
                 setIdMsg("16자 이하의 아이디를 입력해주세요.");
             }else if(value==="") {
@@ -47,22 +60,19 @@ const Login = () => {
             }
         }else if(id==="password") {
             if(!pwdRule.test(value)&& value.length>0) {
-                setPwdMsg("비밀번호는  8~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요");
+                setPwdMsg("비밀번호는  5~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요");
             }else if(value.length===0) {
                 setPwdMsg("비밀번호를 입력해주세요");
             }else {
                 setPwdMsg("");
             }
-        }
 
+        }
+        
+        // checkDisabled({...input});
         // console.log(idMsg);
         // console.log(pwdMsg);
 
-        if(idMsg===""&&pwdMsg==="") {
-            setDisabled(false);
-        }else {
-            setDisabled(true);
-        }
         
     };
 
@@ -70,21 +80,30 @@ const Login = () => {
         event.preventDefault();
         console.log(input);
         console.log("clicked");
+
+        // loginApi();
     };
+
+    const checkDisabled = () => {
+        console.log(id);
+    }
 
     //로그인 상태 확인
     const checkToken = () => {
 
     }
+    
 
     const loginApi = () => {
-        let url = "";
-        axios.post(url)
+        let url = 'https://localhost:3000/user/login';
+        axios.post(url, {
+            ...input
+        })
         .then(function(result) {
-
+            console.log(result);
         })
         .catch(function(error) {
-
+            console.log(error);
         })
     }
 
@@ -106,6 +125,7 @@ const Login = () => {
                             placeholder="아이디"
                             type="text"
                             onChange={handleInput}
+                            autoComplete="off"
                         />
                         {/* {idCheck === false ? <p className={styles.errorMsg}>{idMsg}</p> : null} */}
                         <p className={styles.errorMsg}>{idMsg}</p>
@@ -123,6 +143,7 @@ const Login = () => {
                         placeholder="비밀번호"
                         type="password"
                         onChange={handleInput}
+                        autoComplete="off"
                     />
                     {/* {pwdCheck === false ? <p className={styles.errorMsg}>{pwdMsg}</p> : null} */}
                     <p className={styles.errorMsg}>{pwdMsg}</p> 
@@ -132,25 +153,38 @@ const Login = () => {
                 
             <div className={styles.confirmButtons}>
                 <button className={styles.loginBtn} disabled={disabled} type="submit">
-                    로그인
+                    {/* <button className={styles.loginBtn} type="submit"> */}
+                    {/* <p className={styles.btnText}> */}
+                        로그인
+                    {/* </p> */}
+                    {/* <div className={styles.btnTwo}> */}
+                        {/* <p className={styles.btnText2}>Go!</p> */}
+                    {/* </div> */}
                 </button>
+
 
                 {/* 토큰 확인 */}
                 {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>}
 
-                <button className={styles.registBtn} onClick={ () => {}}> 
-                    회원가입
-                </button>
+                <Link to="/signup">
+                    <button className={styles.registBtn}> 
+                        회원가입
+                    </button>
+                </Link>
             </div>
 
             <div className={styles.findButtons}>
+            <Link to="/findId">
                 <button className={styles.findIdBtn}>
                     아이디 찾기
                 </button>
-                |
+            </Link>
+            <div className={styles.updown}></div>
+            <Link to="/findPwd">
                 <button className={styles.findPwdBtn}>
                     비밀번호 찾기
                 </button>
+            </Link>
             </div>
             {/* <KakaoBtn/>
             <GoogleBtn/> */}
