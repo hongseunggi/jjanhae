@@ -179,7 +179,7 @@ const Login = () => {
                     아이디 찾기
                 </button>
             </Link>
-                ||
+            <div className={styles.updown}></div>
             <Link to="/findPwd">
                 <button className={styles.findPwdBtn}>
                     비밀번호 찾기

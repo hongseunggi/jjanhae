@@ -108,7 +108,7 @@
     width: 180px;
     height: 40px;
     background-color: #FF2E63;
-    box-shadow: 0px 0.5rem 1.5rem rgba(255, 185, 203, 0.1);
+    /* box-shadow: 0rem 0.5rem 1.5rem rgba(250, 215, 223, 0.1); */
     border-radius: 10px;
     border: none;
     color: white;
@@ -148,7 +148,6 @@
     width: 180px;
     height: 40px;
     background-color: #08d9d6;
-    box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
     border-radius: 10px;
     border: none;
     font-size: 18px;
@@ -163,7 +162,7 @@
 
 .loginBtn:hover:not([disabled]) {
     transform: translateY(-4px);
-    box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
+    box-shadow: 0rem 0.5rem 1.5rem rgba(243, 171, 188, 0.212);
 }
 
 /* .loginBtn:hover .btnText{ 
@@ -176,7 +175,7 @@ box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
 
 .registBtn:hover {
     transform: translateY(-4px);
-    box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
+    box-shadow: 0rem 0.5rem 1.5rem rgba(114, 243, 241, 0.178);
 }
 
 .findIdBtn {
@@ -200,4 +199,11 @@ box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
 .loginBtn:disabled { 
     color: #969696a4; 
     background-color: #eee;
+}
+
+.updown {
+    border: 0.5px solid white;
+    width: 0.1px;
+    height: 15px;
+    margin: 5px 5px 0px 5px;
 }
