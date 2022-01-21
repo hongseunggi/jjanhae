@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.ModifyPasswordRequest;
 import com.ssafy.api.request.UserInfoPostReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +47,20 @@ public class UserServiceImpl implements UserService {
         user.setProvider(userRegisterInfo.getProvider());
         return userRepository.save(user);
     }
+
+	// 비번 수정
+	@Override
+	public int updatePassword(String userId, ModifyPasswordRequest modifyPasswordRequest) {
+		Optional<User> res = userRepositorySupport.findUserByUserId(userId);
+		User user = null;
+		if(res.isPresent()) {
+			user = res.get();
+			user.setPassword(passwordEncoder.encode(modifyPasswordRequest.getPassword()));
+			userRepository.save(user);
+			return 1;
+		}
+		return 0;
+	}
 
     // 아이디 중복 확인
     @Override
