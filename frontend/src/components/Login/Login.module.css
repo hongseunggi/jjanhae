@@ -16,19 +16,12 @@
 }
 
 .logo {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  width: 210px;
-  height: 210px;
+  /* width: 100px;
+    height: 100px; */
+  width: 150px;
+  height: 150px;
   background-color: transparent;
 }
-=======
-    /* width: 100px;
-    height: 100px; */
-    width: 150px;
-    height: 150px;
-    background-color: transparent;
-}  
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
 
 .icon {
   fill: #eee;
@@ -43,33 +36,18 @@
 }
 
 .form {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  width: 500px;
-  height: 600px;
+  width: 600px;
+  height: 620px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   border: 3px solid;
   border-color: #eeee;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   padding: 0 50px 50px 50px;
 
   border-image: linear-gradient(
-=======
-    width: 600px;
-    height: 620px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    border: 3px solid;
-    border-color: #EEEE;
-    /* margin-top: 50px; */
-    padding: 0 50px 50px 50PX;
-
-    border-image: linear-gradient(
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
     #ff2e63 0%,
     #ff5722 22.92%,
     #e6e954 44.79%,
@@ -107,19 +85,11 @@
   color: #eee;
 }
 .errorMsg {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
   position: relative;
   color: #ff5722;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 0px;
   margin-top: 10px;
-=======
-    position: relative;
-    color : #FF5722;
-    font-size: 15px;
-    margin-bottom: 0px;
-    margin-top: 10px;
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
 }
 
 .confirmButtons {
@@ -133,65 +103,49 @@
 }
 
 .loginBtn {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
   width: 180px;
   height: 40px;
   background-color: #ff2e63;
-  box-shadow: 0px 0.5rem 1.5rem rgba(255, 185, 203, 0.1);
+  /* box-shadow: 0rem 0.5rem 1.5rem rgba(250, 215, 223, 0.1); */
   border-radius: 10px;
   border: none;
+  color: white;
   font-size: 18px;
   font-family: "Poppins", sans-serif;
   font-weight: bold;
   cursor: pointer;
   outline: none;
-=======
-    width: 180px;
-    height: 40px;
-    background-color: #FF2E63;
-    /* box-shadow: 0rem 0.5rem 1.5rem rgba(250, 215, 223, 0.1); */
-    border-radius: 10px;
-    border: none;
-    color: white;
-    font-size: 18px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
-    transition : .2s;
-    /* overflow: hidden; */
-    text-align : center;
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
+  transition: 0.2s;
+  /* overflow: hidden; */
+  text-align: center;
 }
 
 .btnText {
-    transition : .3s;
-    color: white;
-    padding-top: 4px;
+  transition: 0.3s;
+  color: white;
+  padding-top: 4px;
 }
 
 .btnText2 {
-    color : #FFF;
-  }
+  color: #fff;
+}
 
 .btnTwo {
-    position : relative;
-    width : 40px;
-    height : 40px;
-    margin-top: -44px;
-    padding-top: 0px;
-    background : #26A69A;
-    left : -90px;
-    transition : .3s;
-    border-radius: 10px;
-  }
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin-top: -44px;
+  padding-top: 0px;
+  background: #26a69a;
+  left: -90px;
+  transition: 0.3s;
+  border-radius: 10px;
+}
 
 .registBtn {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
   width: 180px;
   height: 40px;
   background-color: #08d9d6;
-  box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
   border-radius: 10px;
   border: none;
   font-size: 18px;
@@ -200,26 +154,11 @@
   font-weight: bold;
   cursor: pointer;
   outline: none;
-=======
-    width: 180px;
-    height: 40px;
-    background-color: #08d9d6;
-    border-radius: 10px;
-    border: none;
-    font-size: 18px;
-    color: #252A34;
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
 }
 
-
-
 .loginBtn:hover:not([disabled]) {
-    transform: translateY(-4px);
-    box-shadow: 0rem 0.5rem 1.5rem rgba(243, 171, 188, 0.212);
+  transform: translateY(-4px);
+  box-shadow: 0rem 0.5rem 1.5rem rgba(243, 171, 188, 0.212);
 }
 
 /* .loginBtn:hover .btnText{ 
@@ -227,20 +166,21 @@
   } */
 
 .loginBtn:active {
-box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
+  box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.3);
 }
 
 .registBtn:hover {
-    transform: translateY(-4px);
-    box-shadow: 0rem 0.5rem 1.5rem rgba(114, 243, 241, 0.178);
+  transform: translateY(-4px);
+  box-shadow: 0rem 0.5rem 1.5rem rgba(114, 243, 241, 0.178);
 }
 
 .findIdBtn {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
   border: none;
   font-family: "Poppins", sans-serif;
   font-size: 16px;
   cursor: pointer;
+  background-color: transparent;
+  color: white;
 }
 
 .findPwdBtn {
@@ -248,33 +188,18 @@ box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
   font-family: "Poppins", sans-serif;
   font-size: 16px;
   cursor: pointer;
-=======
-    border: none;
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: transparent;
-    color: white;
+  background-color: transparent;
+  color: white;
 }
 
-.findPwdBtn {
-    border: none;
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: transparent;
-    color: white;
-}
-
-.loginBtn:disabled { 
-    color: #969696a4; 
-    background-color: #eee;
+.loginBtn:disabled {
+  color: #969696a4;
+  background-color: #eee;
 }
 
 .updown {
-    border: 0.5px solid white;
-    width: 0.1px;
-    height: 15px;
-    margin: 5px 5px 0px 5px;
->>>>>>> 1b4e35781dd7da17a5655670defae370aa308c7d:frontend/src/components/Login/Login.module.css
+  border: 0.5px solid white;
+  width: 0.1px;
+  height: 15px;
+  margin: 5px 5px 0px 5px;
 }
