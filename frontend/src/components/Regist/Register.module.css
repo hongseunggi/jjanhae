@@ -1,23 +1,15 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'); */
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
-
-/* * {
-    background-color: #252A34;
-    color: #eee;
-    font-family: 'Poppins', sans-serif;
-  } */
 
 .inputRow {
   width: 400px;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .logo {
-  width: 210px;
-  height: 210px;
+  width: 100px;
+  height: 100px;
   background-color: transparent;
 }
 
@@ -35,15 +27,15 @@
 
 .form {
   width: 500px;
-  height: 600px;
+  height: 620px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   border: 3px solid;
-  border-color: #eeee;
-  margin-top: 50px;
-  padding: 0 50px 50px 50px;
+  margin: 0 50px;
+  padding-bottom: 30px;
+  /* padding: 0 50px 50px 50px; */
 
   border-image: linear-gradient(
     #ff2e63 0%,
@@ -57,65 +49,93 @@
 }
 
 .inputArea {
-  height: 150px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .input {
-  width: 320px;
+  width: 260px;
   height: 50px;
   border: none;
+  margin-left: 10px;
 }
 
+.inputWithBtn {
+  display: flex;
+  flex-direction: row;
+}
+
+.checkBtn {
+  width: 50px;
+  /* color: white; */
+  background-color: #ff2e63;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.confirmBtn {
+  width: 50px;
+  /* color: black; */
+  background-color: #08d9d6;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.input.drinkInfo {
+  height: 30px;
+}
 .inputData {
-  width: 320px;
+  width: 260px;
   height: 30px;
   font-size: 16px;
   font-family: "Poppins", sans-serif;
   border: none;
-  border-bottom: 2px solid;
+  border-bottom: 1px solid;
 }
 
+.inputData.drinkLimit {
+  width: 100px;
+}
 .inputData::placeholder {
   font-size: 16px;
   color: #eee;
 }
-.errorMsg {
+.validMsg {
+  position: relative;
+  color: #2db400;
+  font-size: 13px;
+}
+.invalidMsg {
   position: relative;
   color: #ff5722;
-  font-size: 16px;
-  margin-bottom: 0px;
-  margin-top: 10px;
+  font-size: 13px;
 }
 
-.confirmButtons {
-  width: 410px;
-  display: flex;
-  justify-content: space-around;
+.invalidMsg.drinkLimitMsg {
+  margin-left: 130px;
+  /* padding-left: 50px; */
 }
 
-.findButtons {
-  display: flex;
-}
-
-.loginBtn {
-  width: 180px;
-  height: 40px;
-  background-color: #ff2e63;
-  box-shadow: 0px 0.5rem 1.5rem rgba(255, 185, 203, 0.1);
-  border-radius: 10px;
+.drinkSelect {
+  width: 100px;
   border: none;
-  font-size: 18px;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
+  font-size: 16px;
+  color: #eee;
+  margin-right: 60px;
+  border-bottom: 1px solid #eee;
+  background-color: #252a34;
+  padding-bottom: 5px;
 }
 
 .registBtn {
-  width: 180px;
+  width: 240px;
   height: 40px;
   background-color: #08d9d6;
   box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
@@ -127,18 +147,4 @@
   font-weight: bold;
   cursor: pointer;
   outline: none;
-}
-
-.findIdBtn {
-  border: none;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.findPwdBtn {
-  border: none;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  cursor: pointer;
 }
