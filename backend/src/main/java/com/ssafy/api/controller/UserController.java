@@ -1,19 +1,18 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.ModifyPasswordRequest;
-import com.ssafy.api.request.UserInfoPostReq;
+
+import com.ssafy.api.request.*;
+import com.ssafy.api.response.*;
+import com.ssafy.api.service.EmailService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.api.request.UserLoginPostReq;
-import com.ssafy.api.request.UserRegisterPostReq;
-import com.ssafy.api.response.UserLoginPostRes;
-import com.ssafy.api.response.UserRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -31,21 +30,26 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("users")
+@RequestMapping("/user")
 public class UserController {
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Autowired
 	UserService userService;
-	
-	@PostMapping()
-	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
+
+	@Autowired
+	EmailService emailService;
+
+	@PostMapping("/register")
+	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
@@ -54,17 +58,76 @@ public class UserController {
     })
 	public ResponseEntity<? extends BaseResponseBody> register(
 			@RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
-		
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-		User user = userService.createUser(registerInfo);
-		System.out.println("register : "+user.getUserId());
 
+		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
+
+		System.out.println("=========== 회원가입 ===========\n");
+		System.out.println("인증 여부 : " + registerInfo.getAuthYn());
+		System.out.println("아이디 : " + registerInfo.getUserId());
+		User user = userService.getUserByUserId(registerInfo.getUserId());
+		System.out.println("user : " + user);
+		if(user != null){
+			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 사용자 ID"));
+		}
+		User res = userService.createUser(registerInfo);
+		System.out.println("userId : " + res.getUserId());
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
+	@GetMapping("/findid")
+	@ApiOperation(value = "이메일 인증(코드)", notes = "이메일로 인증코드를 보낸다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "존재하지 않는 사용자"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<FindIdResponse> findId(
+			@RequestBody @ApiParam(value="아이디찾기 이메일인증 정보", required = true) FindIdRequest findIdRequest)  throws Exception {
+
+		System.out.println("=========== 이메일 인증(코드)으로 아이디 찾기 ===========");
+		// 이름, 이메일이 일치한 회원이 있는지 확인
+		User user = userService.getUserByNameAndEmail(findIdRequest.getName(), findIdRequest.getEmail());
+		if(user != null) {
+			System.out.println("유효한 사용자");
+			// 이메일 전송
+			String authCode = emailService.sendSimpleMessage(findIdRequest);
+			return ResponseEntity.ok(FindIdResponse.of(200, "Success", authCode, user.getUserId()));
+		} else {
+			System.out.println("유효하지 사용자");
+			// 유효하지 않은 사용자입니다.
+			return ResponseEntity.status(404).body(FindIdResponse.of(401, "유효하지 않은 사용자", null, null));
+		}
+
+	}
+
+	@GetMapping("/findpwd")
+	@ApiOperation(value = "이메일 인증(버튼)", notes = "이메일로 인증 url를 보낸다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "존재하지 않는 사용자"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> findPwd(
+			@RequestBody FindPwdRequest findPwdRequest)  throws Exception {
+
+		System.out.println("=========== 이메일 인증(버튼)으로 비밀번호 찾기 ===========");
+		// 아이디, 이름, 이메일이 일치한 회원이 있는지 확인
+		User user = userService.getUserByUserIdAndNameAndEmail(findPwdRequest.getUserId(), findPwdRequest.getName(), findPwdRequest.getEmail());
+		if(user != null) {
+			System.out.println("유효한 사용자");
+			// 이메일 전송 (버튼 url)
+			emailService.sendSimpleMessageButton(findPwdRequest);
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		} else {
+			System.out.println("유효하지 사용자");
+			// 유효하지 않은 사용자입니다.
+			return ResponseEntity.status(404).body(BaseResponseBody.of(401, "유효하지 않은 사용자"));
+		}
+
+	}
 
 	@GetMapping("/me")
-	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.") 
+	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
@@ -80,12 +143,12 @@ public class UserController {
 		System.out.println("getUserInfo : "+userDetails.getUser());
 		String userId = userDetails.getUsername();
 		User user = userService.getUserByUserId(userId);
-		
+
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
 
 
-	@GetMapping("/{userId}")
+	@GetMapping("/checkid")
 	@ApiOperation(value = "유저 정보", notes = "존재하는 회원 확인용")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -93,19 +156,43 @@ public class UserController {
 			@ApiResponse(code = 409, message = "이미 존재하는 유저"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity checkUser(@PathVariable("userId") String userId) {
+	public ResponseEntity<?> checkId(@RequestBody CheckIdRequest checkIdRequest) {
 		/**
 		 * 아이디 중복확인
 		 * 권한 : 모두사용
-		 * 이미 로그인한 사용자가 아닌 경우에만 응답을 하고, 그 외에는 409에러를 발생시킨다.
 		 * */
-		System.out.println("checkUser : "+userId);
-		User user = userService.getUserByUserId(userId);
-		System.out.println("이미존재하는 유저입니까? "+user);
+		System.out.println("checkId : "+checkIdRequest.getUserId());
+		User user = userService.getUserByUserId(checkIdRequest.getUserId());
+		System.out.println("user " + user);
 		if(user != null) {
-			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 존재하는 유저"));
+			return ResponseEntity.status(409).body(CheckIdRes.of("false"));
 		} else {
-			return ResponseEntity.status(200).body(UserRes.of(user));
+			return ResponseEntity.status(200).body(CheckIdRes.of("true"));
+		}
+	}
+
+	@GetMapping("/checkemail")
+	@ApiOperation(value = "이메일 중복확인", notes = "존재하는 회원 확인용")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 409, message = "이미 존재하는 유저"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<?> checkEmail(@RequestBody CheckEmailRequest checkEmailRequest) throws Exception {
+		/**
+		 * 이메일 중복확인
+		 * 권한 : 모두사용
+		 * */
+		System.out.println("checkEmail : "+checkEmailRequest.getEmail());
+		User user = userService.getUserByEmail(checkEmailRequest.getEmail());
+		System.out.println("user " + user);
+		if(user != null) {
+			return ResponseEntity.status(409).body(CheckEmailResponse.of(""));
+		} else {
+			// 인증코드 만들기
+			String authCode = emailService.sendAuthCode(checkEmailRequest.getEmail());
+			return ResponseEntity.status(200).body(CheckEmailResponse.of(authCode));
 		}
 	}
 

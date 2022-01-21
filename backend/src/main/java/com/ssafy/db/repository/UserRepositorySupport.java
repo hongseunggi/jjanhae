@@ -6,6 +6,7 @@ import com.ssafy.db.entity.User;
 
 import java.util.Optional;
 
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,33 @@ public class UserRepositorySupport {
     public Optional<User> findUserByUserId(String userId) {
         User user = jpaQueryFactory.select(qUser).from(qUser)
                 .where(qUser.userId.eq(userId)).fetchOne();
+        if(user == null) return Optional.empty();
+        return Optional.ofNullable(user);
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        User user = jpaQueryFactory.select(qUser).from(qUser)
+                .where(qUser.email.eq(email)).fetchOne();
+        System.out.println("==== findUserByEamil ====");
+        System.out.println("user : " + user);
+        if(user == null) return Optional.empty();
+        return Optional.ofNullable(user);
+    }
+
+    public Optional<User> findUserByNameAndEmail(String name, String email) {
+        User user = jpaQueryFactory.select(qUser).from(qUser)
+                .where(qUser.name.eq(name).and(qUser.email.eq(email))).fetchOne();
+        System.out.println("======= findUserByNameAndEmail =======");
+        System.out.println("user : " + user);
+        if(user == null) return Optional.empty();
+        return Optional.ofNullable(user);
+    }
+
+    public Optional<User> findUserByUserIdAndNameAndEmail(String userId, String name, String email) {
+        User user = jpaQueryFactory.select(qUser).from(qUser)
+                .where(qUser.userId.eq(userId).and(qUser.name.eq(name).and(qUser.email.eq(email)))).fetchOne();
+        System.out.println("======= findUserByUserIdAndNameAndEmail =======");
+        System.out.println("user : " + user);
         if(user == null) return Optional.empty();
         return Optional.ofNullable(user);
     }
