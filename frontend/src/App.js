@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
 import Register from "./components/Regist/Register";
 import FindId from "./components/FindId/FindId";
+import FindPwd from "./components/FindPwd/FindPwd";
 function App() {
   const [code, setCode] = useState("1");
   const handleIsLogin = (data) => {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/findId" element={<FindId />} />
+          <Route path="/findPwd" element={<FindPwd />} />
         </Routes>
       </Router>
     </div>

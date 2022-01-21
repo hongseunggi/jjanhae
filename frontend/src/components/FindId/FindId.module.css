@@ -123,11 +123,81 @@
 
 .title {
   margin-top: 5%;
-  margin-left: 1.2rem;
   position: relative;
-  font-size: 4.45rem;
+  font-size: 3rem;
   font-weight: bolder;
   color: #08d9d6;
-  text-shadow: 0.5rem -0.03rem 0rem #ff2e63;
+  text-shadow: 0.3rem -0.03rem 0rem #ff2e63;
   text-align: left;
+}
+
+.content {
+  color: #eee;
+  font-size: 16px;
+}
+
+.info {
+  color: #eee;
+  font-size: 13px;
+}
+.findIdForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resultId {
+  display: flex;
+  color: #eee;
+  margin-top: 60px;
+  margin-bottom: 120px;
+  width: 300px;
+  height: 100px;
+  align-items: center;
+}
+
+.idInfo {
+  font-size: 20px;
+}
+
+.resultTitle {
+  margin-top: 30px;
+}
+
+.confirmButtons {
+  width: 360px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.loginBtn {
+  width: 150px;
+  height: 40px;
+  background-color: #ff2e63;
+  /* box-shadow: 0rem 0.5rem 1.5rem rgba(250, 215, 223, 0.1); */
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: 0.2s;
+  /* overflow: hidden; */
+  text-align: center;
+}
+
+.findPwdBtn {
+  width: 150px;
+  height: 40px;
+  background-color: #08d9d6;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  color: #252a34;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
 }

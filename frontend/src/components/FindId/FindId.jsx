@@ -3,6 +3,7 @@ import styles from "./FindId.module.css";
 import { ReactComponent as EmailIcon } from "../../assets/icons/email.svg";
 import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
+import ShowId from "./ShowId";
 
 const FindId = () => {
   const emailRef = createRef();
@@ -12,6 +13,7 @@ const FindId = () => {
   const [confirm, setConfirm] = useState(false);
 
   // 입력 폼 데이터
+  const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [emailConfirmCode, setEmailConfirmCode] = useState("");
   const [name, setName] = useState("");
@@ -79,6 +81,7 @@ const FindId = () => {
       setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
     }
   };
+
   // 다음 버튼 클릭 시 이벤트
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -92,10 +95,13 @@ const FindId = () => {
       setEmailConfirmCodeMsg("인증을 완료해주세요.");
       confirmEmailRef.current.focus();
     } else {
+      // 아이디찾기 api 호출
       const data = {
         email,
         name,
       };
+      const result = "ssafy";
+      setId(result); // 결과
       setConfirm(true);
       console.log(data);
     }
@@ -106,98 +112,101 @@ const FindId = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.title}>아이디 찾기</div>
         {confirm ? (
-          <h1>hi</h1>
+          <ShowId id={id} name={name} />
         ) : (
-          <div className={styles.inputArea}>
-            <div className={styles.inputRow}>
-              <div>
-                <NameIcon fill="#EEE" width="30" height="30" />
-              </div>
-              <div className={styles.input}>
-                <input
-                  autoComplete="off"
-                  id="name"
-                  className={styles.inputData}
-                  value={name}
-                  type="text"
-                  placeholder="이름"
-                  ref={nameRef}
-                  onChange={handleInput}
-                />
-                <p className={styles.invalidMsg}>{nameMsg}</p>
-              </div>
-            </div>
-
-            {/* 이메일 */}
-            <div className={styles.inputRow}>
-              <div>
-                <EmailIcon fill="#EEE" width="30" height="30" />
-              </div>
-              <div className={styles.input}>
-                <div className={styles.inputWithBtn}>
-                  <input
-                    autoComplete="off"
-                    id="email"
-                    className={styles.inputData}
-                    value={email}
-                    type="email"
-                    placeholder="이메일"
-                    disabled={emailConfirm ? true : false}
-                    ref={emailRef}
-                    onChange={handleInput}
-                  />
-                  <button
-                    type="button"
-                    className={styles.checkBtn}
-                    onClick={handleEmailCheck}
-                    disabled={emailCheck ? false : true}
-                  >
-                    전송
-                  </button>
-                </div>
-                <p className={styles.invalidMsg}>{emailMsg}</p>
-              </div>
-            </div>
-            {/* 이메일 인증번호 */}
-            {isSend && (
+          <div className={styles.findIdForm}>
+            <div className={styles.inputArea}>
               <div className={styles.inputRow}>
                 <div>
-                  <EmailConfirmIcon fill="#EEE" width="30" height="30" />
+                  <NameIcon fill="#EEE" width="30" height="30" />
+                </div>
+                <div className={styles.input}>
+                  <input
+                    autoComplete="off"
+                    id="name"
+                    className={styles.inputData}
+                    value={name}
+                    type="text"
+                    placeholder="이름"
+                    ref={nameRef}
+                    onChange={handleInput}
+                  />
+                  <p className={styles.invalidMsg}>{nameMsg}</p>
+                </div>
+              </div>
+
+              {/* 이메일 */}
+              <div className={styles.inputRow}>
+                <div>
+                  <EmailIcon fill="#EEE" width="30" height="30" />
                 </div>
                 <div className={styles.input}>
                   <div className={styles.inputWithBtn}>
                     <input
                       autoComplete="off"
-                      id="emailConfirmCode"
+                      id="email"
                       className={styles.inputData}
-                      value={emailConfirmCode}
-                      type="text"
-                      placeholder="인증번호 입력"
-                      ref={confirmEmailRef}
+                      value={email}
+                      type="email"
+                      placeholder="이메일"
+                      disabled={emailConfirm ? true : false}
+                      ref={emailRef}
                       onChange={handleInput}
                     />
                     <button
                       type="button"
-                      className={styles.confirmBtn}
-                      onClick={handleEmailCodeCheck}
+                      className={styles.checkBtn}
+                      onClick={handleEmailCheck}
                       disabled={emailCheck ? false : true}
                     >
-                      확인
+                      전송
                     </button>
                   </div>
-                  {emailConfirm ? (
-                    <p className={styles.validMsg}>{emailConfirmCodeMsg}</p>
-                  ) : (
-                    <p className={styles.invalidMsg}>{emailConfirmCodeMsg}</p>
-                  )}
+                  <p className={styles.invalidMsg}>{emailMsg}</p>
                 </div>
               </div>
-            )}
+              {/* 이메일 인증번호 */}
+              {isSend && (
+                <div className={styles.inputRow}>
+                  <div>
+                    <EmailConfirmIcon fill="#EEE" width="30" height="30" />
+                  </div>
+                  <div className={styles.input}>
+                    <div className={styles.inputWithBtn}>
+                      <input
+                        autoComplete="off"
+                        id="emailConfirmCode"
+                        className={styles.inputData}
+                        value={emailConfirmCode}
+                        type="text"
+                        placeholder="인증번호 입력"
+                        ref={confirmEmailRef}
+                        onChange={handleInput}
+                      />
+                      <button
+                        type="button"
+                        className={styles.confirmBtn}
+                        onClick={handleEmailCodeCheck}
+                        disabled={emailCheck ? false : true}
+                      >
+                        확인
+                      </button>
+                    </div>
+                    {emailConfirm ? (
+                      <p className={styles.validMsg}>{emailConfirmCodeMsg}</p>
+                    ) : (
+                      <p className={styles.invalidMsg}>{emailConfirmCodeMsg}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button className={styles.nextBtn} type="submit">
+              다음
+            </button>
           </div>
         )}
-        <button className={styles.nextBtn} type="submit">
-          다음
-        </button>
       </form>
     </div>
   );
