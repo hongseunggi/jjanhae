@@ -35,7 +35,6 @@
   border: 3px solid;
   margin: 0 50px;
   padding-bottom: 30px;
-  /* padding: 0 50px 50px 50px; */
 
   border-image: linear-gradient(
     #ff2e63 0%,
@@ -68,7 +67,6 @@
 
 .checkBtn {
   width: 50px;
-  /* color: white; */
   background-color: #ff2e63;
   border: none;
   border-radius: 5px;
@@ -79,7 +77,6 @@
 
 .confirmBtn {
   width: 50px;
-  /* color: black; */
   background-color: #08d9d6;
   border: none;
   border-radius: 5px;
@@ -97,9 +94,13 @@
   font-size: 16px;
   font-family: "Poppins", sans-serif;
   border: none;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #eee;
+  background-color: #252a34;
+  color: #eee;
 }
-
+.inputData:focus {
+  outline: none;
+}
 .inputData.drinkLimit {
   width: 100px;
 }

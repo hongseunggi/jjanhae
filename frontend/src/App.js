@@ -12,13 +12,11 @@ function App() {
   };
   return (
     <div className="App">
-      {/* <Register /> */}
       <Router>
         <Navigator status={code} isLogin={handleIsLogin} />
         <Routes>
           <Route path="/" element={<Main status={code} />} />
-          {/* <Route path="/login" element={<Login isLogin={handleIsLogin} />} /> */}
-          <Route path="/login" element={<Login/>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
         </Routes>
       </Router>
