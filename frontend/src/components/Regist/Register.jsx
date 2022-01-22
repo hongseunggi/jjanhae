@@ -12,7 +12,7 @@ import { ReactComponent as SojuIcon } from "../../assets/icons/soju.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
 import logo from "../../assets/icons/logo.png";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const idRef = createRef();

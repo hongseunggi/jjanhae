@@ -8,6 +8,7 @@ import Register from "./components/Regist/Register";
 import FindId from "./components/FindId/FindId";
 import FindPwd from "./components/FindPwd/FindPwd";
 import RegisterComplete from "./components/Regist/RegisterComplete";
+import ResetPwd from "./components/FindPwd/ResetPwd";
 function App() {
   const [code, setCode] = useState("1");
   const handleIsLogin = (data) => {
@@ -18,12 +19,13 @@ function App() {
       <Router>
         <Navigator status={code} isLogin={handleIsLogin} />
         <Routes>
-          <Route path="/" element={<Main status={code} />} />
+          <Route path="/" element={<ResetPwd />} />
+          {/* <Route path="/" element={<Main status={code} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/signup/complete" element={<RegisterComplete />} />
           <Route path="/findId" element={<FindId />} />
-          <Route path="/findPwd" element={<FindPwd />} />
+          <Route path="/findPwd" element={<FindPwd />} /> */}
         </Routes>
       </Router>
     </div>
