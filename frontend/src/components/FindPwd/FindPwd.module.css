@@ -1,38 +1,12 @@
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'); */
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
 
-/* * {
-    background-color: #252A34;
-    color: #eee;
-    font-family: 'Poppins', sans-serif;
-  } */
-
-.inputRow {
-  width: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
 .logo {
-  width: 210px;
-  height: 210px;
+  /* width: 100px;
+    height: 100px; */
+  width: 150px;
+  height: 150px;
   background-color: transparent;
 }
-=======
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
-
-
-.logo {
-    /* width: 100px;
-    height: 100px; */
-    width: 150px;
-    height: 150px;
-    background-color: transparent;
-}  
->>>>>>> 00f977fda5edb38fd1342d8ed67b4b4897e55064:frontend/src/components/FindPwd/FindPwd.module.css
 
 .icon {
   fill: #eee;
@@ -47,33 +21,18 @@
 }
 
 .form {
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-  width: 500px;
-  height: 600px;
+  width: 600px;
+  height: 620px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   border: 3px solid;
   border-color: #eeee;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   padding: 0 50px 50px 50px;
 
   border-image: linear-gradient(
-=======
-    width: 600px;
-    height: 620px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    border: 3px solid;
-    border-color: #EEEE;
-    /* margin-top: 50px; */
-    padding: 0 50px 50px 50PX;
-
-    border-image: linear-gradient(
->>>>>>> 00f977fda5edb38fd1342d8ed67b4b4897e55064:frontend/src/components/FindPwd/FindPwd.module.css
     #ff2e63 0%,
     #ff5722 22.92%,
     #e6e954 44.79%,
@@ -84,9 +43,27 @@
   border-image-slice: 1;
 }
 
-<<<<<<< HEAD:frontend/src/components/Login.module.css
+.title {
+  margin-top: 10%;
+  margin-left: 1rem;
+  position: relative;
+  font-size: 3rem;
+  font-weight: bolder;
+  color: #08d9d6;
+  text-shadow: 0.2rem +0.05rem 0rem #ff2e63;
+  text-align: left;
+}
+
+.inputRow {
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 .inputArea {
-  height: 150px;
+  position: relative;
+  height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -96,6 +73,7 @@
   width: 320px;
   height: 50px;
   border: none;
+  margin-top: 1rem;
 }
 
 .inputData {
@@ -105,152 +83,45 @@
   font-family: "Poppins", sans-serif;
   border: none;
   border-bottom: 2px solid;
-=======
-  }
-
-  .title {
-    margin-top: 10%;
-    margin-left: 1rem;
-    position: relative;
-    font-size: 3rem;
-    font-weight: bolder;
-    color: #08d9d6;
-    text-shadow: 0.2rem +0.05rem 0rem #ff2e63;
-    text-align: left;
-  }
-
-.inputRow {
-    width :400px;
-    display : flex;
-    align-items: center;
-    justify-content: space-evenly;
-}
-  
-.inputArea {
-    position: relative;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-.input {
-    width : 320px;
-    height: 50px;
-    border: none;
-    margin-top: 1rem;
-}
-
-.inputData {
-    width: 320px;
-    height: 30px;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    border: none;
-    border-bottom: 2px solid;
-    color: white;
->>>>>>> 00f977fda5edb38fd1342d8ed67b4b4897e55064:frontend/src/components/FindPwd/FindPwd.module.css
+  color: white;
 }
 
 .inputData::placeholder {
   font-size: 16px;
   color: #eee;
 }
-<<<<<<< HEAD:frontend/src/components/Login.module.css
-.errorMsg {
+
+.errMsg {
   position: relative;
   color: #ff5722;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 0px;
   margin-top: 10px;
 }
 
-.confirmButtons {
-  width: 410px;
-  display: flex;
-  justify-content: space-around;
-}
-
-.findButtons {
-  display: flex;
-}
-
-.loginBtn {
-  width: 180px;
-  height: 40px;
-  background-color: #ff2e63;
-  box-shadow: 0px 0.5rem 1.5rem rgba(255, 185, 203, 0.1);
-  border-radius: 10px;
-  border: none;
-  font-size: 18px;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-}
-
-.registBtn {
-  width: 180px;
-  height: 40px;
-  background-color: #08d9d6;
-  box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
-  border-radius: 10px;
-  border: none;
-  font-size: 18px;
-  color: #252a34;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-}
-
-.findIdBtn {
-  border: none;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-}
-
 .findPwdBtn {
+  width: 25rem;
+  height: 50px;
+  background-color: #ff2e63;
+  border-radius: 10px;
   border: none;
+  font-size: 18px;
   font-family: "Poppins", sans-serif;
-  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-}
-=======
-
-.errMsg {
-    position: relative;
-    color : #FF5722;
-    font-size: 15px;
-    margin-bottom: 0px;
-    margin-top: 10px;
-}
-
-.findPwdBtn{
-    width: 25rem;
-    height: 50px;
-    background-color: #FF2E63;
-    border-radius: 10px;
-    border: none;
-    font-size: 18px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
-    transition : .2s;
-    text-align : center;
+  outline: none;
+  transition: 0.2s;
+  text-align: center;
 }
 
 .btnText {
-    color : white;
-    text-align: center;
-    padding-top: 0.6rem;
-    font-size: 1.2rem;
-    font-weight: bolder;
+  color: white;
+  text-align: center;
+  padding-top: 0.6rem;
+  font-size: 1.2rem;
+  font-weight: bolder;
 }
 .findPwdBtn:hover {
-    transform: translateY(-4px);
-    box-shadow: 0rem 0.5rem 1.5rem rgba(243, 171, 188, 0.212);
+  transform: translateY(-4px);
+  box-shadow: 0rem 0.5rem 1.5rem rgba(243, 171, 188, 0.212);
 }
->>>>>>> 00f977fda5edb38fd1342d8ed67b4b4897e55064:frontend/src/components/FindPwd/FindPwd.module.css
