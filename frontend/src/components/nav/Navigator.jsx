@@ -22,9 +22,6 @@ function Navigator(props) {
               </Link>
             </Col>
             <Col>
-              {/* <Link to="/signup" className={styles.link}>
-                Signup
-              </Link> */}
               <Link to="/login" className={styles.link}>
                 LOGIN
               </Link>

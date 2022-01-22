@@ -5,24 +5,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.logo {
-  width: 100px;
-  height: 100px;
-  background-color: transparent;
-}
-
-.icon {
-  fill: #eee;
-  width: 30px;
-  height: 30px;
+  margin-bottom: 30px;
 }
 
 .formBorder {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 4rem;
 }
 
 .form {
@@ -30,7 +19,7 @@
   height: 620px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   border: 3px solid;
   margin: 0 50px;
@@ -50,7 +39,10 @@
 .inputArea {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  height: 200px;
+  margin-top: 100px;
+  margin-bottom: 50px;
 }
 
 .input {
@@ -85,9 +77,6 @@
   margin-top: 5px;
 }
 
-.input.drinkInfo {
-  height: 30px;
-}
 .inputData {
   width: 260px;
   height: 30px;
@@ -101,9 +90,7 @@
 .inputData:focus {
   outline: none;
 }
-.inputData.drinkLimit {
-  width: 100px;
-}
+
 .inputData::placeholder {
   font-size: 16px;
   color: #eee;
@@ -119,27 +106,93 @@
   font-size: 13px;
 }
 
-.invalidMsg.drinkLimitMsg {
-  margin-left: 130px;
-  /* padding-left: 50px; */
-}
-
-.drinkSelect {
-  width: 100px;
-  border: none;
-  font-size: 16px;
-  color: #eee;
-  margin-right: 60px;
-  border-bottom: 1px solid #eee;
-  background-color: #252a34;
-  padding-bottom: 5px;
-}
-
-.registBtn {
+.nextBtn {
   width: 240px;
   height: 40px;
   background-color: #08d9d6;
   box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  color: #252a34;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+.title {
+  margin-top: 5%;
+  position: relative;
+  font-size: 3rem;
+  font-weight: bolder;
+  color: #08d9d6;
+  text-shadow: 0.3rem -0.03rem 0rem #ff2e63;
+  text-align: left;
+}
+
+.content {
+  color: #eee;
+  font-size: 16px;
+}
+
+.info {
+  color: #eee;
+  font-size: 13px;
+}
+.findIdForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resultId {
+  display: flex;
+  color: #eee;
+  margin-top: 60px;
+  margin-bottom: 120px;
+  width: 300px;
+  height: 100px;
+  align-items: center;
+}
+
+.idInfo {
+  font-size: 20px;
+  margin-left: 5px;
+}
+
+.resultTitle {
+  margin-top: 30px;
+}
+
+.confirmButtons {
+  width: 360px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.loginBtn {
+  width: 150px;
+  height: 40px;
+  background-color: #ff2e63;
+  /* box-shadow: 0rem 0.5rem 1.5rem rgba(250, 215, 223, 0.1); */
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: 0.2s;
+  /* overflow: hidden; */
+  text-align: center;
+}
+
+.findPwdBtn {
+  width: 150px;
+  height: 40px;
+  background-color: #08d9d6;
   border-radius: 10px;
   border: none;
   font-size: 18px;
