@@ -1,5 +1,5 @@
 import React, { createRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import styles from "./ResetPwd.module.css";
 
@@ -14,8 +14,12 @@ const ResetPwd = ({ getauthcode }) => {
   const [pwdCheck, setPwdCheck] = useState(false);
   const [confirmPwdCheck, setConfirmPwdCheck] = useState(false);
 
-  const params = useParams();
-  const { userid, authcode } = params;
+  const [searchParams] = useSearchParams();
+  console.log(searchParams.get("userid"));
+  console.log(searchParams.get("authcode"));
+
+  // const { userid, authcode } = params;
+  // console.log(userid, authcode);
 
   // 입력 데이터 관리
   const handleInput = (event) => {

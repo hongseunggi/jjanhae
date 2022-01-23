@@ -83,12 +83,23 @@ function Main(props) {
     switch (status) {
       case "1":
         return (
-          <Link to="/login">
+          <Col>
+            <Link to="user/login">
             <button className="create_room">방 만들기</button>
-          </Link>
+            </Link>
+            <Link to="user/login">
+            <button className="into_room">방 입장하기</button>
+            </Link>
+          </Col>
         );
       default:
-        return <button className="create_room">방 만들기</button>;
+        return (
+          <Col>
+          <button className="create_room">방 만들기</button>
+          <button className="into_room">방 입장하기</button>
+          </Col>
+        
+        );
     }
   };
   return (
@@ -101,10 +112,7 @@ function Main(props) {
           <div className="welcome_text">우리가 짠해?</div>
           <div className="swelcome_text">아니 우린 짠해!</div>
           <Row className="buttonbox">
-            <Col>{buttonRender()}</Col>
-            <Col>
-              <button className="into_room">방 입장하기</button>
-            </Col>
+            {buttonRender()}
           </Row>
         </Col>
         <Col>

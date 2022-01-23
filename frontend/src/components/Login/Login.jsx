@@ -156,17 +156,17 @@ const Login = () => {
             {/* 토큰 확인 */}
             {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>}
 
-            <Link to="/signup">
+            <Link to="/user/signup">
               <button className={styles.registBtn}>회원가입</button>
             </Link>
           </div>
 
           <div className={styles.findButtons}>
-            <Link to="/findId">
+            <Link to="/user/findId">
               <button className={styles.findIdBtn}>아이디 찾기</button>
             </Link>
             <div className={styles.updown}></div>
-            <Link to="/findPwd">
+            <Link to="/user/findPwd">
               <button className={styles.findPwdBtn}>비밀번호 찾기</button>
             </Link>
           </div>
