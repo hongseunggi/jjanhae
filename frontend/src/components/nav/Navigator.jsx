@@ -22,7 +22,7 @@ function Navigator(props) {
               </Link>
             </Col>
             <Col>
-              <Link to="/login" className={styles.link}>
+              <Link to="user/login" className={styles.link}>
                 LOGIN
               </Link>
             </Col>

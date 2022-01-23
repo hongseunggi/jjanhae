@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import styles from "./FindPwd.module.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as EmailIcon } from "../../assets/icons/email.svg";
-
-import logo from "../../assets/icons/logo.png";
 
 const FindPwd = () => {
   const [input, setInput] = useState({
@@ -70,6 +67,7 @@ const FindPwd = () => {
       // findPwdApi();
     }
     console.log(input);
+    // navigate("/user/resetPwd");
   };
 
   //axios
