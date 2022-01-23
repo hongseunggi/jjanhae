@@ -83,7 +83,7 @@ function Main(props) {
     switch (status) {
       case "1":
         return (
-          <Link to="/login">
+          <Link to="user/login">
             <button className="create_room">방 만들기</button>
           </Link>
         );

@@ -12,7 +12,7 @@ import { ReactComponent as SojuIcon } from "../../assets/icons/soju.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
 import logo from "../../assets/icons/logo.png";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const idRef = createRef();
@@ -31,7 +31,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [birthday, setBirthday] = useState("");
   const [drink, setDrink] = useState("소주");
-  const [drinkLimit, setDrinkLimit] = useState();
+  const [drinkLimit, setDrinkLimit] = useState("");
 
   // 유효성 검사 메시지
   const [idMsg, setIdMsg] = useState("");
@@ -199,7 +199,8 @@ const Register = () => {
       //회원가입 api 호출
       registUser(data);
       console.log(data);
-      navigate("/signup/complete");
+      navigate("complete");
+
       //정상적으로 동작할 시 로그인 화면으로 이동
     }
   };
@@ -427,6 +428,9 @@ const Register = () => {
         </button>
       </form>
     </div>
+    // <Routes>
+    //   <Route path="complete" element={<RegisterComplete />} />
+    // </Routes>
   );
 };
 
