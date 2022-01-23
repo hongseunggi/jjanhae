@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "./Login.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -150,41 +150,34 @@ const Login = () => {
               disabled={disabled}
               type="submit"
             >
-              {/* <button className={styles.loginBtn} type="submit"> */}
-              {/* <p className={styles.btnText}> */}
               로그인
-              {/* </p> */}
-              {/* <div className={styles.btnTwo}> */}
-              {/* <p className={styles.btnText2}>Go!</p> */}
-              {/* </div> */}
             </button>
 
             {/* 토큰 확인 */}
             {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>}
 
-            <Link to="/signup">
+            <Link to="/user/signup">
               <button className={styles.registBtn}>회원가입</button>
             </Link>
           </div>
 
           <div className={styles.findButtons}>
-            <Link Link to="/findId">
+            <Link to="/user/findId">
               <button className={styles.findIdBtn}>아이디 찾기</button>
             </Link>
             <div className={styles.updown}></div>
-            <Link to="/findPwd">
+            <Link to="/user/findPwd">
               <button className={styles.findPwdBtn}>비밀번호 찾기</button>
             </Link>
           </div>
 
           {/* <KakaoBtn/>
             <GoogleBtn/> */}
-            </form>
-            </div>
-        </>
-    )
-}
-
+        </form>
+      </div>
+    </>
+  );
+};
 
 // function KakaoBtn() {
 //     return(

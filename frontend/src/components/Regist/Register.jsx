@@ -11,7 +11,8 @@ import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import { ReactComponent as SojuIcon } from "../../assets/icons/soju.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
 import logo from "../../assets/icons/logo.png";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const idRef = createRef();
@@ -30,7 +31,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [birthday, setBirthday] = useState("");
   const [drink, setDrink] = useState("소주");
-  const [drinkLimit, setDrinkLimit] = useState();
+  const [drinkLimit, setDrinkLimit] = useState("");
 
   // 유효성 검사 메시지
   const [idMsg, setIdMsg] = useState("");
@@ -56,6 +57,8 @@ const Register = () => {
   // 아이디, 이메일 검사 결과
   const [idConfirm, setIdConfirm] = useState(false);
   const [emailConfirm, setEmailConfirm] = useState(false);
+
+  const navigate = useNavigate();
 
   // 입력 데이터 관리
   const handleInput = (event) => {
@@ -145,6 +148,7 @@ const Register = () => {
   // 이메일 인증번호 검사
   const handleEmailCheck = () => {
     setIsSend(true);
+    setEmailMsg("");
     // 이메일 인증번호 검사 api 호출
   };
   const handleEmailCodeCheck = () => {
@@ -168,6 +172,8 @@ const Register = () => {
     } else if (!confirmPwdCheck) {
       setConfirmPwdMsg("비밀번호를 한번 더 입력해주세요");
       confirmPwdRef.current.focus();
+    } else if (!isSend) {
+      setEmailMsg("이메일 인증이 필요합니다.");
     } else if (!emailCheck) {
       setEmailMsg("이메일을 확인해주세요.");
       emailRef.current.focus();
@@ -190,11 +196,20 @@ const Register = () => {
         drink,
         drinkLimit,
       };
-
-      console.log(data);
       //회원가입 api 호출
+      registUser(data);
+      console.log(data);
+      navigate("complete");
+
       //정상적으로 동작할 시 로그인 화면으로 이동
     }
+  };
+
+  //회원가입 api
+  const registUser = async (data) => {
+    try {
+      // const response = await axios.post(URL, data);
+    } catch {}
   };
 
   const iconChange = (e) => {
@@ -342,6 +357,7 @@ const Register = () => {
               </div>
             </div>
           )}
+          {/* 이름 */}
           <div className={styles.inputRow}>
             <div>
               <NameIcon fill="#EEE" width="20" height="20" />
@@ -412,6 +428,9 @@ const Register = () => {
         </button>
       </form>
     </div>
+    // <Routes>
+    //   <Route path="complete" element={<RegisterComplete />} />
+    // </Routes>
   );
 };
 
