@@ -19,13 +19,13 @@ function App() {
       <Router>
         <Navigator status={code} isLogin={handleIsLogin} />
         <Routes>
-          <Route path="/" element={<ResetPwd />} />
-          {/* <Route path="/" element={<Main status={code} />} />
+          {/* <Route path="/" element={<ResetPwd />} /> */}
+          <Route path="/" element={<Main status={code} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/signup/complete" element={<RegisterComplete />} />
           <Route path="/findId" element={<FindId />} />
-          <Route path="/findPwd" element={<FindPwd />} /> */}
+          <Route path="/findPwd" element={<FindPwd />} /> 
         </Routes>
       </Router>
     </div>
