@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.api.request.UserSignupPostReq;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
@@ -30,21 +30,21 @@ public class UserServiceImpl implements UserService {
 
     // 회원가입
     @Override
-    public User createUser(UserRegisterPostReq userRegisterInfo) {
+    public User createUser(UserSignupPostReq userSignupInfo) {
         User user = new User();
-        user.setUserId(userRegisterInfo.getUserId());
+        user.setUserId(userSignupInfo.getUserId());
         // 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-        user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
-        user.setAuthCode(userRegisterInfo.getAuthCode());
-        user.setBirthday(userRegisterInfo.getBirthday());
-        user.setAuthYn(userRegisterInfo.getAuthYn());
-        user.setDrink(userRegisterInfo.getDrink());
-        user.setDelYn(userRegisterInfo.getDelYn());
-        user.setDrinkLimit(userRegisterInfo.getDrinkLimit());
-        user.setEmail(userRegisterInfo.getEmail());
-        user.setImageUrl(userRegisterInfo.getImageUrl());
-        user.setName(userRegisterInfo.getName());
-        user.setProvider(userRegisterInfo.getProvider());
+        user.setPassword(passwordEncoder.encode(userSignupInfo.getPassword()));
+        user.setName(userSignupInfo.getName());
+        user.setEmail(userSignupInfo.getEmail());
+        user.setBirthday(userSignupInfo.getBirthday());
+        user.setDrink(userSignupInfo.getDrink());
+        user.setDrinkLimit(userSignupInfo.getDrinkLimit());
+        user.setImageUrl("default");
+        user.setAuthYn("Y");
+        user.setAuthCode(userSignupInfo.getAuthCode());
+        user.setDelYn("N");
+        user.setProvider("local");
         return userRepository.save(user);
     }
 
