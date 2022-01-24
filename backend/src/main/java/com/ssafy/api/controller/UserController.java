@@ -46,8 +46,7 @@ public class UserController {
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
-        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 409, message = "이미 사용한 정보"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<? extends BaseResponseBody> signup(
@@ -129,7 +128,7 @@ public class UserController {
 	@ApiOperation(value = "이메일 인증", notes = "이메일과 인증코드 일치 여부 확인")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
-			@ApiResponse(code = 401, message = "사용자 없음 또는 인증코드 일치 안함"),
+			@ApiResponse(code = 404, message = "사용자 없음 또는 인증코드 일치 안함"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<BaseResponseBody> checkEmailIsAuth(@RequestParam String email, String authCode) throws Exception {
@@ -140,11 +139,11 @@ public class UserController {
 		AuthEmail authEmail = emailService.getAuthEmailByEmail(email);
 		if(authEmail == null) {
 			// 해당하는 이메일이 없을 때
-			return ResponseEntity.status(409).body(BaseResponseBody.of(401, "유효하지 않은 정보입니다."));
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 정보입니다."));
 		}
 		if(!Objects.equals(authEmail.getAuthCode(), authCode)) {
 			// 인증 코드가 틀렸을 때
-			return ResponseEntity.status(409).body(BaseResponseBody.of(401, "유효하지 않은 정보입니다."));
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 정보입니다."));
 		}
 		// 인증 완료, 완료된 이메일은 DB에서 삭제
 		emailService.deleteAuthEmail(authEmail);
@@ -217,7 +216,7 @@ public class UserController {
 	@ApiOperation(value = "이메일 인증(버튼)", notes = "비밀번호 찾기 위해 이메일로 버튼을 보낸다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
-			@ApiResponse(code = 401, message = "존재하지 않는 사용자"),
+			@ApiResponse(code = 404, message = "존재하지 않는 사용자"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<?> findPwd(
@@ -274,77 +273,117 @@ public class UserController {
 	}
 
 
-	@GetMapping("/me")
-	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
+	@GetMapping("/profile/{userId}")
+	@ApiOperation(value = "회원 본인 정보 조회", notes = "파라미터에 입력된 userId 회원의 정보를 응답한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 403, message = "인증 실패"),
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<UserRes> getUserInfo(@ApiIgnore Authentication authentication) {
+	public ResponseEntity<? extends BaseResponseBody> getUserInfo(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId) {
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
+		 * 유저 프로필 정보를 조회한다.
+		 * 권한 : 로그인한 유저
 		 */
+		if(authentication == null){
+			System.out.println("얘 토큰 없다");
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+		}
+		// 토큰이 있는 유저라면
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-		System.out.println("getUserInfo : "+userDetails.getUser());
-		String userId = userDetails.getUsername();
+		System.out.println("로그인한 유저 : "+ userDetails.getUser());
 		User user = userService.getUserByUserId(userId);
+		if(user == null){
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "해당 사용자가 존재하지 않습니다."));
+		}
+		System.out.println("조회하려는 유저: " + user);
 
-		return ResponseEntity.status(200).body(UserRes.of(user));
+		return ResponseEntity.ok(UserProfileRes.of(200, "조회에 성공하였습니다.", user));
 	}
 
 
 
+	@PatchMapping(value = "/profile/{userId}")
+	@ApiOperation(value = "유저 정보 수정", notes = "이름, 이메일, 생일, 주종, 주량을 수정한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 403, message = "권한 없음"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<BaseResponseBody> updateUserProfile(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId,  @RequestBody UserProfilePatchReq userProfilePatchReq) {
+		/**
+		 * 유저 프로필 정보 수정(이름, 이메일, 생일, 주종, 주량을 수정한다.
+		 * 권한 : 해당 유저
+		 * */
+		if(authentication == null){
+			System.out.println("얘 토큰 없다!!");
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+		}
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		// 토큰에서 사용자 정보를 가져왔으니 이게 비어있을린 없다!
+		User user = userDetails.getUser();
+//		System.out.println(userProfilePatchReq.getBirthday());
+		if(userProfilePatchReq.getName() == null || userProfilePatchReq.getEmail() == null || userProfilePatchReq.getBirthday() == null) {
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 값을 입력했습니다."));
+		}
+		// birthday 형식 안맞을땐 어떻게 막아야 하는지 모르겠어ㅠㅠ
+		userService.updateUserProfile(userId, userProfilePatchReq);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원 정보가 수정되었습니다."));
+	}
 
-//	@PatchMapping(value = "/{userId}/modify")
-//	@ApiOperation(value = "유저 정보 수정", notes = "이름, 이메일, 생일, 주종, 주량을 수정한다.")
-//	@ApiResponses({
-//			@ApiResponse(code = 200, message = "성공"),
-//			@ApiResponse(code = 404, message = "사용자 없음"),
-//			@ApiResponse(code = 500, message = "서버 오류")
-//	})
-//	public ResponseEntity<BaseResponseBody> updateUser(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId,  @RequestBody UserProfilePutReq userProfilePutReq) {
-//		/**
-//		 * 유저 프로필 정보 수정(이름, 이메일, 생일, 주종, 주량을 수정한다.
-//		 * 권한 : 해당 유저
-//		 * */
-////		System.out.println("modifyUser : "+userId);
-////		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-////		System.out.println("getUserInfo : "+userDetails.getUser());
-//		String id = userService.updateUserProfile(userId, userProfilePutReq);
-////		System.out.println("수정완료? "+id);
-//		if("".equals(id)) {
-//			// 수정해야할 아이디 존재하지않음
-//			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "해당 사용자가 존재하지 않습니다."));
-//		} else {
-//			// 수정
-//			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-//		}
-//	}
+	@PatchMapping(value = "/profileimg/{userId}")
+	@ApiOperation(value = "유저 정보 수정", notes = "이름, 이메일, 생일, 주종, 주량을 수정한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 403, message = "권한 없음"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<BaseResponseBody> updateUserProfileImg(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId,  @RequestBody UserProfileImgPatchReq userProfileImgPatchReq) {
+		/**
+		 * 유저 프로필 정보 수정(이름, 이메일, 생일, 주종, 주량을 수정한다.
+		 * 권한 : 해당 유저
+		 * */
+		if(authentication == null){
+			System.out.println("얘 토큰 없다!!");
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+		}
+		// 토큰에서 사용자 정보를 가져왔으니 이게 비어있을린 없다!
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		System.out.println(userProfileImgPatchReq.getImageUrl());
+		if(userProfileImgPatchReq.getImageUrl().equals("")) {
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 값을 입력했습니다."));
+		}
+		userService.updateUserProfileImg(userId, userProfileImgPatchReq.getImageUrl());
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 이미지가 수정되었습니다."));
+	}
 
 
 
-//	@DeleteMapping(value = "/{userId}")
-//	@ApiOperation(value = "유저 정보 삭제", notes = "유저의 정보를 삭제한다")
-//	@ApiResponses({
-//			@ApiResponse(code = 204, message = "성공"),
-//			@ApiResponse(code = 404, message = "사용자 없음"),
-//			@ApiResponse(code = 500, message = "서버 오류")
-//	})
-//	public ResponseEntity deleteUser(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId) {
-//		/**
-//		 * 유저 정보 수정 - disable, 사실 지우는게 아니라 delete로 맵핑해도 되는가에 대한 의문?
-//		 * 권한 : 로그인한 사용자 본인
-//		 * 해당 유저가 생성한 방 모두 삭제 안됨
-//		 * 해당 유저의 지난 회의 이력 모두 삭제 안됨
-//		 * */
-//		System.out.println("deleteUser : "+userId);
-//
-////		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-////		System.out.println("getUserInfo : "+userDetails.getUser());
-//		userService.disable(userId);
-//		return ResponseEntity.status(200).body(BaseResponseBody.of(204, "disable 처리"));
-//	}
+	@DeleteMapping(value = "")
+	@ApiOperation(value = "회원 탈퇴", notes = "유저를 비활성화 한다.")
+	@ApiResponses({
+			@ApiResponse(code = 204, message = "성공"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity deleteUser(@ApiIgnore Authentication authentication) {
+		/**
+		 * 유저 정보 수정 - disable
+		 * 권한 : 로그인한 사용자 본인
+		 * 해당 유저가 생성한 방 모두 삭제 안됨
+		 * 해당 유저의 지난 회의 이력 모두 삭제 안됨
+		 * */
+		if(authentication == null){
+			System.out.println("얘 토큰 없다!!");
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+		}
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		userService.disableUser(userDetails.getUsername());
+		return ResponseEntity.status(204).body(BaseResponseBody.of(204, "회원 탈퇴 완료"));
+	}
 }

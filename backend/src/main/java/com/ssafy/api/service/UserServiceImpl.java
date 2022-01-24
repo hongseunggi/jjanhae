@@ -114,36 +114,45 @@ public class UserServiceImpl implements UserService {
 
     // 비번 수정
     @Override
-    public int updateUserPassword(String userId, String password) {
+    public void updateUserPassword(String userId, String password) {
         Optional<User> res = userRepositorySupport.findUserByUserId(userId);
         User user = null;
         if(res.isPresent()) {
             user = res.get();
             user.setPassword(passwordEncoder.encode(password));
             userRepository.save(user);
-            return 1;
         }
-        return 0;
     }
 
-    // 회원 수정
+    // 회원 프로필 정보 수정
     @Override
     @Transactional
-    public String updateUserProfile(String userId, UserProfilePutReq userProfilePutReq) {
+    public void updateUserProfile(String userId, UserProfilePatchReq userProfilePatchReq) {
         Optional<User> res = userRepositorySupport.findUserByUserId(userId);
         if(res.isPresent()) {
             User user = res.get();
-		    user.setName(userProfilePutReq.getName());
-            user.setEmail(userProfilePutReq.getEmail());
-            user.setBirthday(userProfilePutReq.getBirthday());
-            user.setDrink(userProfilePutReq.getDrink());
-            user.setDrinkLimit(userProfilePutReq.getDrinkLimit());
+		    user.setName(userProfilePatchReq.getName());
+            user.setEmail(userProfilePatchReq.getEmail());
+            user.setBirthday(userProfilePatchReq.getBirthday());
+            user.setDrink(userProfilePatchReq.getDrink());
+            user.setDrinkLimit(userProfilePatchReq.getDrinkLimit());
             userRepository.save(user);
-            return userId;
+            System.out.println("====" + user.getUserId() + " 프로필 변경 완료====");
         }
-        return null;
     }
 
+    // 회원 프로필 이미지 수정
+    @Override
+    @Transactional
+    public void updateUserProfileImg(String userId, String imageUrl) {
+        Optional<User> res = userRepositorySupport.findUserByUserId(userId);
+        if(res.isPresent()) {
+            User user = res.get();
+            user.setImageUrl(imageUrl);
+            userRepository.save(user);
+            System.out.println("====" + user.getUserId() + " 프로필 이미지 변경 완료====");
+        }
+    }
 
 
     // 회원 탈퇴
@@ -154,9 +163,9 @@ public class UserServiceImpl implements UserService {
         User user = null;
         if(res.isPresent()) {
             user = res.get();
-            System.out.println(user);
             user.setDelYn("Y");
             userRepository.save(user);
+            System.out.println("====" + user.getUserId() + " 탈퇴 처리 완료====");
         }
     }
 
