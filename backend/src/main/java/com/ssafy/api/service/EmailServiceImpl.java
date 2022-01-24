@@ -10,7 +10,6 @@ import javax.mail.internet.MimeMessage;
 import com.ssafy.api.request.FindIdRequest;
 import com.ssafy.api.request.FindPwdRequest;
 import com.ssafy.db.entity.AuthEmail;
-import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.AuthEmailRepository;
 import com.ssafy.db.repository.AuthEmailRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
         msgg += "</body>";
         msgg += "</html>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("bhaeun1105@gmail.com","짠해"));//보내는 사람
+        message.setFrom(new InternetAddress("jjanhae@naver.com","짠해"));//보내는 사람
 
         return message;
     }
@@ -124,7 +123,7 @@ public class EmailServiceImpl implements EmailService {
         msgg += "</body>";
         msgg += "</html>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("bhaeun1105@gmail.com","짠해"));//보내는 사람
+        message.setFrom(new InternetAddress("jjanhae@naver.com","짠해"));//보내는 사람
 
         return message;
     }
@@ -167,7 +166,7 @@ public class EmailServiceImpl implements EmailService {
         msgg += "</body>";
         msgg += "</html>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("bhaeun1105@gmail.com","짠해"));//보내는 사람
+        message.setFrom(new InternetAddress("jjanhae@naver.com","짠해"));//보내는 사람
 
         return message;
     }
