@@ -7,17 +7,13 @@ import com.ssafy.api.service.EmailService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import com.ssafy.db.entity.AuthEmail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.db.entity.User;
 
 
@@ -26,14 +22,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import retrofit2.http.Path;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -184,7 +175,7 @@ public class UserController {
 		String authCode = emailService.sendSimpleMessage(findIdRequest);
 		// authCode 갱신
 		userService.updateUserAuthCode(user, authCode);
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "인증번호를 발송했습니다."));
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "인증번호를 발송했습니다. 이메일이 도착하지 않았다면 입력한 정보를 다시 확인해주세요."));
 
 	}
 
@@ -222,8 +213,8 @@ public class UserController {
 
 
 
-	@GetMapping("/findpwd")
-	@ApiOperation(value = "이메일 인증(버튼)", notes = "이메일로 인증 url를 보낸다.")
+	@PatchMapping("/pwd")
+	@ApiOperation(value = "이메일 인증(버튼)", notes = "비밀번호 찾기 위해 이메일로 버튼을 보낸다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 401, message = "존재하지 않는 사용자"),
@@ -235,18 +226,53 @@ public class UserController {
 		System.out.println("=========== 이메일 인증(버튼)으로 비밀번호 찾기 ===========");
 		// 아이디, 이름, 이메일이 일치한 회원이 있는지 확인
 		User user = userService.getUserByUserIdAndNameAndEmail(findPwdRequest.getUserId(), findPwdRequest.getName(), findPwdRequest.getEmail());
-		if(user != null) {
-			System.out.println("유효한 사용자");
-			// 이메일 전송 (버튼 url)
-			String authCode = emailService.sendSimpleMessageButton(findPwdRequest);
-			return ResponseEntity.status(200).body(FindPwdResponse.of("Success", authCode, findPwdRequest.getUserId()));
-		} else {
-			System.out.println("유효하지 사용자");
+		if(user == null) {
+			System.out.println("존재하지 않는 사용자입니다.");
 			// 유효하지 않은 사용자입니다.
-			return ResponseEntity.status(404).body(BaseResponseBody.of(401, "유효하지 않은 사용자"));
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "인증번호를 발송했습니다. 이메일이 도착하지 않았다면 입력한 정보를 다시 확인해주세요."));
 		}
+		System.out.println("유효한 사용자");
+		// 이메일 전송 (버튼 url)
+		String authCode = emailService.sendSimpleMessageButton(findPwdRequest);
+		// authCode 갱신
+		userService.updateUserAuthCode(user, authCode);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "인증번호를 발송했습니다. 이메일이 도착하지 않았다면 입력한 정보를 다시 확인해주세요."));
 
 	}
+
+	@PatchMapping("/newpwd")
+	@ApiOperation(value = "이메일 인증(버튼)", notes = "전달받은 인증코드로 사용자의 pwd를 재설정함")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 404, message = "비밀번호 변경 실패"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<BaseResponseBody> resetPwd(@RequestBody PwdPatchRequest pwdPatchRequest)  throws Exception {
+		/**
+		 * 권한 : 모두사용
+		 * 유저 정보 수정
+		 * */
+		System.out.println("=========== 비밀번호 수정 ===========");
+		// 이름, 이메일이 일치한 회원이 있는지 확인
+		User user = userService.getUserByUserId(pwdPatchRequest.getUserId());
+		if(user == null) {
+			System.out.println("존재하지 않는 사용자입니다.");
+			// 존재하지 않는 사용자입니다.
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "입력한 정보가 일치하지 않습니다."));
+		}
+		System.out.println("유효한 사용자");
+		// 인증코드 일치 여부 확인
+		if(!Objects.equals(pwdPatchRequest.getAuthCode(), user.getAuthCode())) {
+			System.out.println("근데 코드가 틀림");
+			// 일치하지 않는다면
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "입력한 정보가 일치하지 않습니다."));
+		}
+		// 사용자도 존재하고 인증코드도 일치한다면 성공!
+		userService.updateUserPassword(pwdPatchRequest.getUserId(), pwdPatchRequest.getPassword());
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "비밀번호 재설정이 완료되었습니다."));
+
+	}
+
 
 	@GetMapping("/me")
 	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.")
@@ -298,28 +324,7 @@ public class UserController {
 //		}
 //	}
 
-	@PatchMapping(value = "/modifypwd")
-	@ApiOperation(value = "비밀번호 수정", notes = "유저의 비밀번호를 수정한다")
-	@ApiResponses({
-			@ApiResponse(code = 200, message = "성공"),
-			@ApiResponse(code = 404, message = "비밀번호 변경 실패"),
-			@ApiResponse(code = 500, message = "서버 오류")
-	})
-	public ResponseEntity<?> modifyUser(@RequestBody ModifyPasswordRequest modifyPasswordRequest) {
-		/**
-		 * 권한 : 모두사용
-		 * 유저 정보 수정
-		 * */
-		System.out.println("modifyUser : " + modifyPasswordRequest.getUserId());
-		int res = userService.updateUserPassword(modifyPasswordRequest.getUserId(), modifyPasswordRequest);
-		if(res == 0) {
-			// 수정 실패
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "비밀번호 변경 실패"));
-		} else {
-			// 수정
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-		}
-	}
+
 
 //	@DeleteMapping(value = "/{userId}")
 //	@ApiOperation(value = "유저 정보 삭제", notes = "유저의 정보를 삭제한다")

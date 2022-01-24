@@ -112,6 +112,19 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    // 비번 수정
+    @Override
+    public int updateUserPassword(String userId, String password) {
+        Optional<User> res = userRepositorySupport.findUserByUserId(userId);
+        User user = null;
+        if(res.isPresent()) {
+            user = res.get();
+            user.setPassword(passwordEncoder.encode(password));
+            userRepository.save(user);
+            return 1;
+        }
+        return 0;
+    }
 
     // 회원 수정
     @Override
@@ -132,19 +145,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // 비번 수정
-    @Override
-    public int updateUserPassword(String userId, ModifyPasswordRequest modifyPasswordRequest) {
-        Optional<User> res = userRepositorySupport.findUserByUserId(userId);
-        User user = null;
-        if(res.isPresent()) {
-            user = res.get();
-            user.setPassword(passwordEncoder.encode(modifyPasswordRequest.getPassword()));
-            userRepository.save(user);
-            return 1;
-        }
-        return 0;
-    }
 
     // 회원 탈퇴
     @Override
