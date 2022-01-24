@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useDebugValue, useState } from "react";
 import styles from "./Login.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -52,46 +52,42 @@ const Login = () => {
         setIdCheck(true);
         setIdMsg("");
       }
-    } 
+    }
     if (id === "password") {
       if (!pwdRule.test(value) && value.length > 0) {
         console.log(1);
         setPwdCheck(false);
         setPwdMsg(
           "비밀번호는  8~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요"
-          );
-        } else if (value.length === 0) {
-          setPwdCheck(false);
-          console.log(2);
-          setPwdMsg("비밀번호를 입력해주세요");
-        } else {
-          console.log(3);
-          setPwdCheck(true);
-          setPwdMsg("");
-        }
+        );
+      } else if (value.length === 0) {
+        setPwdCheck(false);
+        console.log(2);
+        setPwdMsg("비밀번호를 입력해주세요");
+      } else {
+        console.log(3);
+        setPwdCheck(true);
+        setPwdMsg("");
       }
-      
+    }
   };
 
   const checkValidation = (...input) => {
     console.log(id);
     console.log(password);
 
-    if(id.length===0) setIdMsg("아이디를 입력해주세요");
-    if(password.length===0) setPwdMsg("비밀번호를 입력해주세요");
+    if (id.length === 0) setIdMsg("아이디를 입력해주세요");
+    if (password.length === 0) setPwdMsg("비밀번호를 입력해주세요");
   };
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
     checkValidation();
 
-    if(idCheck===true&&pwdCheck===true) {
+    if (idCheck === true && pwdCheck === true) {
       loginApi();
     }
   };
-
-
 
   //로그인 상태 확인
   const checkToken = () => {};
@@ -99,21 +95,25 @@ const Login = () => {
   const loginApi = () => {
     let userError = 404;
     let pwdError = 401;
-    let errorMsg = "아이디 또는 비밀번호가 잘못 입력 되었습니다.\n 아이디와 비밀번호를 정확히 입력해 주세요.";
-    errorMsg = errorMsg.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+    let errorMsg =
+      "아이디 또는 비밀번호가 잘못 입력 되었습니다.\n 아이디와 비밀번호를 정확히 입력해 주세요.";
+    errorMsg = errorMsg.replace(/(<br>|<br\/>|<br \/>)/g, "\r\n");
 
     let url = "http://localhost:8081/user/login";
     axios
       .post(url, {
-        userId : input.id,
-        password : input.password,
+        userId: input.id,
+        password: input.password,
       })
       .then(function (result) {
         setLoginMsg("");
-        sessionStorage.setItem('accessToken',result.data.accessToken);
+        sessionStorage.setItem("accessToken", result.data.accessToken);
       })
       .catch(function (error) {
-        if(error.response.status===userError || error.response.status===pwdError) {
+        if (
+          error.response.status === userError ||
+          error.response.status === pwdError
+        ) {
           setLoginMsg(errorMsg);
         }
       });

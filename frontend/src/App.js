@@ -25,12 +25,7 @@ function App() {
           {/* <Route path="/" element={<ResetPwd />} /> */}
           <Route path="/" element={<Main status={code} />} />
           <Route path="user/*" element={<User />} />
-          {/* <Route path="user/login" element={<Login />} />
-          <Route path="user/signup" element={<Register />} />
-          <Route path="user/signup/complete" element={<RegisterComplete />} />
-          <Route path="user/findId" element={<FindId />} />
-          <Route path="user/findPwd" element={<FindPwd />} />
-          <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>
