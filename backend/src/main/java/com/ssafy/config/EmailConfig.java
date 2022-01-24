@@ -34,7 +34,7 @@ public class EmailConfig {
     @Bean
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-        javaMailSender.setHost("smtp.gmail.com");
+        javaMailSender.setHost("smtp.naver.com");
         javaMailSender.setUsername(id);
         javaMailSender.setPassword(password);
         javaMailSender.setPort(port);
