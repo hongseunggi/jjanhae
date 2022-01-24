@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     // 아이디 중복 확인
     @Override
     public User getUserByUserId(String userId) {
-        // 디비에 유저 정보 조회 (userId 를 통한 조회).
+        // 디비에 유저 정보 조회 (userId를 통한 조회).
         System.out.println("====== getUserByUserId =====");
         System.out.println("userId : "+userId);
         Optional<User> res = userRepositorySupport.findUserByUserId(userId);
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     // 이메일 중복 확인
     @Override
     public User getUserByEmail(String email) {
-        // 디비에 유저 정보 조회 (userId 를 통한 조회).
+        // 디비에 유저 정보 조회 (email을 통한 조회).
         System.out.println("====== getUserByEmail =====");
         System.out.println("email : "+email);
         Optional<User> res = userRepositorySupport.findUserByEmail(email);
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    // 아이디 찾기
+    // 아이디 찾기 - userID와 email로 조회
     @Override
     public User getUserByNameAndEmail(String name, String email) {
         System.out.println("====== getUserByNameAndEmail =====");
@@ -91,7 +91,8 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    // 비밀번호 찾기
+
+    // 비밀번호 찾기 - userId와 email과 name으로 조회
     @Override
     public User getUserByUserIdAndNameAndEmail(String userId, String name, String email) {
         System.out.println("====== getUserByUserIdAndNameAndEmail =====");
@@ -103,6 +104,14 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
+    // authCode 갱신
+    public void updateUserAuthCode(User user, String authCode){
+        System.out.println("=====updateUserAuthCode========");
+        user.setAuthCode(authCode);
+        userRepository.save(user);
+    }
+
 
     // 회원 수정
     @Override
@@ -125,7 +134,7 @@ public class UserServiceImpl implements UserService {
 
     // 비번 수정
     @Override
-    public int updatePassword(String userId, ModifyPasswordRequest modifyPasswordRequest) {
+    public int updateUserPassword(String userId, ModifyPasswordRequest modifyPasswordRequest) {
         Optional<User> res = userRepositorySupport.findUserByUserId(userId);
         User user = null;
         if(res.isPresent()) {
@@ -140,7 +149,7 @@ public class UserServiceImpl implements UserService {
     // 회원 탈퇴
     @Override
     @Transactional
-    public void disable(String userId) {
+    public void disableUser(String userId) {
         Optional<User> res = userRepositorySupport.findUserByUserId(userId);
         User user = null;
         if(res.isPresent()) {

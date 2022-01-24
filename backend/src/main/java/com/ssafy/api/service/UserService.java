@@ -14,7 +14,8 @@ public interface UserService {
 	User getUserByEmail(String email);
 	User getUserByNameAndEmail(String name, String email);
 	User getUserByUserIdAndNameAndEmail(String userId, String name, String email);
+	void updateUserAuthCode(User user, String authCode);
 	String updateUserProfile(String userId, UserProfilePutReq userProfilePutReq);
-	void disable(String userId);
-	int updatePassword(String userId, ModifyPasswordRequest modifyPasswordRequest);
+	int updateUserPassword(String userId, ModifyPasswordRequest modifyPasswordRequest);
+	void disableUser(String userId);
 }

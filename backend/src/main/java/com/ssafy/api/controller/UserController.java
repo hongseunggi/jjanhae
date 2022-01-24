@@ -74,7 +74,7 @@ public class UserController {
 		User res = userService.createUser(signupInfo);
 		System.out.println("인증 여부 : " + signupInfo.getAuthYn());
 		System.out.println("userId : " + res.getUserId());
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원가입 성공!"));
 	}
 
 	@GetMapping(value = "", params = "userId")
@@ -161,33 +161,66 @@ public class UserController {
 	}
 
 
-
-
-	@GetMapping("/findid")
-	@ApiOperation(value = "이메일 인증(코드)", notes = "이메일로 인증코드를 보낸다.")
+	@PatchMapping("/id")
+	@ApiOperation(value = "이메일 인증(코드)", notes = "아이디를 찾기 위해 이메일로 인증코드를 보낸다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
-			@ApiResponse(code = 401, message = "존재하지 않는 사용자"),
+			@ApiResponse(code = 404, message = "존재하지 않는 사용자"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<FindIdResponse> findId(
+	public ResponseEntity<BaseResponseBody> findId(
 			@RequestBody @ApiParam(value="아이디찾기 이메일인증 정보", required = true) FindIdRequest findIdRequest)  throws Exception {
 
 		System.out.println("=========== 이메일 인증(코드)으로 아이디 찾기 ===========");
 		// 이름, 이메일이 일치한 회원이 있는지 확인
 		User user = userService.getUserByNameAndEmail(findIdRequest.getName(), findIdRequest.getEmail());
-		if(user != null) {
-			System.out.println("유효한 사용자");
-			// 이메일 전송
-			String authCode = emailService.sendSimpleMessage(findIdRequest);
-			return ResponseEntity.ok(FindIdResponse.of(200, "Success", authCode, user.getUserId()));
-		} else {
-			System.out.println("유효하지 사용자");
-			// 유효하지 않은 사용자입니다.
-			return ResponseEntity.status(404).body(FindIdResponse.of(401, "유효하지 않은 사용자", null, null));
+		if(user == null) {
+			System.out.println("존재하지 않는 사용자입니다.");
+			// 존재하지 않는 사용자입니다.
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "인증번호를 발송했습니다. 이메일이 도착하지 않았다면 입력한 정보를 다시 확인해주세요."));
 		}
+		System.out.println("유효한 사용자");
+		// 이메일 전송
+		String authCode = emailService.sendSimpleMessage(findIdRequest);
+		// authCode 갱신
+		userService.updateUserAuthCode(user, authCode);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "인증번호를 발송했습니다."));
 
 	}
+
+
+	@GetMapping(value = "/id", params = {"name", "email", "authCode"})
+	@ApiOperation(value = "이메일 인증(코드)", notes = "전달받은 인증코드로 사용자의 id를 찾아준다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 404, message = "존재하지 않는 사용자"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> findId(
+			@RequestParam @ApiParam(value="아이디찾기 이메일인증 정보", required = true) String name, String email, String authCode)  throws Exception {
+
+		System.out.println("=========== 입력받은 코드로 아이디 찾기 ===========");
+		// 이름, 이메일이 일치한 회원이 있는지 확인
+		User user = userService.getUserByNameAndEmail(name, email);
+		if(user == null) {
+			System.out.println("존재하지 않는 사용자입니다.");
+			// 존재하지 않는 사용자입니다.
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "입력한 정보가 일치하지 않습니다."));
+		}
+		System.out.println("유효한 사용자");
+		// 인증코드 일치 여부 확인
+		if(!Objects.equals(authCode, user.getAuthCode())) {
+			System.out.println("근데 코드가 틀림");
+			// 일치하지 않는다면
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "입력한 정보가 일치하지 않습니다."));
+		}
+		// 사용자도 존재하고 인증코드도 일치한다면 성공!
+		return ResponseEntity.status(200).body(FindIdResponse.of(200, "인증되었습니다.", user.getUserId()));
+
+	}
+
+
+
 
 	@GetMapping("/findpwd")
 	@ApiOperation(value = "이메일 인증(버튼)", notes = "이메일로 인증 url를 보낸다.")
@@ -278,7 +311,7 @@ public class UserController {
 		 * 유저 정보 수정
 		 * */
 		System.out.println("modifyUser : " + modifyPasswordRequest.getUserId());
-		int res = userService.updatePassword(modifyPasswordRequest.getUserId(), modifyPasswordRequest);
+		int res = userService.updateUserPassword(modifyPasswordRequest.getUserId(), modifyPasswordRequest);
 		if(res == 0) {
 			// 수정 실패
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "비밀번호 변경 실패"));
