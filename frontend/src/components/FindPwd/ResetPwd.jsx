@@ -15,8 +15,8 @@ const ResetPwd = ({ getauthcode }) => {
   const [confirmPwdCheck, setConfirmPwdCheck] = useState(false);
 
   const [searchParams] = useSearchParams();
-  console.log(searchParams.get("userid"));
-  console.log(searchParams.get("authcode"));
+  console.log(searchParams.get("userId"));
+  console.log(searchParams.get("authCode"));
 
   // const { userid, authcode } = params;
   // console.log(userid, authcode);

@@ -64,18 +64,17 @@ const FindPwd = () => {
 
     //validation check pass
     if (idMsg === "" && idMsg === "" && idMsg === "") {
-      // findPwdApi();
+      findPwdApi(...input);
     }
-    console.log(input);
     // navigate("/user/resetPwd");
   };
 
   //axios
   const findPwdApi = () => {
-    let url = "https://localhost:3000/user/findpwd";
+    let url = "https://localhost:8081/user/pwd?userid="+id+"&name="+name+"&email="+email;
     axios
       .get(url, {
-        input,
+
       })
       .then(function (result) {
         console.log(result);

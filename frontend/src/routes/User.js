@@ -4,7 +4,6 @@ import FindId from "../components/FindId/FindId";
 import FindPwd from "../components/FindPwd/FindPwd";
 import ResetPwd from "../components/FindPwd/ResetPwd";
 import Login from "../components/Login/Login";
-// import Main from "../components/Main";
 import Register from "../components/Regist/Register";
 import RegisterComplete from "../components/Regist/RegisterComplete";
 

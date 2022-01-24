@@ -4,6 +4,7 @@ import { ReactComponent as EmailIcon } from "../../assets/icons/email.svg";
 import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
 import ShowId from "./ShowId";
+import axios from "axios";
 
 const FindId = () => {
   const emailRef = createRef();
@@ -69,17 +70,37 @@ const FindId = () => {
 
   // 이메일 인증번호 검사
   const handleEmailCheck = () => {
-    setIsSend(true);
+    setEmailMsg("");
     // 이메일 인증번호 검사 api 호출
+    let url = `http://localhost:8081/user`;
+    axios
+      .patch(url, {
+        name,
+        email,
+      })
+      .then((result) => {
+        console.log(result);
+        setIsSend(true);
+        // setAuthCode(result.authCode);
+      })
+      .catch((error) => {
+        setEmailMsg("중복된 이메일 입니다.");
+      });
   };
+
   const handleEmailCodeCheck = () => {
-    if (emailConfirmCode === "ssafy") {
-      // 인증번호로 추후 변경
-      setEmailConfirm(true);
-      setEmailConfirmCodeMsg("인증이 완료되었습니다.");
-    } else {
-      setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
-    }
+    let url = `http://localhost:8081/user?name=${name}&email=${email}&authCode=${emailConfirmCode}`;
+    axios
+      .get(url)
+      .then((result) => {
+        console.log(result);
+        setEmailConfirm(true);
+        setId(result.userId);
+        setEmailConfirmCodeMsg("인증이 완료되었습니다.");
+      })
+      .catch((error) => {
+        setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
+      });
   };
 
   // 다음 버튼 클릭 시 이벤트
@@ -91,19 +112,22 @@ const FindId = () => {
     } else if (!emailCheck) {
       setEmailMsg("이메일을 확인해주세요.");
       emailRef.current.focus();
+    } else if (!isSend) {
+      setEmailMsg("이메일 인증이 필요합니다.");
     } else if (!emailConfirm) {
       setEmailConfirmCodeMsg("인증을 완료해주세요.");
       confirmEmailRef.current.focus();
     } else {
       // 아이디찾기 api 호출
-      const data = {
-        email,
-        name,
-      };
-      const result = "ssafy";
-      setId(result); // 결과
+      // let url = `http://localhost:8081/user?name=${name}&email=${email}&authCode=${emailConfirmCode}`;
+      // axios.get(url)
+      // const data = {
+      //   email,
+      //   name,
+      // };
+      // const result = "ssafy";
+      // setId(result); // 결과
       setConfirm(true);
-      console.log(data);
     }
   };
 
