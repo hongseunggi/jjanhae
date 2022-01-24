@@ -377,12 +377,12 @@
   }
   .create_room {
     margin-top: 3rem;
-    width: 17rem;
+    width: 16rem;
     letter-spacing: 2.5px;
     font-weight: 600;
     font-size: 1rem;
     height: 3rem;
-    margin-left: 9%;
+    margin-left: 6%;
     border-radius: 35px;
     background-color: #eaeaea;
     border: none;
@@ -397,12 +397,14 @@
     transform: translateY(-7px);
   }
   .into_room {
+    
     position: relative;
     margin-top: 3rem;
-    width: 17rem;
+    width: 16rem;
     height: 3rem;
     font-size: 1rem;
-    margin-left: 15%;
+    margin-left: 7%;
+    
     border-radius: 35px;
     font-weight: 600;
     color: white;
@@ -546,20 +548,20 @@
   }
   .create_room {
     margin-top: 3rem;
-    width: 13rem;
+    width: 12rem;
     letter-spacing: 2.5px;
     font-weight: 600;
     font-size: 1rem;
     height: 3rem;
-    margin-left: 9%;
+    margin-left: 10%;
   }
   .into_room {
     position: relative;
     margin-top: 3rem;
-    width: 13rem;
+    width: 12rem;
     height: 3rem;
     font-size: 1rem;
-    margin-left: 15%;
+    margin-left: 5%;
   }
   .dummy {
     display: block;
@@ -576,7 +578,7 @@
   }
 }
 
-@media screen and (width <= 1366px) {
+@media screen and (width <= 1403px) {
   .body {
     margin-top: -64px;
     height: 100%;
@@ -609,7 +611,7 @@
     font-weight: 600;
     font-size: 0.8rem;
     height: 2.5rem;
-    margin-left: 9%;
+    margin-left: 5%;
   }
 
   .into_room {
@@ -617,7 +619,65 @@
     width: 12rem;
     height: 2.5rem;
     font-size: 0.8rem;
-    margin-left: 15%;
+    margin-left: 5%;
+    border-radius: 35px;
+    font-weight: 600;
+  }
+  .dummy {
+    display: block;
+  }
+  .slider__slides {
+    margin-top: 20%;
+    position: relative;
+    width: 80%;
+    height: 60%;
+    display: inline-block;
+    /* border: 2px solid black;
+      border-radius: 15px; */
+  }
+}
+@media screen and (width <= 1327px) {
+  .body {
+    margin-top: -64px;
+    height: 100%;
+  }
+  .intro_text {
+    margin-top: 50%;
+    margin-left: 1.6rem;
+    /* position: relative; */
+    font-size: 0.9rem;
+  }
+  .welcome_text {
+    margin-top: 5%;
+    margin-left: 1.2rem;
+    font-size: 2.3rem;
+    text-shadow: 0.18rem -0.01rem 0rem #ff2e63;
+  }
+  .swelcome_text {
+    margin-right: 2rem;
+    font-size: 2.3rem;
+    text-shadow: 0.18rem -0.01rem 0rem #ff2e63;
+  }
+  .buttonbox {
+    display: flex;
+    text-align: left;
+  }
+  .create_room {
+    margin-top: 3rem;
+    width: 11rem;
+    letter-spacing: 2.5px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    height: 2.5rem;
+    margin-left: 5%;
+  }
+
+  .into_room {
+    margin-top: 3rem;
+    width: 11rem;
+    height: 2.5rem;
+    font-size: 0.8rem;
+    margin-left: 5%;
     border-radius: 35px;
     font-weight: 600;
   }
@@ -639,3 +699,4 @@
     display: none;
   }
 }
+
