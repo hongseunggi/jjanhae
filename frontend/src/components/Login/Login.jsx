@@ -13,90 +13,109 @@ const Login = () => {
   });
 
   const { id, password } = input;
-  const [disabled, setDisabled] = useState(true);
 
   //input 유효성 검사 에러 메시지
   const [idMsg, setIdMsg] = useState(" ");
   const [pwdMsg, setPwdMsg] = useState(" ");
 
-  // const [idCheck, setIdCheck] = useState(false);
-  // const [pwdCheck, setPwdCheck] = useState(false);
+  //login error msg
+  const [loginMsg, setLoginMsg] = useState(" ");
+
+  const [idCheck, setIdCheck] = useState(false);
+  const [pwdCheck, setPwdCheck] = useState(false);
 
   //로그인 상태 확인
   const [isLogin, setIslogin] = useState(false);
 
   //input 유효성 검사
   const handleInput = (event) => {
-    let pwdRule = /^.*(?=^.{5,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+    let pwdRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
     const { id, value } = event.target;
     setInput({
       ...input,
       [id]: value,
     });
 
-    if (idMsg === "" && pwdMsg === "") {
-      setDisabled(false);
-    } else if (idMsg === "" && disabled === true) {
-      setPwdMsg("비밀번호를 입력해주세요");
-    } else if (pwdMsg === "" && disabled === true) {
-      setIdMsg("아이디를 입력해주세요");
-    } else {
-      setDisabled(true);
-    }
+    setLoginMsg("");
 
     if (id === "id") {
-      if (value.length <= 5 && value.length > 0) {
+      if (value.length < 5 && value.length > 0) {
         setIdMsg("5자 이상의 아이디를 입력해주세요.");
+        setIdCheck(false);
       } else if (value.length > 16) {
+        setIdCheck(false);
         setIdMsg("16자 이하의 아이디를 입력해주세요.");
       } else if (value === "") {
+        setIdCheck(false);
         setIdMsg("아이디를 입력해주세요");
       } else {
+        setIdCheck(true);
         setIdMsg("");
       }
-    } else if (id === "password") {
+    } 
+    if (id === "password") {
       if (!pwdRule.test(value) && value.length > 0) {
+        console.log(1);
+        setPwdCheck(false);
         setPwdMsg(
-          "비밀번호는  5~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요"
-        );
-      } else if (value.length === 0) {
-        setPwdMsg("비밀번호를 입력해주세요");
-      } else {
-        setPwdMsg("");
+          "비밀번호는  8~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요"
+          );
+        } else if (value.length === 0) {
+          setPwdCheck(false);
+          console.log(2);
+          setPwdMsg("비밀번호를 입력해주세요");
+        } else {
+          console.log(3);
+          setPwdCheck(true);
+          setPwdMsg("");
+        }
       }
-    }
-
-    // checkDisabled({...input});
-    // console.log(idMsg);
-    // console.log(pwdMsg);
+      
   };
+
+  const checkValidation = (...input) => {
+    console.log(id);
+    console.log(password);
+
+    if(id.length===0) setIdMsg("아이디를 입력해주세요");
+    if(password.length===0) setPwdMsg("비밀번호를 입력해주세요");
+  };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(input);
-    console.log("clicked");
+    checkValidation();
 
-    // loginApi();
+    if(idCheck===true&&pwdCheck===true) {
+      loginApi();
+    }
   };
 
-  const checkDisabled = () => {
-    console.log(id);
-  };
+
 
   //로그인 상태 확인
   const checkToken = () => {};
 
   const loginApi = () => {
-    let url = "https://localhost:3000/user/login";
+    let userError = 404;
+    let pwdError = 401;
+    let errorMsg = "아이디 또는 비밀번호가 잘못 입력 되었습니다.\n 아이디와 비밀번호를 정확히 입력해 주세요.";
+    errorMsg = errorMsg.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+
+    let url = "http://localhost:8081/user/login";
     axios
       .post(url, {
-        ...input,
+        userId : input.id,
+        password : input.password,
       })
       .then(function (result) {
-        console.log(result);
+        setLoginMsg("");
+        sessionStorage.setItem('accessToken',result.data.accessToken);
       })
       .catch(function (error) {
-        console.log(error);
+        if(error.response.status===userError || error.response.status===pwdError) {
+          setLoginMsg(errorMsg);
+        }
       });
   };
 
@@ -144,10 +163,12 @@ const Login = () => {
             </div>
           </div>
 
+          <p className={styles.errorMsg}>{loginMsg}</p>
+
           <div className={styles.confirmButtons}>
             <button
               className={styles.loginBtn}
-              disabled={disabled}
+              // disabled={disabled}
               type="submit"
             >
               로그인
