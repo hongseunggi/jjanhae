@@ -2,9 +2,10 @@ import React, { createRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import styles from "./ResetPwd.module.css";
-import axios from "axios";
+import UserApi from "../../api/UserApi.js";
 
-const ResetPwd = ({ getauthcode }) => {
+const ResetPwd = () => {
+  const { getPwdResetResult } = UserApi;
   // props 변수 이름 변경
   const pwdRef = createRef();
   const confirmPwdRef = createRef();
@@ -53,23 +54,18 @@ const ResetPwd = ({ getauthcode }) => {
     }
   };
 
-  const pwdRestApi = () => {
-    let url = "http://localhost:8081/user/newpwd";
-    axios
-      .patch(url, {
+  const pwdRestApi = async () => {
+    try {
+      const { data } = await getPwdResetResult({
         userId: id,
         password: pwd,
         authCode: authCode,
-      })
-      .then(function (result) {
-        // console.log(result.data.message);
-        setPwdMsg("");
-        navigate("/user/login");
-      })
-      .catch(function (error) {
-        // console.log(error);
-        setErrorMsg("잘못된 접근입니다.");
       });
+      setPwdMsg("");
+      navigate("/user/login");
+    } catch ({ response }) {
+      setErrorMsg("잘못된 접근입니다.");
+    }
   };
 
   const handleSubmit = (event) => {
