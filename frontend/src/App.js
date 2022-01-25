@@ -22,7 +22,7 @@ function App() {
       {/* <Register /> */}
       <Router>
         <Navigator status={code} isLogin={handleIsLogin} />
-        <Routes>
+        <Routes className="body">
           {/* <Route path="/" element={<ResetPwd />} /> */}
           <Route path="/" element={<Main status={code} />} />
           <Route path="user/*" element={<User />} />
