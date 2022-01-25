@@ -6,6 +6,7 @@ import ResetPwd from "../components/FindPwd/ResetPwd";
 import Login from "../components/Login/Login";
 import Register from "../components/Regist/Register";
 import RegisterComplete from "../components/Regist/RegisterComplete";
+import CalendarPage from "../components/Calendar/CalendarPage";
 
 const User = () => {
   return (
@@ -18,6 +19,7 @@ const User = () => {
         <Route path="/findid" element={<FindId />} />
         <Route path="/findpwd" element={<FindPwd />} />
         <Route path="/newpwd" element={<ResetPwd />} />
+        <Route path="/calendar" element={<CalendarPage />} />
       </Routes>
     </div>
   );

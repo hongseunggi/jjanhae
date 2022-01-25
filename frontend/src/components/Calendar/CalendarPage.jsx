@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Calendar from 'react-calendar';
-import styles from "./Calender.module.css";
+import styles from "./CalendarPage.module.css";
 import axios from "axios";
 
 const CalendarPage = () => {
@@ -16,3 +16,5 @@ const CalendarPage = () => {
     );
     
 }
+
+export default CalendarPage;
