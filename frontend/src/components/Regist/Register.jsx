@@ -51,8 +51,12 @@ const Register = () => {
   // const [emailConfirmCheck, setEmailConfirmCheck] = useState(false);
   const [nameCheck, setNameCheck] = useState(false);
   const [birthdayCheck, setBirthdayCheck] = useState(false);
+
   // 이메일 인증 버튼 클릭 유무
   const [isSend, setIsSend] = useState(false);
+
+  // 이메일 인증 코드(추후 삭제 예정)
+  const [authCode, setAuthCode] = useState("");
 
   // 아이디, 이메일 검사 결과
   const [idConfirm, setIdConfirm] = useState(false);
@@ -141,24 +145,51 @@ const Register = () => {
   // 아이디 중복 검사
   const handleIdCheck = () => {
     // 아이디 중복 검사 api 호출
-    setIdConfirm(true);
-    setIdMsg("사용가능한 아이디입니다.");
+    let url = `http://localhost:8081/user?userId=${id}`;
+    axios
+      .get(url)
+      .then((result) => {
+        console.log(result);
+        setIdConfirm(true);
+        setIdMsg("사용가능한 아이디입니다.");
+      })
+      .catch((error) => {
+        setIdMsg("이미 사용중인 아이디입니다.");
+        console.log(error);
+      });
   };
 
   // 이메일 인증번호 검사
   const handleEmailCheck = () => {
-    setIsSend(true);
     setEmailMsg("");
     // 이메일 인증번호 검사 api 호출
+    let url = `http://localhost:8081/user`;
+    axios
+      .post(url, {
+        email,
+      })
+      .then((result) => {
+        console.log(result);
+        setIsSend(true);
+        // setAuthCode(result.authCode);
+      })
+      .catch((error) => {
+        setEmailMsg("중복된 이메일 입니다.");
+      });
   };
+
   const handleEmailCodeCheck = () => {
-    if (emailConfirmCode === "ssafy") {
-      // 인증번호로 추후 변경
-      setEmailConfirm(true);
-      setEmailConfirmCodeMsg("인증이 완료되었습니다.");
-    } else {
-      setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
-    }
+    let url = `http://localhost:8081/user?email=${email}&authCode=${emailConfirmCode}`;
+    axios
+      .get(url)
+      .then((result) => {
+        console.log(result);
+        setEmailConfirm(true);
+        setEmailConfirmCodeMsg("인증이 완료되었습니다.");
+      })
+      .catch((error) => {
+        setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
+      });
   };
   // 회원가입 버튼 클릭 시 이벤트
   const handleSubmit = (event) => {
@@ -188,29 +219,48 @@ const Register = () => {
     } else if (!drinkLimit) {
       setDrinkLimitMsg("주량을 입력해주세요.");
     } else {
+      const newBirth = birthday.toLocaleDateString();
+      console.log(newBirth.length);
       const data = {
-        id,
-        pwd,
+        userId: id,
+        password: pwd,
         email,
         name,
+        birthday: newBirth,
         drink,
         drinkLimit,
       };
-      //회원가입 api 호출
-      registUser(data);
       console.log(data);
-      navigate("complete");
+      //회원가입 api 호출
+      let url = "http://localhost:8081/user/signup";
+      axios
+        .post(url, {
+          userId: id,
+          password: pwd,
+          email,
+          name,
+          birthday: newBirth,
+          drink,
+          drinkLimit,
+        })
+        .then((result) => {
+          console.log(result);
+          navigate("complete");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       //정상적으로 동작할 시 로그인 화면으로 이동
     }
   };
 
   //회원가입 api
-  const registUser = async (data) => {
-    try {
-      // const response = await axios.post(URL, data);
-    } catch {}
-  };
+  // const registUser = async (data) => {
+  //   try {
+  //     // const response = await axios.post(URL, data);
+  //   } catch {}
+  // };
 
   const iconChange = (e) => {
     setDrink(e.target.value);

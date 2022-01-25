@@ -33,14 +33,15 @@ const ShowId = ({ id, name }) => {
       <div className={styles.resultId}>
         <NameIcon fill="#EEE" width="20" height="20" />
         <span className={styles.idInfo}>아이디: {securityId}</span>
+        {/* <span className={styles.idInfo}>아이디: {id}</span> */}
       </div>
 
       <div className={styles.confirmButtons}>
-        <Link to="/login">
+        <Link to="/user/login">
           <button className={styles.loginBtn}>로그인</button>
         </Link>
 
-        <Link to="/findPwd">
+        <Link to="/user/findPwd">
           <button className={styles.findPwdBtn}>비밀번호 찾기</button>
         </Link>
       </div>

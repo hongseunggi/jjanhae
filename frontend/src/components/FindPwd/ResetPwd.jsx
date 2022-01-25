@@ -1,7 +1,8 @@
 import React, { createRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import styles from "./ResetPwd.module.css";
+import axios from "axios";
 
 const ResetPwd = ({ getauthcode }) => {
   // props 변수 이름 변경
@@ -9,17 +10,18 @@ const ResetPwd = ({ getauthcode }) => {
   const confirmPwdRef = createRef();
   const [pwd, setPwd] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
-  const [pwdMsg, setPwdMsg] = useState("");
-  const [confirmPwdMsg, setConfirmPwdMsg] = useState("");
   const [pwdCheck, setPwdCheck] = useState(false);
   const [confirmPwdCheck, setConfirmPwdCheck] = useState(false);
+  const [pwdMsg, setPwdMsg] = useState("");
+  const [confirmPwdMsg, setConfirmPwdMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
+  //URL에서 params 뽑아내기
   const [searchParams] = useSearchParams();
-  console.log(searchParams.get("userid"));
-  console.log(searchParams.get("authcode"));
+  const id = searchParams.get("userId");
+  const authCode = searchParams.get("authCode");
 
-  // const { userid, authcode } = params;
-  // console.log(userid, authcode);
+  const navigate = useNavigate();
 
   // 입력 데이터 관리
   const handleInput = (event) => {
@@ -51,6 +53,25 @@ const ResetPwd = ({ getauthcode }) => {
     }
   };
 
+  const pwdRestApi = () => {
+    let url = "http://localhost:8081/user/newpwd";
+    axios
+      .patch(url, {
+        userId: id,
+        password: pwd,
+        authCode: authCode,
+      })
+      .then(function (result) {
+        // console.log(result.data.message);
+        setPwdMsg("");
+        navigate("/user/login");
+      })
+      .catch(function (error) {
+        // console.log(error);
+        setErrorMsg("잘못된 접근입니다.");
+      });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!pwdCheck) {
@@ -65,8 +86,9 @@ const ResetPwd = ({ getauthcode }) => {
       };
       //회원가입 api 호출
       console.log(data);
-      // navigate("/signup/complete");
       //정상적으로 동작할 시 로그인 화면으로 이동
+
+      pwdRestApi();
     }
   };
 
@@ -78,8 +100,8 @@ const ResetPwd = ({ getauthcode }) => {
           <div className={styles.inputArea}>
             {/* 비밀번호 */}
             <div className={styles.inputRow}>
-              <div>
-                <PwdIcon fill="#EEE" width="20" height="20" />
+              <div className="">
+                <PwdIcon className={styles.icon} />
               </div>
               <div className={styles.input}>
                 <input
@@ -98,7 +120,7 @@ const ResetPwd = ({ getauthcode }) => {
             {/* 비밀번호 확인 */}
             <div className={styles.inputRow}>
               <div>
-                <PwdIcon fill="#EEE" width="20" height="20" />
+                <PwdIcon className={styles.icon} />
               </div>
               <div className={styles.input}>
                 <input
@@ -115,6 +137,7 @@ const ResetPwd = ({ getauthcode }) => {
               </div>
             </div>
           </div>
+          <p className={styles.invalidMsg}>{errorMsg}</p>
           <button className={styles.nextBtn} type="submit">
             확인
           </button>
