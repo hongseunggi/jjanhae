@@ -8,16 +8,16 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
+import javax.persistence.PrePersist;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * 유저 회원가입 API ([POST] /api/v1/users) 요청에 필요한 리퀘스트 바디 정의.
  */
 @Getter
 @Setter
-@ApiModel("UserRegisterPostRequest")
-public class UserRegisterPostReq {
+@ApiModel("UserSignupPostRequest")
+public class UserSignupPostReq {
 
 	@ApiModelProperty(name="유저 ID", example="ssafy1234")
 	String userId;
@@ -57,4 +57,12 @@ public class UserRegisterPostReq {
 
 	@ApiModelProperty(name="로그인플랫폼", example="local")
 	String provider;
+
+//	@PrePersist
+//	public void prePersist() {
+//		this.delYn = "N";
+//		this.imageUrl = "default";
+//		this.authYn = "Y";
+//		this.provider = "local";
+//	}
 }

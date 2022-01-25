@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import java.util.Optional;
 import java.util.Random;
 
 import javax.mail.Message.RecipientType;
@@ -8,6 +9,9 @@ import javax.mail.internet.MimeMessage;
 
 import com.ssafy.api.request.FindIdRequest;
 import com.ssafy.api.request.FindPwdRequest;
+import com.ssafy.db.entity.AuthEmail;
+import com.ssafy.db.repository.AuthEmailRepository;
+import com.ssafy.db.repository.AuthEmailRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,6 +22,12 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     JavaMailSender emailSender;
+
+    @Autowired
+    AuthEmailRepository authEmailRepository;
+
+    @Autowired
+    AuthEmailRepositorySupport authEmailRepositorySupport;
 
     public static final String ePw = createKey();
 
@@ -72,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
         msgg += "</body>";
         msgg += "</html>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("soyeon1170@gmail.com","짠해"));//보내는 사람
+        message.setFrom(new InternetAddress("jjanhae@naver.com","짠해"));//보내는 사람
 
         return message;
     }
@@ -113,7 +123,7 @@ public class EmailServiceImpl implements EmailService {
         msgg += "</body>";
         msgg += "</html>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("soyeon1170@gmail.com","짠해"));//보내는 사람
+        message.setFrom(new InternetAddress("jjanhae@naver.com","짠해"));//보내는 사람
 
         return message;
     }
@@ -146,7 +156,7 @@ public class EmailServiceImpl implements EmailService {
                         "		감사합니다."																																															+
                         "	</p>"																																																	+
                         "	<a style=\"color: #FFF; text-decoration: none; text-align: center;\""																																	+
-                        "	href=\"http://localhost:3000/user/resetpwd?userId=" + userId + "&authcode="+ ePw + "\" target=\"_blank\">"														+
+                        "	href=\"http://localhost:3000/user/newpwd?userId=" + userId + "&authCode="+ ePw + "\" target=\"_blank\">"														+
                         "		<p"																																																	+
                         "			style=\"display: inline-block; width: 210px; height: 45px; margin: 30px 5px 40px; background: #02b875; line-height: 45px; vertical-align: middle; font-size: 16px;\">"							+
                         "			메일 인증</p>"																																														+
@@ -156,7 +166,7 @@ public class EmailServiceImpl implements EmailService {
         msgg += "</body>";
         msgg += "</html>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("soyeon1170@gmail.com","짠해"));//보내는 사람
+        message.setFrom(new InternetAddress("jjanhae@naver.com","짠해"));//보내는 사람
 
         return message;
     }
@@ -221,5 +231,42 @@ public class EmailServiceImpl implements EmailService {
         }
         return ePw;
     }
+    @Override
+    public AuthEmail getAuthEmailByEmail(String email) {
+        System.out.println("====getAuthEmail====");
+        System.out.println("인증하려는 이메일 : " + email);
+        Optional<AuthEmail> res = authEmailRepositorySupport.findAuthEmailByEmail(email);
+        AuthEmail authEmail = null;
+        if(res.isPresent()){
+            authEmail = res.get();
+        }
+        return authEmail;
+    }
 
+    @Override
+    public AuthEmail createAuthEmail(String email, String authCode) {
+        System.out.println("====createAuthEmail====");
+        AuthEmail authEmail = new AuthEmail();
+        authEmail.setEmail(email);
+        authEmail.setAuthCode(authCode);
+        return authEmailRepository.save(authEmail);
+    }
+
+    @Override
+    public AuthEmail updateAuthEmail(String email, String authCode){
+        System.out.println("======updateAuthEmail======");
+        Optional<AuthEmail> res = authEmailRepositorySupport.findAuthEmailByEmail(email);
+        if(res.isPresent()){
+            AuthEmail authEmail = res.get();
+            authEmail.setAuthCode(authCode);
+            authEmailRepository.save(authEmail);
+            return authEmail;
+        }
+        return null;
+    }
+    @Override
+    public void deleteAuthEmail(AuthEmail authEmail) {
+        System.out.println("======deleteAuthEmail======");
+        authEmailRepository.delete(authEmail);
+    }
 }
