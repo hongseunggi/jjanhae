@@ -88,6 +88,9 @@
 .input.drinkInfo {
   height: 30px;
 }
+.selectYear {
+  color: red;
+}
 .inputData {
   width: 260px;
   height: 30px;
@@ -148,4 +151,19 @@
   font-weight: bold;
   cursor: pointer;
   outline: none;
+}
+
+.BirthInputForm {
+  background: none;
+  width: 80px;
+  border: none;
+  margin-right: 10px;
+  border-bottom: 1px solid #eee;
+}
+.birthInput {
+  display: flex;
+  width: 260px;
+  height: 50px;
+  border: none;
+  margin-left: 10px;
 }

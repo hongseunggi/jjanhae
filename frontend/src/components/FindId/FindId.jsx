@@ -4,9 +4,11 @@ import { ReactComponent as EmailIcon } from "../../assets/icons/email.svg";
 import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
 import ShowId from "./ShowId";
-import axios from "axios";
+import UserApi from "../../api/UserApi.js";
 
 const FindId = () => {
+  const { getEmailCheckResult, getEmailCodeCheckResult } = UserApi;
+
   const emailRef = createRef();
   const confirmEmailRef = createRef();
   const nameRef = createRef();
@@ -69,38 +71,34 @@ const FindId = () => {
   };
 
   // 이메일 인증번호 검사
-  const handleEmailCheck = () => {
-    setEmailMsg("");
+  const handleEmailCheck = async () => {
     // 이메일 인증번호 검사 api 호출
-    let url = `http://localhost:8081/user/id`;
-    axios
-      .patch(url, {
-        name : name,
-        email : email,
-      })
-      .then((result) => {
-        console.log(result);
-        setIsSend(true);
-        // setAuthCode(result.authCode);
-      })
-      .catch((error) => {
-        setEmailMsg("중복된 이메일 입니다.");
+    try {
+      const { data } = await getEmailCheckResult("findId", {
+        name: name,
+        email: email,
       });
+      setIsSend(true);
+      setEmailMsg("이메일을 발송했습니다. 인증번호를 확인해주세요.");
+    } catch ({ response }) {
+      console.log(response);
+      setEmailMsg("가입시 작성한 이메일을 입력해주세요.");
+    }
   };
 
-  const handleEmailCodeCheck = () => {
-    let url = `http://localhost:8081/user/id?name=${name}&email=${email}&authCode=${emailConfirmCode}`;
-    axios
-      .get(url)
-      .then((result) => {
-        console.log(result);
-        setEmailConfirm(true);
-        setId(result.data.userId);
-        setEmailConfirmCodeMsg("인증이 완료되었습니다.");
-      })
-      .catch((error) => {
-        setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
+  const handleEmailCodeCheck = async () => {
+    try {
+      const { data } = await getEmailCodeCheckResult("findId", {
+        name: name,
+        email: email,
+        authCode: emailConfirmCode,
       });
+      setEmailConfirm(true);
+      setId(data.userId);
+      setEmailConfirmCodeMsg("인증이 완료되었습니다.");
+    } catch ({ response }) {
+      setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
+    }
   };
 
   // 다음 버튼 클릭 시 이벤트
@@ -118,15 +116,6 @@ const FindId = () => {
       setEmailConfirmCodeMsg("인증을 완료해주세요.");
       confirmEmailRef.current.focus();
     } else {
-      // 아이디찾기 api 호출
-      // let url = `http://localhost:8081/user?name=${name}&email=${email}&authCode=${emailConfirmCode}`;
-      // axios.get(url)
-      // const data = {
-      //   email,
-      //   name,
-      // };
-      // const result = "ssafy";
-      // setId(result); // 결과
       setConfirm(true);
     }
   };
@@ -186,7 +175,11 @@ const FindId = () => {
                       전송
                     </button>
                   </div>
-                  <p className={styles.invalidMsg}>{emailMsg}</p>
+                  {isSend ? (
+                    <p className={styles.validMsg}>{emailMsg}</p>
+                  ) : (
+                    <p className={styles.invalidMsg}>{emailMsg}</p>
+                  )}
                 </div>
               </div>
               {/* 이메일 인증번호 */}

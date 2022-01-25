@@ -11,10 +11,17 @@ import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import { ReactComponent as SojuIcon } from "../../assets/icons/soju.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
 import logo from "../../assets/icons/logo.png";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import UserApi from "../../api/UserApi.js";
 
 const Register = () => {
+  const {
+    getRegistResult,
+    getEmailCheckResult,
+    getIdCheckResult,
+    getEmailCodeCheckResult,
+  } = UserApi;
   const idRef = createRef();
   const pwdRef = createRef();
   const confirmPwdRef = createRef();
@@ -54,9 +61,6 @@ const Register = () => {
 
   // 이메일 인증 버튼 클릭 유무
   const [isSend, setIsSend] = useState(false);
-
-  // 이메일 인증 코드(추후 삭제 예정)
-  const [authCode, setAuthCode] = useState("");
 
   // 아이디, 이메일 검사 결과
   const [idConfirm, setIdConfirm] = useState(false);
@@ -143,56 +147,59 @@ const Register = () => {
   };
 
   // 아이디 중복 검사
-  const handleIdCheck = () => {
+  const handleIdCheck = async () => {
     // 아이디 중복 검사 api 호출
-    let url = `http://localhost:8081/user?userId=${id}`;
-    axios
-      .get(url)
-      .then((result) => {
-        console.log(result);
-        setIdConfirm(true);
-        setIdMsg("사용가능한 아이디입니다.");
-      })
-      .catch((error) => {
-        setIdMsg("이미 사용중인 아이디입니다.");
-        console.log(error);
-      });
+    try {
+      const { data } = await getIdCheckResult(id);
+      setIdConfirm(true);
+      setIdMsg(data.message);
+    } catch ({ response }) {
+      setIdMsg(response.data.message);
+    }
+    // let url = `http://localhost:8081/user?userId=${id}`;
+    // axios
+    //   .get(url)
+    //   .then((result) => {
+    //     console.log(result);
+    //     setIdConfirm(true);
+    //     setIdMsg("사용가능한 아이디입니다.");
+    //   })
+    //   .catch((error) => {
+    //     setIdMsg("이미 사용중인 아이디입니다.");
+    //     console.log(error);
+    //   });
   };
 
   // 이메일 인증번호 검사
-  const handleEmailCheck = () => {
+  const handleEmailCheck = async () => {
     setEmailMsg("");
+
     // 이메일 인증번호 검사 api 호출
-    let url = `http://localhost:8081/user`;
-    axios
-      .post(url, {
-        email,
-      })
-      .then((result) => {
-        console.log(result);
-        setIsSend(true);
-        // setAuthCode(result.authCode);
-      })
-      .catch((error) => {
-        setEmailMsg("중복된 이메일 입니다.");
-      });
+    try {
+      const { data } = await getEmailCheckResult("regist", { email });
+      setIsSend(true);
+      setEmailMsg("");
+      setEmailConfirmCodeMsg(data.message);
+    } catch ({ response }) {
+      setEmailMsg(response.data.message);
+    }
   };
 
-  const handleEmailCodeCheck = () => {
-    let url = `http://localhost:8081/user?email=${email}&authCode=${emailConfirmCode}`;
-    axios
-      .get(url)
-      .then((result) => {
-        console.log(result);
-        setEmailConfirm(true);
-        setEmailConfirmCodeMsg("인증이 완료되었습니다.");
-      })
-      .catch((error) => {
-        setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
+  const handleEmailCodeCheck = async () => {
+    try {
+      const response = await getEmailCodeCheckResult("regist", {
+        email,
+        authCode: emailConfirmCode,
       });
+      console.log(response);
+      setEmailConfirm(true);
+      setEmailConfirmCodeMsg("인증이 완료되었습니다.");
+    } catch (error) {
+      setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
+    }
   };
   // 회원가입 버튼 클릭 시 이벤트
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!idConfirm) {
       setIdMsg("아이디를 확인해주세요.");
@@ -221,7 +228,7 @@ const Register = () => {
     } else {
       const newBirth = birthday.toLocaleDateString();
       console.log(newBirth.length);
-      const data = {
+      const body = {
         userId: id,
         password: pwd,
         email,
@@ -230,37 +237,17 @@ const Register = () => {
         drink,
         drinkLimit,
       };
-      console.log(data);
-      //회원가입 api 호출
-      let url = "http://localhost:8081/user/signup";
-      axios
-        .post(url, {
-          userId: id,
-          password: pwd,
-          email,
-          name,
-          birthday: newBirth,
-          drink,
-          drinkLimit,
-        })
-        .then((result) => {
-          console.log(result);
-          navigate("complete");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
 
-      //정상적으로 동작할 시 로그인 화면으로 이동
+      // //회원가입 api 호출
+      try {
+        const response = await getRegistResult(body);
+        console.log(response);
+        navigate("complete");
+      } catch (error) {
+        alert("회원가입에 실패했습니다. 새로고침 후 다시 시도해주세요");
+      }
     }
   };
-
-  //회원가입 api
-  // const registUser = async (data) => {
-  //   try {
-  //     // const response = await axios.post(URL, data);
-  //   } catch {}
-  // };
 
   const iconChange = (e) => {
     setDrink(e.target.value);
@@ -414,7 +401,6 @@ const Register = () => {
             </div>
             <div className={styles.input}>
               <input
-                autoComplete="off"
                 id="name"
                 className={styles.inputData}
                 value={name}
@@ -422,6 +408,7 @@ const Register = () => {
                 placeholder="이름"
                 ref={nameRef}
                 onChange={handleInput}
+                autoComplete="off"
               />
               <p className={styles.invalidMsg}>{nameMsg}</p>
             </div>
@@ -430,7 +417,7 @@ const Register = () => {
             <div>
               <BirthIcon fill="#EEE" width="20" height="20" />
             </div>
-            <div className={styles.input}>
+            <div className={styles.birthInput}>
               <BirthDate
                 date={birthday}
                 onChange={(date) => {
