@@ -15,9 +15,9 @@ const User = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
         <Route path="/signup/complete" element={<RegisterComplete />} />
-        <Route path="/findId" element={<FindId />} />
-        <Route path="/findPwd" element={<FindPwd />} />
-        <Route path="/resetpwd" element={<ResetPwd />} />
+        <Route path="/findid" element={<FindId />} />
+        <Route path="/findpwd" element={<FindPwd />} />
+        <Route path="/newpwd" element={<ResetPwd />} />
       </Routes>
     </div>
   );

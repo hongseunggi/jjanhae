@@ -1,4 +1,5 @@
 import React, { useDebugValue, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -26,6 +27,9 @@ const Login = () => {
 
   //로그인 상태 확인
   const [isLogin, setIslogin] = useState(false);
+
+  //navigator
+  const navigate = useNavigate();
 
   //input 유효성 검사
   const handleInput = (event) => {
@@ -97,7 +101,6 @@ const Login = () => {
     let pwdError = 401;
     let errorMsg =
       "아이디 또는 비밀번호가 잘못 입력 되었습니다.\n 아이디와 비밀번호를 정확히 입력해 주세요.";
-    errorMsg = errorMsg.replace(/(<br>|<br\/>|<br \/>)/g, "\r\n");
 
     let url = "http://localhost:8081/user/login";
     axios
@@ -108,6 +111,7 @@ const Login = () => {
       .then(function (result) {
         setLoginMsg("");
         sessionStorage.setItem("accessToken", result.data.accessToken);
+        navigate("/", { code: 2})
       })
       .catch(function (error) {
         if (

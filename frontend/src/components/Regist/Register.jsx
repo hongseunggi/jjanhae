@@ -179,21 +179,17 @@ const Register = () => {
   };
 
   const handleEmailCodeCheck = () => {
-    if (emailConfirmCode === authCode) {
-      // 인증번호로 추후 변경
-      let url = `http://localhost:8081/user?email=${email}&authCode=${emailConfirmCode}`;
-      axios
-        .get(url)
-        .then((result) => {
-          console.log(result);
-          setEmailConfirm(true);
-          setEmailConfirmCodeMsg("인증이 완료되었습니다.");
-        })
-        .catch((error) => {
-          setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
-        });
-    } else {
-    }
+    let url = `http://localhost:8081/user?email=${email}&authCode=${emailConfirmCode}`;
+    axios
+      .get(url)
+      .then((result) => {
+        console.log(result);
+        setEmailConfirm(true);
+        setEmailConfirmCodeMsg("인증이 완료되었습니다.");
+      })
+      .catch((error) => {
+        setEmailConfirmCodeMsg("인증번호를 확인해주세요.");
+      });
   };
   // 회원가입 버튼 클릭 시 이벤트
   const handleSubmit = (event) => {
@@ -223,19 +219,30 @@ const Register = () => {
     } else if (!drinkLimit) {
       setDrinkLimitMsg("주량을 입력해주세요.");
     } else {
+      const newBirth = birthday.toLocaleDateString();
+      console.log(newBirth.length);
       const data = {
         userId: id,
         password: pwd,
         email,
         name,
-        birthday,
+        birthday: newBirth,
         drink,
         drinkLimit,
       };
+      console.log(data);
       //회원가입 api 호출
-      let url = "https://localhost:3000/user/signup";
+      let url = "http://localhost:8081/user/signup";
       axios
-        .post(url, data)
+        .post(url, {
+          userId: id,
+          password: pwd,
+          email,
+          name,
+          birthday: newBirth,
+          drink,
+          drinkLimit,
+        })
         .then((result) => {
           console.log(result);
           navigate("complete");
