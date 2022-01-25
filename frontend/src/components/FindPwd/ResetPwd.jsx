@@ -61,6 +61,7 @@ const ResetPwd = () => {
         password: pwd,
         authCode: authCode,
       });
+      console.log(data);
       setPwdMsg("");
       navigate("/user/login");
     } catch ({ response }) {
