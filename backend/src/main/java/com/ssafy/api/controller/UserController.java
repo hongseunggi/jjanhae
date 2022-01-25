@@ -56,6 +56,7 @@ public class UserController {
 
 		System.out.println("=========== 회원가입 ===========\n");
 		System.out.println("아이디 : " + signupInfo.getUserId());
+		System.out.println("생년월일 : " + signupInfo.getBirthday());
 		User user = userService.getUserByUserId(signupInfo.getUserId());
 		System.out.println("user : " + user);
 		if(user != null){

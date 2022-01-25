@@ -72,7 +72,7 @@ const FindId = () => {
   const handleEmailCheck = () => {
     setEmailMsg("");
     // 이메일 인증번호 검사 api 호출
-    let url = `http://localhost:8081/user`;
+    let url = `http://localhost:8081/user/id`;
     axios
       .patch(url, {
         name,
