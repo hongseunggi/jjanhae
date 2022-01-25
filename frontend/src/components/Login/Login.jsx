@@ -1,4 +1,5 @@
 import React, { useDebugValue, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -26,6 +27,9 @@ const Login = () => {
 
   //로그인 상태 확인
   const [isLogin, setIslogin] = useState(false);
+
+  //navigator
+  const navigate = useNavigate();
 
   //input 유효성 검사
   const handleInput = (event) => {
@@ -107,6 +111,7 @@ const Login = () => {
       .then(function (result) {
         setLoginMsg("");
         sessionStorage.setItem("accessToken", result.data.accessToken);
+        navigate("/", { code: 2})
       })
       .catch(function (error) {
         if (
