@@ -6,8 +6,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("ModifyPasswordRequest")
-public class ModifyPasswordRequest {
+@ApiModel("PasswordPatchRequest")
+public class PwdPatchRequest {
     String userId;
     String password;
+    String authCode;
 }

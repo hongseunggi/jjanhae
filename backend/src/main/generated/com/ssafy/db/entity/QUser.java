@@ -23,7 +23,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath authYn = createString("authYn");
 
-    public final DateTimePath<java.time.LocalDate> birthday = createDateTime("birthday", java.time.LocalDate.class);
+    public final DatePath<java.time.LocalDate> birthday = createDate("birthday", java.time.LocalDate.class);
 
     public final StringPath delYn = createString("delYn");
 
@@ -38,6 +38,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath name = createString("name");
 
     public final StringPath password = createString("password");
+
+    public final StringPath provider = createString("provider");
 
     public final StringPath userId = createString("userId");
 
