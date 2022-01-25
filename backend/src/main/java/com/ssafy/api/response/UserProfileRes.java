@@ -1,5 +1,6 @@
 package com.ssafy.api.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.User;
 
@@ -7,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -27,7 +29,8 @@ public class UserProfileRes extends BaseResponseBody {
 	String drink;
 	@ApiModelProperty(name="유저 주량", example="1")
 	Integer drinkLimit;
-	@ApiModelProperty(name="유저 생년월일", example="2022. 1 .20")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy. mm. dd.", timezone = "Asia/Seoul")
+	@ApiModelProperty(name="유저 생년월일", example="2022. 1. 20.")
 	LocalDate birthday;
 	@ApiModelProperty(name="프로필 링크", example="default.png")
 	String imageUrl;
