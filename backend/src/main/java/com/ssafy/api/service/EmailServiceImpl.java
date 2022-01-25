@@ -29,11 +29,13 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     AuthEmailRepositorySupport authEmailRepositorySupport;
 
-    public static final String ePw = createKey();
+    public static String allePw;
 
     private MimeMessage createMessage(String name, String to)throws Exception{
         System.out.println("보내는 대상 : "+ to);
-        System.out.println("인증 번호 : "+ePw);
+        String ePw = createKey();
+        allePw = ePw;
+        System.out.println("인증 번호 : "+ ePw);
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(RecipientType.TO, to); //보내는 대상
@@ -89,6 +91,8 @@ public class EmailServiceImpl implements EmailService {
 
     private MimeMessage createMessageWithoutName(String to)throws Exception{
         System.out.println("보내는 대상 : "+ to);
+        String ePw = createKey();
+        allePw = ePw;
         System.out.println("인증 번호 : "+ePw);
         MimeMessage  message = emailSender.createMimeMessage();
 
@@ -130,6 +134,8 @@ public class EmailServiceImpl implements EmailService {
 
     private MimeMessage createMessageButton(String userId, String name, String to)throws Exception{
         System.out.println("보내는 대상 : "+ to);
+        String ePw = createKey();
+        allePw = ePw;
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(RecipientType.TO, to); //보내는 대상
@@ -205,7 +211,7 @@ public class EmailServiceImpl implements EmailService {
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
-        return ePw;
+        return allePw;
     }
 
     @Override
@@ -217,7 +223,7 @@ public class EmailServiceImpl implements EmailService {
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
-        return ePw;
+        return allePw;
     }
 
     @Override
@@ -229,7 +235,7 @@ public class EmailServiceImpl implements EmailService {
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
-        return ePw;
+        return allePw;
     }
     @Override
     public AuthEmail getAuthEmailByEmail(String email) {
