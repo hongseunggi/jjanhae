@@ -1,10 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
 
+.icon {
+  fill: #eee;
+  width: 30px;
+  height: 30px;
+}
+
+
 .inputRow {
   width: 400px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-bottom: 30px;
 }
 
@@ -15,8 +22,8 @@
 }
 
 .form {
-  width: 500px;
-  height: 620px;
+  width: 600px;
+  height: 620px;;
   display: flex;
   flex-direction: column;
   /* justify-content: space-between; */
@@ -46,10 +53,10 @@
 }
 
 .input {
-  width: 260px;
+  width: 320px;
   height: 50px;
   border: none;
-  margin-left: 10px;
+  margin-top: 1rem;
 }
 
 .inputWithBtn {
@@ -98,12 +105,13 @@
 .validMsg {
   position: relative;
   color: #2db400;
-  font-size: 13px;
+  font-size: 15px
 }
+
 .invalidMsg {
   position: relative;
   color: #ff5722;
-  font-size: 13px;
+  font-size: 15px
 }
 
 .nextBtn {

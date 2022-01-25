@@ -20,37 +20,41 @@ const FindPwd = () => {
   const [nameMsg, setNameMsg] = useState("");
   const [emailMsg, setEmailMsg] = useState("");
 
+  const [findPwdMsg, setFindPwdMsg] = useState("");
+
   const handleInput = (event) => {
+    checkValidation();
     const { id, value } = event.target;
     setInput({
       ...input,
       [id]: value,
     });
+
   };
 
-  const checkValidation = () => {
+  const checkValidation = (...input) => {
     let emailRule =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     let nameRule = /^[가-힣]+$/;
 
-    console.log(name.length);
+    console.log(name);
 
     if (id.length < 5 && id.length > 16) {
       setIdMsg("아이디는 5자이상 16자 이하입니다");
     } else if (id.length === 0) {
-      setIdMsg("아이디를 입력해주세요");
+      // setIdMsg("아이디를 입력해주세요");
     } else {
       setIdMsg("");
     }
     if (name.length === 0) {
-      setNameMsg("이름을 입력해주세요");
+      // setNameMsg("이름을 입력해주세요");
     } else if (!nameRule.test(name)) {
       setNameMsg("한글만 입력 가능합니다");
     } else {
       setNameMsg("");
     }
     if (email.length === 0) {
-      setEmailMsg("이메일을 입력해주세요");
+      // setEmailMsg("이메일을 입력해주세요");
     } else if (!emailRule.test(email)) {
       setEmailMsg("이메일 형식을 확인해주세요");
     } else {
@@ -61,26 +65,41 @@ const FindPwd = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     checkValidation();
+    setFindPwdMsg("");
+
+    if (name.length === 0) setNameMsg("이름을 입력해주세요");
+    if (email.length === 0) setEmailMsg("이메일을 입력해주세요");
+    if (id.length === 0) setIdMsg("아이디를 입력해주세요");
 
     //validation check pass
-    if (idMsg === "" && idMsg === "" && idMsg === "") {
-      findPwdApi(...input);
+    if (idMsg === "" && nameMsg === "" && emailMsg === "") {
+      findPwdApi();
     }
     // navigate("/user/resetPwd");
   };
 
   //axios
-  const findPwdApi = () => {
-    let url = "https://localhost:8081/user/pwd?userid="+id+"&name="+name+"&email="+email;
-    axios
-      .get(url, {
+  const findPwdApi = (...input) => {
+    console.log(id);
+    console.log(name);
+    console.log(email);
+    // let successMsg = "인증번호를 발송했습니다.\n 이메일이 도착하지 않았다면 입력한 정보를 다시 확인해주세요.";
+    let errMsg = "입력하신 정보가 잘못되었습니다. 다시 입력해주세요.";
 
+    let url = "http://localhost:8081/user/pwd";
+    axios
+      .patch(url, {
+        userId : id,
+        name : name,
+        email : email,
       })
       .then(function (result) {
-        console.log(result);
+        console.log(result.data.message);
+        setFindPwdMsg(result.data.message);
       })
       .catch(function (error) {
         console.log(error);
+        setFindPwdMsg(errMsg);
       });
   };
 
@@ -142,6 +161,7 @@ const FindPwd = () => {
             </div>
           </div>
 
+          <div className={styles.errMsg}>{findPwdMsg}</div>
           <button className={styles.findPwdBtn}>
             <p className={styles.btnText} type="submit">
               이메일 전송

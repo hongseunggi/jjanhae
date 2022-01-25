@@ -72,11 +72,11 @@ const FindId = () => {
   const handleEmailCheck = () => {
     setEmailMsg("");
     // 이메일 인증번호 검사 api 호출
-    let url = `http://localhost:8081/user`;
+    let url = `http://localhost:8081/user/id`;
     axios
       .patch(url, {
-        name,
-        email,
+        name : name,
+        email : email,
       })
       .then((result) => {
         console.log(result);
@@ -89,13 +89,13 @@ const FindId = () => {
   };
 
   const handleEmailCodeCheck = () => {
-    let url = `http://localhost:8081/user?name=${name}&email=${email}&authCode=${emailConfirmCode}`;
+    let url = `http://localhost:8081/user/id?name=${name}&email=${email}&authCode=${emailConfirmCode}`;
     axios
       .get(url)
       .then((result) => {
         console.log(result);
         setEmailConfirm(true);
-        setId(result.userId);
+        setId(result.data.userId);
         setEmailConfirmCodeMsg("인증이 완료되었습니다.");
       })
       .catch((error) => {
