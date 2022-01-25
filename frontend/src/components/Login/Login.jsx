@@ -97,7 +97,6 @@ const Login = () => {
     let pwdError = 401;
     let errorMsg =
       "아이디 또는 비밀번호가 잘못 입력 되었습니다.\n 아이디와 비밀번호를 정확히 입력해 주세요.";
-    errorMsg = errorMsg.replace(/(<br>|<br\/>|<br \/>)/g, "\r\n");
 
     let url = "http://localhost:8081/user/login";
     axios

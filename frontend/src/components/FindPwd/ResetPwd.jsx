@@ -78,8 +78,8 @@ const ResetPwd = ({ getauthcode }) => {
           <div className={styles.inputArea}>
             {/* 비밀번호 */}
             <div className={styles.inputRow}>
-              <div>
-                <PwdIcon fill="#EEE" width="20" height="20" />
+              <div className="">
+                <PwdIcon className={styles.icon} />
               </div>
               <div className={styles.input}>
                 <input
@@ -98,7 +98,7 @@ const ResetPwd = ({ getauthcode }) => {
             {/* 비밀번호 확인 */}
             <div className={styles.inputRow}>
               <div>
-                <PwdIcon fill="#EEE" width="20" height="20" />
+                <PwdIcon className={styles.icon} />
               </div>
               <div className={styles.input}>
                 <input

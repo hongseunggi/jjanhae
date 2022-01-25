@@ -126,3 +126,12 @@
   transform: translateY(-4px);
   box-shadow: 0rem 0.5rem 1.5rem rgba(243, 171, 188, 0.212);
 }
+
+.errMsg {
+  position: relative;
+  color: #ff5722;
+  font-size: 15px;
+  margin-bottom: 0px;
+  margin-top: 10px;
+  white-space: pre-wrap;
+}
