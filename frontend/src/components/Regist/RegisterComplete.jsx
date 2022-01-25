@@ -6,7 +6,7 @@ const RegisterComplete = () => {
   return (
     <div className={styles.form}>
       <div className={styles.title}>Welcome</div>
-      <Link to="/login">
+      <Link to="/user/login">
         <button className={styles.nextBtn} type="submit">
           짠하러 갈까요?
           <span className={styles.icon}>🍻</span>
