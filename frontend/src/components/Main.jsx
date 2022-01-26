@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 function Main(props) {
   const { status } = props;
-  console.log(status);
   const slide = [
     {
       img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg",
@@ -66,9 +65,9 @@ function Main(props) {
 
     const { length } = slide;
     const pSlide = activeSlideRef.current;
-    console.log(pSlide);
+    // console.log(pSlide);
     let actSlide = pSlide + change;
-    console.log(actSlide);
+    // console.log(actSlide);
     if (actSlide < 0) {
       actSlide = length - 1;
       //    setActiveSlide(actSlide);
@@ -85,10 +84,10 @@ function Main(props) {
         return (
           <Col>
             <Link to="user/login">
-            <button className="create_room">방 만들기</button>
+              <button className="create_room">방 만들기</button>
             </Link>
             <Link to="user/login">
-            <button className="into_room">방 입장하기</button>
+              <button className="into_room">방 입장하기</button>
             </Link>
           </Col>
         );
@@ -98,7 +97,6 @@ function Main(props) {
           <button className="create_room">방 만들기</button>
           <Link to="conferences/list"><button className="into_room">방 입장하기</button></Link>
           </Col>
-        
         );
     }
   };
@@ -111,9 +109,7 @@ function Main(props) {
 
           <div className="welcome_text">우리가 짠해?</div>
           <div className="swelcome_text">아니 우린 짠해!</div>
-          <Row className="buttonbox">
-            {buttonRender()}
-          </Row>
+          <Row className="buttonbox">{buttonRender()}</Row>
         </Col>
         <Col>
           <div className={classNames("slider", { "s--ready": sliderReady })}>
