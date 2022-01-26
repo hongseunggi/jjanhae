@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk8:x86_64-alpine-jdk8u292-b10 as builder
 WORKDIR /app
-COPY build.gradle settings.gradle gradlew .
+COPY build.gradle settings.gradle gradlew ./
 COPY gradle ./gradle
 RUN \
 chmod +x ./gradlew \
@@ -11,6 +11,6 @@ RUN ./gradlew bootJar
 FROM adoptopenjdk/openjdk8:x86_64-alpine-jre8u292-b10
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar ./app.jar
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["java", "-jar", "app.jar"]
-CMD ["-Dspring.profiles.active=production"]
+CMD ["--datasource.username=jjanhae", "--datasource.password=password"]

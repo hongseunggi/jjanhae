@@ -71,7 +71,7 @@ task webpack(type: NpmTask, dependsOn: 'npmInstall') {
 }
 
 // processResources is a Java task. Run the webpack bundling before this task using the 'build' task in the package.json
-processResources.dependsOn 'webpack'
+//processResources.dependsOn 'webpack'
 
 //set build time and inject value to application.properties
 def buildTime() {
