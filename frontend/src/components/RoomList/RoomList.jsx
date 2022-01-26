@@ -56,7 +56,7 @@ function RoomList(props) {
     //     r
     // })
     return(
-        <Container fluid={true} className={style.body}>
+        <Container fluid={true} className={style.container}>
             <Row >
             <Col className={style.searchbox}>
             

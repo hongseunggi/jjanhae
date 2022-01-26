@@ -1,10 +1,9 @@
-.body{
-    margin: 0 auto;
+.container{
+    margin: 100px auto;
 }
 .searchbox{
     position: relative;
     text-align: center;
-    margin-top: 90px;
 }
 .searchdiv{
     position: relative;
@@ -67,7 +66,7 @@
     height: 500px;
     
     /* margin-bottom: 10%; */
-    margin: 9px auto 15%;
+    margin: 45px auto 15%;
     border-radius: 25px;
     border-style: none;
     transition: all 0.3s ease 0s;
