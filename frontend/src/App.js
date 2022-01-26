@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import NotFound from "./components/NotFound/NotFound";
 import User from "./routes/User";
 import Conferences from "./routes/Conferences";
-import LocaleContext from "./contexts/LocaleContext";
+import LocaleContext from "./contexts/LoginStatusContext";
 function App() {
   // const [code, setCode] = useState("2");
   // 1 : 비로그인 상태 2 : 로그인 상태 3 : 파티룸 입장 상태

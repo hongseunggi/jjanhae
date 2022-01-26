@@ -3,10 +3,10 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./Navigator.module.css";
 import Logo from "../../assets/logo.png";
-import LocaleContext from "../../contexts/LocaleContext";
+import LoginStatusContext from "../../contexts/LoginStatusContext";
 
 function Navigator({ onLoginChange }) {
-  const isLogin = useContext(LocaleContext);
+  const isLogin = useContext(LoginStatusContext);
 
   const handleLogOut = () => {
     onLoginChange("1");

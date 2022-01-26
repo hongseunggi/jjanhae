@@ -4,14 +4,10 @@ import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
 import RoomConfig from "./Modals/RoomConfig";
 import { Link } from "react-router-dom";
-import LocaleContext from "../contexts/LocaleContext";
+import LoginStatusContext from "../contexts/LoginStatusContext";
 
 function Main(props) {
-  // const isLogin = useContext(LocaleContext);
-  // console.log(isLogin);
-  // const { status } = props;
-
-  const isLogin = useContext(LocaleContext);
+  const isLogin = useContext(LoginStatusContext);
 
   const slide = [
     {

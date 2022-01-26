@@ -11,7 +11,6 @@ const User = ({ onLoginChange }) => {
   return (
     <div>
       <Routes>
-        {/* <Route path="" element={<Navigate to={}} /> */}
         <Route
           path="/login"
           element={<Login onLoginChange={onLoginChange} />}
