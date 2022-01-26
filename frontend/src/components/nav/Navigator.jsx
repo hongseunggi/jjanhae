@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./Navigator.module.css";
 import Logo from "../../assets/logo.png";
+import LocaleContext from "../../contexts/LocaleContext";
 
-function Navigator(props) {
-  const { status, isLogin } = props;
+function Navigator({ onLoginChange }) {
+  const isLogin = useContext(LocaleContext);
 
   const handleLogOut = () => {
-    isLogin("1");
+    onLoginChange("1");
+    sessionStorage.removeItem("accessToken");
   };
 
-  switch (status) {
+  switch (isLogin) {
     case "1":
       return (
         <Container fluid>

@@ -7,12 +7,15 @@ import Login from "../components/Login/Login";
 import Register from "../components/Regist/Register";
 import RegisterComplete from "../components/Regist/RegisterComplete";
 
-const User = () => {
+const User = ({ onLoginChange }) => {
   return (
     <div>
       <Routes>
         {/* <Route path="" element={<Navigate to={}} /> */}
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={<Login onLoginChange={onLoginChange} />}
+        />
         <Route path="/signup" element={<Register />} />
         <Route path="/signup/complete" element={<RegisterComplete />} />
         <Route path="/findid" element={<FindId />} />
