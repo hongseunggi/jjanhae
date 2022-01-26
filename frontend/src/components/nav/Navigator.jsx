@@ -28,6 +28,11 @@ function Navigator({ onLoginChange }) {
                 LOGIN
               </Link>
             </Col>
+            <Col>
+              <Link to="user/profile" className={styles.link}>
+                PROFILE
+              </Link>
+            </Col>
           </Row>
         </Container>
       );

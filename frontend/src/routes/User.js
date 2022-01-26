@@ -7,6 +7,7 @@ import Login from "../components/Login/Login";
 import Profile from "../components/Profile/Profile";
 import Register from "../components/Regist/Register";
 import RegisterComplete from "../components/Regist/RegisterComplete";
+import CalendarPage from "../components/Calendar/CalendarPage";
 
 const User = ({ onLoginChange }) => {
   return (
