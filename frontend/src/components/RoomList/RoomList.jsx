@@ -56,8 +56,8 @@ function RoomList(props) {
     //     r
     // })
     return(
-        <Container fluid={true} className={style.body}>
-            <Row >
+        <Container fluid={true} className={style.container}>
+            <Row className={style.srow}>
             <Col className={style.searchbox}>
             
                 <div className={style.searchdiv}>
@@ -93,6 +93,11 @@ function RoomList(props) {
                 </div>
                 
             </Col>
+            </Row>
+            <Row>
+                <div style={{
+                    height : "20px"
+                }}></div>
             </Row>
             <Row className={style.list}>
                 {rooms.map((room, index)=>{

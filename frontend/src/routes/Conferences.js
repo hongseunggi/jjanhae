@@ -5,7 +5,7 @@ import "../App.css";
 
 const User = () => {
   return (
-    <div className="body">
+    <div>
       <Routes>
         {/* <Route path="" element={<Navigate to={}} /> */}
         <Route path="/list" element={<RoomList />} />

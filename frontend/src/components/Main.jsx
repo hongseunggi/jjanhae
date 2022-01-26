@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
 import RoomConfig from "./Modals/RoomConfig";
 import { Link } from "react-router-dom";
+import LoginStatusContext from "../contexts/LoginStatusContext";
 
 function Main(props) {
-  const { status } = props;
+  const isLogin = useContext(LoginStatusContext);
+
   const slide = [
     {
       img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg",
@@ -44,15 +46,12 @@ function Main(props) {
   prevSlideRef.current = prevSlide;
 
   useEffect(() => {
-    console.log("??????????");
     runAutochangeTo();
     setTimeout(() => {
       setActiveSlide(0);
-      console.log("마운트", activeSlide);
       setSliderReady(true);
     }, 0);
     return () => {
-      console.log("???");
       window.clearTimeout(changeTo);
     };
   }, []);
@@ -90,7 +89,7 @@ function Main(props) {
     setModalOpen(false);
   };
   const buttonRender = () => {
-    switch (status) {
+    switch (isLogin) {
       case "1":
         return (
           <Col>
