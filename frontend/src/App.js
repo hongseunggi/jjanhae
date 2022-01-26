@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
 import NotFound from "./components/NotFound/NotFound";
 import User from "./routes/User";
+import Conferences from "./routes/Conferences";
 function App() {
   const [code, setCode] = useState("2");
   const handleIsLogin = (data) => {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Main status={code} />} />
           <Route path="user/*" element={<User />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="conferences/*" element={<Conferences/>}/>
         </Routes>
       </Router>
     </div>
