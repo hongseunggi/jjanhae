@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import NotFound from "./components/NotFound/NotFound";
 import User from "./routes/User";
 function App() {
-  const [code, setCode] = useState("1");
+  const [code, setCode] = useState("2");
   const handleIsLogin = (data) => {
     setCode(data);
   };
