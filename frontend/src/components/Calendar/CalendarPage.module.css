@@ -22,8 +22,8 @@
     position: relative;
     font-size: 2.5rem;
     font-weight: bolder;
-    color: #08d9d6;
-    text-shadow: 0.2rem 0.05rem 0rem #ff2e63;
+    color: #eeee;
+    /* text-shadow: 0.2rem 0.05rem 0rem #ff2e63; */
     text-align: left;
     /* margin-left: 9rem; */
     margin : 0rem 0rem 2rem 9rem;
@@ -79,3 +79,11 @@
     height: 50px;
     background-color: transparent;
   }
+
+.sunday {
+    color : #ff2e63;
+}
+
+.saturday {
+    color : #08d9d6;
+}

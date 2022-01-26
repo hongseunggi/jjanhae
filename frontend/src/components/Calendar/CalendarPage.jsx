@@ -12,18 +12,27 @@ const CalendarPage = () => {
   const [calendar, setCalendar] = useState([]);
   //selected date
   const [value, setValue] = useState(moment());
+
+  const [item, setItem] = useState({
+    month : "",
+    day : "",
+  });
   
   useEffect(() => {
     setCalendar(buildCalendar(value))
   }, [value])
 
+  useEffect(() => {
+    console.log(item);
+  }, [item])
 
-  function isSelected(day) {
-    return value.isSame(day, "day")
+ 
+  function isSunday(day) {
+    if(day.day()===0) return true;
   }
 
-  function beforeToday(day) {
-    return day.isBefore(new Date(), "day");
+  function isSaturday(day) {
+    if(day.day()===0) return true;
   }
 
   function isToday(day) {
@@ -31,19 +40,29 @@ const CalendarPage = () => {
   }
 
   function dayStyles(day) {
-    if (beforeToday(day)) return "before";
-    if (isSelected(day)) return "selected";
-    if (isToday(day)) return "today";
-    return "";
+    let yoil = day.day();
+    if (yoil===0) return "sunday";
+    if (yoil===6) return "saturday";
+    if (yoil>0&&yoil)return "weekday";
   }
 
+  const currentMonth = () => {
+    return value.format("M")+"월";
+  }
 
-const currentMonth = () => {
-  return value.format("MMM");
+const handleClick = (event) => {
+  setItem({
+    month : value.format("M"),
+    day : event.target.innerText 
+  });
+
 }
 
-const onClick = (day) => {
-  // console.log(day);
+const calcYoil = (day) => {
+  let yoil = dayStyles(day);
+  console.log(yoil);
+  let date = day.format("D").toString();
+  return (<div className={styles[yoil]}>{date}</div>);
 }
 
     return (
@@ -57,16 +76,14 @@ const onClick = (day) => {
               </div>
             </div>
             <div className={styles.calendarBody}>
-              {calendar.map((week) => (
+              {calendar.map((week, key) => (
                   <div className={styles.week}>
                     {
                       week.map((day) => (
                         <div className={styles.day}
-                          // onClick={onClick(day)}
+                          onClick={handleClick}
                         >
-                          <div className={dayStyles(day, "day") ? "selected" : ""}>
-                            {day.format("D").toString()}
-                          </div>
+                          {calcYoil(day)}
                         </div>
                     ))}
                   </div>
