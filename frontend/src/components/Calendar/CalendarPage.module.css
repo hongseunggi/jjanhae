@@ -87,3 +87,7 @@
 .saturday {
     color : #08d9d6;
 }
+
+.none {
+    color: transparent;
+}

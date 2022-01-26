@@ -10,16 +10,26 @@ const CalendarPage = () => {
   
   //calendar
   const [calendar, setCalendar] = useState([]);
-  //selected date
+  //today
   const [value, setValue] = useState(moment());
-
+  //set cliked date
   const [item, setItem] = useState({
     month : "",
     day : "",
   });
+  //startDate
+  const [startMonth, setStartMonth] = useState(moment());
+  //endDate
+  const [endMonth, setEndMonth] = useState(moment());
+  //conference list
+  const [conferences, setConferences] = useState({
+
+  });
   
   useEffect(() => {
     setCalendar(buildCalendar(value))
+    setStartMonth(value.clone().startOf("month").subtract(1,"day"))
+    setEndMonth(value.clone().endOf("month"))
   }, [value])
 
   useEffect(() => {
@@ -41,9 +51,14 @@ const CalendarPage = () => {
 
   function dayStyles(day) {
     let yoil = day.day();
-    if (yoil===0) return "sunday";
-    if (yoil===6) return "saturday";
-    if (yoil>0&&yoil)return "weekday";
+    console.log(day.isAfter(startMonth));
+    if(day.isAfter(startMonth)&&day.isBefore(endMonth)) {
+      if (yoil===0) return "sunday";
+      if (yoil===6) return "saturday";
+      if (yoil>0&&yoil)return "weekday";
+    }else {
+      return "none"
+    }
   }
 
   const currentMonth = () => {
@@ -60,7 +75,6 @@ const handleClick = (event) => {
 
 const calcYoil = (day) => {
   let yoil = dayStyles(day);
-  console.log(yoil);
   let date = day.format("D").toString();
   return (<div className={styles[yoil]}>{date}</div>);
 }

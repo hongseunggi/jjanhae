@@ -23,6 +23,8 @@ const User = ({ onLoginChange }) => {
         <Route path="/findpwd" element={<FindPwd />} />
         <Route path="/newpwd" element={<ResetPwd />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/calendar" element={<CalendarPage />} />
+
       </Routes>
     </div>
   );
