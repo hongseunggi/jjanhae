@@ -19,7 +19,7 @@ const User = () => {
         <Route path="/findid" element={<FindId />} />
         <Route path="/findpwd" element={<FindPwd />} />
         <Route path="/newpwd" element={<ResetPwd />} />
-        <Route path="/calendar" element={<CalendarPage />} />
+        <Route path="/profile" element={<CalendarPage />} />
       </Routes>
     </div>
   );

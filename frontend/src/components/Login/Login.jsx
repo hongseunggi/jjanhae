@@ -111,7 +111,7 @@ const Login = () => {
       .then(function (result) {
         setLoginMsg("");
         sessionStorage.setItem("accessToken", result.data.accessToken);
-        navigate("/", { code: 2})
+        navigate("/", { status : 2})
       })
       .catch(function (error) {
         if (

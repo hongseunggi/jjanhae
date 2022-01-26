@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 function Main(props) {
   const { status } = props;
-  console.log(status);
+  console.log("status : " + status);
   const slide = [
     {
       img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg",
