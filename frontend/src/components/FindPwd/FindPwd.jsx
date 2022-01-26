@@ -23,7 +23,6 @@ const FindPwd = () => {
   const [findPwdMsg, setFindPwdMsg] = useState("");
 
   const handleInput = (event) => {
-    checkValidation();
     const { id, value } = event.target;
     setInput({
       ...input,

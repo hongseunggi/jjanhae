@@ -3,7 +3,7 @@ import styles from "./CalendarPage.module.css";
 import axios from "axios";
 import moment, { calendarFormat } from "moment";
 import buildCalendar from "./buildCalendar";
-
+import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
 // import Modal from 'react-modal'
 
 const CalendarPage = () => {
@@ -49,8 +49,13 @@ const onClick = (day) => {
     return (
         <>
           <div className={styles.calendarForm}>
+            <div className={styles.calendarHeader}>
               <div className={styles.calendarTitle}>술자리 기록</div>
-              <div className={styles.month}>{currentMonth()}</div>
+              <div className={styles.calendarTop}>
+                <div className={styles.month}>{currentMonth()}</div>
+                <CalendarIcon className={styles.icon} />
+              </div>
+            </div>
             <div className={styles.calendarBody}>
               {calendar.map((week) => (
                   <div className={styles.week}>

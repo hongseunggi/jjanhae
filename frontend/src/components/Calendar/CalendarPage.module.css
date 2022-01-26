@@ -13,8 +13,9 @@
     text-align: center;
     justify-content: center;
     color: tomato;
-    justify-content: space-between;
-    padding: 2rem 0rem 0rem 0rem;
+    justify-content: unset;
+    padding: 4rem 0rem 0rem 0rem;
+    align-items: flex-end;
 }
 
 .calendarTitle {
@@ -33,24 +34,29 @@
     justify-content: center;
     width: 50rem;
     height: 30rem;
-    margin: 0rem 0rem 2rem 10rem;
+    margin: 1rem 0rem 2rem 10rem;
     border-color: whitesmoke;
+}
+
+.calendarTop {
+    display: flex;
+    /* margin-right: 10rem; */
+    margin-left: 18rem;
 }
 
 .month {
     /* justify-content: center; */
     color : #eeee;
-    margin-right: 44rem;
+    margin-right: 1rem;
     font-size: 2rem;
     font-weight: bolder;
-    color: #08d9d6;
     text-align: left;
-    margin-left: 9rem;
+    margin-left: 0rem;
     font-size: 2.5rem;
 }
 
 .week {
-    height: 4.5rem;
+    height: 5rem;
     display: table-row;
 }
 
@@ -61,9 +67,15 @@
     color : #f3f3f3;
     text-align: center;
     justify-content: center;
-    padding : 0rem 3.5rem 0.5rem 3.5rem;
+    padding : 0rem 4rem 0.5rem 4rem;
     border-color: whitesmoke;
     border: 0.1rem solid white;
     font-weight: bold;
     font-family: 'Poppins', sans-serif;
 }
+
+.icon {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+  }
