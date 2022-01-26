@@ -1,17 +1,20 @@
-import React, { useDebugValue, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import logo from "../../assets/icons/logo.png";
+import UserApi from "../../api/UserApi.js";
 
-const Login = () => {
+const Login = ({ onLoginChange }) => {
   const [input, setInput] = useState({
     id: "",
     password: "",
   });
+
+  // import login api
+  const { getLoginResult } = UserApi;
 
   const { id, password } = input;
 
@@ -26,7 +29,7 @@ const Login = () => {
   const [pwdCheck, setPwdCheck] = useState(false);
 
   //로그인 상태 확인
-  const [isLogin, setIslogin] = useState(false);
+  // const [isLogin, setIslogin] = useState(false);
 
   //navigator
   const navigate = useNavigate();
@@ -77,9 +80,6 @@ const Login = () => {
   };
 
   const checkValidation = (...input) => {
-    console.log(id);
-    console.log(password);
-
     if (id.length === 0) setIdMsg("아이디를 입력해주세요");
     if (password.length === 0) setPwdMsg("비밀번호를 입력해주세요");
   };
@@ -94,33 +94,31 @@ const Login = () => {
   };
 
   //로그인 상태 확인
-  const checkToken = () => {};
+  // const checkToken = () => {};
 
-  const loginApi = () => {
+  const loginApi = async () => {
     let userError = 404;
     let pwdError = 401;
     let errorMsg =
       "아이디 또는 비밀번호가 잘못 입력 되었습니다.\n 아이디와 비밀번호를 정확히 입력해 주세요.";
-
-    let url = "http://localhost:8081/user/login";
-    axios
-      .post(url, {
-        userId: input.id,
-        password: input.password,
-      })
-      .then(function (result) {
-        setLoginMsg("");
-        sessionStorage.setItem("accessToken", result.data.accessToken);
-        navigate("/", { status : 2})
-      })
-      .catch(function (error) {
-        if (
-          error.response.status === userError ||
-          error.response.status === pwdError
-        ) {
-          setLoginMsg(errorMsg);
-        }
-      });
+    const body = {
+      userId: input.id,
+      password: input.password,
+    };
+    try {
+      const { data } = await getLoginResult(body);
+      setLoginMsg("");
+      sessionStorage.setItem("accessToken", data.accessToken);
+      onLoginChange("2");
+      navigate("/");
+    } catch ({ response }) {
+      if (
+        response.data.statusCode === userError ||
+        response.data.statusCode === pwdError
+      ) {
+        setLoginMsg(errorMsg);
+      }
+    }
   };
 
   //로그인 버튼 클릭시 처리되는 메소드
@@ -178,8 +176,8 @@ const Login = () => {
               로그인
             </button>
 
-            {/* 토큰 확인 */}
-            {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>}
+            {/* 토큰 확인
+            {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>} */}
 
             <Link to="/user/signup">
               <button className={styles.registBtn}>회원가입</button>

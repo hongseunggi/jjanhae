@@ -4,8 +4,10 @@ import axios from "axios";
 import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as EmailIcon } from "../../assets/icons/email.svg";
+import UserApi from "../../api/UserApi.js";
 
 const FindPwd = () => {
+  const { getPwdCheckResult } = UserApi;
   const [input, setInput] = useState({
     id: "",
     name: "",
@@ -28,16 +30,16 @@ const FindPwd = () => {
       ...input,
       [id]: value,
     });
-
+    console.log(input);
+    checkValidation();
   };
 
-  const checkValidation = (...input) => {
+  ///// 여기 좀 바꿔야할듯.
+  const checkValidation = () => {
     let emailRule =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     let nameRule = /^[가-힣]+$/;
-
-    console.log(name);
-
+    console.log(input);
     if (id.length < 5 && id.length > 16) {
       setIdMsg("아이디는 5자이상 16자 이하입니다");
     } else if (id.length === 0) {
@@ -78,28 +80,18 @@ const FindPwd = () => {
   };
 
   //axios
-  const findPwdApi = (...input) => {
-    console.log(id);
-    console.log(name);
-    console.log(email);
-    // let successMsg = "인증번호를 발송했습니다.\n 이메일이 도착하지 않았다면 입력한 정보를 다시 확인해주세요.";
+  const findPwdApi = async (...input) => {
     let errMsg = "입력하신 정보가 잘못되었습니다. 다시 입력해주세요.";
-
-    let url = "http://localhost:8081/user/pwd";
-    axios
-      .patch(url, {
-        userId : id,
-        name : name,
-        email : email,
-      })
-      .then(function (result) {
-        console.log(result.data.message);
-        setFindPwdMsg(result.data.message);
-      })
-      .catch(function (error) {
-        console.log(error);
-        setFindPwdMsg(errMsg);
+    try {
+      const { data } = await getPwdCheckResult({
+        userId: id,
+        name,
+        email,
       });
+      setFindPwdMsg(data.message);
+    } catch ({ response }) {
+      setFindPwdMsg(errMsg);
+    }
   };
 
   return (

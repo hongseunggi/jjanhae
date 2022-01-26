@@ -8,7 +8,8 @@ registerLocale("ko", ko); // 한국어적용
 const _ = require("lodash");
 
 const BirthDate = ({ date, onChange }) => {
-  const years = _.range(1990, getYear(new Date()) + 1, 1); // 수정
+  // const [startDate, setStartDate] = useState(new Date());
+  const years = _.range(1900, getYear(new Date()) + 1, 1); // 수정
   const months = [
     "1월",
     "2월",
@@ -26,6 +27,7 @@ const BirthDate = ({ date, onChange }) => {
 
   return (
     <DatePicker
+      // showYearPicker
       renderCustomHeader={({
         date,
         changeYear,
@@ -50,7 +52,7 @@ const BirthDate = ({ date, onChange }) => {
             onChange={({ target: { value } }) => changeYear(value)}
           >
             {years.map((option) => (
-              <option key={option} value={option}>
+              <option className={styles.selectYear} key={option} value={option}>
                 {option}
               </option>
             ))}
