@@ -1,6 +1,6 @@
-/* .body{
-    overflow: hidden;
-} */
+.body{
+    margin: 0 auto;
+}
 .searchbox{
     position: relative;
     text-align: center;
