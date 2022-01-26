@@ -1,0 +1,141 @@
+.profileForm {
+  padding: 50px;
+}
+.profileForm .title {
+  color: #eee;
+  font-size: 32px;
+  margin-bottom: 50px;
+}
+.profile {
+  display: flex;
+  justify-content: center;
+}
+.userProfile {
+  width: 400px;
+  height: 470px;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 50px;
+}
+
+.profileImg {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  margin-right: 20px;
+}
+
+.userInfoForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+}
+.userInfoForm .profileRow {
+  display: flex;
+  margin-bottom: 20px;
+}
+.userInfoForm .userInfoData {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.userInfoForm .inputRow {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.userInfoForm .inputRow .inputRowHalf {
+  width: 40%;
+}
+
+.userInfoForm .userInfoData label {
+  margin: 0;
+  font-size: 13px;
+}
+.userInfoForm .userInfoData input {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.userInfoData.userInfoDataEdit input {
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+}
+
+.editRow {
+  width: 100%;
+  text-align: right;
+}
+
+.editRow .editBtn {
+  border: none;
+  padding: 0;
+}
+.editBtn .editIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.friendProfile {
+  width: 700px;
+  height: 470px;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 30px 100px;
+}
+.friendTitle {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  margin-bottom: 20px;
+}
+.mainTitle {
+  font-size: 32px;
+  color: #eee;
+}
+.subTitle {
+  font-size: 16px;
+  color: #ff2e63;
+}
+.friends {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.friendInfo {
+  width: 140px;
+  height: 160px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.friendProfileImg {
+  width: 140px;
+  height: 160px;
+  border-radius: 50%;
+}
+
+.friendData {
+  width: 80%;
+  background-color: #c4c4c4;
+  border-radius: 20px;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.sunday-weekday {
+  background-color: red;
+}

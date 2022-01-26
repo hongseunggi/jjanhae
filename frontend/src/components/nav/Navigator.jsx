@@ -44,7 +44,7 @@ function Navigator({ onLoginChange }) {
               <Link to="/" onClick={handleLogOut} className={styles.link}>
                 LOGOUT
               </Link>
-              <Link to="/profile" className={styles.link_profile}>
+              <Link to="/user/profile" className={styles.link_profile}>
                 PROFILE
               </Link>
             </Col>
