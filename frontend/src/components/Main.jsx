@@ -94,8 +94,8 @@ function Main(props) {
       default:
         return (
           <Col>
-            <button className="create_room">방 만들기</button>
-            <button className="into_room">방 입장하기</button>
+          <button className="create_room">방 만들기</button>
+          <Link to="conferences/list"><button className="into_room">방 입장하기</button></Link>
           </Col>
         );
     }
