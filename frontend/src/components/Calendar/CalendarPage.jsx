@@ -4,6 +4,7 @@ import axios from "axios";
 import moment, { calendarFormat } from "moment";
 import buildCalendar from "./buildCalendar";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
+import { ReactComponent as PartyIcon } from "../../assets/icons/party.svg";
 // import Modal from 'react-modal'
 
 const CalendarPage = () => {
@@ -22,10 +23,17 @@ const CalendarPage = () => {
   //endDate
   const [endMonth, setEndMonth] = useState(moment());
   //conference list
-  const [conferences, setConferences] = useState({
-
+  const [party, setParty] = useState({
+    conferences : ["2022-01-01", "2022-01-12", "2022-01-15", "2022-01-23", "2022-01-24"]
   });
+
+  const [partyList, setPartyList] = useState({
+    conferencesId : [1,2,3,4]
+  });
+
+  const [listModalOpen, setListModalOpen] = useState(false);
   
+
   useEffect(() => {
     setCalendar(buildCalendar(value))
     setStartMonth(value.clone().startOf("month").subtract(1,"day"))
@@ -36,22 +44,8 @@ const CalendarPage = () => {
     console.log(item);
   }, [item])
 
- 
-  function isSunday(day) {
-    if(day.day()===0) return true;
-  }
-
-  function isSaturday(day) {
-    if(day.day()===0) return true;
-  }
-
-  function isToday(day) {
-    return day.isSame(new Date(), "day");
-  }
-
   function dayStyles(day) {
     let yoil = day.day();
-    console.log(day.isAfter(startMonth));
     if(day.isAfter(startMonth)&&day.isBefore(endMonth)) {
       if (yoil===0) return "sunday";
       if (yoil===6) return "saturday";
@@ -66,10 +60,18 @@ const CalendarPage = () => {
   }
 
 const handleClick = (event) => {
-  setItem({
-    month : value.format("M"),
-    day : event.target.innerText 
-  });
+  if(event.nativeEvent.path[0].tagName==="svg") {
+    setItem({
+      month : value.format("M"),
+      day : event.nativeEvent.path[2].innerText
+    });
+  }else {
+    setItem({
+          month : value.format("M"),
+          day : event.nativeEvent.path[4].innerText
+        });
+    }
+    openListModal();
 
 }
 
@@ -78,6 +80,23 @@ const calcYoil = (day) => {
   let date = day.format("D").toString();
   return (<div className={styles[yoil]}>{date}</div>);
 }
+
+
+const checkParty = (day) => {
+  for(let i = 0; i<party.conferences.length; i++) {
+    if(day.format("YYYY-MM-DD")===party.conferences[i]) {
+      return (
+        <div>
+          <PartyIcon className={styles.partyicon} onClick={handleClick}/>
+        </div>
+        );
+    }
+  }
+}
+
+const openListModal = () => {
+  setListModalOpen(true);
+};
 
     return (
         <>
@@ -90,14 +109,15 @@ const calcYoil = (day) => {
               </div>
             </div>
             <div className={styles.calendarBody}>
+            {/* <RoomConfig open={modalOpen} /> */}
               {calendar.map((week, key) => (
                   <div className={styles.week}>
                     {
                       week.map((day) => (
                         <div className={styles.day}
-                          onClick={handleClick}
                         >
                           {calcYoil(day)}
+                          {checkParty(day)}
                         </div>
                     ))}
                   </div>

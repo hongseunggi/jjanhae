@@ -91,3 +91,8 @@
 .none {
     color: transparent;
 }
+
+.partyicon {
+    width: 30px;
+    height: 30px;
+}
