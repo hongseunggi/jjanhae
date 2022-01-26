@@ -116,9 +116,11 @@ public class UserController {
 			AuthEmail authEmail = emailService.getAuthEmailByEmail(email);
 			if (authEmail != null) {
 				// 해당 이메일을 이미 인증하려한 시도가 있다면 authCode만 업데이트
+				System.out.println("인증을 시도했었어요. 코드만 업데이트 할게요.");
 				emailService.updateAuthEmail(email, authCode);
 			} else {
 				// 해당 이메일을 인증하려한 기록이 없다면 새로 데이터 추가
+				System.out.println("인증을 시도한적이 없네요!");
 				emailService.createAuthEmail(email, authCode);
 			}
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "인증번호를 발송했습니다."));
