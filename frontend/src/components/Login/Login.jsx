@@ -7,6 +7,7 @@ import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import logo from "../../assets/icons/logo.png";
 import UserApi from "../../api/UserApi.js";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
+import GoogleLoginBtn from "./GoogleLogin";
 
 const Login = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
@@ -197,6 +198,7 @@ const Login = () => {
               <button className={styles.findPwdBtn}>비밀번호 찾기</button>
             </Link>
           </div>
+          <GoogleLoginBtn />
 
           {/* <KakaoBtn/>
             <GoogleBtn/> */}
