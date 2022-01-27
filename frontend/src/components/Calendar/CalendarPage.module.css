@@ -1,8 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
 
-.calendarForm {
-  display: block;
-  /* justify-content: space-around; */
+.calendarFormBorder {
+    display: block;
+    display: flex;
+    justify-content: center;
+    /* justify-content: space-around; */
+}
+
+.calendarForm{
+    width: 1200px;
+    height: 500px
 }
 
 .calendarHeader {
@@ -19,29 +26,32 @@
 }
 
 .calendarTitle {
-  position: relative;
-  font-size: 2.5rem;
-  font-weight: bolder;
-  color: #eeee;
-  /* text-shadow: 0.2rem 0.05rem 0rem #ff2e63; */
-  text-align: left;
-  /* margin-left: 9rem; */
-  margin: 0rem 0rem 2rem 9rem;
+    position: relative;
+    font-size: 2.5rem;
+    font-weight: bolder;
+    color: #eeee;
+    /* text-shadow: 0.2rem 0.05rem 0rem #ff2e63; */
+    text-align: left;
+    /* margin-left: 9rem; */
+    margin : 0rem 0rem 2rem 0rem;
+}
+
+.calendarBodyBorder{
+    width: 100%;
+    height: 100%;
 }
 
 .calendarBody {
-  position: relative;
-  justify-content: center;
-  width: 50rem;
-  height: 30rem;
-  margin: 1rem 0rem 2rem 10rem;
-  border-color: whitesmoke;
+    /* height: 100%; */
+    border-color: whitesmoke;
+    overflow: auto;
+    margin-top: 30px;
 }
 
 .calendarTop {
-  display: flex;
-  /* margin-right: 10rem; */
-  margin-left: 18rem;
+    display: flex;
+    /* margin-right: 10rem; */
+    margin-left: 28%;
 }
 
 .month {
@@ -56,22 +66,25 @@
 }
 
 .week {
-  height: 5rem;
-  display: table-row;
+    width: 10px;
+    height: 4rem;
+    display: table-row;
 }
 
 .day {
-  position: relative;
-  display: table-cell;
-  padding: 0;
-  color: #f3f3f3;
-  text-align: center;
-  justify-content: center;
-  padding: 0rem 4rem 0.5rem 4rem;
-  border-color: whitesmoke;
-  border: 0.1rem solid white;
-  font-weight: bold;
-  font-family: "Poppins", sans-serif;
+    position : relative;
+    display: table-cell;
+    padding: 0;
+    color : #f3f3f3;
+    text-align: center;
+    justify-content: center;
+    padding : 0rem 4rem 0.5rem 4rem;
+    border-color: whitesmoke;
+    border: 0.1rem solid white;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    width : 13%;
+    height : 16%;
 }
 
 .icon {
@@ -86,4 +99,13 @@
 
 .saturday {
   color: #08d9d6;
+}
+
+.none {
+    color: transparent;
+}
+
+.partyicon {
+    width: 40px;
+    height: 40px;
 }
