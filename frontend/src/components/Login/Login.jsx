@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
@@ -6,8 +6,12 @@ import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import logo from "../../assets/icons/logo.png";
 import UserApi from "../../api/UserApi.js";
+import LoginStatusContext from "../../contexts/LoginStatusContext";
+import GoogleLoginBtn from "./GoogleLogin";
 
-const Login = ({ onLoginChange }) => {
+const Login = () => {
+  const { setLoginStatus } = useContext(LoginStatusContext);
+
   const [input, setInput] = useState({
     id: "",
     password: "",
@@ -109,7 +113,8 @@ const Login = ({ onLoginChange }) => {
       const { data } = await getLoginResult(body);
       setLoginMsg("");
       sessionStorage.setItem("accessToken", data.accessToken);
-      onLoginChange("2");
+      setLoginStatus("2");
+      // onLoginChange("2");
       navigate("/");
     } catch ({ response }) {
       if (
@@ -193,6 +198,7 @@ const Login = ({ onLoginChange }) => {
               <button className={styles.findPwdBtn}>비밀번호 찾기</button>
             </Link>
           </div>
+          <GoogleLoginBtn />
 
           {/* <KakaoBtn/>
             <GoogleBtn/> */}

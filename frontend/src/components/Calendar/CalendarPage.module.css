@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
 
 .calendarFormBorder {
     display: block;
@@ -13,16 +13,16 @@
 }
 
 .calendarHeader {
-    position : relative;
-    display: flex;
-    background-color: transparent;
-    padding: 0;
-    text-align: center;
-    justify-content: center;
-    color: tomato;
-    justify-content: unset;
-    padding: 4rem 0rem 0rem 0rem;
-    align-items: flex-end;
+  position: relative;
+  display: flex;
+  background-color: transparent;
+  padding: 0;
+  text-align: center;
+  justify-content: center;
+  color: tomato;
+  justify-content: unset;
+  padding: 4rem 0rem 0rem 0rem;
+  align-items: flex-end;
 }
 
 .calendarTitle {
@@ -55,14 +55,14 @@
 }
 
 .month {
-    /* justify-content: center; */
-    color : #eeee;
-    margin-right: 1rem;
-    font-size: 2rem;
-    font-weight: bolder;
-    text-align: left;
-    margin-left: 0rem;
-    font-size: 2.5rem;
+  /* justify-content: center; */
+  color: #eeee;
+  margin-right: 1rem;
+  font-size: 2rem;
+  font-weight: bolder;
+  text-align: left;
+  margin-left: 0rem;
+  font-size: 2.5rem;
 }
 
 .week {
@@ -88,17 +88,17 @@
 }
 
 .icon {
-    width: 50px;
-    height: 50px;
-    background-color: transparent;
-  }
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+}
 
 .sunday {
-    color : #ff2e63;
+  color: #ff2e63;
 }
 
 .saturday {
-    color : #08d9d6;
+  color: #08d9d6;
 }
 
 .none {
