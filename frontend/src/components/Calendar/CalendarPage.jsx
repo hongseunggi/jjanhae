@@ -4,6 +4,8 @@ import axios from "axios";
 import moment from "moment";
 import buildCalendar from "./buildCalendar";
 import ConferenceList from "./ConferenceList";
+import ConferenceDetail from "./ConferenceDetail";
+// import ConferenceDetail from "./ConferenceDetail2";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
 import { ReactComponent as PartyIcon } from "../../assets/icons/party.svg";
 // import Modal from 'react-modal'
@@ -33,6 +35,11 @@ const CalendarPage = () => {
   });
 
   const [listModalOpen, setListModalOpen] = useState(false);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+
+  const getDetailModalOpen = (status) => {
+    setDetailModalOpen(status);
+  }
 
   useEffect(() => {
     setCalendar(buildCalendar(value))
@@ -45,9 +52,9 @@ const CalendarPage = () => {
   }, [item])
 
   useEffect(() => {
-    console.log(listModalOpen);
-  }, [listModalOpen])
+  }, [detailModalOpen])
 
+  
   function dayStyles(day) {
     let yoil = day.day();
     if(day.isAfter(startMonth)&&day.isBefore(endMonth)) {
@@ -105,12 +112,17 @@ const closeListModal = () => {
   setListModalOpen(false);
 };
 
+const closeDetailModal = () => {
+  setDetailModalOpen(false);
+};
+
     return (
       <>
       <div className={styles.calendarFormBorder}>
           <div className={styles.calendarForm}>
-            <ConferenceList open={listModalOpen} close={closeListModal} partyList={partyList} />
-            <div className={styles.calendarHeader}>
+            <ConferenceList open={listModalOpen} close={closeListModal} partyList={partyList} getDetailModalOpen={getDetailModalOpen}  />
+            <ConferenceDetail open={detailModalOpen} close={closeDetailModal}  date={item}></ConferenceDetail>
+           <div className={styles.calendarHeader}>
               <div className={styles.calendarTitle}>술자리 기록</div>
               <div className={styles.calendarTop}>
                 <div className={styles.month}>{currentMonth()}</div>

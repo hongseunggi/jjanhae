@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import styles from "./ConferenceList.module.css";
 
 const ConferenceList = (props) => {
-    const { open, close, partyList} = props;
-
+    const { open, close, partyList, getDetailModalOpen, getSelectedParty, date} = props;
     const [partyDetail, setPartyDetail] = useState([
         {time : "17:00", title:"놀자!"},
         {time : "19:00", title:"술먹을사람~!"},
@@ -13,11 +12,14 @@ const ConferenceList = (props) => {
     const showList = () => {
         const result = [];
         for(let i = 0; i<partyDetail.length; i++) {
-            console.log(partyDetail.length)
-            result.push(<div className={styles.listItem}>{partyDetail[i].time}~ {partyDetail[i].title}</div>);
+            result.push(<div className={styles.listItem}>{partyDetail[i].time} {partyDetail[i].title}</div>);
         }
         return (result);
     }
+
+    const openDetailModal = (event) => {
+      props.getDetailModalOpen(true);
+    };
 
     return (
         <div className={open ? `${styles.openModal} ${styles.modal}` : styles.modal}>
@@ -32,7 +34,7 @@ const ConferenceList = (props) => {
           </header>
           {/* <main>{props.children}</main> */}
           <main>
-            <div className={styles.listborder}>
+            <div className={styles.listborder} onClick = {openDetailModal}>
                 {showList()}
             </div>
         </main>

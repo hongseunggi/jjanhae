@@ -9,6 +9,7 @@
     background-color: rgba(0, 0, 0, 0.247);
     color : rgb(0, 0, 0);
     font-weight: bolder;
+    border-radius: 5px;
   }
   .modal button {
     outline: none;
@@ -71,6 +72,8 @@
   .listItem {
       margin-top: 1rem;
       display: table-row;
+      width: 100%;
+      border-bottom: #eeee;
   }
   .btnClose {
       border-radius: 10px;
@@ -82,9 +85,12 @@
       margin-bottom: 1rem;
   }
   .listborder {
-    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    padding: 5px 10px 20px 10px;
     background-color: aliceblue;
     border-radius: 1rem;
+    width: 100%;
   }
   @keyframes modal-show {
     from {
