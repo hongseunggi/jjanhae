@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styles from "./Profile.module.css";
 import editIcon from "../../assets/icons/edit.png";
+import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
+import { Link } from "react-router-dom";
+
 const Profile = () => {
   const [name, setName] = useState("소주희");
   const [id, setId] = useState("ssafy");
@@ -9,6 +12,8 @@ const Profile = () => {
   const [drink, setDrink] = useState("소주");
   const [drinkLimit, setDrinkLimit] = useState("3");
   const [isEdit, setIsEdit] = useState(false);
+
+  // 친구들을 특정하기 위한 값이 필요 ex) id
   const [friends, setFriends] = useState([
     { name: "김정연", count: 5 },
     { name: "유소연", count: 4 },
@@ -45,6 +50,9 @@ const Profile = () => {
                 <label htmlFor="name">이름</label>
                 <input id="name" type="text" value={name} disabled={!isEdit} />
               </div>
+              <Link to="/user/calendar">
+                <CalendarIcon width="20" height="20" />
+              </Link>
             </div>
             <div className={styles.inputRow}>
               <div
@@ -148,61 +156,19 @@ const Profile = () => {
             </span>
           </div>
           <div className={styles.friends}>
-            <div className={styles.friendInfo}>
-              <img
-                className={styles.friendProfileImg}
-                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
-                alt="friend profile"
-              />
-              <div className={styles.friendData}>
-                <span>{friends[0].name}/</span>
-                <span>{friends[0].count}회</span>
+            {friends.map((friend, index) => (
+              <div key={index} className={styles.friendInfo}>
+                <img
+                  className={styles.friendProfileImg}
+                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
+                  alt="friend profile"
+                />
+                <div className={styles.friendData}>
+                  <span>{friend.name}/</span>
+                  <span>{friend.count}회</span>
+                </div>
               </div>
-            </div>
-            <div className={styles.friendInfo}>
-              <img
-                className={styles.friendProfileImg}
-                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
-                alt="friend profile"
-              />
-              <div className={styles.friendData}>
-                <span>{friends[1].name}/</span>
-                <span>{friends[1].count}회</span>
-              </div>
-            </div>
-            <div className={styles.friendInfo}>
-              <img
-                className={styles.friendProfileImg}
-                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
-                alt="friend profile"
-              />
-              <div className={styles.friendData}>
-                <span>{friends[2].name}/</span>
-                <span>{friends[2].count}회</span>
-              </div>
-            </div>
-            <div className={styles.friendInfo}>
-              <img
-                className={styles.friendProfileImg}
-                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
-                alt="friend profile"
-              />
-              <div className={styles.friendData}>
-                <span>{friends[3].name}/</span>
-                <span>{friends[3].count}회</span>
-              </div>
-            </div>
-            <div className={styles.friendInfo}>
-              <img
-                className={styles.friendProfileImg}
-                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
-                alt="friend profile"
-              />
-              <div className={styles.friendData}>
-                <span>{friends[4].name}/</span>
-                <span>{friends[4].count}회</span>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
       </main>

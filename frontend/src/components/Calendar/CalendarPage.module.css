@@ -1,89 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
 
 .calendarForm {
-    display: block;
-    /* justify-content: space-around; */
+  display: block;
+  /* justify-content: space-around; */
 }
 
 .calendarHeader {
-    position : relative;
-    display: flex;
-    background-color: transparent;
-    padding: 0;
-    text-align: center;
-    justify-content: center;
-    color: tomato;
-    justify-content: unset;
-    padding: 4rem 0rem 0rem 0rem;
-    align-items: flex-end;
+  position: relative;
+  display: flex;
+  background-color: transparent;
+  padding: 0;
+  text-align: center;
+  justify-content: center;
+  color: tomato;
+  justify-content: unset;
+  padding: 4rem 0rem 0rem 0rem;
+  align-items: flex-end;
 }
 
 .calendarTitle {
-    position: relative;
-    font-size: 2.5rem;
-    font-weight: bolder;
-    color: #eeee;
-    /* text-shadow: 0.2rem 0.05rem 0rem #ff2e63; */
-    text-align: left;
-    /* margin-left: 9rem; */
-    margin : 0rem 0rem 2rem 9rem;
+  position: relative;
+  font-size: 2.5rem;
+  font-weight: bolder;
+  color: #eeee;
+  /* text-shadow: 0.2rem 0.05rem 0rem #ff2e63; */
+  text-align: left;
+  /* margin-left: 9rem; */
+  margin: 0rem 0rem 2rem 9rem;
 }
 
 .calendarBody {
-    position: relative;
-    justify-content: center;
-    width: 50rem;
-    height: 30rem;
-    margin: 1rem 0rem 2rem 10rem;
-    border-color: whitesmoke;
+  position: relative;
+  justify-content: center;
+  width: 50rem;
+  height: 30rem;
+  margin: 1rem 0rem 2rem 10rem;
+  border-color: whitesmoke;
 }
 
 .calendarTop {
-    display: flex;
-    /* margin-right: 10rem; */
-    margin-left: 18rem;
+  display: flex;
+  /* margin-right: 10rem; */
+  margin-left: 18rem;
 }
 
 .month {
-    /* justify-content: center; */
-    color : #eeee;
-    margin-right: 1rem;
-    font-size: 2rem;
-    font-weight: bolder;
-    text-align: left;
-    margin-left: 0rem;
-    font-size: 2.5rem;
+  /* justify-content: center; */
+  color: #eeee;
+  margin-right: 1rem;
+  font-size: 2rem;
+  font-weight: bolder;
+  text-align: left;
+  margin-left: 0rem;
+  font-size: 2.5rem;
 }
 
 .week {
-    height: 5rem;
-    display: table-row;
+  height: 5rem;
+  display: table-row;
 }
 
 .day {
-    position : relative;
-    display: table-cell;
-    padding: 0;
-    color : #f3f3f3;
-    text-align: center;
-    justify-content: center;
-    padding : 0rem 4rem 0.5rem 4rem;
-    border-color: whitesmoke;
-    border: 0.1rem solid white;
-    font-weight: bold;
-    font-family: 'Poppins', sans-serif;
+  position: relative;
+  display: table-cell;
+  padding: 0;
+  color: #f3f3f3;
+  text-align: center;
+  justify-content: center;
+  padding: 0rem 4rem 0.5rem 4rem;
+  border-color: whitesmoke;
+  border: 0.1rem solid white;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
 }
 
 .icon {
-    width: 50px;
-    height: 50px;
-    background-color: transparent;
-  }
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+}
 
 .sunday {
-    color : #ff2e63;
+  color: #ff2e63;
 }
 
 .saturday {
-    color : #08d9d6;
+  color: #08d9d6;
 }

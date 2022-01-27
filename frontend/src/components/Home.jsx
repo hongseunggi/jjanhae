@@ -6,9 +6,8 @@ import RoomConfig from "./Modals/RoomConfig";
 import { Link } from "react-router-dom";
 import LoginStatusContext from "../contexts/LoginStatusContext";
 
-function Main(props) {
-  const isLogin = useContext(LoginStatusContext);
-
+function Home() {
+  const { loginStatus } = useContext(LoginStatusContext);
   const slide = [
     {
       img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg",
@@ -89,7 +88,7 @@ function Main(props) {
     setModalOpen(false);
   };
   const buttonRender = () => {
-    switch (isLogin) {
+    switch (loginStatus) {
       case "1":
         return (
           <Col>
@@ -163,4 +162,4 @@ function Main(props) {
   );
 }
 
-export default Main;
+export default Home;
