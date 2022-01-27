@@ -5,15 +5,15 @@ import styles from "./Navigator.module.css";
 import Logo from "../../assets/logo.png";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 
-function Navigator({ onLoginChange }) {
-  const isLogin = useContext(LoginStatusContext);
+function Navigator() {
+  const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
 
   const handleLogOut = () => {
-    onLoginChange("1");
+    setLoginStatus("1");
     sessionStorage.removeItem("accessToken");
   };
 
-  switch (isLogin) {
+  switch (loginStatus) {
     case "1":
       return (
         <Container fluid>
@@ -28,11 +28,11 @@ function Navigator({ onLoginChange }) {
                 LOGIN
               </Link>
             </Col>
-            <Col>
+            {/* <Col>
               <Link to="user/profile" className={styles.link}>
                 PROFILE
               </Link>
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       );
