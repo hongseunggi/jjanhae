@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./Navigator.module.css";
 import Logo from "../../assets/logo.png";
+import LoginStatusContext from "../../contexts/LoginStatusContext";
 
-function Navigator(props) {
-  const { status, isLogin } = props;
+function Navigator() {
+  const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
 
   const handleLogOut = () => {
-    isLogin("1");
+    setLoginStatus("1");
+    sessionStorage.removeItem("accessToken");
   };
 
-  switch (status) {
+  switch (loginStatus) {
     case "1":
       return (
         <Container fluid>
@@ -26,6 +28,11 @@ function Navigator(props) {
                 LOGIN
               </Link>
             </Col>
+            {/* <Col>
+              <Link to="user/profile" className={styles.link}>
+                PROFILE
+              </Link>
+            </Col> */}
           </Row>
         </Container>
       );
@@ -42,7 +49,7 @@ function Navigator(props) {
               <Link to="/" onClick={handleLogOut} className={styles.link}>
                 LOGOUT
               </Link>
-              <Link to="/profile" className={styles.link_profile}>
+              <Link to="/user/profile" className={styles.link_profile}>
                 PROFILE
               </Link>
             </Col>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
@@ -6,8 +6,11 @@ import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import logo from "../../assets/icons/logo.png";
 import UserApi from "../../api/UserApi.js";
+import LoginStatusContext from "../../contexts/LoginStatusContext";
 
 const Login = () => {
+  const { setLoginStatus } = useContext(LoginStatusContext);
+
   const [input, setInput] = useState({
     id: "",
     password: "",
@@ -29,7 +32,7 @@ const Login = () => {
   const [pwdCheck, setPwdCheck] = useState(false);
 
   //로그인 상태 확인
-  const [isLogin, setIslogin] = useState(false);
+  // const [isLogin, setIslogin] = useState(false);
 
   //navigator
   const navigate = useNavigate();
@@ -94,7 +97,7 @@ const Login = () => {
   };
 
   //로그인 상태 확인
-  const checkToken = () => {};
+  // const checkToken = () => {};
 
   const loginApi = async () => {
     let userError = 404;
@@ -109,7 +112,9 @@ const Login = () => {
       const { data } = await getLoginResult(body);
       setLoginMsg("");
       sessionStorage.setItem("accessToken", data.accessToken);
-      navigate("/", { code: 2 });
+      setLoginStatus("2");
+      // onLoginChange("2");
+      navigate("/");
     } catch ({ response }) {
       if (
         response.data.statusCode === userError ||
@@ -175,8 +180,8 @@ const Login = () => {
               로그인
             </button>
 
-            {/* 토큰 확인 */}
-            {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>}
+            {/* 토큰 확인
+            {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>} */}
 
             <Link to="/user/signup">
               <button className={styles.registBtn}>회원가입</button>
