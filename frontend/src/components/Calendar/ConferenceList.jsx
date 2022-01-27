@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styles from "./ConferenceList.module.css";
 
-const ConferenceList = ({ open, onClose }) => {
-
+const ConferenceList = (props) => {
+    const { open, close, partyList} = props;
 
     const [partyDetail, setPartyDetail] = useState([
         {time : "17:00", title:"놀자!"},
@@ -10,12 +10,41 @@ const ConferenceList = ({ open, onClose }) => {
         {time : "22:00", title:"안녕~!"},
     ]);
 
+    const showList = () => {
+        const result = [];
+        for(let i = 0; i<partyDetail.length; i++) {
+            console.log(partyDetail.length)
+            result.push(<div className={styles.listItem}>{partyDetail[i].time}~ {partyDetail[i].title}</div>);
+        }
+        return (result);
+    }
+
     return (
-        <>
-            <div className={styles.listForm}>
-                
+        <div className={open ? `${styles.openModal} ${styles.modal}` : styles.modal}>
+         {open ? (
+        <section>
+          <header>
+          <div className={styles.title}>파티이력</div>
+            <button className="close" onClick={close}>
+              {' '}
+              &times;{' '}
+            </button>
+          </header>
+          {/* <main>{props.children}</main> */}
+          <main>
+            <div className={styles.listborder}>
+                {showList()}
             </div>
-        </>
+        </main>
+        <div className={styles.btn}>
+            <button className={styles.btnClose} onClick={close}>
+            {' '}
+            close{' '}
+        </button>
+        </div>
+        </section>
+      ) : null}
+        </div>
     )
 }
 

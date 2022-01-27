@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CalendarPage.module.css";
 import axios from "axios";
-import moment, { calendarFormat } from "moment";
+import moment from "moment";
 import buildCalendar from "./buildCalendar";
+import ConferenceList from "./ConferenceList";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
 import { ReactComponent as PartyIcon } from "../../assets/icons/party.svg";
 // import Modal from 'react-modal'
@@ -32,7 +33,6 @@ const CalendarPage = () => {
   });
 
   const [listModalOpen, setListModalOpen] = useState(false);
-  
 
   useEffect(() => {
     setCalendar(buildCalendar(value))
@@ -43,6 +43,10 @@ const CalendarPage = () => {
   useEffect(() => {
     console.log(item);
   }, [item])
+
+  useEffect(() => {
+    console.log(listModalOpen);
+  }, [listModalOpen])
 
   function dayStyles(day) {
     let yoil = day.day();
@@ -72,7 +76,6 @@ const handleClick = (event) => {
         });
     }
     openListModal();
-
 }
 
 const calcYoil = (day) => {
@@ -98,9 +101,15 @@ const openListModal = () => {
   setListModalOpen(true);
 };
 
+const closeListModal = () => {
+  setListModalOpen(false);
+};
+
     return (
-        <>
+      <>
+      <div className={styles.calendarFormBorder}>
           <div className={styles.calendarForm}>
+            <ConferenceList open={listModalOpen} close={closeListModal} partyList={partyList} />
             <div className={styles.calendarHeader}>
               <div className={styles.calendarTitle}>술자리 기록</div>
               <div className={styles.calendarTop}>
@@ -108,24 +117,26 @@ const openListModal = () => {
                 <CalendarIcon className={styles.icon} />
               </div>
             </div>
-            <div className={styles.calendarBody}>
-            {/* <RoomConfig open={modalOpen} /> */}
-              {calendar.map((week, key) => (
-                  <div className={styles.week}>
-                    {
-                      week.map((day) => (
-                        <div className={styles.day}
-                        >
-                          {calcYoil(day)}
-                          {checkParty(day)}
-                        </div>
-                    ))}
-                  </div>
-                ))
-              }
+            <div className={styles.calendarBodyBorder}>
+              <div className={styles.calendarBody}>
+                {calendar.map((week, key) => (
+                    <div className={styles.week}>
+                      {
+                        week.map((day) => (
+                          <div className={styles.day}
+                          >
+                            {calcYoil(day)}
+                            {checkParty(day)}
+                          </div>
+                      ))}
+                    </div>
+                  ))
+                }
+              </div>
             </div>
           </div>
-        </>
+          </div>
+      </>
     );
     
 }
