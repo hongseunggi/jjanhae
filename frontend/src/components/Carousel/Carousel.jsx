@@ -1,35 +1,34 @@
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import "../../common/css/Main.css";
+import Carousel1 from "../../assets/carouselimage1.PNG";
+import Carousel2 from "../../assets/carouselimage2.PNG";
+import Carousel3 from "../../assets/carouselimage3.PNG";
+
 
 function Carousel() {
-  const slide = [
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg",
-    },
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/singapore.jpg",
-    },
+    const slide = [
+        {
+        img: Carousel1,
+        },
+        {
+        img: Carousel2,
+        },
+        {
+        img: Carousel3,
+        },
 
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/prague.jpg",
-    },
+        {
+        img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/amsterdam.jpg",
+        },
+    ];
 
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/amsterdam.jpg",
-    },
+    let changeTo = null;
+    let AUTOCHANGE_TIME = 4000;
 
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/moscow.jpg",
-    },
-  ];
-
-  let changeTo = null;
-  let AUTOCHANGE_TIME = 4000;
-
-  const [activeSlide, setActiveSlide] = useState(-1);
-  const [prevSlide, setPreSlide] = useState(-1);
-  const [sliderReady, setSliderReady] = useState(false);
+    const [activeSlide, setActiveSlide] = useState(-1);
+    const [prevSlide, setPreSlide] = useState(-1);
+    const [sliderReady, setSliderReady] = useState(false);
 
   // 방 생성 모달
 
