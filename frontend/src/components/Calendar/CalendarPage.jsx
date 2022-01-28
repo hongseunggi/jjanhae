@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import buildCalendar from "./buildCalendar";
 import ConferenceList from "./ConferenceList";
-import ConferenceDetail from "./ConferenceDetail";
+import ConferenceDetail from "./ConferenceDetail3";
 // import ConferenceDetail from "./ConferenceDetail2";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
 import { ReactComponent as PartyIcon } from "../../assets/icons/party.svg";
