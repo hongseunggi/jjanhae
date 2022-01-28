@@ -7,7 +7,6 @@ import Carousel3 from "../../assets/carouselimage3.PNG";
 
 
 function Carousel() {
-<<<<<<< HEAD
     const slide = [
         {
         img: Carousel1,
@@ -30,35 +29,6 @@ function Carousel() {
     const [activeSlide, setActiveSlide] = useState(-1);
     const [prevSlide, setPreSlide] = useState(-1);
     const [sliderReady, setSliderReady] = useState(false);
-=======
-  const slide = [
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg",
-    },
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/singapore.jpg",
-    },
-
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/prague.jpg",
-    },
-
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/amsterdam.jpg",
-    },
-
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/moscow.jpg",
-    },
-  ];
-
-  let changeTo = null;
-  let AUTOCHANGE_TIME = 4000;
-
-  const [activeSlide, setActiveSlide] = useState(-1);
-  const [prevSlide, setPreSlide] = useState(-1);
-  const [sliderReady, setSliderReady] = useState(false);
->>>>>>> 39aaa2b832300bf4cfbac8a83192c62ff1aae809
 
   // 방 생성 모달
 

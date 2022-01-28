@@ -4,7 +4,7 @@ import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
 import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
-import logo from "../../assets/icons/logo.png";
+import logo from "../../assets/logo.png";
 import UserApi from "../../api/UserApi.js";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import GoogleLoginBtn from "./GoogleLogin";
