@@ -4,7 +4,7 @@ import "../../common/css/Main.css";
 import Carousel1 from "../../assets/carouselimage1.PNG";
 import Carousel2 from "../../assets/carouselimage2.PNG";
 import Carousel3 from "../../assets/carouselimage3.PNG";
-
+import Carousel4 from "../../assets/carouselimage4.PNG";
 
 function Carousel() {
     const slide = [
@@ -19,7 +19,7 @@ function Carousel() {
         },
 
         {
-        img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/amsterdam.jpg",
+        img: Carousel4,
         },
     ];
 

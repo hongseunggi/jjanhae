@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ReactComponent as FireworksIcon } from "../../assets/icons/fireworks.svg";
 import { ReactComponent as ToastIcon } from "../../assets/icons/toast.svg";
 import imageUpload from "../../assets/icons/imageUpload.png";
-
+import Image from "../../assets/picture.PNG";
 import styles from "./ConferenceDetail.module.css";
 const ConferenceDetail = (props) => {
   const { open, close, date } = props;
@@ -62,7 +62,7 @@ const ConferenceDetail = (props) => {
                   <div className={styles.partyImageForm}>
                     <img
                       className={styles.partyImage}
-                      src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
+                      src={Image}
                       alt="thumbnail"
                     />
                   </div>
