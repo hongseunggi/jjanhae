@@ -204,7 +204,7 @@ const Login = () => {
             <div className={styles.socialButton}>
               <KakaoBtn/>
               <GoogleBtn/> 
-              <GoogleLoginBtn className={styles.GoogleLogin} />
+              {/* <GoogleLoginBtn className={styles.GoogleLogin} /> */}
             </div>
 
         </form>
