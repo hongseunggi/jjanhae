@@ -117,7 +117,6 @@ const Login = () => {
       setLoginMsg("");
       sessionStorage.setItem("accessToken", data.accessToken);
       setLoginStatus("2");
-      // onLoginChange("2");
       navigate("/");
     } catch ({ response }) {
       if (
