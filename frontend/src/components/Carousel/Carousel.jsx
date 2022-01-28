@@ -1,25 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import "../../common/css/Main.css";
+import Carousel1 from "../../assets/carouselimage1.PNG";
+import Carousel2 from "../../assets/carouselimage2.PNG";
+import Carousel3 from "../../assets/carouselimage3.PNG";
+import Carousel4 from "../../assets/carouselimage4.PNG";
+
 function Carousel() {
   const slide = [
     {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg",
+      img: Carousel1,
     },
     {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/singapore.jpg",
+      img: Carousel2,
     },
-
     {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/prague.jpg",
-    },
-
-    {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/amsterdam.jpg",
+      img: Carousel3,
     },
 
     {
-      img: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/moscow.jpg",
+      img: Carousel4,
     },
   ];
 

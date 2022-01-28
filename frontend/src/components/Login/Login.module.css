@@ -46,7 +46,7 @@
   border: 3px solid;
   border-color: #eeee;
   /* margin-top: 50px; */
-  padding: 0 50px 50px 50px;
+  padding: 0 50px 20px 50px;
 
   border-image: linear-gradient(
     #ff2e63 0%,
@@ -83,7 +83,7 @@
     border-bottom: 2px solid;
     background-color: transparent;
     border-color: white;
-    margin-top: 5px;
+    /* margin-bottom: 5px; */
     color :white;
   }
 
@@ -100,8 +100,8 @@
   position: relative;
   color: #ff5722;
   font-size: 15px;
-  margin-bottom: 0px;
-  margin-top: 10px;
+  margin-bottom: 35px;
+  margin-top: 3px;
   white-space: pre-wrap;
 }
 
@@ -109,15 +109,17 @@
     width: 410px;
     display: flex;
     justify-content: space-around;
-}
-
-.findButtons {
+    margin-bottom: 10px;
+  }
+  
+  .findButtons {
     display: flex;
+    margin-bottom: 10px;
 }
 
 .loginBtn {
   width: 180px;
-  height: 40px;
+  height: 35px;
   background-color: #ff2e63;
   /* box-shadow: 0rem 0.5rem 1.5rem rgba(250, 215, 223, 0.1); */
   border-radius: 10px;
@@ -157,7 +159,7 @@
 
 .registBtn {
   width: 180px;
-  height: 40px;
+  height: 35px;;
   background-color: #08d9d6;
   border-radius: 10px;
   border: none;
@@ -215,4 +217,40 @@
   width: 0.1px;
   height: 15px;
   margin: 5px 5px 0px 5px;
+}
+
+.socialButton {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.kakaoBtn, .googleBtn {
+  background-color: #FEE500;
+  display: inline-flex;
+  align-items: center;
+  color: #252a34;
+  box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px;
+  padding: 0px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-size: 15px;
+  font-weight: 500;
+  width: 180px;
+  height: 35px;
+  justify-content: space-evenly;
+  font-weight: bolder;
+  margin : 10px
+}
+
+.googleBtn {
+  background-color: rgb(255, 255, 255);
+}
+
+.horizontalLine {
+  height: 1px;
+  /* border: 2px solid white; */
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  margin : 0px;
 }

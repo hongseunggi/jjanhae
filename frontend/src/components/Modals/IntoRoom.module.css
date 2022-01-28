@@ -1,0 +1,98 @@
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.buttonicon{
+    float: left;
+}
+.modalForm {
+    position: relative;
+    width: 780px;
+    height: 580px;
+    /* margin: 0 auto; */
+    border-radius: 50px;
+    background-color: #eee;
+    text-align: center;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-show 0.3s;
+    overflow: hidden;
+    padding: 30px 40px;
+}
+.modalForm h1 {
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.modal button {
+    outline: none;
+    cursor: pointer;
+    border: 0;
+}
+.videoPreview {
+    width: 600px;
+    height: 350px;
+    background-color: #000;
+    border-radius: 25px;
+    /* position: relative; */
+    /* margin-right: 30px; */
+    margin: 0 auto;
+}
+.vbtn {
+    width: 130px;
+    height: 40px;
+    margin: 30px auto;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    background-color: #fff;
+    margin-right: 50px;
+}
+.closeBtn {
+    width: 130px;
+    height: 40px;
+    margin: 30px auto;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    background-color: #08d9d6;
+}
+.close{
+    position: absolute;
+    width: 35px;
+    right : 40px;
+    background-color: #ff5722;
+    color : #fff;
+    border-radius: 10px;
+}
+.modal.openModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-bg-show 0.3s;
+}
+@keyframes modal-show {
+    from {
+        opacity: 0;
+        margin-top: -50px;
+    }
+    to {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+@keyframes modal-bg-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
