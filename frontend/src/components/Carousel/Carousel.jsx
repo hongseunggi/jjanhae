@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import "../../common/css/Main.css";
-
 function Carousel() {
   const slide = [
     {

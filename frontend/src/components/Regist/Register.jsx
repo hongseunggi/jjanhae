@@ -10,7 +10,7 @@ import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import { ReactComponent as SojuIcon } from "../../assets/icons/soju.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
-import logo from "../../assets/icons/logo.png";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
 import UserApi from "../../api/UserApi.js";

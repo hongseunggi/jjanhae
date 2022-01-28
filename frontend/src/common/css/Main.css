@@ -397,14 +397,13 @@
     transform: translateY(-7px);
   }
   .into_room {
-    
     position: relative;
     margin-top: 3rem;
     width: 16rem;
     height: 3rem;
     font-size: 1rem;
     margin-left: 7%;
-    
+
     border-radius: 35px;
     font-weight: 600;
     color: white;
@@ -699,4 +698,3 @@
     display: none;
   }
 }
-
