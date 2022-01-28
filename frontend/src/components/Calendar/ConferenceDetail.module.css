@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
+
 .modal {
     display: none;
     position: fixed;
@@ -10,7 +12,7 @@
   }
   
   .modalForm {
-    padding: 30px 30px;
+    /* padding: 30px 30px; */
   }
   .modalForm header {
     display: flex;
@@ -31,7 +33,7 @@
   }
   .modal > section {
     width: 780px;
-    height: 580px;
+    height: 450px;
     /* margin: 0 auto; */
     border-radius: 50px;
     background-color: #fff;
@@ -51,10 +53,12 @@
     flex-direction: column;
   }
   .partyDetailRight .partyImageForm {
-    width: 30px;
+    width: 100%;
     height: 200px;
     position: relative;
-    margin-right: 30px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
   }
   .partyDetailTop .partyImageForm {
     /* width: 100%;
@@ -65,9 +69,10 @@
   }
   .partyDetailRight .partyImage {
     position: relative;
-    width: 400px;
+    width: 450px;
     height: 250px;
     border-radius: 20px;
+    margin: 30px 40px 40px 40px;
   }
   .partyDetailTop .partyImage {
     position: relative;
@@ -159,9 +164,11 @@
   .partyPeople {
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
+    align-items: center;
     width: 80%;
     padding-top : 20px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 80px;
   }
   .peopleTitle , .partyStartTimeTitle, .partyImageTitle {
     font-weight: bolder;
@@ -170,7 +177,6 @@
     margin-bottom: 15px;
     align-items: center;
     display: inline-block;
-    box-shadow: 5px 5px 20px #656d6d86;
     border-radius: 10px;
     width: fit-content;
     padding : 4px;
@@ -189,19 +195,22 @@
 
   .peopleList {
     display: flex;
-    width: 100%;
+    width: 60%;
     padding: 0px 15px 10px 0px;
     align-content: stretch;
     flex-wrap: wrap;
     flex-direction: row;
     align-items: baseline;
-    font-weight: bolder;;
+    font-weight: bolder;
+    justify-content: space-evenly;
+    font-family: 'Poppins', sans-serif;
   }
   .peopleName {
     color : rgb(0, 0, 0);
-    font-size: 20px;
+    font-size: 18px;
     margin-right: 10px;
     margin-bottom: 5px;
+    font-family: 'Poppins', sans-serif;
   }
   .partyDetailLeft, .partyDetailRight {
     box-sizing: border-box;
@@ -213,9 +222,11 @@
   }
   
   .partyDetailRight {
-    /* width:60%; */
-    margin-left: 20px;
+    width: 70%;
+    height: 100%;
+    /* margin-left: 20px; */
     display: block;
+    font-family: 'Poppins', sans-serif;
   }
 
   .partyDetailBottom {
@@ -236,8 +247,57 @@
     padding-top : 25px;
   }
   .partyDetailFormBorder {
-    margin-top: 50px;
+    /* margin-top: 50px; */
     display: flex;
+    height: 100%;
+  }
+  .partyDetailRightBackground {
+    height: 100%;
+    border-radius: 20px;
+    background: rgba(255, 46, 99, 0.31);
+    box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
+    align-items: center;
+  }
+  .main {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+  }
+  .partyDetailLeftData {
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .logo {
+    z-index: 1;
+    position: relative;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-left: 2%;
+  }
+  .logoBorder {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .closeBtn {
+    float: right;
+    width: 30px;
+    height: 30px;
+    margin: 15px 30px 0px 0px;
+    border-radius: 8px;
+    background-color: #eee;
+  }
+  .rightTop{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
   }
 
   @keyframes modal-show {
