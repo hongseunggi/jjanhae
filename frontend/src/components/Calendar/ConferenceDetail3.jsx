@@ -3,8 +3,8 @@ import Logo from "../../assets/logo.png";
 import { ReactComponent as FireworksIcon } from "../../assets/icons/fireworks.svg";
 import { ReactComponent as ToastIcon } from "../../assets/icons/toast.svg";
 import imageUpload from "../../assets/icons/imageUpload.png";
-
 import styles from "./ConferenceDetail.module.css";
+
 const ConferenceDetail = (props) => {
   const { open, close, date } = props;
 
