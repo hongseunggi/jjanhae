@@ -16,12 +16,19 @@ const RoomConfig = ({ open, onClose }) => {
   const handleDrinkConfig = (e) => {
     setDrinkConfig(e.target.value);
   };
+  
+  const handleStopEvent = (e) =>{
+    e.stopPropagation();
+  };
+
+
   return (
     <div
       className={open ? `${styles.openModal} ${styles.modal}` : styles.modal}
+      onClick={onClose}
     >
       {open ? (
-        <section className={styles.modalForm}>
+        <section className={styles.modalForm} onClick={handleStopEvent}>
           <header>
             <h1 className={styles.title}>파티룸 생성하기</h1>
             <div>
