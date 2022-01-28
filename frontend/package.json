@@ -46,5 +46,6 @@
   "devDependencies": {
     "postcss": "^8.4.5",
     "postcss-loader": "^6.2.1"
-  }
+  },
+  "proxy": "https:/i6a507.p.ssafy.io:8443/"
 }
