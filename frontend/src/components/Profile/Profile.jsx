@@ -3,6 +3,12 @@ import styles from "./Profile.module.css";
 import editIcon from "../../assets/icons/edit.png";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
 import { Link } from "react-router-dom";
+import image1 from "../../assets/images/default1.png";
+import image2 from "../../assets/images/default2.png";
+import image3 from "../../assets/images/default3.png";
+import image4 from "../../assets/images/default4.png";
+import image5 from "../../assets/images/default5.png";
+import image6 from "../../assets/images/default6.png";
 
 const Profile = () => {
   const [name, setName] = useState("소주희");
@@ -15,11 +21,11 @@ const Profile = () => {
 
   // 친구들을 특정하기 위한 값이 필요 ex) id
   const [friends, setFriends] = useState([
-    { name: "김정연", count: 5 },
-    { name: "유소연", count: 4 },
-    { name: "배하은", count: 3 },
-    { name: "홍승기", count: 2 },
-    { name: "송민수", count: 1 },
+    { name: "김정연", count: 5, image: image1 },
+    { name: "유소연", count: 4, image: image2 },
+    { name: "배하은", count: 3, image: image3 },
+    { name: "홍승기", count: 2, image: image4 },
+    { name: "송민수", count: 1, image: image5 },
   ]);
   const handleEditMode = (e) => {
     e.preventDefault();
@@ -35,11 +41,7 @@ const Profile = () => {
         <section className={styles.userProfile}>
           <form className={styles.userInfoForm}>
             <div className={styles.profileRow}>
-              <img
-                className={styles.profileImg}
-                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
-                alt="profile"
-              />
+              <img className={styles.profileImg} src={image6} alt="profile" />
               <div
                 className={
                   isEdit
@@ -51,7 +53,7 @@ const Profile = () => {
                 <input id="name" type="text" value={name} disabled={!isEdit} />
               </div>
               <Link to="/user/calendar">
-                <CalendarIcon width="20" height="20" />
+                <CalendarIcon width="40" height="40" />
               </Link>
             </div>
             <div className={styles.inputRow}>
@@ -160,7 +162,7 @@ const Profile = () => {
               <div key={index} className={styles.friendInfo}>
                 <img
                   className={styles.friendProfileImg}
-                  src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
+                  src={friend.image}
                   alt="friend profile"
                 />
                 <div className={styles.friendData}>
