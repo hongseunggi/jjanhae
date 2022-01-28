@@ -7,28 +7,28 @@ import Carousel3 from "../../assets/carouselimage3.PNG";
 import Carousel4 from "../../assets/carouselimage4.PNG";
 
 function Carousel() {
-    const slide = [
-        {
-        img: Carousel1,
-        },
-        {
-        img: Carousel2,
-        },
-        {
-        img: Carousel3,
-        },
+  const slide = [
+    {
+      img: Carousel1,
+    },
+    {
+      img: Carousel2,
+    },
+    {
+      img: Carousel3,
+    },
 
-        {
-        img: Carousel4,
-        },
-    ];
+    {
+      img: Carousel4,
+    },
+  ];
 
-    let changeTo = null;
-    let AUTOCHANGE_TIME = 4000;
+  let changeTo = null;
+  let AUTOCHANGE_TIME = 4000;
 
-    const [activeSlide, setActiveSlide] = useState(-1);
-    const [prevSlide, setPreSlide] = useState(-1);
-    const [sliderReady, setSliderReady] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(-1);
+  const [prevSlide, setPreSlide] = useState(-1);
+  const [sliderReady, setSliderReady] = useState(false);
 
   // 방 생성 모달
 

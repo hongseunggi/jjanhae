@@ -200,13 +200,12 @@ const Login = () => {
               <button className={styles.findPwdBtn}>비밀번호 찾기</button>
             </Link>
           </div>
-          <hr className={styles.horizontalLine}/>
-            <div className={styles.socialButton}>
-              <KakaoBtn/>
-              <GoogleBtn/> 
-              {/* <GoogleLoginBtn className={styles.GoogleLogin} /> */}
-            </div>
-
+          <hr className={styles.horizontalLine} />
+          <div className={styles.socialButton}>
+            <KakaoBtn />
+            <GoogleBtn />
+            {/* <GoogleLoginBtn className={styles.GoogleLogin} /> */}
+          </div>
         </form>
       </div>
     </>
@@ -214,22 +213,24 @@ const Login = () => {
 };
 
 function KakaoBtn() {
-    return(
-      <div>
-        <button className={styles.kakaoBtn}>
-          <KakaoIcon className={styles.icon}/>카카오 로그인
-        </button>
-      </div>
-    )
+  return (
+    <div>
+      <button className={styles.kakaoBtn}>
+        <KakaoIcon className={styles.icon} />
+        카카오 로그인
+      </button>
+    </div>
+  );
 }
 
 function GoogleBtn() {
-    return(
-      <div>
+  return (
+    <div>
       <button className={styles.googleBtn} onClick={GoogleLoginBtn}>
-        <GoogleIcon className={styles.icon}/>구글 로그인
+        <GoogleIcon className={styles.icon} />
+        구글 로그인
       </button>
     </div>
-    )
+  );
 }
 export default Login;

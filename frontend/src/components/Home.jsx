@@ -1,10 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
 import RoomConfig from "./Modals/RoomConfig";
 import { Link } from "react-router-dom";
 import LoginStatusContext from "../contexts/LoginStatusContext";
 import Carousel from "./Carousel/Carousel";
+import RegistMusic from "./Modals/RegistMusic";
 
 function Home() {
   const { loginStatus } = useContext(LoginStatusContext);
@@ -59,11 +60,12 @@ function Home() {
             <Row className="buttonbox">{buttonRender()}</Row>
           </Col>
           <Col>
-            <Carousel/>
+            <Carousel />
           </Col>
         </Row>
       </Container>
       <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} />
+      {/* <RegistMusic open={modalOpen} onClose={closeRoomConfigModal} /> */}
     </>
   );
 }
