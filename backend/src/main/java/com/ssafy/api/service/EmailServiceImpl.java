@@ -149,7 +149,7 @@ public class EmailServiceImpl implements EmailService {
                         "		감사합니다."																																															+
                         "	</p>"																																																	+
                         "	<a style=\"color: #FFF; text-decoration: none; text-align: center;\""																																	+
-                        "	href=\"http://localhost:3000/user/newpwd?userId=" + userId + "&authCode="+ ePw + "\" target=\"_self\">"														+
+                        "	href=\"http://i6a507.p.ssafy.io/user/newpwd?userId=" + userId + "&authCode="+ ePw + "\" target=\"_self\">"														+
                         "		<p"																																																	+
                         "			style=\"display: inline-block; width: 210px; height: 45px; margin: 30px 5px 40px; background: #02b875; line-height: 45px; vertical-align: middle; font-size: 16px;\">"							+
                         "			메일 인증</p>"																																														+
