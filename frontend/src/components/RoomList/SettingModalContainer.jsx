@@ -13,6 +13,7 @@ function SettingModalContainer(props){
         setIsOpen(!isOpen);
     }
     const renderDrinkLevel = (value) => {
+        console.log("정상 빌드 배포 완료");
         switch(value){
             case 0:
                 return(<div className={style.roomlabel}>알쓰방</div>)
