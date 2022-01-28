@@ -32,7 +32,7 @@ const ConferenceDetail = (props) => {
             <div>
               <ToastIcon className={styles.icon} />
             </div>
-            <h1 className={styles.title}>{date.month}/{date.day}</h1>
+            <h1 className={styles.title}>{date.month}월{date.day}일</h1>
             <div>
               <ToastIcon className={styles.icon} />
             </div>

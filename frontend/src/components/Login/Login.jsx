@@ -10,6 +10,7 @@ import logo from "../../assets/icons/logo.png";
 import UserApi from "../../api/UserApi.js";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import GoogleLoginBtn from "./GoogleLogin";
+import GoogleLogin from "react-google-login";
 
 const Login = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
@@ -204,7 +205,7 @@ const Login = () => {
             <div className={styles.socialButton}>
               <KakaoBtn/>
               <GoogleBtn/> 
-              {/* <GoogleLoginBtn className={styles.GoogleLogin} /> */}
+              <GoogleLoginBtn className={styles.GoogleLogin} />
             </div>
 
         </form>
@@ -226,7 +227,7 @@ function KakaoBtn() {
 function GoogleBtn() {
     return(
       <div>
-      <button className={styles.googleBtn}>
+      <button className={styles.googleBtn} onClick={GoogleLoginBtn}>
         <GoogleIcon className={styles.icon}/>구글 로그인
       </button>
     </div>
