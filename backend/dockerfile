@@ -5,7 +5,7 @@ COPY gradle ./gradle
 RUN \
 chmod +x ./gradlew \
 && ./gradlew build \
-# || return 0
+|| return 0
 COPY src ./src
 RUN ./gradlew bootJar
 FROM adoptopenjdk/openjdk8:x86_64-alpine-jre8u292-b10
