@@ -50,7 +50,7 @@ function Home() {
     <>
       {/* <RoomConfig open={modalOpen} /> */}
       <Container fluid="true" className="body">
-        <Row fluid="true" className="h-100">
+        <Row fluid="true" id="row" className="rowClass h-100">
           <Col lg={1} className="dummy"></Col>
           <Col lg={4} className="h-25">
             <div className="intro_text">WELCOME OUR MEET</div>
