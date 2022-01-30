@@ -85,7 +85,7 @@ const Register = () => {
           setIdMsg("5자 이상의 아이디를 입력해주세요.");
         } else if (value.length > 16) {
           setIdMsg("16자 이하의 아이디를 입력해주세요.");
-        } else if (value === "") {
+          // } else if (value === "") {
           setIdMsg("아이디를 입력해주세요");
         } else if (!idPattern.test(value)) {
           setIdMsg("아이디는 숫자와 영어만 입력이 가능합니다.");
@@ -465,9 +465,6 @@ const Register = () => {
         </button>
       </form>
     </div>
-    // <Routes>
-    //   <Route path="complete" element={<RegisterComplete />} />
-    // </Routes>
   );
 };
 

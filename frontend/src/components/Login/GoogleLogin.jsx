@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import GoogleLogin from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
-
+import styles from "./GoogleLogin.module.css";
 const CLIENT_ID =
   "942647210382-bc35483ltee87aoa4qg03o1sbj8eb61o.apps.googleusercontent.com";
 const GoogleLoginBtn = ({ onGoogleLogin }) => {
@@ -28,6 +28,7 @@ const GoogleLoginBtn = ({ onGoogleLogin }) => {
   return (
     <div>
       <GoogleLogin
+        className={styles.google}
         clientId={CLIENT_ID}
         responseType={"id_token"}
         onSuccess={onSuccess}
