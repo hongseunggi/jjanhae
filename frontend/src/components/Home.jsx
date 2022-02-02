@@ -3,6 +3,8 @@ import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
 import RoomConfig from "./Modals/RoomConfig";
 import Keyword from "./Game/Keyword";
+import GameList from "./Game/GameList";
+import Setting from "./Game/Setting";
 import { Link } from "react-router-dom";
 import LoginStatusContext from "../contexts/LoginStatusContext";
 import Carousel from "./Carousel/Carousel";
@@ -66,7 +68,9 @@ function Home() {
         </Row>
       </Container>
       {/* <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} /> */}
-      <Keyword open={modalOpen} close={closeRoomConfigModal} />
+      {/* <Keyword open={modalOpen} close={closeRoomConfigModal} /> */}
+      {/* <GameList open={modalOpen} close={closeRoomConfigModal} /> */}
+      <Setting open={modalOpen} close={closeRoomConfigModal} />
       {/* <RegistMusic open={modalOpen} onClose={closeRoomConfigModal} /> */}
     </>
   );
