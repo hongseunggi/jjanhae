@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./RegisterComplete.module.css";
 
 const RegisterComplete = () => {
+  console.log();
   return (
     <div className={styles.form}>
       <div className={styles.title}>Welcome</div>

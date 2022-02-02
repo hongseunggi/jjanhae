@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
 import RoomConfig from "./Modals/RoomConfig";
@@ -6,6 +6,7 @@ import Keyword from "./Game/Keyword";
 import { Link } from "react-router-dom";
 import LoginStatusContext from "../contexts/LoginStatusContext";
 import Carousel from "./Carousel/Carousel";
+import RegistMusic from "./Modals/RegistMusic";
 
 function Home() {
   const { loginStatus } = useContext(LoginStatusContext);
@@ -50,7 +51,7 @@ function Home() {
     <>
       {/* <RoomConfig open={modalOpen} /> */}
       <Container fluid="true" className="body">
-        <Row fluid="true" className="h-100">
+        <Row fluid="true" id="row" className="rowClass h-100">
           <Col lg={1} className="dummy"></Col>
           <Col lg={4} className="h-25">
             <div className="intro_text">WELCOME OUR MEET</div>
@@ -60,12 +61,12 @@ function Home() {
             <Row className="buttonbox">{buttonRender()}</Row>
           </Col>
           <Col>
-            <Carousel/>
+            <Carousel />
           </Col>
         </Row>
       </Container>
-      <Keyword open={modalOpen} onClose={closeRoomConfigModal} />
-      {/* <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} /> */}
+      <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} />
+      {/* <RegistMusic open={modalOpen} onClose={closeRoomConfigModal} /> */}
     </>
   );
 }

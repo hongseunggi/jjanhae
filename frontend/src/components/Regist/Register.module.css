@@ -142,7 +142,7 @@
   width: 240px;
   height: 40px;
   background-color: #08d9d6;
-  box-shadow: 0rem 0.5rem 1.5rem rgba(82, 240, 237, 0.1);
+  box-shadow: 0rem 0.5rem 1.5rem #51f0ed1a;
   border-radius: 10px;
   border: none;
   font-size: 18px;
