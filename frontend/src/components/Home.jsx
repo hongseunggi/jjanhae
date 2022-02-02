@@ -65,7 +65,8 @@ function Home() {
           </Col>
         </Row>
       </Container>
-      <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} />
+      {/* <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} /> */}
+      <Keyword open={modalOpen} close={closeRoomConfigModal} />
       {/* <RegistMusic open={modalOpen} onClose={closeRoomConfigModal} /> */}
     </>
   );

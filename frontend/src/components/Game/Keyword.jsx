@@ -25,7 +25,8 @@ const Keyword = (props) => {
                         <p>당신의 키워드를 입력해주세요!</p>
                     </div>
                     <form>
-                        <input></input>
+                        <input className={styles.inputKeyword}
+                                placeholder="입력하기"></input>
                     </form>
                 </div>
                 <button className={styles.confirmBtn} onClick={close}>
