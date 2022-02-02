@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
 import RoomConfig from "./Modals/RoomConfig";
+import Keyword from "./Game/Keyword";
 import { Link } from "react-router-dom";
 import LoginStatusContext from "../contexts/LoginStatusContext";
 import Carousel from "./Carousel/Carousel";
@@ -63,7 +64,8 @@ function Home() {
           </Col>
         </Row>
       </Container>
-      <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} />
+      <Keyword open={modalOpen} onClose={closeRoomConfigModal} />
+      {/* <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} /> */}
     </>
   );
 }
