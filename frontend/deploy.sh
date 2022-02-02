@@ -1,0 +1,6 @@
+echo build image...
+docker build -t nginx-react .
+echo run start...
+#up은 run하는 기능까지 포함
+docker-compose -f ../gateway/docker-compose.yml up -d react
+docker image prune -f
