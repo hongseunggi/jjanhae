@@ -3,15 +3,12 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import styles from "./RegisterTemplate.module.css";
 import { useNavigate } from "react-router-dom";
 import UserApi from "../../api/UserApi.js";
-import FindAccountResult from "./FindAccountResult";
 
 const FindPassword = ({ progress = 50 }) => {
   const [id, setId] = useState("");
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [emailConfirmCode, setEmailConfirmCode] = useState("");
 
-  const [nameErrorMsg, setNameErrorMsg] = useState("");
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
   const [emailConfirmErrorMsg, setEmailConfirmErrorMsg] = useState("");
 
@@ -20,8 +17,6 @@ const FindPassword = ({ progress = 50 }) => {
 
   const [isEmailConfirm, setIsEmailConfirm] = useState(false);
 
-  const [nameCheck, setNameCheck] = useState(false);
-
   // 이메일 인증 버튼 클릭 유무
   const [isSend, setIsSend] = useState(false);
 
@@ -29,7 +24,7 @@ const FindPassword = ({ progress = 50 }) => {
 
   const navigate = useNavigate();
 
-  const { getEmailCheckResult, getEmailCodeCheckResult } = UserApi;
+  const { getPwdCheckResult, getEmailCodeCheckResult } = UserApi;
 
   const onChangeId = useCallback((e) => {
     const idCurrent = e.target.value;
@@ -64,13 +59,13 @@ const FindPassword = ({ progress = 50 }) => {
   const handleEmailCheck = async () => {
     // 이메일 인증번호 검사 api 호출
     try {
-      const { data } = await getEmailCheckResult("findId", {
-        name: name,
+      const { data } = await getPwdCheckResult({
+        userId: id,
         email: email,
       });
       setIsSend(true);
       setEmailErrorMsg(
-        "이메일을 발송했습니다. 인증번호가 오지 않을 경우 올바르게 입력했는지 확인해 주세요."
+        "인증번호를 발송했습니다. \n인증번호가 오지 않을 경우 입력하신 정보를 다시 한번 확인해 주세요."
       );
     } catch ({ response }) {
       console.log(response);
@@ -81,7 +76,6 @@ const FindPassword = ({ progress = 50 }) => {
   const handleEmailCodeCheck = async () => {
     try {
       const { data } = await getEmailCodeCheckResult("findId", {
-        name: name,
         email: email,
         authCode: emailConfirmCode,
       });
@@ -97,9 +91,9 @@ const FindPassword = ({ progress = 50 }) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (nameCheck & isEmailConfirm) {
-      setConfirm(true);
-    }
+    // if (nameCheck & isEmailConfirm) {
+    //   setConfirm(true);
+    // }
     // navigate("/user/signup/checkProfile");
   };
 
@@ -130,7 +124,7 @@ const FindPassword = ({ progress = 50 }) => {
                 }}
               >
                 <div className={styles.inputArea}>
-                  <div className={styles.inputRow}>
+                  <div className={`${styles.inputRow} ${styles.findpwdInput}`}>
                     <div className={styles.input}>
                       <label className={styles.label} htmlFor="id">
                         아이디
@@ -143,10 +137,9 @@ const FindPassword = ({ progress = 50 }) => {
                         autoComplete="off"
                         onChange={onChangeId}
                       />
-                      <span className={styles.errorMsg}>{}</span>
                     </div>
                   </div>
-                  <div className={styles.inputRow}>
+                  <div className={`${styles.inputRow} ${styles.findpwdInput}`}>
                     <div className={styles.input}>
                       <label className={styles.label} htmlFor="email">
                         이메일

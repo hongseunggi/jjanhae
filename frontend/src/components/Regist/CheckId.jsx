@@ -51,9 +51,9 @@ const CheckId = ({ progress }) => {
       setInput({ ...input, userId: id });
       await getIdCheckResult(id);
       setConfirm(true);
-    } catch ({ response }) {
-      console.log(response);
-      setErrorMsg(response.data.message);
+    } catch (error) {
+      console.log(error);
+      // setErrorMsg(response.data.message);
       setError(true);
     }
   };
