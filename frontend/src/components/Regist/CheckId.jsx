@@ -53,7 +53,7 @@ const CheckId = ({ progress }) => {
       setConfirm(true);
     } catch (error) {
       console.log(error);
-      // setErrorMsg(response.data.message);
+      setErrorMsg("이미 사용중인 아이디 입니다.");
       setError(true);
     }
   };

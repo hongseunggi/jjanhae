@@ -4,7 +4,7 @@ import { ReactComponent as EmailIcon } from "../../assets/icons/email.svg";
 import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
 import ShowId from "./ShowId";
-import UserApi from "../../api/UserApi.js";
+import UserApi from "../../../api/UserApi.js";
 
 const FindId = () => {
   const { getEmailCheckResult, getEmailCodeCheckResult } = UserApi;
