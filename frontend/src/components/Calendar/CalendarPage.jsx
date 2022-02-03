@@ -38,7 +38,7 @@ const CalendarPage = () => {
   });
 
   const [partyList, setPartyList] = useState({
-    conferencesId: [1, 2, 3, 4, 5],
+    conferencesId: [1, 2, 3],
   });
 
   const [listModalOpen, setListModalOpen] = useState(false);
@@ -99,17 +99,29 @@ const CalendarPage = () => {
 
   //선택된것 말고 다 hidden
   const handleClick = (event) => {
-    setIsActive(false);
+    setUnvisible(event);
     if(event.target.nextElementSibling.style.visibility==='hidden') {
       setItem({
         month: value.format("M"),
         day: event.nativeEvent.path[2].outerText,
       });
     }
-    setUnvisible(event);
+    // showList(event.target.nextElementSibling.style);
   };
   
-  const showList = (target) => {
+  // const showList = (target) => {
+  //   if(target.visibility==='visible') {
+  //     target.visibility='hidden';
+  //     target.opacity='0';
+  //     target.transform='translateY(0)';
+  //   }else {
+  //     target.visibility='visible';
+  //     target.opacity='1';
+  //     target.transform='translateY(-20px)';
+  //   }
+  // }
+
+  function showList(target) {
     if(target.visibility==='visible') {
       target.visibility='hidden';
       target.opacity='0';
@@ -120,14 +132,14 @@ const CalendarPage = () => {
       target.transform='translateY(-20px)';
     }
   }
-
-  const setUnvisible = (event) => {
+  
+  function setUnvisible(event) {
     for(let i=0; i<dropDown.current.length; i++) {
       dropDown.current[i].style.visibility='hidden';
     }
     showList(event.target.nextElementSibling.style);
   }
-
+  
   const calcYoil = (day) => {
     let yoil = dayStyles(day);
     let date = day.format("D").toString();
@@ -149,8 +161,6 @@ const CalendarPage = () => {
                     <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[0]}</button></li>
                     <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[1]}</button></li>
                     <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[2]}</button></li>
-                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[3]}</button></li>
-                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[4]}</button></li>
                   </ul>
                 </div>
               </div>
