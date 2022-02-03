@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
-import styles from "./RegisterTemplate.module.css";
+import styles from "../Regist/RegisterTemplate.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import UserApi from "../../api/UserApi.js";
 
