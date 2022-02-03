@@ -14,7 +14,10 @@ const CheckPwd = ({ progress }) => {
   const [pwdError, setPwdError] = useState(false);
   const [pwdConfirmError, setPwdConfirmError] = useState(false);
 
+  const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+
+  const [confirm, setConfirm] = useState(false);
 
   const navigate = useNavigate();
 
@@ -30,9 +33,11 @@ const CheckPwd = ({ progress }) => {
     if (!passwordRegex.test(passwordCurrent)) {
       setPwdErrorMsg("숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!");
       setPwdError(true);
+      setIsPassword(false);
     } else {
       setPwdErrorMsg("");
       setPwdError(false);
+      setIsPassword(true);
     }
   }, []);
 
@@ -55,12 +60,26 @@ const CheckPwd = ({ progress }) => {
     [password]
   );
 
-  // useEffect(() => {
-  //   setInput({ ...input, password: password });
-  // }, [isPasswordConfirm]);
+  useEffect(() => {
+    if (password === passwordConfirm) {
+      setIsPasswordConfirm(true);
+    } else {
+      setIsPasswordConfirm(false);
+    }
+
+    if (isPassword & isPasswordConfirm) {
+      setConfirm(true);
+    } else {
+      setConfirm(false);
+    }
+    // console.log(`password : ${isPassword}`);
+    // console.log(`passwordConfirm : ${isPasswordConfirm}`);
+    // console.log(`confirm : ${confirm}`);
+  }, [isPassword, isPasswordConfirm, confirm, password, passwordConfirm]);
 
   const handleClick = (e) => {
     e.preventDefault();
+
     setInput({ ...input, password: password });
     navigate("/user/signup/checkEmail");
   };
@@ -160,13 +179,13 @@ const CheckPwd = ({ progress }) => {
             <div className={styles.nextBtns}>
               <button
                 className={
-                  !isPasswordConfirm
+                  !confirm
                     ? `${styles.nextBtn} ${styles.disabled}`
                     : styles.nextBtn
                 }
                 type="button"
                 onClick={handleClick}
-                disabled={!isPasswordConfirm}
+                disabled={!confirm}
               >
                 다음
               </button>

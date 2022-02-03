@@ -12,7 +12,7 @@ public interface UserService {
 	User getUserByUserId(String userId);
 	User getUserByEmail(String email);
 	User getUserByNameAndEmail(String name, String email);
-	User getUserByUserIdAndNameAndEmail(String userId, String name, String email);
+	User getUserByUserIdAndEmail(String userId, String email);
 	void updateUserAuthCode(User user, String authCode);
 	void updateUserProfile(String userId, UserProfilePatchReq userProfilePatchReq);
 	void updateUserProfileImg(String userId, String imageUrl);
