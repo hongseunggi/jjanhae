@@ -1,6 +1,6 @@
 import axios from "axios";
-// const BASE_URL = "http://localhost:8081/user";
-const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
+const BASE_URL = "http://localhost:8081/api/v1/user";
+// const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
 // 유저관련 api 설정
 const getRegistResult = async (body) => {
@@ -51,6 +51,12 @@ const getLoginResult = async (body) => {
   return result;
 };
 
+const getUserProfile = async () => {
+  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
+  const result = await axios.get(`${BASE_URL}/profile`);
+  return result;
+}
+
 const UserApi = {
   getRegistResult,
   getEmailCheckResult,
@@ -59,6 +65,7 @@ const UserApi = {
   getPwdCheckResult,
   getPwdResetResult,
   getLoginResult,
+  getUserProfile
 };
 
 export default UserApi;

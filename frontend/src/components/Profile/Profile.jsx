@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import UserApi from "../../api/UserApi.js";
 import styles from "./Profile.module.css";
 import editIcon from "../../assets/icons/edit.png";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
@@ -11,14 +12,15 @@ import image5 from "../../assets/images/default5.png";
 import image6 from "../../assets/images/default6.png";
 
 const Profile = () => {
-  const [name, setName] = useState("소주희");
-  const [id, setId] = useState("ssafy");
-  const [email, setEmail] = useState("thdalstn6352@naver.com");
-  const [birthday, setBirthday] = useState("1996-09-27");
-  const [drink, setDrink] = useState("소주");
-  const [drinkLimit, setDrinkLimit] = useState("3");
+  const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [drink, setDrink] = useState("");
+  const [drinkLimit, setDrinkLimit] = useState("");
   const [isEdit, setIsEdit] = useState(false);
 
+  const {getUserProfile} = UserApi;
   // 친구들을 특정하기 위한 값이 필요 ex) id
   const [friends, setFriends] = useState([
     { name: "김정연", count: 5, image: image1 },
@@ -29,13 +31,31 @@ const Profile = () => {
   ]);
   const handleEditMode = (e) => {
     e.preventDefault();
+    console.log(name);
     setIsEdit((prev) => !prev);
   };
+
+  useEffect( async ()=>{
+    const {data} = await getUserProfile();
+    console.log(data);
+    setName(data.name);
+    setEmail(data.email);
+    let year = data.birthday.year;
+    let month = data.birthday.month;
+    let day = data.birthday.day;
+    if(data.birthday.month < 9) month = "0"+data.birthday.month;
+    if(data.birthday.day < 9) day = "0"+data.birthday.day;
+    let birth = year + "-" + month + "-" + day;
+    setBirthday(birth);
+    setId(data.userId);
+    setDrink(data.drink);
+    setDrinkLimit(data.drinkLimit);
+  }, [])
 
   return (
     <div className={styles.profileForm}>
       <header className={styles.title}>
-        <h1>소주희님의 프로필</h1>
+        <h1>{name}님의 프로필</h1>
       </header>
       <main className={styles.profile}>
         <section className={styles.userProfile}>
