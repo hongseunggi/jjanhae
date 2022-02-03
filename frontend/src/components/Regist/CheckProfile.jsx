@@ -40,7 +40,9 @@ const CheckProfile = ({ progress }) => {
   }, []);
 
   const handleInputBirthday = useCallback((date) => {
+    
     setBirthday(date);
+    console.log(birthday);
     setBirthdayCheck(true);
   }, []);
 
@@ -72,7 +74,12 @@ const CheckProfile = ({ progress }) => {
   useEffect(() => {
     if (birthday !== "") {
       const newBirth = birthday.toLocaleDateString();
-      setInput({ ...input, birthday: newBirth });
+      const map = newBirth.split(". ");
+      let realBirth = [];
+      map.map((v, i)=>{
+        realBirth[i] = v*1;
+      })
+      setInput({ ...input, birthday: {year : realBirth[0], month : realBirth[1], day : realBirth[2]} });
     } else setInput({ ...input, birthday });
   }, [birthday]);
 
