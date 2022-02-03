@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./CalendarPage.module.css";
 import axios from "axios";
 import moment from "moment";
@@ -27,11 +27,9 @@ const CalendarPage = () => {
   //conference list
   const [party, setParty] = useState({
     conferences: [
-      "2022-01-01",
-      "2022-01-12",
-      "2022-01-15",
-      "2022-01-23",
-      "2022-01-24",
+      "2022-02-01",
+      "2022-02-02",
+      "2022-02-03",
     ],
   });
 
@@ -42,9 +40,19 @@ const CalendarPage = () => {
   const [listModalOpen, setListModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
 
+  const [isActive, setIsActive] = useState(false);
+
   const getDetailModalOpen = (status) => {
     setDetailModalOpen(status);
   };
+
+  const onClick= (event) => {
+    console.log(dropdownRef.current.parentNode.nextElementSibling);
+    // console.log(dropdownRef);
+    setIsActive(!isActive);
+  }
+
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     setCalendar(buildCalendar(value));
@@ -77,15 +85,15 @@ const CalendarPage = () => {
     if (event.nativeEvent.path[0].tagName === "svg") {
       setItem({
         month: value.format("M"),
-        day: event.nativeEvent.path[2].innerText,
+        day: event.nativeEvent.path[3].innerText[0],
       });
     } else {
       setItem({
         month: value.format("M"),
-        day: event.nativeEvent.path[4].innerText,
+        day: event.nativeEvent.path[5].innerText[0],
       });
     }
-    openListModal();
+    // openListModal();
   };
 
   const calcYoil = (day) => {
@@ -98,9 +106,19 @@ const CalendarPage = () => {
     for (let i = 0; i < party.conferences.length; i++) {
       if (day.format("YYYY-MM-DD") === party.conferences[i]) {
         return (
-          <div>
-            <PartyIcon className={styles.partyicon} onClick={handleClick} />
-          </div>
+          <div className={styles.container}>
+            <button onClick={onClick} className={`${styles.iconBtn}  ${styles.date}`}>
+              <PartyIcon className={styles.partyicon} onClick={handleClick} ref={dropdownRef} />
+            </button>
+              <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList}>
+              파티 목록
+                <ul>
+                  <li><button className={styles.partyData}>{partyList.conferencesId[0]}</button></li>
+                  <li><button className={styles.partyData}>{partyList.conferencesId[1]}</button></li>
+                  <li><button className={styles.partyData}>{partyList.conferencesId[2]}</button></li>
+                </ul>
+              </div>
+            </div>
         );
       }
     }

@@ -5,13 +5,11 @@
   justify-content: center;
   /* justify-content: space-around; */
 }
-
 .calendarForm {
   display: flex;
   flex-direction: column;
   margin-top: 10vh;
 }
-
 .calendarHeader {
   position: relative;
   display: flex;
@@ -20,7 +18,6 @@
   justify-content: center;
   color: tomato;
 }
-
 .calendarTitle {
   position: relative;
   font-size: 2.5rem;
@@ -29,22 +26,18 @@
   text-align: left;
   margin-left: 150px;
 }
-
 .calendarBodyBorder {
   margin: 0 auto;
 }
-
 .calendarBody {
   border-color: whitesmoke;
   overflow: auto;
   margin-top: 30px;
 }
-
 .calendarTop {
   display: flex;
   margin: 0 auto;
 }
-
 .month {
   color: #eeee;
   margin-right: 1rem;
@@ -54,13 +47,11 @@
   margin-left: 0rem;
   font-size: 2.5rem;
 }
-
 .week {
   width: 10px;
   height: 4rem;
   display: table-row;
 }
-
 .day {
   position: relative;
   display: table-cell;
@@ -74,26 +65,84 @@
   width: 10vw;
   height: 10vh;
 }
-
 .icon {
   width: 50px;
   height: 50px;
   background-color: transparent;
 }
-
 .sunday {
   color: #ff2e63;
 }
-
 .saturday {
   color: #08d9d6;
 }
-
 .none {
   color: transparent;
 }
-
 .partyicon {
   width: 40px;
   height: 40px;
+}
+.iconBtn {
+  background-color: transparent;
+  border: none;
+}
+.container {
+  box-shadow: 0 4px 5px 0 #00000026;
+  position: relative;
+}
+.partyList {
+  background: rgb(255, 86, 34);
+  border-radius: 8px;
+  position: absolute;
+  top: 45px;
+  width: 100%;
+  height: 180px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+  z-index: 1;
+  color : #eeee;
+}
+
+.partyList.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.iconBtn {
+  border-radius: 90px;
+  cursor: pointer;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: none;
+  transition: box-shadow 0.4s ease;
+}
+
+.iconBtn:hover {
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+.iconBtn span {
+  font-weight: 700;
+  vertical-align: middle;
+  font-size: 14px;
+  margin: 0 10px;
+}
+.partyList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.partyList li {
+  border-bottom: 1px solid #ffffff;
+  color: #eeee;
+}
+
+.partyData {
+  background-color: transparent;
+  border :none;
 }
