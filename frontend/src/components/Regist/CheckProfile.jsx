@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import RegistContext from "../../contexts/RegistContext";
 import UserApi from "../../api/UserApi.js";
 import BirthDate from "./BirthDate";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CheckProfile = ({ progress }) => {
   const [name, setName] = useState("");
@@ -78,7 +79,6 @@ const CheckProfile = ({ progress }) => {
   const handleClick = (e) => {
     e.preventDefault();
     registerApi();
-    navigate("/user/signup/complete");
   };
 
   const registerApi = async () => {
@@ -86,6 +86,7 @@ const CheckProfile = ({ progress }) => {
       console.log(input);
       const response = await getRegistResult(input);
       console.log(response);
+      navigate("/user/signup/complete");
     } catch (error) {
       console.log(error);
       alert("회원가입에 실패했습니다. 새로고침 후 다시 시도해주세요");
