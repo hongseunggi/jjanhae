@@ -8,6 +8,8 @@ import ConferenceDetail from "./ConferenceDetail3";
 // import ConferenceDetail from "./ConferenceDetail2";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
 import { ReactComponent as PartyIcon } from "../../assets/icons/party.svg";
+import beerbottle from "../../assets/icons/beerbottle.png";
+import { Dropdown } from "bootstrap";
 // import Modal from 'react-modal'
 
 const CalendarPage = () => {
@@ -28,8 +30,9 @@ const CalendarPage = () => {
   const [party, setParty] = useState({
     conferences: [
       "2022-02-01",
-      "2022-02-02",
-      "2022-02-03",
+      "2022-02-10",
+      "2022-02-06",
+      // "2022-02-22",
     ],
   });
 
@@ -42,10 +45,11 @@ const CalendarPage = () => {
 
   const [isActive, setIsActive] = useState(false);
 
+  const dropDown = useRef([]);
+
   const getDetailModalOpen = (status) => {
     setDetailModalOpen(status);
   };
-
 
   useEffect(() => {
     setCalendar(buildCalendar(value));
@@ -76,24 +80,38 @@ const CalendarPage = () => {
 
   //선택된것 말고 다 hidden
   const handleClick = (event) => {
+    console.log(dropDown);
     setIsActive(false);
-    setItem({
-      month: value.format("M"),
-      day: event.nativeEvent.path[2].outerText[0],
-      });
-    showList(event.target.nextElementSibling.style);
+    if(event.target.nextElementSibling.style.visibility==='hidden') {
+      setItem({
+        month: value.format("M"),
+        day: event.nativeEvent.path[2].outerText,
+        });
+    }
+    setUnvisible(event);
+    // showList(event.target.nextElementSibling.style);
   };
 
   const showList = (target) => {
+   
     if(target.visibility==='visible') {
       target.visibility='hidden';
       target.opacity='0';
       target.transform='translateY(0)';
     }else {
+      target.overflow='hidden';
       target.visibility='visible';
       target.opacity='1';
       target.transform='translateY(-20px)';
     }
+  }
+
+  const setUnvisible = (event) => {
+    for(let i=0; i<dropDown.current.length; i++) {
+      dropDown.current[i].style.visibility='hidden';
+    }
+
+    showList(event.target.nextElementSibling.style);
   }
 
   const calcYoil = (day) => {
@@ -101,6 +119,8 @@ const CalendarPage = () => {
     let date = day.format("D").toString();
     return <div className={styles[yoil]}>{date}</div>;
   };
+
+  const listStyle = {visibility:"hidden"};
 
   const checkParty = (day) => {
     for (let i = 0; i < party.conferences.length; i++) {
@@ -112,7 +132,7 @@ const CalendarPage = () => {
               {/* <button onClick={onClick} className={`${styles.iconBtn}  ${styles.date}`}>
                 <PartyIcon className={styles.partyicon} onClick={handleClick} ref={dropdownRef} />
               </button> */}
-                <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList}>
+                <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList} style={listStyle}  ref={el => (dropDown.current[i] = el)}>     
                 파티 목록
                   <ul>
                     <li><button className={styles.partyData}>{partyList.conferencesId[0]}</button></li>

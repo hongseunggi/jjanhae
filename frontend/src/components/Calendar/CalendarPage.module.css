@@ -82,6 +82,10 @@
 .partyicon {
   width: 40px;
   height: 40px;
+  border: none;
+  background-image: url('../../assets/icons/party.svg');
+  background-size: contain;
+  background-color: transparent;
 }
 .iconBtn {
   background-color: transparent;
