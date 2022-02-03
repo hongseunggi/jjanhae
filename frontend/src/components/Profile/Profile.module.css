@@ -1,5 +1,6 @@
 .profileForm {
   padding: 50px;
+  margin-top: -64px;
   height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
@@ -87,6 +88,7 @@
 .editRow .editBtn {
   border: none;
   padding: 0;
+  width: 24px;
 }
 .editBtn .editIcon {
   width: 20px;

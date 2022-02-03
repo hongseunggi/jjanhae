@@ -92,12 +92,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // 비밀번호 찾기 - userId와 email과 name으로 조회
+    // 비밀번호 찾기 - userId와 email로 조회
     @Override
-    public User getUserByUserIdAndNameAndEmail(String userId, String name, String email) {
-        System.out.println("====== getUserByUserIdAndNameAndEmail =====");
-        System.out.printf("userId : %s, name : %s, eamil : %s\n", userId, name, email);
-        Optional<User> res = userRepositorySupport.findUserByUserIdAndNameAndEmail(userId, name, email);
+    public User getUserByUserIdAndEmail(String userId, String email) {
+        System.out.println("====== getUserByUserIdAndEmail =====");
+        System.out.printf("userId : %s, eamil : %s\n", userId, email);
+        Optional<User> res = userRepositorySupport.findUserByUserIdAndEmail(userId, email);
         User user = null;
         if(res.isPresent()) {
             user = res.get();
