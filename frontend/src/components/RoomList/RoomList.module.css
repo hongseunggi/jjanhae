@@ -1,10 +1,13 @@
-/* .body{
-    overflow: hidden;
-} */
+
+.container{
+    margin: 20px;
+}
+.srow{
+    margin : 30px auto 0px 0px;
+}
 .searchbox{
     position: relative;
     text-align: center;
-    margin-top: 90px;
 }
 .searchdiv{
     position: relative;
@@ -31,7 +34,7 @@
     height: 28px;
     border-radius: 15px;
     border-style: none;
-    /* padding: 0; */
+    padding: 0;
     right: 5px;
     top : 2px;
     background-color: #08d9d6;
@@ -50,9 +53,9 @@
     appearance: none;
 }
 .list{
-    margin-top: 5%;
+    margin-top: 40px;
     text-align: center;
-    height: 74vh;
+    height: 78vh;
     background-color: #252a34;
     overflow: scroll;
 }
@@ -67,7 +70,7 @@
     height: 500px;
     
     /* margin-bottom: 10%; */
-    margin: 9px auto 15%;
+    margin: 50px auto 15%;
     border-radius: 25px;
     border-style: none;
     transition: all 0.3s ease 0s;

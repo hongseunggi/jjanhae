@@ -10,7 +10,7 @@ import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import { ReactComponent as SojuIcon } from "../../assets/icons/soju.svg";
 import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
-import logo from "../../assets/icons/logo.png";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
 import UserApi from "../../api/UserApi.js";
@@ -85,7 +85,7 @@ const Register = () => {
           setIdMsg("5자 이상의 아이디를 입력해주세요.");
         } else if (value.length > 16) {
           setIdMsg("16자 이하의 아이디를 입력해주세요.");
-        } else if (value === "") {
+          // } else if (value === "") {
           setIdMsg("아이디를 입력해주세요");
         } else if (!idPattern.test(value)) {
           setIdMsg("아이디는 숫자와 영어만 입력이 가능합니다.");
@@ -465,9 +465,6 @@ const Register = () => {
         </button>
       </form>
     </div>
-    // <Routes>
-    //   <Route path="complete" element={<RegisterComplete />} />
-    // </Routes>
   );
 };
 

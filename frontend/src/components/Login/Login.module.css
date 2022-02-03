@@ -1,53 +1,60 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap'); */
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
 
-/* * {
-    background-color: #252A34;
-    color: #eee;
-    font-family: 'Poppins', sans-serif;
-  } */
+/* 로그인 왼편 웰컴 정보 */
+.contents {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  color: #eee;
+}
+.welcomeInfo {
+  display: flex;
+  flex-direction: column;
 
-.inputRow {
-    width :400px;
-    display : flex;
-    align-items: center;
-    justify-content: space-evenly;
+  justify-content: center;
+  margin-right: 80px;
+}
+.welcomeInfo span {
+  margin-bottom: 40px;
+}
+.InfoLogo {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
 }
 
-.logo {
-  /* width: 100px;
-    height: 100px; */
-  width: 150px;
-  height: 150px;
-  background-color: transparent;
-}
-
-.icon {
-    fill: #EEE;
-    width: 30px;
-    height: 30px;
-}
-
+/* 로그인 입력 폼  */
 .formBorder {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-  }
-  
+  display: flex;
+  justify-content: center;
+}
+
+.formBorder .inputTitle {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.formBorder .inputTitle span {
+  font-size: 13px;
+  opacity: 50%;
+}
+.formBorder .inputTitle h1 {
+  font-weight: 400;
+  margin: 0;
+}
+
 .form {
   width: 600px;
   height: 620px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  border: 3px solid;
-  border-color: #eeee;
-  /* margin-top: 50px; */
-  padding: 0 50px 50px 50px;
+  /* border: 0.1px solid; */
+  border: 0.5px solid rgba(238, 238, 238, 0.3);
+  border-radius: 20px;
+  padding: 30px 50px;
 
-  border-image: linear-gradient(
+  /* border-image: linear-gradient(
     #ff2e63 0%,
     #ff5722 22.92%,
     #e6e954 44.79%,
@@ -55,68 +62,119 @@
     #08d9d6 82.29%,
     #b04dfa 100%
   );
-  border-image-slice: 1;
-
-  }
-  
-.inputArea {
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+  border-image-slice: 1; */
 }
 
+/* 로그인 입력 창 */
+.inputArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputRow {
+  width: 100%;
+}
+
+.inputRow:first-child {
+  margin-bottom: 20px;
+}
+
+.inputRow label {
+  font-weight: 400;
+}
+
+/* .inputRow .necessary {
+  background-color: #ff5722;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+} */
+.icon {
+  fill: #eee;
+  width: 30px;
+  height: 30px;
+}
 
 .input {
-    width : 320px;
-    height: 50px;
-    border: none;
-  }
-  
-  .inputData {
-    width: 320px;
-    height: 30px;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    border: none;
-    border-bottom: 2px solid;
-    background-color: transparent;
-    border-color: white;
-    margin-top: 5px;
-    color :white;
-  }
+  display: flex;
+  flex-direction: column;
+}
 
-.inputData::placeholder {
-    font-size: 16px;
-    color: #eee;
+.input label {
+  font-size: 18px;
+}
+
+.inputData {
+  height: 50px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  border: 0.5px solid rgba(238, 238, 238, 0.5);
+  border-radius: 10px;
+  background-color: transparent;
+  color: white;
+  padding: 10px;
+}
+
+.inputData.inputError {
+  border: 1px solid tomato;
 }
 
 .inputData:focus {
-  outline: none;
+  border: 0.5px solid rgba(27, 100, 218, 0.7);
 }
 
 .errorMsg {
   position: relative;
   color: #ff5722;
   font-size: 15px;
-  margin-bottom: 0px;
-  margin-top: 10px;
   white-space: pre-wrap;
+  margin: 0;
+  height: 30px;
 }
 
 .confirmButtons {
-    width: 410px;
-    display: flex;
-    justify-content: space-around;
+  margin-bottom: 20px;
 }
 
+.crossline {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 15px 0;
+  /* font-size: 0; */
+  line-height: 0;
+  height: 50px;
+}
+.textOr {
+  display: inline-block;
+  width: 40px;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.crossline:before,
+.crossline:after {
+  display: inline-block;
+  width: calc(50% - 20px);
+  height: 1px;
+  margin: 8px 0;
+  background-color: rgba(238, 238, 238, 0.5);
+  vertical-align: top;
+  content: "";
+}
+button {
+  width: 100%;
+  border-radius: 20px;
+}
 .findButtons {
-    display: flex;
+  display: flex;
+  margin-bottom: 10px;
 }
 
 .loginBtn {
-  width: 180px;
-  height: 40px;
+  width: 100%;
+  height: 50px;
   background-color: #ff2e63;
   /* box-shadow: 0rem 0.5rem 1.5rem rgba(250, 215, 223, 0.1); */
   border-radius: 10px;
@@ -132,86 +190,113 @@
   text-align: center;
 }
 
-.btnText {
-  transition: 0.3s;
-  color: white;
-  padding-top: 4px;
+.btnRow {
+  display: flex;
+  justify-content: space-between;
 }
 
-.btnText2 {
-  color: #fff;
-}
-
-.btnTwo {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  margin-top: -44px;
-  padding-top: 0px;
-  background: #26a69a;
-  left: -90px;
-  transition: 0.3s;
-  border-radius: 10px;
-}
-
+.findPwdBtn,
+.findIdBtn,
 .registBtn {
-  width: 180px;
-  height: 40px;
-  background-color: #08d9d6;
-  border-radius: 10px;
+  background-color: transparent;
   border: none;
-  font-size: 18px;
-  color: #252a34;
+  font-size: 15px;
   font-family: "Poppins", sans-serif;
-  font-weight: bold;
   cursor: pointer;
   outline: none;
-}
-
-.loginBtn:hover:not([disabled]) {
-  transform: translateY(-4px);
-  box-shadow: 0rem 0.5rem 1.5rem rgba(243, 171, 188, 0.212);
-}
-
-/* .loginBtn:hover .btnText{ 
-    margin-left : 65px;
-  } */
-
-.loginBtn:active {
-  box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.3);
-}
-
-.registBtn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0rem 0.5rem 1.5rem rgba(114, 243, 241, 0.178);
-}
-
-.findIdBtn {
-  border: none;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: transparent;
-  color: white;
-}
-
-.findPwdBtn {
-  border: none;
-  font-family: "Poppins", sans-serif;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: transparent;
-  color: white;
-}
-
-.loginBtn:disabled {
-  color: #969696a4;
-  background-color: #eee;
+  color: #eee;
+  padding: 0;
 }
 
 .updown {
-  border: 0.5px solid white;
+  border: 0.05px solid white;
   width: 0.1px;
   height: 15px;
-  margin: 5px 5px 0px 5px;
+  margin: 7px 15px 0px 15px;
+}
+
+/* .socialButton {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.kakaoBtn,
+.googleBtn {
+  background-color: #fee500;
+  display: inline-flex;
+  align-items: center;
+  color: #252a34;
+  box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px;
+  padding: 0px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-size: 15px;
+  font-weight: 500;
+  width: 180px;
+  height: 35px;
+  justify-content: space-evenly;
+  font-weight: bolder;
+  margin: 10px;
+} */
+
+@media screen and (min-width: 1800px) {
+  .contents {
+    margin-top: 100px;
+  }
+
+  .formBorder .inputTitle {
+    margin-bottom: 50px;
+  }
+  .formBorder .inputTitle span {
+    font-size: 18px;
+  }
+  .form {
+    width: 700px;
+    height: 780px;
+    padding: 50px;
+  }
+
+  .input label {
+    font-size: 20px;
+  }
+
+  .inputData {
+    height: 70px;
+    font-size: 24px;
+  }
+
+  .errorMsg {
+    font-size: 18px;
+    height: 30px;
+  }
+
+  .confirmButtons {
+    margin-bottom: 30px;
+  }
+
+  .loginBtn {
+    height: 60px;
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .textOr {
+    font-size: 18px;
+  }
+  .crossline {
+    padding: 15px 0;
+    /* font-size: 0; */
+    line-height: 2.5;
+    height: 70px;
+  }
+  .crossline:before,
+  .crossline:after {
+    vertical-align: baseline;
+  }
+
+  .findPwdBtn,
+  .findIdBtn,
+  .registBtn {
+    font-size: 18px;
+  }
 }

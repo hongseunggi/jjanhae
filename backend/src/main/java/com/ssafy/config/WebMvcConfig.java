@@ -50,7 +50,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     		 * 
     		 */
         registry.addResourceHandler("/css/**")
-        			.addResourceLocations("classpath:/dist/css/");
+        			.addResourceLocations("classpath:/dist/static/css/");
         	registry.addResourceHandler("/fonts/**")
         			.addResourceLocations("classpath:/dist/fonts/");
         registry.addResourceHandler("/icons/**")
@@ -58,7 +58,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/img/**")
 			.addResourceLocations("classpath:/dist/img/");
         registry.addResourceHandler("/js/**")
-				.addResourceLocations("classpath:/dist/js/");
+				.addResourceLocations("classpath:/dist/static/js/");
     }
 
     public Filter requestLoggingFilter() {

@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
+
+.calendadrFormBorder {
+  display: flex;
+  justify-content: center;
+  /* justify-content: space-around; */
+}
+
+.calendarForm {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10vh;
+}
+
+.calendarHeader {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  justify-content: center;
+  color: tomato;
+}
+
+.calendarTitle {
+  position: relative;
+  font-size: 2.5rem;
+  font-weight: bolder;
+  color: #eeee;
+  text-align: left;
+  margin-left: 150px;
+}
+
+.calendarBodyBorder {
+  margin: 0 auto;
+}
+
+.calendarBody {
+  border-color: whitesmoke;
+  overflow: auto;
+  margin-top: 30px;
+}
+
+.calendarTop {
+  display: flex;
+  margin: 0 auto;
+}
+
+.month {
+  color: #eeee;
+  margin-right: 1rem;
+  font-size: 2rem;
+  font-weight: bolder;
+  text-align: left;
+  margin-left: 0rem;
+  font-size: 2.5rem;
+}
+
+.week {
+  width: 10px;
+  height: 4rem;
+  display: table-row;
+}
+
+.day {
+  position: relative;
+  display: table-cell;
+  color: #f3f3f3;
+  text-align: center;
+  justify-content: center;
+  border-color: whitesmoke;
+  border: 0.1rem solid white;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 10vw;
+  height: 10vh;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+}
+
+.sunday {
+  color: #ff2e63;
+}
+
+.saturday {
+  color: #08d9d6;
+}
+
+.none {
+  color: transparent;
+}
+
+.partyicon {
+  width: 40px;
+  height: 40px;
+}

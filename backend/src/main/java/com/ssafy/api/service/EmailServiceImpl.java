@@ -42,19 +42,6 @@ public class EmailServiceImpl implements EmailService {
         message.setSubject("짠해 아이디 찾기 이메일 인증"); //제목
 
         String msgg="";
-//        msgg+= "<div style='margin:100px;'>";
-//        msgg+= "<h1> 안녕하세요 랜선 술파티 서비스, '짠해'입니다. </h1>";
-//        msgg+= "<br>";
-//        msgg+= "<p>아래 코드를 회원가입 창으로 돌아가 입력해주세요<p>";
-//        msgg+= "<br>";
-//        msgg+= "<p>감사합니다!<p>";
-//        msgg+= "<br>";
-//        msgg+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
-//        msgg+= "<h3 style='color:blue;'>아이디 찾기 인증 코드입니다.</h3>";
-//        msgg+= "<div style='font-size:130%'>";
-//        msgg+= "CODE : <strong>";
-//        msgg+= ePw+"</strong><div><br/> ";
-//        msgg+= "</div>";
         msgg += "<!DOCTYPE html>";
         msgg += "<html>";
         msgg += "<head>";
@@ -162,7 +149,7 @@ public class EmailServiceImpl implements EmailService {
                         "		감사합니다."																																															+
                         "	</p>"																																																	+
                         "	<a style=\"color: #FFF; text-decoration: none; text-align: center;\""																																	+
-                        "	href=\"http://localhost:3000/user/newpwd?userId=" + userId + "&authCode="+ ePw + "\" target=\"_self\">"														+
+                        "	href=\"http://i6a507.p.ssafy.io/user/newpwd?userId=" + userId + "&authCode="+ ePw + "\" target=\"_self\">"														+
                         "		<p"																																																	+
                         "			style=\"display: inline-block; width: 210px; height: 45px; margin: 30px 5px 40px; background: #02b875; line-height: 45px; vertical-align: middle; font-size: 16px;\">"							+
                         "			메일 인증</p>"																																														+

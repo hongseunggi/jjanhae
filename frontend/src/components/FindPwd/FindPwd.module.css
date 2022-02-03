@@ -21,8 +21,8 @@
 }
 
 .form {
-  width: 600px;
-  height: 620px;
+  width: 500px;
+  height: 520px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
