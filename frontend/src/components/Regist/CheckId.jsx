@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import styles from "./RegisterTemplate.module.css";
 import { useNavigate } from "react-router-dom";
@@ -15,15 +15,11 @@ const CheckId = ({ progress }) => {
   const { getIdCheckResult } = UserApi;
   const { input, setInput } = useContext(RegistContext);
 
-  const handleInput = (e) => {
-    const value = e.target.value;
-    setId(value);
-  };
-
-  useEffect(() => {
-    validation(id);
-    console.log(id);
-  }, [id]);
+  const handleInput = useCallback((e) => {
+    const idCurrent = e.target.value;
+    setId(idCurrent);
+    validation(idCurrent);
+  }, []);
 
   useEffect(() => {
     confirm && navigate("/user/signup/checkPwd");
@@ -31,11 +27,7 @@ const CheckId = ({ progress }) => {
 
   const validation = (value) => {
     const idPattern = /^[a-zA-Z0-9]*$/;
-
-    if (value === "") {
-      setErrorMsg("필수 항목입니다.");
-      setError(true);
-    } else if (value.length < 5 || value.length > 16) {
+    if (value.length < 5 || value.length > 16) {
       setErrorMsg("5 ~ 16자 사이의 아이디를 입력해주세요.");
       setError(true);
     } else if (!idPattern.test(value)) {
