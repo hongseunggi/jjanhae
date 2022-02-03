@@ -32,7 +32,7 @@ import java.util.Objects;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 

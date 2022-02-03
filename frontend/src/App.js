@@ -16,7 +16,7 @@ function App() {
   return (
     <LoginStatusContext.Provider value={{ loginStatus, setLoginStatus }}>
       <div className="App">
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
           <Routes>
             <Route path="/" element={<Main />}>
               <Route index element={<Home />} />

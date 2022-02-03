@@ -6,7 +6,7 @@ import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
 import { ReactComponent as GoogleIcon } from "../../assets/icons/google.svg";
-import infoLogo from "../../assets/images/infoLogo.png";
+import infoLogo from "../../assets/infoLogo.png";
 import UserApi from "../../api/UserApi.js";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import GoogleLoginBtn from "./GoogleLogin";
