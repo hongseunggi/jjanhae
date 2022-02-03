@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Logo from "../../assets/logo.png";
 import Image from "../../assets/picture.PNG";
 import styles from "./ConferenceDetail.module.css";
+
 const ConferenceDetail = (props) => {
   const { open, close, date } = props;
 

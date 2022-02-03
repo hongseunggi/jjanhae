@@ -1,5 +1,5 @@
 import React, { createRef, useState } from "react";
-import BirthDate from "./BirthDate";
+import BirthDate from "../BirthDate";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Register.module.css";
 import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
@@ -13,7 +13,7 @@ import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.s
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
-import UserApi from "../../api/UserApi.js";
+import UserApi from "../../../api/UserApi.js";
 
 const Register = () => {
   const {
