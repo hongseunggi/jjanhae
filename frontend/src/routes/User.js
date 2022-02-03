@@ -3,9 +3,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import CalendarPage from "../components/Calendar/CalendarPage";
 import Login from "../components/Login/Login";
 import Profile from "../components/Profile/Profile";
-import FindAccount from "../components/Regist/FindAccount";
-import FindPassword from "../components/Regist/FindPassword";
-import ResetPassword from "../components/Regist/ResetPassword";
+import FindAccount from "../components/FindId/FindAccount";
+import FindPassword from "../components/FindPwd/FindPassword";
+import ResetPassword from "../components/FindPwd/ResetPassword";
 import RegisterTemplate from "../components/Regist/RegisterTemplate";
 
 const User = () => {

@@ -4,7 +4,7 @@ import axios from "axios";
 import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
 import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
 import { ReactComponent as EmailIcon } from "../../assets/icons/email.svg";
-import UserApi from "../../api/UserApi.js";
+import UserApi from "../../../api/UserApi.js";
 
 const FindPwd = () => {
   const { getPwdCheckResult } = UserApi;
