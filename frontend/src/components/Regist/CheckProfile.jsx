@@ -39,7 +39,9 @@ const CheckProfile = ({ progress }) => {
   }, []);
 
   const handleInputBirthday = useCallback((date) => {
+    
     setBirthday(date);
+    console.log(birthday);
     setBirthdayCheck(true);
   }, []);
 
@@ -71,7 +73,12 @@ const CheckProfile = ({ progress }) => {
   useEffect(() => {
     if (birthday !== "") {
       const newBirth = birthday.toLocaleDateString();
-      setInput({ ...input, birthday: newBirth });
+      const map = newBirth.split(". ");
+      let realBirth = [];
+      map.map((v, i)=>{
+        realBirth[i] = v*1;
+      })
+      setInput({ ...input, birthday: {year : realBirth[0], month : realBirth[1], day : realBirth[2]} });
     } else setInput({ ...input, birthday });
   }, [birthday]);
 
@@ -161,13 +168,6 @@ const CheckProfile = ({ progress }) => {
                 </div>
               </div>
             </div>
-            {/* <ul className={styles.alertMsg}>
-              <li>입력한 아이디로 짠해에 로그인 할 수 있습니다.</li>
-              <li>
-                한번 만든 아이디는 변경할 수 없으니, 오타가 없도록 신중히 확인해
-                주세요.
-              </li>
-            </ul> */}
             <div className={styles.nextBtns}>
               <button
                 className={

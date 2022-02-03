@@ -6,7 +6,7 @@
 .contents {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   color: #eee;
 }
 .welcomeInfo {

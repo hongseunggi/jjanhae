@@ -84,7 +84,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(RecipientType.TO, to); //보내는 대상
-        message.setSubject("짠해 아이디 찾기 이메일 인증"); //제목
+        message.setSubject("짠해 이메일 인증"); //제목
 
         String msgg="";
         msgg += "<!DOCTYPE html>";
@@ -119,7 +119,7 @@ public class EmailServiceImpl implements EmailService {
         return message;
     }
 
-    private MimeMessage createMessageButton(String userId, String name, String to)throws Exception{
+    private MimeMessage createMessageButton(String userId, String to)throws Exception{
         System.out.println("보내는 대상 : "+ to);
         String ePw = createKey();
         allePw = ePw;
@@ -142,17 +142,16 @@ public class EmailServiceImpl implements EmailService {
                         "		<span style=\"color: #02b875\">메일인증</span> 안내입니다."																																				+
                         "	</h1>\n"																																																+
                         "	<p style=\"font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px;\">"																													+
-                        name																																																+
-                        "		님 안녕하세요.<br />"																																													+
+                        "		안녕하세요.<br />"																																													+
                         "		짠해에 가입해 주셔서 진심으로 감사드립니다.<br />"																																						+
                         "		아래 <b style=\"color: #02b875\">'메일 인증'</b> 버튼을 클릭하여 비밀번호 찾기를 완료해 주세요.<br />"																													+
                         "		감사합니다."																																															+
                         "	</p>"																																																	+
                         "	<a style=\"color: #FFF; text-decoration: none; text-align: center;\""																																	+
-                        "	href=\"http://i6a507.p.ssafy.io/user/newpwd?userId=" + userId + "&authCode="+ ePw + "\" target=\"_self\">"														+
+                        "	href=\"http://i6a507.p.ssafy.io/user/newpwd?userId=" + userId + "&authCode="+ ePw + "\" target=\"_self\">" +
                         "		<p"																																																	+
                         "			style=\"display: inline-block; width: 210px; height: 45px; margin: 30px 5px 40px; background: #02b875; line-height: 45px; vertical-align: middle; font-size: 16px;\">"							+
-                        "			메일 인증</p>"																																														+
+                        "		메일 인증</p>"																																														+
                         "	</a>"																																																	+
                         "	<div style=\"border-top: 1px solid #DDD; padding: 5px;\"></div>"																																		+
                         " </div>";
@@ -203,7 +202,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public String sendSimpleMessageButton(FindPwdRequest findPwdRequest) throws Exception {
-        MimeMessage message = createMessageButton(findPwdRequest.getUserId(), findPwdRequest.getName(), findPwdRequest.getEmail());
+        MimeMessage message = createMessageButton(findPwdRequest.getUserId(), findPwdRequest.getEmail());
         try{ //예외처리
             emailSender.send(message);
         }catch(MailException es){
