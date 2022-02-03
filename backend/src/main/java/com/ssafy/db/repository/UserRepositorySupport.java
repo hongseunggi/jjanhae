@@ -44,7 +44,7 @@ public class UserRepositorySupport {
         return Optional.ofNullable(user);
     }
 
-    public Optional<User> getUserByUserIdAndEmail(String userId, String email) {
+    public Optional<User> findUserByUserIdAndEmail(String userId, String email) {
         User user = jpaQueryFactory.select(qUser).from(qUser)
                 .where(qUser.userId.eq(userId).and(qUser.email.eq(email))).fetchOne();
         System.out.println("======= findUserByUserIdAndNameAndEmail =======");
