@@ -1,6 +1,6 @@
 import React from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
-import styles from "./RegisterTemplate.module.css";
+import styles from "../Regist/RegisterTemplate.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
 const FindAccountResult = ({ id, progress = 100 }) => {

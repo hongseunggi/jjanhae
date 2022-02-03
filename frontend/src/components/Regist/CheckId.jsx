@@ -51,9 +51,9 @@ const CheckId = ({ progress }) => {
       setInput({ ...input, userId: id });
       await getIdCheckResult(id);
       setConfirm(true);
-    } catch ({ response }) {
-      console.log(response);
-      setErrorMsg(response.data.message);
+    } catch (error) {
+      console.log(error);
+      setErrorMsg("이미 사용중인 아이디 입니다.");
       setError(true);
     }
   };

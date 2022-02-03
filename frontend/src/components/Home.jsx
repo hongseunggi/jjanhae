@@ -52,8 +52,11 @@ function Home() {
   return (
     <>
       {/* <RoomConfig open={modalOpen} /> */}
-      <Container fluid="true" className="body">
-        <Row fluid="true" id="row" className="rowClass h-100">
+      <Container fluid="true" className="contain">
+        <Row fluid="true" id="row" className="rowClass h-100" style={{
+          marginLeft : "0",
+          marginRight : "0"
+        }}>
           <Col lg={1} className="dummy"></Col>
           <Col lg={4} className="h-25">
             <div className="intro_text">WELCOME OUR MEET</div>
@@ -62,7 +65,7 @@ function Home() {
             <div className="swelcome_text">아니 우린 짠해!</div>
             <Row className="buttonbox">{buttonRender()}</Row>
           </Col>
-          <Col>
+          <Col className="carousel">
             <Carousel />
           </Col>
         </Row>
