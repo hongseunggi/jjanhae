@@ -32,7 +32,7 @@ const CalendarPage = () => {
       "2022-02-01",
       "2022-02-10",
       "2022-02-06",
-      // "2022-02-22",
+      "2022-02-22",
     ],
   });
 
@@ -46,10 +46,20 @@ const CalendarPage = () => {
   const [isActive, setIsActive] = useState(false);
 
   const dropDown = useRef([]);
+  const partyIconBtn = useRef([]);
 
   const getDetailModalOpen = (status) => {
     setDetailModalOpen(status);
   };
+
+  const handleCloseList = (event) => {
+    if(event.target.nodeName!=="BUTTON") {
+      console.log("erase");
+      for(let i=0; i<partyIconBtn.current.length; i++) {
+        dropDown.current[i].style.visibility='hidden';
+      }
+    }
+  }
 
   useEffect(() => {
     setCalendar(buildCalendar(value));
@@ -62,6 +72,14 @@ const CalendarPage = () => {
   }, [item]);
 
   useEffect(() => {}, [detailModalOpen]);
+
+  useEffect(() => {
+    document.addEventListener('click', handleCloseList);
+
+    return () => {
+      document.removeEventListener('click', handleCloseList);
+    };
+  });
 
   function dayStyles(day) {
     let yoil = day.day();
@@ -80,20 +98,17 @@ const CalendarPage = () => {
 
   //선택된것 말고 다 hidden
   const handleClick = (event) => {
-    console.log(dropDown);
     setIsActive(false);
     if(event.target.nextElementSibling.style.visibility==='hidden') {
       setItem({
         month: value.format("M"),
         day: event.nativeEvent.path[2].outerText,
-        });
+      });
     }
     setUnvisible(event);
-    // showList(event.target.nextElementSibling.style);
   };
-
+  
   const showList = (target) => {
-   
     if(target.visibility==='visible') {
       target.visibility='hidden';
       target.opacity='0';
@@ -110,7 +125,6 @@ const CalendarPage = () => {
     for(let i=0; i<dropDown.current.length; i++) {
       dropDown.current[i].style.visibility='hidden';
     }
-
     showList(event.target.nextElementSibling.style);
   }
 
@@ -128,16 +142,13 @@ const CalendarPage = () => {
         return (
           <>
             <div className={styles.container}>
-            <button className={styles.partyicon} onClick={handleClick}></button>
-              {/* <button onClick={onClick} className={`${styles.iconBtn}  ${styles.date}`}>
-                <PartyIcon className={styles.partyicon} onClick={handleClick} ref={dropdownRef} />
-              </button> */}
+            <button className={styles.partyicon} onClick={handleClick} ref={el => (partyIconBtn.current[i] = el)}></button>
                 <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList} style={listStyle}  ref={el => (dropDown.current[i] = el)}>     
                 파티 목록
                   <ul>
-                    <li><button className={styles.partyData}>{partyList.conferencesId[0]}</button></li>
-                    <li><button className={styles.partyData}>{partyList.conferencesId[1]}</button></li>
-                    <li><button className={styles.partyData}>{partyList.conferencesId[2]}</button></li>
+                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[0]}</button></li>
+                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[1]}</button></li>
+                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[2]}</button></li>
                   </ul>
                 </div>
               </div>
@@ -149,6 +160,11 @@ const CalendarPage = () => {
 
   const openListModal = () => {
     setListModalOpen(true);
+  };
+
+  const openDetailModal = () => {
+    console.log(detailModalOpen);
+    setDetailModalOpen(true);
   };
 
   const closeListModal = () => {
