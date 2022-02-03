@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import UserApi from "../../api/UserApi.js";
 import styles from "./Profile.module.css";
 import editIcon from "../../assets/icons/edit.png";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
@@ -11,14 +12,17 @@ import image5 from "../../assets/images/default5.png";
 import image6 from "../../assets/images/default6.png";
 
 const Profile = () => {
-  const [name, setName] = useState("소주희");
-  const [id, setId] = useState("ssafy");
-  const [email, setEmail] = useState("thdalstn6352@naver.com");
-  const [birthday, setBirthday] = useState("1996-09-27");
-  const [drink, setDrink] = useState("소주");
-  const [drinkLimit, setDrinkLimit] = useState("3");
+  const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [email, setEmail] = useState("");
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
+  const [day, setDay] = useState("");
+  const [drink, setDrink] = useState("");
+  const [drinkLimit, setDrinkLimit] = useState("");
   const [isEdit, setIsEdit] = useState(false);
 
+  const {getUserProfile, getUpdateProfileResult} = UserApi;
   // 친구들을 특정하기 위한 값이 필요 ex) id
   const [friends, setFriends] = useState([
     { name: "김정연", count: 5, image: image1 },
@@ -27,15 +31,94 @@ const Profile = () => {
     { name: "홍승기", count: 2, image: image4 },
     { name: "송민수", count: 1, image: image5 },
   ]);
-  const handleEditMode = (e) => {
+
+
+  const handleEditMode = async (e) => {
     e.preventDefault();
+    console.log(name);
     setIsEdit((prev) => !prev);
+    if(isEdit){
+      let body = {
+        name : name,
+        drink : drink,
+        drinkLimit : drinkLimit,
+        birthday : {
+          year : year*1,
+          month : month*1,
+          day : day*1
+        }
+      }
+      const {data} = await getUpdateProfileResult(body);
+      setName(data.name);
+      setEmail(data.email);
+      let ny = data.birthday.year;
+      let nm = data.birthday.month;
+      let nd = data.birthday.day;
+      if(data.birthday.month < 9) nm = "0"+data.birthday.month;
+      if(data.birthday.day < 9) nd = "0"+data.birthday.day;
+      setYear(ny);
+      setMonth(nm);
+      setDay(nd);
+      setId(data.userId);
+      setDrink(data.drink);
+      setDrinkLimit(data.drinkLimit);
+    }
   };
+
+  const nameHandler = (e) => {
+    e.preventDefault();
+    setName(e.target.value);
+  }
+  const drinkHandler = (e) => {
+    e.preventDefault();
+    setDrink(e.target.value);
+  }
+  const yearHandler = (e) => {
+    e.preventDefault();
+    setYear(e.target.value);
+  }
+  const monthHandler = (e) => {
+    e.preventDefault();
+    if(e.target.value < 9) setMonth("0"+e.target.value); 
+    else setMonth(e.target.value);
+  }
+  const dayHandler = (e) => {
+    e.preventDefault();
+    if(e.target.value < 9) setDay("0"+e.target.value);
+    else setDay(e.target.value);
+  }
+  const drinkLimitHandler = (e) => {
+    e.preventDefault();
+    if(e.target.value < 0){
+      setDrinkLimit(0);
+    }
+    else setDrinkLimit(e.target.value);
+  }
+
+
+  useEffect( async ()=>{
+    const {data} = await getUserProfile();
+    console.log(data);
+    setName(data.name);
+    setEmail(data.email);
+    let year = data.birthday.year;
+    let month = data.birthday.month;
+    let day = data.birthday.day;
+    if(data.birthday.month < 9) month = "0"+data.birthday.month;
+    if(data.birthday.day < 9) day = "0"+data.birthday.day;
+
+    setYear(year);
+    setMonth(month);
+    setDay(day);
+    setId(data.userId);
+    setDrink(data.drink);
+    setDrinkLimit(data.drinkLimit);
+  }, [])
 
   return (
     <div className={styles.profileForm}>
       <header className={styles.title}>
-        <h1>소주희님의 프로필</h1>
+        <h1>{name}님의 프로필</h1>
       </header>
       <main className={styles.profile}>
         <section className={styles.userProfile}>
@@ -50,7 +133,7 @@ const Profile = () => {
                 }
               >
                 <label htmlFor="name">이름</label>
-                <input id="name" type="text" value={name} disabled={!isEdit} />
+                <input id="name" type="text" value={name} disabled={!isEdit} onChange={nameHandler} />
               </div>
               <Link to="/user/calendar">
                 <CalendarIcon width="40" height="40" />
@@ -59,22 +142,18 @@ const Profile = () => {
             <div className={styles.inputRow}>
               <div
                 className={
-                  isEdit
-                    ? `${styles.userInfoData} ${styles.userInfoDataEdit} `
-                    : styles.userInfoData
+                  styles.userInfoData
                 }
               >
                 <label htmlFor="id">아이디</label>
-                <input id="id" type="text" value={id} disabled={!isEdit} />
+                <input id="id" type="text" value={id} disabled/>
               </div>
             </div>
 
             <div className={styles.inputRow}>
               <div
                 className={
-                  isEdit
-                    ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
-                    : styles.userInfoData
+                  styles.userInfoData
                 }
               >
                 <label htmlFor="email">이메일</label>
@@ -82,7 +161,7 @@ const Profile = () => {
                   id="email"
                   type="text"
                   value={email}
-                  disabled={!isEdit}
+                  disabled
                 />
               </div>
             </div>
@@ -95,12 +174,20 @@ const Profile = () => {
                 }
               >
                 <label htmlFor="birthday">생년월일</label>
-                <input
+                {isEdit ? (<div>
+                  <input className={styles.editbirth} type="text" value={year*1} onChange={yearHandler}></input>
+                  -
+                  <input className={styles.editbirth} type="text" value={month*1} onChange={monthHandler}></input>
+                  -
+                  <input className={styles.editbirth} type="text" value={day*1} onChange={dayHandler}></input>
+                  </div>)
+                : 
+                (<input
                   id="birthday"
                   type="text"
-                  value={birthday}
-                  disabled={!isEdit}
-                />
+                  value={`${year}-${month}-${day}`}
+                  disabled
+                />)}
               </div>
             </div>
             <div className={styles.inputRow}>
@@ -113,12 +200,18 @@ const Profile = () => {
                   }
                 >
                   <label htmlFor="drink">선호주종</label>
-                  <input
+                  {isEdit ? (<select onChange={drinkHandler} value={drink}>
+                    <option value="소주">
+                      소주
+                    </option>
+                    <option value="맥주">맥주</option>
+                  </select>) : (<input
                     id="drink"
                     type="text"
                     value={drink}
-                    disabled={!isEdit}
-                  />
+                    disabled
+                  />)}
+                  
                 </div>
               </div>
               <div className={styles.inputRowHalf}>
@@ -130,12 +223,19 @@ const Profile = () => {
                   }
                 >
                   <label htmlFor="drinkLimit">주량</label>
-                  <input
+                    {isEdit ? (<input
+                      autoComplete="off"
+                      id="drinkLimit"
+                      value={drinkLimit}
+                      type="number"
+                      placeholder="주량(병)"
+                      onChange={drinkLimitHandler}
+                    />) : (<input
                     id="drinkLimit"
                     type="text"
                     value={drinkLimit}
-                    disabled={!isEdit}
-                  />
+                    disabled
+                  />)}
                 </div>
               </div>
             </div>
