@@ -8,7 +8,7 @@
 .calendarForm {
   display: flex;
   flex-direction: column;
-  margin-top: 10vh;
+  margin-top: 5vh;
 }
 .calendarHeader {
   position: relative;
@@ -31,7 +31,7 @@
 }
 .calendarBody {
   border-color: whitesmoke;
-  overflow: auto;
+  /* overflow: auto; */
   margin-top: 30px;
 }
 .calendarTop {
@@ -101,16 +101,31 @@
   position: absolute;
   top: 65px;
   width: 100%;
-  height: 180px;
+  height: 120px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-20px);
   transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
   z-index: 1;
-  color : #eeee;
+  /* color : rgba(0, 0, 0, 0.933); */
+  color: #eee;
+  font-weight: bold;
+  overflow: auto;
+  padding-top: 10px;
+  font-size: 20px;
 }
-
+.partyList::-webkit-scrollbar {
+  width: 8px;
+  background-color: black;
+}
+.partyList::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+}
+.partyList::-webkit-scrollbar-track {
+  background-color: rgba(255, 86, 34, 0.37);
+  border-radius: 15px;
+}
 .partyList.open {
   opacity: 1;
   visibility: visible;
@@ -149,4 +164,11 @@
 .partyData {
   background-color: transparent;
   border :none;
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+.listTitle {
+  /* margin-bottom: 15px; */
+  width: 100%;
+  /* border-bottom: 1px solid #eee; */
 }

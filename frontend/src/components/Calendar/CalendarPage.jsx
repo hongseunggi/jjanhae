@@ -33,11 +33,12 @@ const CalendarPage = () => {
       "2022-02-10",
       "2022-02-06",
       "2022-02-22",
+      "2022-02-28",
     ],
   });
 
   const [partyList, setPartyList] = useState({
-    conferencesId: [1, 2, 3, 4],
+    conferencesId: [1, 2, 3, 4, 5],
   });
 
   const [listModalOpen, setListModalOpen] = useState(false);
@@ -114,7 +115,6 @@ const CalendarPage = () => {
       target.opacity='0';
       target.transform='translateY(0)';
     }else {
-      target.overflow='hidden';
       target.visibility='visible';
       target.opacity='1';
       target.transform='translateY(-20px)';
@@ -144,11 +144,13 @@ const CalendarPage = () => {
             <div className={styles.container}>
             <button className={styles.partyicon} onClick={handleClick} ref={el => (partyIconBtn.current[i] = el)}></button>
                 <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList} style={listStyle}  ref={el => (dropDown.current[i] = el)}>     
-                파티 목록
+                <p className={styles.listTitle}>파티 목록</p>
                   <ul>
                     <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[0]}</button></li>
                     <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[1]}</button></li>
                     <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[2]}</button></li>
+                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[3]}</button></li>
+                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[4]}</button></li>
                   </ul>
                 </div>
               </div>
