@@ -227,7 +227,7 @@ public class UserController {
 
 		System.out.println("=========== 이메일 인증(버튼)으로 비밀번호 찾기 ===========");
 		// 아이디, 이름, 이메일이 일치한 회원이 있는지 확인
-		User user = userService.getUserByUserIdAndNameAndEmail(findPwdRequest.getUserId(), findPwdRequest.getName(), findPwdRequest.getEmail());
+		User user = userService.getUserByUserIdAndEmail(findPwdRequest.getUserId(), findPwdRequest.getEmail());
 		if(user == null) {
 			System.out.println("존재하지 않는 사용자입니다.");
 			// 유효하지 않은 사용자입니다.
@@ -239,7 +239,7 @@ public class UserController {
 		// authCode 갱신
 		userService.updateUserAuthCode(user, authCode);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "인증번호를 발송했습니다. 이메일이 도착하지 않았다면 입력한 정보를 다시 확인해주세요."));
-
+		
 	}
 
 	@PatchMapping("/newpwd")

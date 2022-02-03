@@ -9,6 +9,5 @@ import lombok.Setter;
 @ApiModel("FindPwdRequest")
 public class FindPwdRequest {
     String userId;
-    String name;
     String email;
 }
