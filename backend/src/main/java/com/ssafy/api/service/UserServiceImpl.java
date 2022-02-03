@@ -132,7 +132,6 @@ public class UserServiceImpl implements UserService {
         if(res.isPresent()) {
             User user = res.get();
 		    user.setName(userProfilePatchReq.getName());
-            user.setEmail(userProfilePatchReq.getEmail());
             user.setBirthday(userProfilePatchReq.getBirthday());
             user.setDrink(userProfilePatchReq.getDrink());
             user.setDrinkLimit(userProfilePatchReq.getDrinkLimit());

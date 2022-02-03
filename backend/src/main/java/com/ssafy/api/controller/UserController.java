@@ -310,7 +310,7 @@ public class UserController {
 
 
 
-	@PatchMapping(value = "/profile/{userId}")
+	@PatchMapping(value = "/profile")
 	@ApiOperation(value = "유저 정보 수정", notes = "이름, 이메일, 생일, 주종, 주량을 수정한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -318,7 +318,7 @@ public class UserController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<BaseResponseBody> updateUserProfile(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId,  @RequestBody UserProfilePatchReq userProfilePatchReq) {
+	public ResponseEntity<BaseResponseBody> updateUserProfile(@ApiIgnore Authentication authentication,  @RequestBody UserProfilePatchReq userProfilePatchReq) {
 		/**
 		 * 유저 프로필 정보 수정(이름, 이메일, 생일, 주종, 주량을 수정한다.
 		 * 권한 : 해당 유저
@@ -330,12 +330,12 @@ public class UserController {
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		// 토큰에서 사용자 정보를 가져왔으니 이게 비어있을린 없다!
 		User user = userDetails.getUser();
-//		System.out.println(userProfilePatchReq.getBirthday());
-		if(userProfilePatchReq.getName() == null || userProfilePatchReq.getEmail() == null || userProfilePatchReq.getBirthday() == null) {
+//		System.out.println("????????????????????????????????????");
+		if(userProfilePatchReq.getName() == null || userProfilePatchReq.getBirthday() == null) {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 값을 입력했습니다."));
 		}
 		// birthday 형식 안맞을땐 어떻게 막아야 하는지 모르겠어ㅠㅠ
-		userService.updateUserProfile(userId, userProfilePatchReq);
+		userService.updateUserProfile(user.getUserId(), userProfilePatchReq);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원 정보가 수정되었습니다."));
 	}
 
