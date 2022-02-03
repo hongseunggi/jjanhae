@@ -94,6 +94,7 @@
   padding: 10px;
   font-weight: 500;
   width: 100%;
+  cursor: text;
 }
 .inputData.birthInput {
   margin-bottom: 30px;
@@ -120,6 +121,13 @@
   padding-left: 20px;
 }
 
+.maskingMsg {
+  padding: 0;
+  color: #eee;
+  opacity: 50%;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
 .errorMsg {
   position: relative;
   color: #ff5722;
@@ -202,6 +210,22 @@
 
 .drinkLimit {
   width: 100px;
+}
+
+.btnRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.findPwdBtn {
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  outline: none;
+  color: #eee;
+  padding: 0;
 }
 @media screen and (min-width: 1800px) {
   .innerContainer {

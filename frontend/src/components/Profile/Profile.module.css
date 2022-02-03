@@ -87,6 +87,7 @@
 .editRow .editBtn {
   border: none;
   padding: 0;
+  width: 24px;
 }
 .editBtn .editIcon {
   width: 20px;
