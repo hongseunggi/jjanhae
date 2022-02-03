@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import com.ssafy.api.request.AddHistoryRequest;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.RoomHistory;
+import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,13 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
 
 
     @Override
-    public RoomHistory addHistory(Room room, AddHistoryRequest addHistoryRequest) {
+    public RoomHistory addHistory(User user, Room room, AddHistoryRequest addHistoryRequest) {
         RoomHistory roomHistory= new RoomHistory();
         roomHistory.setRoomSeq(room);
-
-
+        roomHistory.setAction(addHistoryRequest.getAction());
+        roomHistory.setInsertedTime(addHistoryRequest.getInsertedTime());
+        roomHistory.setLastYn(addHistoryRequest.getLastYn());
+        roomHistory.setUserSeq(user);
 
         return roomHistoryRepository.save(roomHistory);
     }

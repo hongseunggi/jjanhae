@@ -64,8 +64,9 @@ public class RoomController {
         System.out.println("userId : "+user.getUserId());
 
         // Room 테이블에 userSeq 포함하여 저장.
+        System.out.println("Room 테이블에 userSeq 포함하여 저장");
         createRoomRequest.setOwner(user.getUserSeq());
-        Room room = roomService.createRoom(createRoomRequest);
+        Room room = roomService.createRoom(user, LocalDate.now(), createRoomRequest);
 
         // 얻어낸 roomSeq로 Room_history 테이블에도 추가
         Long roomSeq = room.getRoomSeq();
@@ -75,8 +76,9 @@ public class RoomController {
         addHistoryRequest.setAction(0);
         addHistoryRequest.setLastYn("Y");
         addHistoryRequest.setInsertedTime(LocalDate.now());
-        RoomHistory roomHistory = roomHistoryService.addHistory(room, addHistoryRequest);
-
+        System.out.println("얻어낸 roomSeq로 Room_history 테이블에도 추가");
+        RoomHistory roomHistory = roomHistoryService.addHistory(user, room, addHistoryRequest);
+        System.out.println("roomHistory 저장 성공");
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
