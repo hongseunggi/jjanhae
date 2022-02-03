@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserIdAndEmail(String userId, String email) {
         System.out.println("====== getUserByUserIdAndEmail =====");
         System.out.printf("userId : %s, eamil : %s\n", userId, email);
-        Optional<User> res = userRepositorySupport.getUserByUserIdAndEmail(userId, email);
+        Optional<User> res = userRepositorySupport.findUserByUserIdAndEmail(userId, email);
         User user = null;
         if(res.isPresent()) {
             user = res.get();
