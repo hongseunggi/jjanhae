@@ -1,6 +1,6 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:8081/api/v1/user";
-// const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
+// const BASE_URL = "http://localhost:8081/api/v1/user";
+const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
 // 유저관련 api 설정
 const getRegistResult = async (body) => {
@@ -57,6 +57,12 @@ const getUserProfile = async () => {
   return result;
 }
 
+const getUpdateProfileResult = async (body) => {
+  const result = await axios.patch(`${BASE_URL}/profile`, body);
+  const data = getUserProfile();
+  return data;
+}
+
 const UserApi = {
   getRegistResult,
   getEmailCheckResult,
@@ -65,7 +71,8 @@ const UserApi = {
   getPwdCheckResult,
   getPwdResetResult,
   getLoginResult,
-  getUserProfile
+  getUserProfile,
+  getUpdateProfileResult
 };
 
 export default UserApi;
