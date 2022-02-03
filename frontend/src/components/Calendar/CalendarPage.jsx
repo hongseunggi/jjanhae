@@ -46,13 +46,6 @@ const CalendarPage = () => {
     setDetailModalOpen(status);
   };
 
-  const onClick= (event) => {
-    console.log(dropdownRef.current.parentNode.nextElementSibling);
-    // console.log(dropdownRef);
-    setIsActive(!isActive);
-  }
-
-  const dropdownRef = useRef(null);
 
   useEffect(() => {
     setCalendar(buildCalendar(value));
@@ -81,20 +74,27 @@ const CalendarPage = () => {
     return value.format("M") + "월";
   };
 
+  //선택된것 말고 다 hidden
   const handleClick = (event) => {
-    if (event.nativeEvent.path[0].tagName === "svg") {
-      setItem({
-        month: value.format("M"),
-        day: event.nativeEvent.path[3].innerText[0],
+    setIsActive(false);
+    setItem({
+      month: value.format("M"),
+      day: event.nativeEvent.path[2].outerText[0],
       });
-    } else {
-      setItem({
-        month: value.format("M"),
-        day: event.nativeEvent.path[5].innerText[0],
-      });
-    }
-    // openListModal();
+    showList(event.target.nextElementSibling.style);
   };
+
+  const showList = (target) => {
+    if(target.visibility==='visible') {
+      target.visibility='hidden';
+      target.opacity='0';
+      target.transform='translateY(0)';
+    }else {
+      target.visibility='visible';
+      target.opacity='1';
+      target.transform='translateY(-20px)';
+    }
+  }
 
   const calcYoil = (day) => {
     let yoil = dayStyles(day);
@@ -106,19 +106,22 @@ const CalendarPage = () => {
     for (let i = 0; i < party.conferences.length; i++) {
       if (day.format("YYYY-MM-DD") === party.conferences[i]) {
         return (
-          <div className={styles.container}>
-            <button onClick={onClick} className={`${styles.iconBtn}  ${styles.date}`}>
-              <PartyIcon className={styles.partyicon} onClick={handleClick} ref={dropdownRef} />
-            </button>
-              <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList}>
-              파티 목록
-                <ul>
-                  <li><button className={styles.partyData}>{partyList.conferencesId[0]}</button></li>
-                  <li><button className={styles.partyData}>{partyList.conferencesId[1]}</button></li>
-                  <li><button className={styles.partyData}>{partyList.conferencesId[2]}</button></li>
-                </ul>
+          <>
+            <div className={styles.container}>
+            <button className={styles.partyicon} onClick={handleClick}></button>
+              {/* <button onClick={onClick} className={`${styles.iconBtn}  ${styles.date}`}>
+                <PartyIcon className={styles.partyicon} onClick={handleClick} ref={dropdownRef} />
+              </button> */}
+                <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList}>
+                파티 목록
+                  <ul>
+                    <li><button className={styles.partyData}>{partyList.conferencesId[0]}</button></li>
+                    <li><button className={styles.partyData}>{partyList.conferencesId[1]}</button></li>
+                    <li><button className={styles.partyData}>{partyList.conferencesId[2]}</button></li>
+                  </ul>
+                </div>
               </div>
-            </div>
+          </>
         );
       }
     }
