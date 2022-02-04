@@ -101,7 +101,7 @@
   position: absolute;
   top: 65px;
   width: 100%;
-  height: 130px;
+  height: 150px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
   opacity: 0;
   visibility: hidden;
@@ -147,8 +147,8 @@
 .iconBtn span {
   font-weight: 700;
   vertical-align: middle;
-  font-size: 14px;
-  margin: 0 10px;
+  font-size: 12px;
+  margin: 0 5px;
 }
 .partyList ul {
   list-style: none;
@@ -164,11 +164,11 @@
 .partyData {
   background-color: transparent;
   border :none;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   font-size: 15px;
 }
 .listTitle {
-  /* margin-bottom: 15px; */
+  margin-bottom: 0px;
   width: 100%;
   /* border-bottom: 1px solid #eee; */
 }

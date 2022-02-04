@@ -30,10 +30,9 @@ const CalendarPage = () => {
   const [party, setParty] = useState({
     conferences: [
       "2022-02-01",
-      "2022-02-10",
       "2022-02-06",
-      "2022-02-22",
-      "2022-02-28",
+      "2022-02-10",
+      // "2022-02-22",
     ],
   });
 
@@ -55,7 +54,6 @@ const CalendarPage = () => {
 
   const handleCloseList = (event) => {
     if(event.target.nodeName!=="BUTTON") {
-      console.log("erase");
       for(let i=0; i<partyIconBtn.current.length; i++) {
         dropDown.current[i].style.visibility='hidden';
       }
@@ -100,26 +98,15 @@ const CalendarPage = () => {
   //선택된것 말고 다 hidden
   const handleClick = (event) => {
     setUnvisible(event);
-    if(event.target.nextElementSibling.style.visibility==='hidden') {
-      setItem({
-        month: value.format("M"),
-        day: event.nativeEvent.path[2].outerText,
-      });
-    }
-    // showList(event.target.nextElementSibling.style);
+    const data = event.nativeEvent.path[2].outerText;
+    const dataArr = data.split("\n");
+    setItem({
+      month: value.format("M"),
+      day: dataArr[0],
+    });
+    // if(event.target.nextElementSibling.style.visibility==='hidden') {
+    // }
   };
-  
-  // const showList = (target) => {
-  //   if(target.visibility==='visible') {
-  //     target.visibility='hidden';
-  //     target.opacity='0';
-  //     target.transform='translateY(0)';
-  //   }else {
-  //     target.visibility='visible';
-  //     target.opacity='1';
-  //     target.transform='translateY(-20px)';
-  //   }
-  // }
 
   function showList(target) {
     if(target.visibility==='visible') {
