@@ -30,6 +30,7 @@ public class RoomServiceImpl implements RoomService {
         room.setTitle(createRoomRequest.getName());
         room.setThumbnailUrl(createRoomRequest.getThumbnail());
         room.setType(createRoomRequest.getType());
+        room.setPassword(createRoomRequest.getPassword());
         room.setDescription(createRoomRequest.getDescription());
         room.setDrinkLimit(createRoomRequest.getDrinkLimit());
         room.setDelYn("N");
