@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 방 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -75,7 +75,7 @@ public class RoomController {
         // Room 테이블에 userSeq 포함하여 저장.
         System.out.println("Room 테이블에 userSeq 포함하여 저장");
         createRoomRequest.setOwner(user.getUserSeq());
-        Room room = roomService.createRoom(user, LocalDate.now(), createRoomRequest);
+        Room room = roomService.createRoom(user, LocalDateTime.now(), createRoomRequest);
 
         // 얻어낸 roomSeq로 Room_history 테이블에도 추가
         Long roomSeq = room.getRoomSeq();
@@ -84,12 +84,11 @@ public class RoomController {
         addHistoryRequest.setUserSeq(user.getUserSeq());
         addHistoryRequest.setAction(0);
         addHistoryRequest.setLastYn("Y");
-        addHistoryRequest.setInsertedTime(LocalDate.now());
+        addHistoryRequest.setInsertedTime(LocalDateTime.now());
         System.out.println("얻어낸 roomSeq로 Room_history 테이블에도 추가");
         RoomHistory roomHistory = roomHistoryService.addHistory(user, room, addHistoryRequest);
         System.out.println("roomHistory 저장 성공");
         return ResponseEntity.status(200).body(CreateRoomResponse.of("Success", room.getRoomSeq()));
     }
-
 
 }

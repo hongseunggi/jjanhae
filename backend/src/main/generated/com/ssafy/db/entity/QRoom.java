@@ -28,7 +28,7 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final NumberPath<Integer> drinkLimit = createNumber("drinkLimit", Integer.class);
 
-    public final DatePath<java.time.LocalDate> endTime = createDate("endTime", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> endTime = createDateTime("endTime", java.time.LocalDateTime.class);
 
     public final StringPath imageUrl = createString("imageUrl");
 
@@ -40,7 +40,7 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final NumberPath<Long> roomSeq = createNumber("roomSeq", Long.class);
 
-    public final DatePath<java.time.LocalDate> startTime = createDate("startTime", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> startTime = createDateTime("startTime", java.time.LocalDateTime.class);
 
     public final StringPath thumbnailUrl = createString("thumbnailUrl");
 
