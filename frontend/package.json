@@ -26,11 +26,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-<<<<<<< HEAD
-    "build": "react-scripts build",
-=======
     "build": "BUILD_PATH='./build' react-scripts build",
->>>>>>> 9ccf51b6ba89643394c5e313223e7c68d1957a00
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -57,9 +53,5 @@
     "postcss": "^8.4.5",
     "postcss-loader": "^6.2.1"
   },
-<<<<<<< HEAD
-  "homepage": "."
-=======
   "homepage": "https://i6a507.p.ssafy.io/"
->>>>>>> 9ccf51b6ba89643394c5e313223e7c68d1957a00
 }

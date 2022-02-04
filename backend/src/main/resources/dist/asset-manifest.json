@@ -21,12 +21,7 @@
     "main.755aae70.js.map": "./static/js/main.755aae70.js.map"
   },
   "entrypoints": [
-<<<<<<< HEAD
-    "static/css/main.fd6d1c78.css",
-    "static/js/main.2789c195.js"
-=======
     "static/css/main.1a0a7a55.css",
     "static/js/main.755aae70.js"
->>>>>>> 9ccf51b6ba89643394c5e313223e7c68d1957a00
   ]
 }
