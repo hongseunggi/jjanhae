@@ -125,7 +125,6 @@ const Login = () => {
     try {
       const { data } = await getLoginResult(body);
       setLoginMsg("");
-      sessionStorage.setItem("accessToken", data.accessToken);
       setLoginStatus("2");
       navigate("/");
     } catch ({ response }) {
