@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ramonak/react-progress-bar": "^4.2.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -14,15 +15,22 @@
     "react-bootstrap": "^2.1.1",
     "react-datepicker": "^4.6.0",
     "react-dom": "^17.0.2",
+    "react-fast-marquee": "^1.3.1",
+    "react-google-login": "^5.2.2",
     "react-hook-form": "^7.24.1",
     "react-modal": "^3.14.4",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-table": "^7.7.0",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
+<<<<<<< HEAD
     "build": "react-scripts build",
+=======
+    "build": "BUILD_PATH='./build' react-scripts build",
+>>>>>>> 9ccf51b6ba89643394c5e313223e7c68d1957a00
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -49,5 +57,9 @@
     "postcss": "^8.4.5",
     "postcss-loader": "^6.2.1"
   },
+<<<<<<< HEAD
   "homepage": "."
+=======
+  "homepage": "https://i6a507.p.ssafy.io/"
+>>>>>>> 9ccf51b6ba89643394c5e313223e7c68d1957a00
 }

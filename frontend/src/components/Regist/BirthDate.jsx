@@ -2,7 +2,7 @@ import React from "react";
 import { getYear, getMonth } from "date-fns"; // getYear, getMonth
 import DatePicker, { registerLocale } from "react-datepicker"; // 한국어적용
 import ko from "date-fns/locale/ko"; // 한국어적용
-import styles from "./Register.module.css";
+import styles from "./RegisterTemplate.module.css";
 
 registerLocale("ko", ko); // 한국어적용
 const _ = require("lodash");
@@ -37,14 +37,12 @@ const BirthDate = ({ date, onChange }) => {
         prevMonthButtonDisabled,
         nextMonthButtonDisabled,
       }) => (
-        <div
-        // style={{
-        //   margin: 10,
-        //   display: "flex",
-        //   justifyContent: "center",
-        // }}
-        >
-          <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+        <div className={styles.dateHeader}>
+          <button
+            onClick={decreaseMonth}
+            disabled={prevMonthButtonDisabled}
+            className={styles.dateBtn}
+          >
             {"<"}
           </button>
           <select
@@ -71,7 +69,11 @@ const BirthDate = ({ date, onChange }) => {
             ))}
           </select>
 
-          <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+          <button
+            onClick={increaseMonth}
+            disabled={nextMonthButtonDisabled}
+            className={styles.dateBtn}
+          >
             {">"}
           </button>
         </div>
@@ -80,8 +82,7 @@ const BirthDate = ({ date, onChange }) => {
       dateFormat={"yyyy-MM-dd"}
       locale={ko}
       onChange={(date) => onChange(date)}
-      placeholderText="생년월일"
-      className={styles.inputData}
+      className={`${styles.inputData} ${styles.birthInput}`}
     />
   );
 };

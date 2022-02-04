@@ -1,21 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
 
-.calendarForm {
-  display: block;
+.calendadrFormBorder {
+  display: flex;
+  justify-content: center;
   /* justify-content: space-around; */
+}
+
+.calendarForm {
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 10vh; */
+  /* margin-top: 64px; */
 }
 
 .calendarHeader {
   position: relative;
   display: flex;
+  flex-direction: column;
   background-color: transparent;
-  padding: 0;
-  text-align: center;
   justify-content: center;
   color: tomato;
-  justify-content: unset;
-  padding: 4rem 0rem 0rem 0rem;
-  align-items: flex-end;
 }
 
 .calendarTitle {
@@ -23,29 +27,26 @@
   font-size: 2.5rem;
   font-weight: bolder;
   color: #eeee;
-  /* text-shadow: 0.2rem 0.05rem 0rem #ff2e63; */
   text-align: left;
-  /* margin-left: 9rem; */
-  margin: 0rem 0rem 2rem 9rem;
+  margin-left: 150px;
+}
+
+.calendarBodyBorder {
+  margin: 0 auto;
 }
 
 .calendarBody {
-  position: relative;
-  justify-content: center;
-  width: 50rem;
-  height: 30rem;
-  margin: 1rem 0rem 2rem 10rem;
   border-color: whitesmoke;
+  overflow: auto;
+  margin-top: 30px;
 }
 
 .calendarTop {
   display: flex;
-  /* margin-right: 10rem; */
-  margin-left: 18rem;
+  margin: 0 auto;
 }
 
 .month {
-  /* justify-content: center; */
   color: #eeee;
   margin-right: 1rem;
   font-size: 2rem;
@@ -56,22 +57,23 @@
 }
 
 .week {
-  height: 5rem;
+  width: 10px;
+  height: 4rem;
   display: table-row;
 }
 
 .day {
   position: relative;
   display: table-cell;
-  padding: 0;
   color: #f3f3f3;
   text-align: center;
   justify-content: center;
-  padding: 0rem 4rem 0.5rem 4rem;
   border-color: whitesmoke;
   border: 0.1rem solid white;
   font-weight: bold;
   font-family: "Poppins", sans-serif;
+  width: 10vw;
+  height: 10vh;
 }
 
 .icon {
@@ -86,4 +88,13 @@
 
 .saturday {
   color: #08d9d6;
+}
+
+.none {
+  color: transparent;
+}
+
+.partyicon {
+  width: 40px;
+  height: 40px;
 }

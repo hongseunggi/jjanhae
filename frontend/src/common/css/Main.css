@@ -1,9 +1,16 @@
-.nav {
+/* .nav {
   height: 64px;
-}
-.body {
-  margin-top: -64px;
+} */
+/* .contain {
+  margin-top: -128px;
   height: 100%;
+  overflow: auto;
+} */
+.contain{
+  margin-top: -128px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 .intro_text {
   margin-top: 40%;
@@ -94,12 +101,14 @@
 
 .slider__slides {
   margin-top: 15%;
+
   position: relative;
   width: 80%;
   height: 60%;
   display: inline-block;
-  /* border: 2px solid black;
-    border-radius: 15px; */
+  background: rgba(0, 0, 0, 0.3);
+  /* /* border: 2px solid black; */
+  border-radius: 45px;
 }
 
 .slider__slide-parts {
@@ -113,6 +122,7 @@
 }
 .slider__slide-part {
   position: relative;
+
   width: 100%;
   height: 100%;
 }
@@ -122,7 +132,8 @@
   border-radius: 50px;
   width: 100%;
   height: 100%;
-  background-size: 0 0;
+  border-style: none;
+  background-size: contain;
   background-repeat: no-repeat;
   transition: transform 0.5s ease-in-out;
 }
@@ -132,7 +143,9 @@
   width: 100%;
   height: 100%;
   background-image: inherit;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-style: none;
   background-position: center center;
   transition: opacity 0.25s;
   opacity: 0;
@@ -169,10 +182,7 @@
 }
 
 @media screen and (width <= 2065px) {
-  .body {
-    margin-top: -64px;
-    height: 100%;
-  }
+
   .intro_text {
     margin-top: 50%;
     margin-left: 1.6rem;
@@ -288,6 +298,7 @@
     overflow: hidden;
     position: relative;
     border-radius: 50px;
+    border-style: none;
     width: 100%;
     height: 100%;
     background-size: 0 0;
@@ -297,10 +308,12 @@
   .slider__slide-part-inner:before {
     content: "";
     position: absolute;
+    border-style: none;
     width: 100%;
     height: 100%;
     background-image: inherit;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center center;
     transition: opacity 0.25s;
     opacity: 0;
@@ -338,10 +351,7 @@
 }
 
 @media screen and (width <= 2065px) {
-  .body {
-    margin-top: -64px;
-    height: 100%;
-  }
+
   .intro_text {
     margin-top: 50%;
     margin-left: 1.6rem;
@@ -397,14 +407,13 @@
     transform: translateY(-7px);
   }
   .into_room {
-    
     position: relative;
     margin-top: 3rem;
     width: 16rem;
     height: 3rem;
     font-size: 1rem;
     margin-left: 7%;
-    
+
     border-radius: 35px;
     font-weight: 600;
     color: white;
@@ -459,6 +468,7 @@
     overflow: hidden;
     position: relative;
     border-radius: 50px;
+    border-style: none;
     width: 100%;
     height: 100%;
     background-size: 0 0;
@@ -469,9 +479,11 @@
     content: "";
     position: absolute;
     width: 100%;
+    border-style: none;
     height: 100%;
     background-image: inherit;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center center;
     transition: opacity 0.25s;
     opacity: 0;
@@ -509,10 +521,7 @@
 }
 
 @media screen and (width <= 1775px) {
-  .body {
-    margin-top: -64px;
-    height: 100%;
-  }
+
   .intro_text {
     margin-top: 50%;
     margin-left: 1.6rem;
@@ -579,18 +588,10 @@
 }
 
 @media screen and (width <= 1403px) {
-  .body {
-    margin-top: -64px;
-    height: 100%;
-  }
   .intro_text {
-    margin-top: 50%;
-    margin-left: 1.6rem;
-    /* position: relative; */
-    font-size: 0.9rem;
+    margin-top: 60%;
   }
   .welcome_text {
-    margin-top: 5%;
     margin-left: 1.2rem;
     font-size: 2.3rem;
     text-shadow: 0.18rem -0.01rem 0rem #ff2e63;
@@ -600,12 +601,8 @@
     font-size: 2.3rem;
     text-shadow: 0.18rem -0.01rem 0rem #ff2e63;
   }
-  .buttonbox {
-    display: flex;
-    text-align: left;
-  }
   .create_room {
-    margin-top: 3rem;
+    margin-top: 4rem;
     width: 12rem;
     letter-spacing: 2.5px;
     font-weight: 600;
@@ -613,7 +610,6 @@
     height: 2.5rem;
     margin-left: 5%;
   }
-
   .into_room {
     margin-top: 3rem;
     width: 12rem;
@@ -623,29 +619,21 @@
     border-radius: 35px;
     font-weight: 600;
   }
-  .dummy {
-    display: block;
-  }
+
   .slider__slides {
-    margin-top: 20%;
-    position: relative;
-    width: 80%;
-    height: 60%;
-    display: inline-block;
+    margin-top: 23%;
     /* border: 2px solid black;
       border-radius: 15px; */
   }
 }
 @media screen and (width <= 1327px) {
-  .body {
-    margin-top: -64px;
+  .contain {
+    margin-top: -128px;
     height: 100%;
   }
   .intro_text {
     margin-top: 50%;
-    margin-left: 1.6rem;
-    /* position: relative; */
-    font-size: 0.9rem;
+
   }
   .welcome_text {
     margin-top: 5%;
@@ -699,4 +687,3 @@
     display: none;
   }
 }
-

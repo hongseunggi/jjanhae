@@ -60,10 +60,15 @@
   right: 0;
   padding: 0;
   background: transparent;
+  display: none;
 }
 .configForm .uploadImage {
   width: 30px;
   height: 30px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0;
 }
 
 label {

@@ -1,10 +1,17 @@
 .profileForm {
   padding: 50px;
+  margin-top: -64px;
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .profileForm .title {
   color: #eee;
   font-size: 32px;
   margin-bottom: 50px;
+  width: 100%;
 }
 .profile {
   display: flex;
@@ -69,10 +76,14 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+
+.editbirth{
+  width: 50px;
+  text-align: center;
+}
 .userInfoData.userInfoDataEdit input {
   border-bottom: 1px solid rgba(0, 0, 0, 1);
 }
-
 .editRow {
   width: 100%;
   text-align: right;
@@ -81,6 +92,7 @@
 .editRow .editBtn {
   border: none;
   padding: 0;
+  width: 24px;
 }
 .editBtn .editIcon {
   width: 20px;
@@ -88,7 +100,7 @@
 }
 
 .friendProfile {
-  width: 700px;
+  width: 800px;
   height: 470px;
   background-color: #eee;
   border-radius: 20px;
@@ -102,6 +114,7 @@
 }
 .mainTitle {
   font-size: 32px;
+  margin-right: 20px;
 }
 .subTitle {
   font-size: 16px;
@@ -113,7 +126,7 @@
   justify-content: space-around;
 }
 .friendInfo {
-  width: 140px;
+  width: 160px;
   height: 160px;
   position: relative;
   display: flex;
@@ -138,3 +151,54 @@
 .sunday-weekday {
   background-color: red;
 }
+
+/* @media screen and (min-width: 1800px) {
+  .userProfile {
+    width: 600px;
+    height: 670px;
+  }
+
+  .userInfoForm .userInfoData label {
+    font-size: 20px;
+  }
+  .userInfoForm .userInfoData input {
+    font-size: 28px;
+  }
+
+  .friendTitle {
+    margin-bottom: 50px;
+  }
+  .friendProfile {
+    width: 1000px;
+    height: 670px;
+    background-color: #eee;
+    border-radius: 20px;
+    padding: 30px 100px;
+  }
+
+  .profileImg {
+    width: 170px;
+    height: 170px;
+    border-radius: 20px;
+    margin-right: 20px;
+  }
+
+  .editIcon {
+    width: 50px;
+    height: 50px;
+  }
+  .friendInfo {
+    width: 250px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .friendProfileImg {
+    width: 140px;
+    height: 160px;
+    border-radius: 50%;
+  }
+} */

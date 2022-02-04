@@ -1,3 +1,4 @@
+
 .container{
     margin: 20px;
 }
@@ -33,7 +34,7 @@
     height: 28px;
     border-radius: 15px;
     border-style: none;
-    /* padding: 0; */
+    padding: 0;
     right: 5px;
     top : 2px;
     background-color: #08d9d6;
@@ -54,7 +55,7 @@
 .list{
     margin-top: 40px;
     text-align: center;
-    height: 78vh;
+    height: 75vh;
     background-color: #252a34;
     overflow: scroll;
 }
