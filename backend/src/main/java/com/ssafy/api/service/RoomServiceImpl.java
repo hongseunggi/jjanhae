@@ -10,7 +10,7 @@ import com.ssafy.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *	방 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -24,7 +24,7 @@ public class RoomServiceImpl implements RoomService {
     RoomRepositorySupport roomRepositorySupport;
 
     @Override
-    public Room createRoom(User user, LocalDate now, CreateRoomRequest createRoomRequest) {
+    public Room createRoom(User user, LocalDateTime now, CreateRoomRequest createRoomRequest) {
         Room room = new Room();
         room.setOwner(user);
         room.setTitle(createRoomRequest.getName());

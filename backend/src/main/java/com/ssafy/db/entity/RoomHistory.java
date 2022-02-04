@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Room History 모델 정의.
@@ -27,7 +27,7 @@ public class RoomHistory {
 
     int action; // 0: CREATE, 1: JOIN, 2: EXIT
 
-    LocalDate insertedTime; // 로그가 쌓인 시각
+    LocalDateTime insertedTime; // 로그가 쌓인 시각
 
     String lastYn; // 현재 방에 접속중인지 Y or N
 
