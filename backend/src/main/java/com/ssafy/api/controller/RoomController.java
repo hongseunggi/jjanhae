@@ -87,6 +87,7 @@ public class RoomController {
         Room room = roomService.createRoom(user, LocalDateTime.now(), createRoomRequest);
 
         // 얻어낸 roomSeq로 Room_history 테이블에도 추가
+        // CREATE
         Long roomSeq = room.getRoomSeq();
         AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
         addHistoryRequest.setRoomSeq(roomSeq);
@@ -95,7 +96,11 @@ public class RoomController {
         addHistoryRequest.setLastYn("Y");
         addHistoryRequest.setInsertedTime(LocalDateTime.now());
         System.out.println("얻어낸 roomSeq로 Room_history 테이블에도 추가");
-        RoomHistory roomHistory = roomHistoryService.addHistory(user, room, addHistoryRequest);
+        roomHistoryService.addHistory(user, room, addHistoryRequest);
+
+        // JOIN도 함께 쌓아줌
+        addHistoryRequest.setAction(1);
+        roomHistoryService.addHistory(user, room, addHistoryRequest);
         System.out.println("roomHistory 저장 성공");
         return ResponseEntity.status(200).body(CreateRoomResponse.of("Success", room.getRoomSeq()));
     }
