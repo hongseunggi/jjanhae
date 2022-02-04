@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.CreateRoomRequest;
+import com.ssafy.api.request.SortRoomListRequest;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomRepository;
@@ -11,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -68,5 +72,44 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room findRoomByOwner(Long roomSeq) {
         return roomRepository.selectRoomByOwner(roomSeq);
+    }
+
+    @Override
+    public List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest) {
+        SortRoomListRequest.Paging paging = sortRoomListRequest.getPaging();
+        System.out.println("paging: " + paging.getHasNext()+", "+paging.getLimit()+", "+paging.getOffset());
+        List<Room> res = roomRepository.selectRoomList(paging.getLimit(), paging.getOffset());
+        // sort 기준으로 order(asc, desc)
+        // 생성시간 기준 순
+        if("createdAt".equals(sortRoomListRequest.getSort())) {
+            Collections.sort(res, new Comparator<Room>() {
+                @Override
+                public int compare(Room o1, Room o2) {
+                    if("asc".equals(sortRoomListRequest.getOrder())) {
+                        return o1.getStartTime().compareTo(o2.getStartTime());
+                    } else {
+                        return o2.getStartTime().compareTo(o1.getStartTime());
+                    }
+                }
+            });
+        } else if("drinkLimit".equals(sortRoomListRequest.getSort())) {
+            Collections.sort(res, new Comparator<Room>() {
+                @Override
+                public int compare(Room o1, Room o2) {
+                    if("asc".equals(sortRoomListRequest.getOrder())) {
+                        return o1.getDrinkLimit() - o2.getDrinkLimit();
+                    } else {
+                        return o2.getDrinkLimit() - o1.getDrinkLimit();
+                    }
+                }
+            });
+        }
+        // all은 정렬하지 않음
+        return res;
+    }
+
+    @Override
+    public int countJoinUser(Long roomSeq) {
+        return roomRepository.countJoinUser(roomSeq);
     }
 }
