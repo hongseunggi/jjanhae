@@ -1,6 +1,6 @@
 import axios from "axios";
-// const BASE_URL = "http://localhost:8081/api/v1/user";
-const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
+const BASE_URL = "http://localhost:8081/api/v1/user";
+// const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
 // 유저관련 api 설정
 const getRegistResult = async (body) => {
@@ -63,6 +63,14 @@ const getUpdateProfileResult = async (body) => {
   return data;
 }
 
+const getConferenceList = async (month) => {
+  console.log(month);
+  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
+  // const result = await axios.get(`${BASE_URL}/conferences`);
+  const result = await axios.get(`${BASE_URL}/conferences?month=${month}`);
+  return result;
+}
+
 const UserApi = {
   getRegistResult,
   getEmailCheckResult,
@@ -72,7 +80,8 @@ const UserApi = {
   getPwdResetResult,
   getLoginResult,
   getUserProfile,
-  getUpdateProfileResult
+  getUpdateProfileResult,
+  getConferenceList
 };
 
 export default UserApi;

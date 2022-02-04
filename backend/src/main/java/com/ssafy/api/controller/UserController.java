@@ -4,8 +4,12 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.*;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.EmailService;
+import com.ssafy.api.service.RoomHistoryService;
+import com.ssafy.api.service.RoomService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import com.ssafy.db.entity.AuthEmail;
+import com.ssafy.db.entity.Room;
+import com.ssafy.db.entity.RoomHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,7 +28,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -41,6 +48,12 @@ public class UserController {
 
 	@Autowired
 	EmailService emailService;
+
+	@Autowired
+	RoomService roomService;
+
+	@Autowired
+	RoomHistoryService roomHistoryService;
 
 	@PostMapping("/signup")
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
@@ -389,5 +402,56 @@ public class UserController {
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		userService.disableUser(userDetails.getUsername());
 		return ResponseEntity.status(204).body(BaseResponseBody.of(204, "회원 탈퇴 완료"));
+	}
+
+
+
+	@GetMapping(value = "/conferences", params = "month")
+	@ApiOperation(value = "이번달 파티 조회", notes = "로그인한 회원이 참여한 파티 목록을 조회한다")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 204, message = "데이터 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> getConferencesDate(@ApiIgnore Authentication authentication, @RequestParam @ApiParam(value="이번 달 정보", required = true) String month)  throws Exception {
+		if(authentication == null){
+			System.out.println("인증 실패");
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+		}
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		List<RoomHistory> roomList = roomHistoryService.getAllList(user.getUserSeq());
+		List<LocalDate> conferencesDateList = new ArrayList<>();
+		for(int i=0; i<roomList.size(); i++) {
+			conferencesDateList.add(roomList.get(i).getInsertedTime());
+		}
+
+		return ResponseEntity.status(200).body(ConferencesGetRes.of(204, "파티리스트 조회 성공", conferencesDateList));
+	}
+
+
+	@GetMapping(value = "/conferences", params = "date")
+	@ApiOperation(value = "특정 날짜 파티 목록 조회", notes = "선택한 날짜에 진행된 파티 목록 조회")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 204, message = "데이터 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> getConferencesList(@ApiIgnore Authentication authentication, @RequestParam @ApiParam(value="날짜 정보", required = true) String date)  throws Exception {
+		if(authentication == null){
+			System.out.println("인증 실패");
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+		}
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		List<RoomHistory> roomList = roomHistoryService.getAllList(user.getUserSeq());
+		List<LocalDate> conferencesDateList = new ArrayList<>();
+		for(int i=0; i<roomList.size(); i++) {
+			conferencesDateList.add(roomList.get(i).getInsertedTime());
+		}
+
+		return ResponseEntity.status(200).body(ConferencesGetRes.of(204, "파티리스트 조회 성공", conferencesDateList));
 	}
 }

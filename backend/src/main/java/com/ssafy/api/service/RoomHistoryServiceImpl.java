@@ -8,6 +8,8 @@ import com.ssafy.db.repository.RoomHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  *	방 이력 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
@@ -33,4 +35,12 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     public RoomHistory selectLastYn(Long userSeq) {
         return roomHistoryRepository.selectLastYn(userSeq);
     }
+
+    @Override
+    public List<RoomHistory> getAllList(Long userSeq) {
+        return roomHistoryRepository.findByUserSeq(userSeq);
+//        return roomHistoryRepository.findAll();
+    }
+
+
 }
