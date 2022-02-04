@@ -12,4 +12,7 @@ import java.time.LocalDateTime;
  */
 public interface RoomService {
     Room createRoom(User user, LocalDateTime now, CreateRoomRequest createRoomRequest);
+    Room findRoomByRoomSeq(Long roomSeq);
+    void exitRoom(Long roomSeq);
+    Room findRoomByOwner(Long roomSeq);
 }
