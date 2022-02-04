@@ -11,7 +11,8 @@ public class CreateRoomRequest {
     Long owner; // 방장 userSeq
     String name; // 방제목
     String thumbnail; // 썸네일이미지 url
-    int type; // 0:공개, 1:비공개
+    int type; // 0:비공개, 1:공개
+    String password; // 공개방일 시 ""
     String description; // 방 설명
     int drinkLimit; // 주량
     boolean ismute; // 음소거 여부
