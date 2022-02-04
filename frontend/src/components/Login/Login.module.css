@@ -6,6 +6,7 @@
 .contents {
   display: flex;
   justify-content: center;
+  align-items: center;
   /* margin-top: 50px; */
   color: #eee;
 }
@@ -241,10 +242,6 @@ button {
 } */
 
 @media screen and (min-width: 1800px) {
-  .contents {
-    margin-top: 100px;
-  }
-
   .formBorder .inputTitle {
     margin-bottom: 50px;
   }
@@ -285,7 +282,6 @@ button {
   }
   .crossline {
     padding: 15px 0;
-    /* font-size: 0; */
     line-height: 2.5;
     height: 70px;
   }
