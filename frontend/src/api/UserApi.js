@@ -63,6 +63,11 @@ const getUpdateProfileResult = async (body) => {
   return data;
 }
 
+const getUpdateProfileImgResult = async (body) =>{
+  const result = await axios.patch(`${BASE_URL}/profileimg`, body);
+  return result;
+}
+
 const UserApi = {
   getRegistResult,
   getEmailCheckResult,
@@ -72,7 +77,8 @@ const UserApi = {
   getPwdResetResult,
   getLoginResult,
   getUserProfile,
-  getUpdateProfileResult
+  getUpdateProfileResult,
+  getUpdateProfileImgResult
 };
 
 export default UserApi;
