@@ -5,7 +5,7 @@
   padding: 0;
   color: #eee;
   width: 580px;
-  height: 100%;
+  /* height: calc(100vh - 120px);a */
 }
 .innerContainer {
   padding: 50px 0 20px 0;
@@ -284,7 +284,7 @@
 .inputRow.findpwdInput {
   margin-bottom: 20px;
 }
-@media screen and (min-width: 1800px) {
+/* @media screen and (min-width: 1800px) {
   .innerContainer {
     padding: 150px 0;
   }
@@ -292,4 +292,4 @@
   .contents {
     padding: 50px 0;
   }
-}
+} */

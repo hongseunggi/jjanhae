@@ -1,0 +1,95 @@
+.container {
+  color: #eee;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 30px 0px 30px;
+}
+.innerContainer {
+  display: flex;
+  height: calc(100vh - 90px);
+}
+
+.contents {
+  /* width: 1200px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 20px;
+}
+.title {
+  margin-bottom: 30px;
+}
+.videos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+video {
+  background-image: url("../../assets/images/default1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  border: 1px solid #eee;
+  /* margin-right: 10px; */
+}
+
+.playerIcon {
+  margin-right: 10px;
+  animation: rotate_image 5s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.musicTitle {
+  width: 100%;
+  font-size: 18px;
+}
+.player {
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 30%;
+}
+
+.chatting {
+  min-width: 300px;
+  /* height: 700px; */
+  background-color: #eee;
+  border-radius: 10px;
+}
+
+.dockBar {
+  height: 90px;
+}
+.dock {
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(64, 69, 78, 1);
+  padding: 20px 40px;
+  border-radius: 40px;
+  position: relative;
+  bottom: -50px;
+  transition: all ease 1s 0s;
+}
+
+.dock:hover {
+  transition: all ease 1s 0s;
+  bottom: 0px;
+}
+
+@keyframes rotate_image {
+  100% {
+    transform: rotate(360deg);
+  }
+}
