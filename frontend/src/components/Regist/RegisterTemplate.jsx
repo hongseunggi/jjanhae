@@ -7,6 +7,7 @@ import RegistContext from "../../contexts/RegistContext";
 import CheckEmail from "./CheckEmail";
 import CheckProfile from "./CheckProfile";
 import RegisterComplete from "./RegisterComplete";
+import CheckTOS from "./CheckTOS";
 
 const RegisterTemplate = () => {
   const [input, setInput] = useState({
@@ -24,9 +25,10 @@ const RegisterTemplate = () => {
       <div className={styles.container}>
         <div className={styles.innerContainer}>
           <Routes>
-            <Route path="/" element={<CheckId progress={25} />} />
-            <Route path="/checkPwd" element={<CheckPwd progress={50} />} />
-            <Route path="/checkEmail" element={<CheckEmail progress={75} />} />
+            <Route path="/" element={<CheckTOS progress={20} />} />
+            <Route path="/checkId" element={<CheckId progress={40} />} />
+            <Route path="/checkPwd" element={<CheckPwd progress={60} />} />
+            <Route path="/checkEmail" element={<CheckEmail progress={80} />} />
             <Route
               path="/checkProfile"
               element={<CheckProfile progress={100} />}

@@ -5,7 +5,7 @@
   padding: 0;
   color: #eee;
   width: 580px;
-  height: 100%;
+  /* height: calc(100vh - 120px);a */
 }
 .innerContainer {
   padding: 50px 0 20px 0;
@@ -58,6 +58,59 @@
   font-weight: 400;
 }
 
+.checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.checkbox input {
+  width: 20px;
+  height: 20px;
+}
+.checkbox label {
+  margin: 0 0 0 10px;
+  font-size: 20px;
+}
+
+.policy {
+  height: 100px;
+  overflow: scroll;
+  border: 0.25px solid #dcdcdc80;
+  padding: 8px;
+  margin-bottom: 30px;
+}
+
+.policy h1 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.policy h2 {
+  font-size: 15px;
+}
+
+.policy span {
+  font-size: 12px;
+}
+.unchecked {
+  /* border: 1px solid 000; */
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  border-radius: 50%;
+  background-size: contain;
+  background-image: url("../../assets/icons/uncheck.svg");
+}
+
+.checked {
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  border-radius: 50%;
+  background-size: contain;
+  background-image: url("../../assets/icons/check.svg");
+}
 .input {
   display: flex;
   flex-direction: column;
@@ -73,7 +126,7 @@
   font-size: 18px;
   opacity: 70%;
 }
-.input > .label::after {
+.label::after {
   display: inline-block;
   margin: 0 0 4px 5px;
   content: "";
@@ -231,7 +284,7 @@
 .inputRow.findpwdInput {
   margin-bottom: 20px;
 }
-@media screen and (min-width: 1800px) {
+/* @media screen and (min-width: 1800px) {
   .innerContainer {
     padding: 150px 0;
   }
@@ -239,4 +292,4 @@
   .contents {
     padding: 50px 0;
   }
-}
+} */

@@ -2,8 +2,6 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
-import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
-import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
 import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
 import { ReactComponent as GoogleIcon } from "../../assets/icons/google.svg";
 import infoLogo from "../../assets/infoLogo.png";
