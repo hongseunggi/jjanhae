@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Room 모델 정의.
@@ -28,8 +28,8 @@ public class Room {
     String thumbnailUrl;
     int drinkLimit;
     String delYn; // 종료여부
-    LocalDate startTime;
-    LocalDate endTime;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
     String imageUrl;
     String playYn; // 게임진행 여부
 }

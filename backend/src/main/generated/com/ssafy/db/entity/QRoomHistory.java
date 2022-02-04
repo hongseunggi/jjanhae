@@ -26,7 +26,7 @@ public class QRoomHistory extends EntityPathBase<RoomHistory> {
 
     public final NumberPath<Long> historySeq = createNumber("historySeq", Long.class);
 
-    public final DatePath<java.time.LocalDate> insertedTime = createDate("insertedTime", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> insertedTime = createDateTime("insertedTime", java.time.LocalDateTime.class);
 
     public final StringPath lastYn = createString("lastYn");
 
