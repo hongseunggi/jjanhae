@@ -2,6 +2,8 @@ package com.ssafy.db.repository;
 
 import com.ssafy.db.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,4 +11,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
+    @Query(value = "select * from room" +
+            " where owner = :userSeq" +
+            " and del_yn = 'N'", nativeQuery = true)
+    public Room selectRoomByOwner(@Param(value = "userSeq") Long userSeq);
 }

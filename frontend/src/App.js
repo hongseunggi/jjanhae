@@ -8,6 +8,7 @@ import LoginStatusContext from "./contexts/LoginStatusContext";
 import Main from "./Main";
 import Home from "./components/Home.jsx";
 import "./assets/fonts/font.css";
+import Room from "./components/Room/Room";
 function App() {
   // const [code, setCode] = useState("2");
   // 1 : 비로그인 상태 2 : 로그인 상태 3 : 파티룸 입장 상태
@@ -23,6 +24,7 @@ function App() {
               <Route path="user/*" element={<User />} />
               <Route path="conferences/*" element={<Conferences />} />
             </Route>
+            <Route path="conference" element={<Room />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
