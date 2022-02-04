@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserApi from "../../api/UserApi.js";
+import ImgApi from "../../api/ImgApi.js";
 import styles from "./Profile.module.css";
 import editIcon from "../../assets/icons/edit.png";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
@@ -21,8 +22,10 @@ const Profile = () => {
   const [drink, setDrink] = useState("");
   const [drinkLimit, setDrinkLimit] = useState("");
   const [isEdit, setIsEdit] = useState(false);
+  const [myImg, setMyImg] = useState(image6);
 
-  const {getUserProfile, getUpdateProfileResult} = UserApi;
+  const {getUserProfile, getUpdateProfileResult, getUpdateProfileImgResult} = UserApi;
+  const {getImgUploadResult} = ImgApi;
   // 친구들을 특정하기 위한 값이 필요 ex) id
   const [friends, setFriends] = useState([
     { name: "김정연", count: 5, image: image1 },
@@ -65,6 +68,20 @@ const Profile = () => {
     }
   };
 
+  const imgInputhandler = async (e) =>{
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+
+    const {data} = await getImgUploadResult(formData);
+    console.log(data);
+    setMyImg(data.url);
+    const body = {
+      imageUrl : data.url
+    }
+    const result = await getUpdateProfileImgResult(body);
+    console.log(result);
+  }
+
   const nameHandler = (e) => {
     e.preventDefault();
     setName(e.target.value);
@@ -106,7 +123,7 @@ const Profile = () => {
     let day = data.birthday.day;
     if(data.birthday.month < 9) month = "0"+data.birthday.month;
     if(data.birthday.day < 9) day = "0"+data.birthday.day;
-
+    if(data.imageUrl !== "default") setMyImg(data.imageUrl);
     setYear(year);
     setMonth(month);
     setDay(day);
@@ -124,7 +141,9 @@ const Profile = () => {
         <section className={styles.userProfile}>
           <form className={styles.userInfoForm}>
             <div className={styles.profileRow}>
-              <img className={styles.profileImg} src={image6} alt="profile" />
+              <label htmlFor="input-img"><img className={styles.profileImg} src={myImg} alt="profile" />
+              </label>
+              <input type="file" id="input-img" style={{display : "none"}} onChange={imgInputhandler}/>
               <div
                 className={
                   isEdit
