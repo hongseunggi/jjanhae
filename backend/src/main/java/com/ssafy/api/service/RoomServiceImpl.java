@@ -81,6 +81,9 @@ public class RoomServiceImpl implements RoomService {
         List<Room> res = roomRepository.selectRoomList(paging.getLimit(), paging.getOffset());
         // sort 기준으로 order(asc, desc)
         // 생성시간 기준 순
+        System.out.println(sortRoomListRequest.getSort());
+        if(sortRoomListRequest.getSort().equals(null)) return res;
+
         if("createdAt".equals(sortRoomListRequest.getSort())) {
             Collections.sort(res, new Comparator<Room>() {
                 @Override
