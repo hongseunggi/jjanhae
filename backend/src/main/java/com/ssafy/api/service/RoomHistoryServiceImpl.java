@@ -28,4 +28,9 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
 
         return roomHistoryRepository.save(roomHistory);
     }
+
+    @Override
+    public RoomHistory selectLastYn(Long userSeq) {
+        return roomHistoryRepository.selectLastYn(userSeq);
+    }
 }

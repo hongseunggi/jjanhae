@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import com.ssafy.api.request.AddHistoryRequest;
 import com.ssafy.api.request.CreateRoomRequest;
+import com.ssafy.api.response.CreateRoomResponse;
 import com.ssafy.api.service.RoomHistoryService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.common.auth.SsafyUserDetails;
@@ -42,11 +43,12 @@ public class RoomController {
     @ApiOperation(value = "방 생성", notes = "방을 생성한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 202, message = "방 중복 입장 불가"),
             @ApiResponse(code = 204, message = "사용자 없음"),
             @ApiResponse(code = 403, message = "권한 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<BaseResponseBody> createRoom(@ApiIgnore Authentication authentication, @RequestBody CreateRoomRequest createRoomRequest) {
+    public ResponseEntity<? extends BaseResponseBody> createRoom(@ApiIgnore Authentication authentication, @RequestBody CreateRoomRequest createRoomRequest) {
         /**
          * 유저 권한으로 방을 생성한다.
          * 권한 : 해당 유저
@@ -62,6 +64,13 @@ public class RoomController {
         // 얻어낸 user객체로 userSeq 얻어내기
         System.out.println("user seq : " + user.getUserSeq());
         System.out.println("userId : "+user.getUserId());
+
+        // 해당 유저가 방에 접속해있는지
+        RoomHistory selectLastYn = roomHistoryService.selectLastYn(user.getUserSeq());
+        if(selectLastYn != null && "Y".equals(selectLastYn.getLastYn())) {
+            // 현재 접속상태이므로 중복입장 불가
+            return ResponseEntity.status(200).body(BaseResponseBody.of(202, "방 중복 입장 불가"));
+        }
 
         // Room 테이블에 userSeq 포함하여 저장.
         System.out.println("Room 테이블에 userSeq 포함하여 저장");
@@ -79,7 +88,7 @@ public class RoomController {
         System.out.println("얻어낸 roomSeq로 Room_history 테이블에도 추가");
         RoomHistory roomHistory = roomHistoryService.addHistory(user, room, addHistoryRequest);
         System.out.println("roomHistory 저장 성공");
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+        return ResponseEntity.status(200).body(CreateRoomResponse.of("Success", room.getRoomSeq()));
     }
 
 
