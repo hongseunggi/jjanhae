@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import style from "./RoomList.module.css";
 import RoomApi from "../../api/RoomApi";
 import SettingModalContainer from "./SettingModalContainer";
+import LoadingSpinner from "../Modals/LoadingSpinner";
 
 function RoomList() {
 
@@ -10,6 +11,8 @@ function RoomList() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [endCheck, setEndCheck] = useState(false);
     const [offsetCount, setOffset] = useState(0);
+    const [order , setOrder] = useState("");
+    const [sort, setSort] = useState("all");
     const [rooms, setRooms] = useState([]);
     const {getRoomListResult} = RoomApi;
 
@@ -19,36 +22,87 @@ function RoomList() {
     const endCheckRef = useRef(endCheck);
     endCheckRef.current = endCheck;
 
+    const orderRef = useRef(order);
+    orderRef.current = order;
+
+    const sortRef = useRef(sort);
+    sortRef.current = sort;
+
     const [target, setTarget] = useState(null);
+
+    const splitOrderSort = (e) =>{
+        e.preventDefault();
+        if(e.target.value === "all"){
+            setEndCheck(false);
+            setRooms([]);
+            setSort("all");
+            setOrder("");
+            setOffset(0);
+            // loadItem();
+        }
+        else{
+            console.log("???!@@#!@#!");
+            let splitstr = e.target.value.split(" ");
+            console.log(splitstr);
+            setEndCheck(false);
+            setRooms([]);
+            setSort(splitstr[0]);
+            setOrder(splitstr[1]);
+            setOffset(0);
+            // loadItem();
+        }
+    }
 
     const loadItem = async () => {
         if(!endCheckRef.current){
             setIsLoaded(true);
-            console.log(offsetCountRef.current);
+
             let body = {
                 paging : {
                     hasNext : "T",
                     limit : 6,
                     offset : offsetCountRef.current,
                 },
-                sort : "all",
-                order : ""
+                sort : sortRef.current,
+                order : orderRef.current
             }
             const {data} = await getRoomListResult(body);
             if(data.content.length === 0){
                 setEndCheck(true);
                 return;
             }
-
+    
             setRooms((prevState)=>{
                 return [...prevState, ...data.content]
             });
-
+    
             setOffset(offsetCountRef.current+6);
+            
             setIsLoaded(false);
         } 
     };
+    // const startApi = async () => {
+    //     let body = {
+    //         paging : {
+    //             hasNext : "T",
+    //             limit : 6,
+    //             offset : offsetCountRef.current,
+    //         },
+    //         sort : sortRef.current,
+    //         order : orderRef.current
+    //     }
+    //     const {data} = await getRoomListResult(body);
+    //     if(data.content.length === 0){
+    //         setEndCheck(true);
+    //         return;
+    //     }
 
+    //     setRooms((prevState)=>{
+    //         return [...prevState, ...data.content]
+    //     });
+
+    //     setOffset(offsetCountRef.current+6);
+    // }
     const onIntersect = async ([entry], observer) => {
         if (entry.isIntersecting && !isLoaded) {
             observer.unobserve(entry.target);
@@ -65,9 +119,9 @@ function RoomList() {
             });
             observer.observe(target);
         }
-
+        if(isLoaded) return <LoadingSpinner></LoadingSpinner>
         return () => observer && observer.disconnect();
-
+        
     }, [target  ]);
     
 
@@ -78,17 +132,20 @@ function RoomList() {
             <Col className={style.searchbox}>
             
                 <div className={style.searchdiv}>
-                    <select className={style.select}>
-                        <option>
+                    <select className={style.select} onChange={splitOrderSort}>
+                        <option value="all">
                             전체보기
                         </option>
-                        <option>
-                            생성시간순
+                        <option value="createdAt desc">
+                            최근생성순
                         </option>
-                        <option>
+                        <option value="createdAt asc">
+                            오래된 생성순
+                        </option>
+                        <option value="drinkLimit desc">
                             주량 높은순
                         </option>
-                        <option>
+                        <option value="drinkLimit asc">
                             주량 낮은순
                         </option>
                     </select>
@@ -127,8 +184,9 @@ function RoomList() {
                     width: "100vw",
                     height: "1px",
                 }}>
-                    {isLoaded}
+                    {console.log(isLoaded)}
                 </div>
+                {isLoaded ? <LoadingSpinner></LoadingSpinner> : null}
             </Row>
         </Container>
         
