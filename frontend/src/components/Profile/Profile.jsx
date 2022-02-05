@@ -124,7 +124,9 @@ const Profile = () => {
   //   return ()
   // }
 
-  useEffect(async () => {
+  useEffect(() => getProfile(), []);
+
+  const getProfile = async () => {
     setLoading(true);
     const { data } = await getUserProfile();
     setTimeout(() => {
@@ -145,7 +147,7 @@ const Profile = () => {
     setId(data.userId);
     setDrink(data.drink);
     setDrinkLimit(data.drinkLimit);
-  }, []);
+  };
 
   return (
     <div className={styles.profileForm}>

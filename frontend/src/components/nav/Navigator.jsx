@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styles from "./Navigator.module.css";
 import Logo from "../../assets/logo.png";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
+import axios from "axios";
 
 function Navigator() {
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
@@ -11,6 +12,7 @@ function Navigator() {
   const handleLogOut = () => {
     setLoginStatus("1");
     sessionStorage.removeItem("accessToken");
+    // axios.defaults.headers.Authorization = undefined;
   };
 
   switch (loginStatus) {
