@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.7.1",
     "@ramonak/react-progress-bar": "^4.2.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
@@ -18,10 +19,13 @@
     "react-fast-marquee": "^1.3.1",
     "react-google-login": "^5.2.2",
     "react-hook-form": "^7.24.1",
+    "react-loader-spinner": "^5.1.0",
     "react-modal": "^3.14.4",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-spinners": "^0.11.0",
     "react-table": "^7.7.0",
+    "styled-components": "^5.3.3",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
