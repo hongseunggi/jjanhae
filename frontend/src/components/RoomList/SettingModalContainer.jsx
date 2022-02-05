@@ -33,11 +33,11 @@ function SettingModalContainer(props) {
   const renderDrinkLevel = (value) => {
     // console.log("정상 빌드 배포 완료");
     switch (value) {
-      case 0:
-        return <div className={style.roomlabel}>알쓰방</div>;
       case 1:
-        return <div className={style.roomlabel}>주당방</div>;
+        return <div className={style.roomlabel}>알쓰방</div>;
       case 2:
+        return <div className={style.roomlabel}>주당방</div>;
+      case 3:
         return <div className={style.roomlabel}>술고래방</div>;
       default:
         return null;

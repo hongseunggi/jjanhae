@@ -22,6 +22,7 @@
   height: 470px;
   background-color: #eee;
   border-radius: 20px;
+  border-style: none;
   padding: 20px;
   display: flex;
   flex-direction: column;
