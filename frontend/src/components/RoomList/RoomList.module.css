@@ -56,9 +56,8 @@
     appearance: none;
 }
 .list{
-    margin : 30px auto 0px 0px;
     text-align: center;
-    height: 78vh;
+    height: 79vh;
     background-color: #252a34;
     overflow: scroll;
 }

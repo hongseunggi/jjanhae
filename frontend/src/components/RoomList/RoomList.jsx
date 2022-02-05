@@ -38,7 +38,6 @@ function RoomList() {
             setSort("all");
             setOrder("");
             setOffset(0);
-            // loadItem();
         }
         else{
             console.log("???!@@#!@#!");
@@ -49,7 +48,6 @@ function RoomList() {
             setSort(splitstr[0]);
             setOrder(splitstr[1]);
             setOffset(0);
-            // loadItem();
         }
     }
 
@@ -85,28 +83,7 @@ function RoomList() {
             setIsLoaded(false);
         } 
     };
-    // const startApi = async () => {
-    //     let body = {
-    //         paging : {
-    //             hasNext : "T",
-    //             limit : 6,
-    //             offset : offsetCountRef.current,
-    //         },
-    //         sort : sortRef.current,
-    //         order : orderRef.current
-    //     }
-    //     const {data} = await getRoomListResult(body);
-    //     if(data.content.length === 0){
-    //         setEndCheck(true);
-    //         return;
-    //     }
 
-    //     setRooms((prevState)=>{
-    //         return [...prevState, ...data.content]
-    //     });
-
-    //     setOffset(offsetCountRef.current+6);
-    // }
     const onIntersect = async ([entry], observer) => {
         if (entry.isIntersecting && !isLoaded) {
             observer.unobserve(entry.target);
@@ -139,6 +116,7 @@ function RoomList() {
 
     return(
         <Container fluid={true} className={style.container}>
+            
             <Row className={style.srow}>
             <Col className={style.searchbox}>
             
@@ -181,7 +159,10 @@ function RoomList() {
                     height : "20px"
                 }}></div>
             </Row>
-            <Row className={style.list}>
+            
+            <Row className={style.list} style={{
+
+            }}>
                 {rooms.map((room, index)=>{
                     return(
                         <Col key={index} md = {4}>
