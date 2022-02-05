@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  *	방 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -78,36 +75,23 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest) {
         SortRoomListRequest.Paging paging = sortRoomListRequest.getPaging();
         System.out.println("paging: " + paging.getHasNext()+", "+paging.getLimit()+", "+paging.getOffset());
-        List<Room> res = roomRepository.selectRoomList(paging.getLimit(), paging.getOffset());
+        List<Room> res = new ArrayList<>();
         // sort 기준으로 order(asc, desc)
-        // 생성시간 기준 순
-        System.out.println(sortRoomListRequest.getSort());
-        if(sortRoomListRequest.getSort().equals(null)) return res;
-
-        if("createdAt".equals(sortRoomListRequest.getSort())) {
-            Collections.sort(res, new Comparator<Room>() {
-                @Override
-                public int compare(Room o1, Room o2) {
-                    if("asc".equals(sortRoomListRequest.getOrder())) {
-                        return o1.getStartTime().compareTo(o2.getStartTime());
-                    } else {
-                        return o2.getStartTime().compareTo(o1.getStartTime());
-                    }
-                }
-            });
-        } else if("drinkLimit".equals(sortRoomListRequest.getSort())) {
-            Collections.sort(res, new Comparator<Room>() {
-                @Override
-                public int compare(Room o1, Room o2) {
-                    if("asc".equals(sortRoomListRequest.getOrder())) {
-                        return o1.getDrinkLimit() - o2.getDrinkLimit();
-                    } else {
-                        return o2.getDrinkLimit() - o1.getDrinkLimit();
-                    }
-                }
-            });
+        if("createdAt".equals(sortRoomListRequest.getSort())) { // 생성시간 기준
+            if("asc".equals(sortRoomListRequest.getOrder())) {
+                res = roomRepository.selectRoomListOrderByStartTime(paging.getLimit(), paging.getOffset());
+            } else {
+                res = roomRepository.selectRoomListOrderByStartTimeDesc(paging.getLimit(), paging.getOffset());
+            }
+        } else if("drinkLimit".equals(sortRoomListRequest.getSort())) { // 주량 기준
+            if("asc".equals(sortRoomListRequest.getOrder())) {
+                res = roomRepository.selectRoomListOrderByDrinkLimit(paging.getLimit(), paging.getOffset());
+            } else {
+                res = roomRepository.selectRoomListOrderByDrinkLimitDesc(paging.getLimit(), paging.getOffset());
+            }
+        } else { // all
+            res = roomRepository.selectRoomList(paging.getLimit(), paging.getOffset());
         }
-        // all은 정렬하지 않음
         return res;
     }
 
