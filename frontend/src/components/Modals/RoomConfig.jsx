@@ -121,6 +121,7 @@ const RoomConfig = ({ open, onClose }) => {
                     src={imageUpload}
                     alt="upload thumbnail"
                     className={styles.uploadImage}
+                    style={{cursor: "pointer"}}
                   />
                 </label>
                 <input type="file" id="input-img" className={styles.uploadBtn} onChange={imgInputhandler}/>
