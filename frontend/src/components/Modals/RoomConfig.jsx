@@ -3,8 +3,9 @@ import { ReactComponent as LockIcon } from "../../assets/icons/password.svg";
 import ImgApi from "../../api/ImgApi";
 import RoomApi from "../../api/RoomApi";
 import imageUpload from "../../assets/icons/imageUpload.png";
-
 import styles from "./RoomConfig.module.css";
+
+
 const RoomConfig = ({ open, onClose }) => {
   // const { open, close, header } = props;
   const [configStatus, setConfigStatus] = useState(false);
@@ -59,7 +60,7 @@ const RoomConfig = ({ open, onClose }) => {
     let drinkLimit = 1;
 
     if(roomConfig === "private"){
-      type = 2;
+      type = 0;
     }
     if(drinkConfig === "second"){
       drinkLimit = 2;
@@ -121,6 +122,7 @@ const RoomConfig = ({ open, onClose }) => {
                     src={imageUpload}
                     alt="upload thumbnail"
                     className={styles.uploadImage}
+                    style={{cursor: "pointer"}}
                   />
                 </label>
                 <input type="file" id="input-img" className={styles.uploadBtn} onChange={imgInputhandler}/>

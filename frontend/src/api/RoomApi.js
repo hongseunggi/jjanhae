@@ -8,8 +8,21 @@ const getCreateRoomResult = async (body) => {
     return result;
 };
 
+const getRoomListResult = async (body) => {
+    const result = await axios.post(`${BASE_URL}/order`, body);
+    console.log(result);
+    return result;
+}
+const getRoomSearchResult = async (target) => {
+    const result = await axios.get(`${BASE_URL}/search?keyword=${target}`)
+    return result;
+}
+
+
 const RoomApi = {
-    getCreateRoomResult
+    getCreateRoomResult,
+    getRoomListResult,
+    getRoomSearchResult
 };
 
 export default RoomApi;

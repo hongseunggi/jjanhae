@@ -11,6 +11,7 @@ import image3 from "../../assets/images/default3.png";
 import image4 from "../../assets/images/default4.png";
 import image5 from "../../assets/images/default5.png";
 import image6 from "../../assets/images/default6.png";
+import LoadingSpinner from "../Modals/LoadingSpinner.jsx";
 
 const Profile = () => {
   const [name, setName] = useState("");
@@ -35,12 +36,14 @@ const Profile = () => {
     { name: "홍승기", count: 2, image: image4 },
     { name: "송민수", count: 1, image: image5 },
   ]);
+  const [loading, setLoading] = useState(false);
 
   const handleEditMode = async (e) => {
     e.preventDefault();
     console.log(name);
     setIsEdit((prev) => !prev);
     if (isEdit) {
+      setLoading(true);
       let body = {
         name: name,
         drink: drink,
@@ -52,6 +55,9 @@ const Profile = () => {
         },
       };
       const { data } = await getUpdateProfileResult(body);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
       setName(data.name);
       setEmail(data.email);
       let ny = data.birthday.year;
@@ -69,6 +75,7 @@ const Profile = () => {
   };
 
   const imgInputhandler = async (e) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
 
@@ -79,6 +86,9 @@ const Profile = () => {
       imageUrl: data.url,
     };
     const result = await getUpdateProfileImgResult(body);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
     console.log(result);
   };
 
@@ -110,9 +120,16 @@ const Profile = () => {
       setDrinkLimit(0);
     } else setDrinkLimit(e.target.value);
   };
+  // const showProfile = () =>{
+  //   return ()
+  // }
 
   useEffect(async () => {
+    setLoading(true);
     const { data } = await getUserProfile();
+    setTimeout(() => {
+      setLoading(false);
+    }, 700);
     console.log(data);
     setName(data.name);
     setEmail(data.email);
@@ -137,10 +154,16 @@ const Profile = () => {
       </header>
       <main className={styles.profile}>
         <section className={styles.userProfile}>
+          {loading ? <LoadingSpinner></LoadingSpinner> : null}
           <form className={styles.userInfoForm}>
             <div className={styles.profileRow}>
               <label htmlFor="input-img">
-                <img className={styles.profileImg} src={myImg} alt="profile" />
+                <img
+                  className={styles.profileImg}
+                  src={myImg}
+                  alt="profile"
+                  style={{ cursor: "pointer" }}
+                />
               </label>
               <input
                 type="file"
@@ -283,6 +306,7 @@ const Profile = () => {
             </div>
           </form>
         </section>
+
         <section className={styles.friendProfile}>
           <div className={styles.friendTitle}>
             <h1 className={styles.mainTitle}>나와 함께한 친구들</h1>

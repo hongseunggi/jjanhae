@@ -1,0 +1,35 @@
+.modal {
+    display: none;
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    border-style: none;
+    z-index: 1;
+    background-color:rgba(255,255,255, 0);
+    /* opacity: 0.5; */
+    backdrop-filter: blur(10px);
+}
+.modal.openModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+
+}
+@keyframes modal-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes modal-bg-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
