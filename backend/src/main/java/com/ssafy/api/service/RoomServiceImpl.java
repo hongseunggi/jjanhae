@@ -99,4 +99,9 @@ public class RoomServiceImpl implements RoomService {
     public int countJoinUser(Long roomSeq) {
         return roomRepository.countJoinUser(roomSeq);
     }
+
+    @Override
+    public List<Room> selectRoomByTitle(String title) {
+        return roomRepository.selectRoomByTitle(title);
+    }
 }
