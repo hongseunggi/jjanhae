@@ -4,9 +4,7 @@ import com.ssafy.api.request.AddHistoryRequest;
 import com.ssafy.api.request.CreateRoomRequest;
 import com.ssafy.api.request.ExitRoomRequest;
 import com.ssafy.api.request.SortRoomListRequest;
-import com.ssafy.api.response.CreateRoomResponse;
-import com.ssafy.api.response.SortRoomListResponse;
-import com.ssafy.api.response.SortRoomResponse;
+import com.ssafy.api.response.*;
 import com.ssafy.api.service.RoomHistoryService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
@@ -190,6 +188,40 @@ public class RoomController {
         }
 
         return ResponseEntity.status(200).body(SortRoomListResponse.of(roomInfoList));
+    }
+
+
+    @GetMapping(value = "/search", params = {"keyword"})
+    @ApiOperation(value = "방 검색", notes = "키워드가 포함된 제목의 방들을 검색한다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> findRoomByKeyword(@RequestParam String keyword) throws Exception {
+        System.out.println("findRoomByKeyword");
+        System.out.println("keyword "+keyword);
+        List<Room> rooms = roomService.selectRoomByTitle(keyword);
+        List<SearchRoomResponse> searchRoomList = new ArrayList<>();
+        for(int i = 0; i < rooms.size(); i++) {
+            // 각 방마다 인원수를 구해온다.
+            int numberOfJoin = roomService.countJoinUser(rooms.get(i).getRoomSeq());
+            System.out.println("참여인원 수 : "+numberOfJoin);
+            // List<SearchRoomResponse> 에 담아준다.
+            SearchRoomResponse searchRoomResponse = new SearchRoomResponse();
+            searchRoomResponse.setConferenceId(rooms.get(i).getRoomSeq());
+            searchRoomResponse.setType(rooms.get(i).getType());
+            searchRoomResponse.setPassword(rooms.get(i).getPassword());
+            searchRoomResponse.setJoinUserNum(numberOfJoin);
+            searchRoomResponse.setOwnerId(rooms.get(i).getOwner().getUserId());
+            searchRoomResponse.setStartTime(rooms.get(i).getStartTime());
+            searchRoomResponse.setThumbnail(rooms.get(i).getThumbnailUrl());
+            searchRoomResponse.setTitle(rooms.get(i).getTitle());
+            searchRoomResponse.setDescription(rooms.get(i).getDescription());
+            searchRoomResponse.setDrinkLimit(rooms.get(i).getDrinkLimit());
+            searchRoomList.add(searchRoomResponse);
+        }
+
+        return ResponseEntity.status(200).body(SearchRoomListResponse.of(searchRoomList));
     }
 
 }
