@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IntoRoom from "../Modals/IntoRoom";
 import style from "./RoomList.module.css";
 import { ReactComponent as Clock } from "../../assets/icons/clock.svg";
@@ -6,13 +6,32 @@ import { ReactComponent as Lock } from "../../assets/icons/lock.svg";
 
 function SettingModalContainer(props) {
   const { info } = props;
-  console.log(info);
+  // console.log(info);
   const [isOpen, setIsOpen] = useState(false);
+  const [time, setTime] = useState("");
+  
+  useEffect(()=>{
+    let hour = "";
+    let minute = "";
+    if(info.startTime.time.hour <= 9){
+      hour += "0"+info.startTime.time.hour;
+    }
+    else hour = info.startTime.time.hour;
+    
+    if(info.startTime.time.minute <= 9){
+      minute += "0"+info.startTime.time.minute;
+    }
+    else minute = info.startTime.time.minute;
+
+    setTime(hour+":"+minute);
+  })
+  
+  
   const handleIsOpen = (e) => {
     setIsOpen(!isOpen);
   };
   const renderDrinkLevel = (value) => {
-    console.log("정상 빌드 배포 완료");
+    // console.log("정상 빌드 배포 완료");
     switch (value) {
       case 0:
         return <div className={style.roomlabel}>알쓰방</div>;
@@ -81,7 +100,7 @@ function SettingModalContainer(props) {
             filter="invert(100%) sepia(8%) saturate(101%) hue-rotate(221deg) brightness(113%) contrast(87%)"
             className={style.clock}
           />
-          <h5>{info.callStartTime}~</h5>
+          <h5>{time}~</h5>
           {renderJoinUser(info.joinUserNum)}
         </div>
       </div>

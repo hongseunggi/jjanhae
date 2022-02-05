@@ -141,7 +141,7 @@ const Profile = () => {
         <section className={styles.userProfile}>
           <form className={styles.userInfoForm}>
             <div className={styles.profileRow}>
-              <label htmlFor="input-img"><img className={styles.profileImg} src={myImg} alt="profile" />
+              <label htmlFor="input-img"><img className={styles.profileImg} src={myImg} alt="profile" style={{cursor: "pointer"}} />
               </label>
               <input type="file" id="input-img" style={{display : "none"}} onChange={imgInputhandler}/>
               <div
