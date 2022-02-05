@@ -1,26 +1,77 @@
+import { useEffect, useState, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import style from "./RoomList.module.css";
-
+import RoomApi from "../../api/RoomApi";
 import SettingModalContainer from "./SettingModalContainer";
 
 function RoomList() {
-    let today = new Date();
-    let start = today.getHours()+":"+today.getMinutes();
-    if(today.getMinutes() <= 9 && today.getMinutes() >= 0){
-        start = today.getHours()+":0"+today.getMinutes();
-    }
-    //let start = today.getHours()+":"+today.getMinutes();
-    console.log(start);
-    const rooms = [
-        {drinkLimit : 0, title : "안녕하세요~", type : 1, description : "반가워요~!하하하하하하하하 재밌게 놀아용", callStartTime : start, joinUserNum : 5, thumbnail : "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"},
-        {drinkLimit : 2, title : "반갑습니당!", type : 0, description : "반가워요~!", callStartTime : start, joinUserNum : 8, thumbnail : "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/singapore.jpg"},
-        {drinkLimit : 1, title : "재밌게 놀고 싶은 사람?", type : 1, description : "난 잘 못놀아...", callStartTime : start, joinUserNum : 5, thumbnail : "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/prague.jpg"},
-        {drinkLimit : 1, title : "이거 재밌나요?", type : 1, description : "처음 접속 했습니당", callStartTime : start, joinUserNum : 5, thumbnail : "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/amsterdam.jpg"},
-        {drinkLimit : 0, title : "안녕하세요~", type : 1, description : "반가워요~!", callStartTime : start, joinUserNum : 5, thumbnail : "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/moscow.jpg"},
-        {drinkLimit : 0, title : "안녕하세요~", type : 1, description : "반가워요~!", callStartTime : start, joinUserNum : 5, thumbnail : "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"},
-        {drinkLimit : 0, title : "안녕하세요~", type : 1, description : "반가워요~!", callStartTime : start, joinUserNum : 5, thumbnail : "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"},
-    ];
+
+
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [endCheck, setEndCheck] = useState(false);
+    const [offsetCount, setOffset] = useState(0);
+    const [rooms, setRooms] = useState([]);
+    const {getRoomListResult} = RoomApi;
+
+    const offsetCountRef = useRef(offsetCount);
+    offsetCountRef.current = offsetCount;
+
+    const endCheckRef = useRef(endCheck);
+    endCheckRef.current = endCheck;
+
+    const [target, setTarget] = useState(null);
+
+    const loadItem = async () => {
+        if(!endCheckRef.current){
+            setIsLoaded(true);
+            console.log(offsetCountRef.current);
+            let body = {
+                paging : {
+                    hasNext : "T",
+                    limit : 6,
+                    offset : offsetCountRef.current,
+                },
+                sort : "all",
+                order : ""
+            }
+            const {data} = await getRoomListResult(body);
+            if(data.content.length === 0){
+                setEndCheck(true);
+                return;
+            }
+
+            setRooms((prevState)=>{
+                return [...prevState, ...data.content]
+            });
+
+            setOffset(offsetCountRef.current+6);
+            setIsLoaded(false);
+        } 
+    };
+
+    const onIntersect = async ([entry], observer) => {
+        if (entry.isIntersecting && !isLoaded) {
+            observer.unobserve(entry.target);
+            await loadItem();
+            observer.observe(entry.target);
+        }
+    };
+
+    useEffect(() => {
+        let observer;
+        if (target) {
+            observer = new IntersectionObserver(onIntersect, {
+            threshold: 0.4,
+            });
+            observer.observe(target);
+        }
+
+        return () => observer && observer.disconnect();
+
+    }, [target  ]);
     
+
+
     return(
         <Container fluid={true} className={style.container}>
             <Row className={style.srow}>
@@ -49,8 +100,8 @@ function RoomList() {
                         xmlns="http://www.w3.org/2000/svg"
                     >
                         <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
                             d="M10 14L16 6H4L10 14Z"
                             fill="#ffff"
                         /></svg>
@@ -72,6 +123,12 @@ function RoomList() {
                             <SettingModalContainer info = {room}/>                         
                         </Col>)
                 })}
+                <div ref={setTarget} style={{
+                    width: "100vw",
+                    height: "1px",
+                }}>
+                    {isLoaded}
+                </div>
             </Row>
         </Container>
         

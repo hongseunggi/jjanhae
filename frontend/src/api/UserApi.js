@@ -47,12 +47,13 @@ const getPwdResetResult = async (body) => {
 const getLoginResult = async (body) => {
   console.log(body);
   const result = await axios.post(`${BASE_URL}/login`, body);
+  sessionStorage.setItem("accessToken", result.data.accessToken);
+  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
   console.log(result);
   return result;
 };
 
 const getUserProfile = async () => {
-  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
   const result = await axios.get(`${BASE_URL}/profile`);
   return result;
 }
@@ -61,6 +62,11 @@ const getUpdateProfileResult = async (body) => {
   const result = await axios.patch(`${BASE_URL}/profile`, body);
   const data = getUserProfile();
   return data;
+}
+
+const getUpdateProfileImgResult = async (body) =>{
+  const result = await axios.patch(`${BASE_URL}/profileimg`, body);
+  return result;
 }
 
 const UserApi = {
@@ -72,7 +78,8 @@ const UserApi = {
   getPwdResetResult,
   getLoginResult,
   getUserProfile,
-  getUpdateProfileResult
+  getUpdateProfileResult,
+  getUpdateProfileImgResult
 };
 
 export default UserApi;
