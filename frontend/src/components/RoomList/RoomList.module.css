@@ -1,6 +1,7 @@
 
 .container{
     margin: 20px;
+    width: 100%;
 }
 .srow{
     margin : 30px auto 0px 0px;
@@ -13,6 +14,7 @@
     position: relative;
     width: 400px;
     display: inline-block;
+    
 }
 .search{
     width: 100%;
@@ -43,8 +45,9 @@
 }
 .select{
     height: 32px;
+    text-align: center;
     position: absolute;
-    left: -120px;
+    left: -150px;
     border-style: none;
     color:white;
     background-color: #252a34;
@@ -53,9 +56,9 @@
     appearance: none;
 }
 .list{
-    margin-top: 40px;
+    margin : 30px auto 0px 0px;
     text-align: center;
-    height: 75vh;
+    height: 78vh;
     background-color: #252a34;
     overflow: scroll;
 }
@@ -97,7 +100,7 @@
 }
 .svg{
     position: absolute;
-    margin-left: -35px;
+    margin-left: -40px;
     margin-top: 7px;
 	align-self: center;
 	width: 20px;

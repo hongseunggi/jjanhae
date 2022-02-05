@@ -7,12 +7,12 @@ import LoadingSpinner from "../Modals/LoadingSpinner";
 
 function RoomList() {
 
-
+    const [loading, setLoading] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [endCheck, setEndCheck] = useState(false);
     const [offsetCount, setOffset] = useState(0);
-    const [order , setOrder] = useState("");
-    const [sort, setSort] = useState("all");
+    const [order , setOrder] = useState("desc");
+    const [sort, setSort] = useState("createdAt");
     const [rooms, setRooms] = useState([]);
     const {getRoomListResult} = RoomApi;
 
@@ -55,8 +55,12 @@ function RoomList() {
 
     const loadItem = async () => {
         if(!endCheckRef.current){
+            setLoading(true);
+            setTimeout(()=>{
+                setLoading(false);
+            }, 1500);
             setIsLoaded(true);
-
+            
             let body = {
                 paging : {
                     hasNext : "T",
@@ -110,16 +114,23 @@ function RoomList() {
             observer.observe(entry.target);
         }
     };
+    const showRoom = () => {
+        return (rooms.map((room, index)=>{
+                <Col key={index} md = {4}>
+                    <SettingModalContainer info = {room}/>                         
+                </Col>
+        }))
+    }
 
     useEffect(() => {
         let observer;
         if (target) {
             observer = new IntersectionObserver(onIntersect, {
-            threshold: 0.4,
+            threshold: 0.2,
             });
             observer.observe(target);
         }
-        if(isLoaded) return <LoadingSpinner></LoadingSpinner>
+        
         return () => observer && observer.disconnect();
         
     }, [target  ]);
@@ -133,9 +144,6 @@ function RoomList() {
             
                 <div className={style.searchdiv}>
                     <select className={style.select} onChange={splitOrderSort}>
-                        <option value="all">
-                            전체보기
-                        </option>
                         <option value="createdAt desc">
                             최근생성순
                         </option>
@@ -182,11 +190,11 @@ function RoomList() {
                 })}
                 <div ref={setTarget} style={{
                     width: "100vw",
-                    height: "1px",
+                    height: "5px",
                 }}>
                     {console.log(isLoaded)}
                 </div>
-                {isLoaded ? <LoadingSpinner></LoadingSpinner> : null}
+                {loading ? <LoadingSpinner></LoadingSpinner> : null}
             </Row>
         </Container>
         
