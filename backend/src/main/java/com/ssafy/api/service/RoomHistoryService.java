@@ -11,4 +11,5 @@ import com.ssafy.db.entity.User;
 public interface RoomHistoryService {
     RoomHistory addHistory(User user, Room room, AddHistoryRequest addHistoryRequest);
     RoomHistory selectLastYn(Long userSeq);
+    RoomHistory findRoomByUserSeq(Long userSeq);
 }
