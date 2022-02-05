@@ -1,9 +1,6 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.request.AddHistoryRequest;
-import com.ssafy.api.request.CreateRoomRequest;
-import com.ssafy.api.request.ExitRoomRequest;
-import com.ssafy.api.request.SortRoomListRequest;
+import com.ssafy.api.request.*;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.RoomHistoryService;
 import com.ssafy.api.service.RoomService;
@@ -127,14 +124,17 @@ public class RoomController {
         System.out.println("userSeq : " + user.getUserSeq());
 
         // target room 정보 얻어오기
-//        Room room = roomService.findRoomByRoomSeq(user.getUserSeq());
-        Room room = roomService.findRoomByOwner(user.getUserSeq());
+        // 이력 뒤져서 현재 userSeq가 들어있는 방을 찾아와야 한다.
+        RoomHistory roomHistory = roomHistoryService.findRoomByUserSeq(user.getUserSeq());
+        Room room = roomHistory.getRoomSeq();
+        System.out.println("현재 들어있는 방: "+room.getRoomSeq() + ", 방장: "+room.getOwner().getUserSeq());
 
         // 나가려는 유저가 방장이면 방 exit update처리
         // 방을 나갔다는건 무조건 그 방 정보가 있단 뜻이므로 null체크 별도로 해주지 않음
         if(room.getOwner().getUserSeq() == user.getUserSeq()) {
+            System.out.println("방장이므로 방 나갈 시 방도 같이 닫힌다.");
             // 방장이 방을 나갔으므로 endtime을 현재시간으로 넣고, delYn="Y"로 업데이트
-            roomService.exitRoom(room.getRoomSeq());
+            roomService.exitRoom(roomHistory.getRoomSeq().getRoomSeq());
         }
 
         // history table에 퇴실로그 한줄 쌓기
@@ -222,6 +222,58 @@ public class RoomController {
         }
 
         return ResponseEntity.status(200).body(SearchRoomListResponse.of(searchRoomList));
+    }
+
+
+    @PostMapping(value = "/enter")
+    @ApiOperation(value = "방 입장", notes = "방에 들어간다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends BaseResponseBody> enterRoom(@RequestBody EnterRoomRequest enterRoomRequest) {
+        /**
+         * 해당 방에 입장한다.
+         * 권한 : 해당 유저
+         * */
+        System.out.println("enterRoom Start ...");
+        // userId로 userSeq 얻어오기
+        User user = userService.getUserByUserId(enterRoomRequest.getUserId());
+        System.out.println("userSeq : " + user.getUserSeq());
+
+        // target room 정보 얻어오기
+        Room room = roomService.findRoomByRoomSeq(enterRoomRequest.getConferenceId());
+
+        // 방 중복입장 불가
+        RoomHistory selectLastYn = roomHistoryService.selectLastYn(user.getUserSeq());
+        if(selectLastYn != null && "Y".equals(selectLastYn.getLastYn())) {
+            // 현재 접속상태이므로 중복입장 불가
+            System.out.println("방 중복입장 불가");
+            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "방 중복 입장 불가"));
+        }
+
+        // 비공개방일 시 패스워드 일치여부 확인
+        System.out.println("room type "+room.getType());
+        if(room.getType() == 0) {
+            System.out.println("비공개방이므로 패스워드 일치여부 확인...");
+            String password = enterRoomRequest.getPassword();
+            System.out.println("password "+password);
+            if(!password.equals(room.getPassword())) {
+                System.out.println("비밀번호 불일치");
+                return ResponseEntity.status(200).body(BaseResponseBody.of(204, "비밀번호가 일치하지 않습니다."));
+            }
+        }
+
+        // history table에 참여 로그 한줄 쌓기
+        // action:1(참여), lastYn:Y
+        AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
+        addHistoryRequest.setRoomSeq(enterRoomRequest.getConferenceId());
+        addHistoryRequest.setUserSeq(user.getUserSeq());
+        addHistoryRequest.setAction(1);
+        addHistoryRequest.setLastYn("Y");
+        addHistoryRequest.setInsertedTime(LocalDateTime.now());
+        roomHistoryService.addHistory(user, room, addHistoryRequest);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
 }
