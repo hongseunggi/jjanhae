@@ -14,7 +14,9 @@ function RoomList() {
     const [order , setOrder] = useState("desc");
     const [sort, setSort] = useState("createdAt");
     const [rooms, setRooms] = useState([]);
-    const {getRoomListResult} = RoomApi;
+    const [keyword, setKeyword] = useState("");
+
+    const {getRoomListResult, getRoomSearchResult} = RoomApi;
 
     const offsetCountRef = useRef(offsetCount);
     offsetCountRef.current = offsetCount;
@@ -30,25 +32,32 @@ function RoomList() {
 
     const [target, setTarget] = useState(null);
 
+    const keywordHandler = (e) =>{
+        e.preventDefault();
+        setKeyword(e.target.value);
+    }
+
+    const sendKeyword = async () => {
+        setLoading(true);
+        const {data} = await getRoomSearchResult(keyword);
+        setRooms(data.content);
+        setEndCheck(true);
+        setTimeout(()=>{
+            setLoading(false)
+        }, 1500);
+    }
+
     const splitOrderSort = (e) =>{
         e.preventDefault();
-        if(e.target.value === "all"){
-            setEndCheck(false);
-            setRooms([]);
-            setSort("all");
-            setOrder("");
-            setOffset(0);
-        }
-        else{
-            console.log("???!@@#!@#!");
-            let splitstr = e.target.value.split(" ");
-            console.log(splitstr);
-            setEndCheck(false);
-            setRooms([]);
-            setSort(splitstr[0]);
-            setOrder(splitstr[1]);
-            setOffset(0);
-        }
+        
+        let splitstr = e.target.value.split(" ");
+        setKeyword("");
+        setEndCheck(false);
+        setRooms([]);
+        setSort(splitstr[0]);
+        setOrder(splitstr[1]);
+        setOffset(0);
+        
     }
 
     const loadItem = async () => {
@@ -148,8 +157,8 @@ function RoomList() {
                             d="M10 14L16 6H4L10 14Z"
                             fill="#ffff"
                         /></svg>
-                    <input className={style.search}></input>
-                    <button className={style.sbutton}>검색</button>
+                    <input className={style.search} value={keyword} onChange={keywordHandler}></input>
+                    <button className={style.sbutton} onClick={sendKeyword}>검색</button>
                 </div>
                 
             </Col>

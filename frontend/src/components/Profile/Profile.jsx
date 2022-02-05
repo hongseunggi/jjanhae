@@ -130,7 +130,7 @@ const Profile = () => {
     const {data} = await getUserProfile();
     setTimeout(()=>{
       setLoading(false);
-    }, 1500);
+    }, 700);
     console.log(data);
     setName(data.name);
     setEmail(data.email);
