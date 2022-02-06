@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @ApiModel("SearchRoomResponse")
 public class SearchRoomResponse {
-    Long conferenceId; // roomSeq
+    Long roomSeq; // roomSeq
     int type; // 0:비공개, 1:공개
     String password; // 공개방일 시 ""
     int joinUserNum; // 참여인원수
