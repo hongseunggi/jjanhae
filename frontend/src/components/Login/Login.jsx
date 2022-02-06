@@ -127,13 +127,14 @@ const Login = () => {
       setLoginMsg("");
       setLoginStatus("2");
       navigate("/");
-    } catch ({ response }) {
-      if (
-        response.data.statusCode === userError ||
-        response.data.statusCode === pwdError
-      ) {
-        setLoginMsg(errorMsg);
-      }
+    } catch (e) {
+      console.log(e);
+      // if (
+      //   response.data.statusCode === userError ||
+      //   response.data.statusCode === pwdError
+      // ) {
+      //   setLoginMsg(errorMsg);
+      // }
     }
   };
 

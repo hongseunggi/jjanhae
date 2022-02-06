@@ -6,189 +6,187 @@ import SettingModalContainer from "./SettingModalContainer";
 import LoadingSpinner from "../Modals/LoadingSpinner";
 
 function RoomList() {
+  const [loading, setLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [endCheck, setEndCheck] = useState(false);
+  const [offsetCount, setOffset] = useState(0);
+  const [order, setOrder] = useState("desc");
+  const [sort, setSort] = useState("createdAt");
+  const [rooms, setRooms] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
-    const [loading, setLoading] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [endCheck, setEndCheck] = useState(false);
-    const [offsetCount, setOffset] = useState(0);
-    const [order , setOrder] = useState("desc");
-    const [sort, setSort] = useState("createdAt");
-    const [rooms, setRooms] = useState([]);
-    const [keyword, setKeyword] = useState("");
+  const { getRoomListResult, getRoomSearchResult } = RoomApi;
 
-    const {getRoomListResult, getRoomSearchResult} = RoomApi;
+  const offsetCountRef = useRef(offsetCount);
+  offsetCountRef.current = offsetCount;
 
-    const offsetCountRef = useRef(offsetCount);
-    offsetCountRef.current = offsetCount;
+  const endCheckRef = useRef(endCheck);
+  endCheckRef.current = endCheck;
 
-    const endCheckRef = useRef(endCheck);
-    endCheckRef.current = endCheck;
+  const orderRef = useRef(order);
+  orderRef.current = order;
 
-    const orderRef = useRef(order);
-    orderRef.current = order;
+  const sortRef = useRef(sort);
+  sortRef.current = sort;
 
-    const sortRef = useRef(sort);
-    sortRef.current = sort;
+  const [target, setTarget] = useState(null);
 
-    const [target, setTarget] = useState(null);
+  const keywordHandler = (e) => {
+    e.preventDefault();
+    setKeyword(e.target.value);
+  };
 
-    const keywordHandler = (e) =>{
-        e.preventDefault();
-        setKeyword(e.target.value);
+  const sendKeyword = async () => {
+
+    setLoading(true);
+    const { data } = await getRoomSearchResult(keyword);
+    setRooms(data.content);
+    setEndCheck(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
+  const sendKeywordEnter = async (e) => {
+    if(e.code === "Enter"){
+      setLoading(true);
+      const { data } = await getRoomSearchResult(keyword);
+      setRooms(data.content);
+      setEndCheck(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
     }
+  };
 
-    const sendKeyword = async () => {
-        setLoading(true);
-        const {data} = await getRoomSearchResult(keyword);
-        setRooms(data.content);
+  const splitOrderSort = (e) => {
+    e.preventDefault();
+
+    let splitstr = e.target.value.split(" ");
+    setKeyword("");
+    setEndCheck(false);
+    setRooms([]);
+    setSort(splitstr[0]);
+    setOrder(splitstr[1]);
+    setOffset(0);
+  };
+
+  const loadItem = async () => {
+    if (!endCheckRef.current) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+      setIsLoaded(true);
+
+      let body = {
+        sort: sortRef.current,
+        order: orderRef.current,
+        limit: 6,
+        offset: offsetCountRef.current,
+      };
+      const { data } = await getRoomListResult(body);
+      if (data.content.length === 0) {
         setEndCheck(true);
-        setTimeout(()=>{
-            setLoading(false)
-        }, 1500);
+        return;
+      }
+
+      setRooms((prevState) => {
+        return [...prevState, ...data.content];
+      });
+
+      setOffset(offsetCountRef.current + 6);
+
+      setIsLoaded(false);
+    }
+  };
+
+  const onIntersect = async ([entry], observer) => {
+    if (entry.isIntersecting && !isLoaded) {
+      observer.unobserve(entry.target);
+      await loadItem();
+      observer.observe(entry.target);
+    }
+  };
+
+  useEffect(() => {
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.2,
+      });
+      observer.observe(target);
     }
 
-    const splitOrderSort = (e) =>{
-        e.preventDefault();
-        
-        let splitstr = e.target.value.split(" ");
-        setKeyword("");
-        setEndCheck(false);
-        setRooms([]);
-        setSort(splitstr[0]);
-        setOrder(splitstr[1]);
-        setOffset(0);
-        
-    }
+    return () => observer && observer.disconnect();
+  }, [target]);
 
-    const loadItem = async () => {
-        if(!endCheckRef.current){
-            setLoading(true);
-            setTimeout(()=>{
-                setLoading(false);
-            }, 1500);
-            setIsLoaded(true);
-            
-            let body = {
-                paging : {
-                    hasNext : "T",
-                    limit : 6,
-                    offset : offsetCountRef.current,
-                },
-                sort : sortRef.current,
-                order : orderRef.current
-            }
-            const {data} = await getRoomListResult(body);
-            if(data.content.length === 0){
-                setEndCheck(true);
-                return;
-            }
-    
-            setRooms((prevState)=>{
-                return [...prevState, ...data.content]
-            });
-    
-            setOffset(offsetCountRef.current+6);
-            
-            setIsLoaded(false);
-        } 
-    };
+  return (
+    <Container fluid={true} className={style.container}>
+      <Row className={style.srow}>
+        <Col className={style.searchbox}>
+          <div className={style.searchdiv}>
+            <select className={style.select} onChange={splitOrderSort}>
+              <option value="createdAt desc">최근생성순</option>
+              <option value="createdAt asc">오래된 생성순</option>
+              <option value="drinkLimit desc">주량 높은순</option>
+              <option value="drinkLimit asc">주량 낮은순</option>
+            </select>
+            <svg
+              className={style.svg}
+              width="15"
+              height="15"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M10 14L16 6H4L10 14Z"
+                fill="#ffff"
+              />
+            </svg>
+            <input
+              className={style.search}
+              value={keyword}
+              onChange={keywordHandler}
+              onKeyPress={sendKeywordEnter}
+            ></input>
+            <button className={style.sbutton} onClick={sendKeyword}>
+              검색
+            </button>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <div
+          style={{
+            height: "20px",
+          }}
+        ></div>
+      </Row>
 
-    const onIntersect = async ([entry], observer) => {
-        if (entry.isIntersecting && !isLoaded) {
-            observer.unobserve(entry.target);
-            await loadItem();
-            observer.observe(entry.target);
-        }
-    };
-    const showRoom = () => {
-        return (rooms.map((room, index)=>{
-                <Col key={index} md = {4}>
-                    <SettingModalContainer info = {room}/>                         
-                </Col>
-        }))
-    }
-
-    useEffect(() => {
-        let observer;
-        if (target) {
-            observer = new IntersectionObserver(onIntersect, {
-            threshold: 0.2,
-            });
-            observer.observe(target);
-        }
-        
-        return () => observer && observer.disconnect();
-        
-    }, [target  ]);
-    
-
-
-    return(
-        <Container fluid={true} className={style.container}>
-            
-            <Row className={style.srow}>
-            <Col className={style.searchbox}>
-            
-                <div className={style.searchdiv}>
-                    <select className={style.select} onChange={splitOrderSort}>
-                        <option value="createdAt desc">
-                            최근생성순
-                        </option>
-                        <option value="createdAt asc">
-                            오래된 생성순
-                        </option>
-                        <option value="drinkLimit desc">
-                            주량 높은순
-                        </option>
-                        <option value="drinkLimit asc">
-                            주량 낮은순
-                        </option>
-                    </select>
-                    <svg className={style.svg}
-                        width="15"
-                        height="15"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M10 14L16 6H4L10 14Z"
-                            fill="#ffff"
-                        /></svg>
-                    <input className={style.search} value={keyword} onChange={keywordHandler}></input>
-                    <button className={style.sbutton} onClick={sendKeyword}>검색</button>
-                </div>
-                
+      <Row className={style.list} style={{}}>
+        {rooms.map((room, index) => {
+          return (
+            <Col key={index} md={4}>
+              <SettingModalContainer info={room} />
             </Col>
-            </Row>
-            <Row>
-                <div style={{
-                    height : "20px"
-                }}></div>
-            </Row>
-            
-            <Row className={style.list} style={{
-
-            }}>
-                {rooms.map((room, index)=>{
-                    return(
-                        <Col key={index} md = {4}>
-                            <SettingModalContainer info = {room}/>                         
-                        </Col>)
-                })}
-                <div ref={setTarget} style={{
-                    width: "100vw",
-                    height: "5px",
-                }}>
-                    {console.log(isLoaded)}
-                </div>
-                {loading ? <LoadingSpinner></LoadingSpinner> : null}
-            </Row>
-        </Container>
-        
-    )
+          );
+        })}
+        <div
+          ref={setTarget}
+          style={{
+            width: "100vw",
+            height: "5px",
+          }}
+        >
+          {console.log(isLoaded)}
+        </div>
+        {loading ? <LoadingSpinner></LoadingSpinner> : null}
+      </Row>
+    </Container>
+  );
 }
 
 export default RoomList;
