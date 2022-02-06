@@ -8,7 +8,7 @@ const FindAccountResult = ({ id, progress = 100 }) => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    navigate("/login");
+    navigate("/user/login");
   };
 
   const onCheckEnter = (e) => {

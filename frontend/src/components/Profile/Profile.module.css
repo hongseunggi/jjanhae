@@ -22,6 +22,7 @@
   height: 470px;
   background-color: #eee;
   border-radius: 20px;
+  border-style: none;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -152,7 +153,7 @@
   background-color: red;
 }
 
-@media screen and (min-width: 1800px) {
+/* @media screen and (min-width: 1800px) {
   .userProfile {
     width: 600px;
     height: 670px;
@@ -201,4 +202,4 @@
     height: 160px;
     border-radius: 50%;
   }
-}
+} */
