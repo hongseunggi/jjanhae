@@ -67,13 +67,10 @@ function RoomList() {
       setIsLoaded(true);
 
       let body = {
-        paging: {
-          hasNext: "T",
-          limit: 6,
-          offset: offsetCountRef.current,
-        },
         sort: sortRef.current,
         order: orderRef.current,
+        limit: 6,
+        offset: offsetCountRef.current,
       };
       const { data } = await getRoomListResult(body);
       if (data.content.length === 0) {
