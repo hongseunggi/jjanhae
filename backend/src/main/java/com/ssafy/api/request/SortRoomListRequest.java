@@ -10,12 +10,8 @@ import lombok.Setter;
 public class SortRoomListRequest {
     @Getter
     @Setter
-    public static class Paging {
-        String hasNext; // T or F
-        int limit;
-        int offset;
-    }
     String sort; // 정렬기준 (all, createAt, drinkLimit)
     String order; // 오름차순 or 내림차순 (asc, desc)
-    Paging paging;
+    int limit; // 한번에 가져올 room의 개수
+    int offset; // offset+1부터 limit만큼 가져온다
 }

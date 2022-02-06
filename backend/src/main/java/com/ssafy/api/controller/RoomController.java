@@ -150,20 +150,25 @@ public class RoomController {
     }
 
 
-    @PostMapping(value = "/order")
+    @GetMapping(value = "/order", params = {"sort", "order", "limit", "offset"})
     @ApiOperation(value = "대기실, 정렬", notes = "조건에 맞게 정렬된 대기실 목록을 리턴한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> sortRoomList(@RequestBody SortRoomListRequest sortRoomListRequest) {
+    public ResponseEntity<? extends BaseResponseBody> sortRoomList(@RequestParam String sort, String order, int limit, int offset) {
         /**
-         * 해당 방에서 나간다.
+         * 조건에 따라 정렬된 방 리스트를 리턴한다.
          * 권한 : 해당 유저
          * */
         System.out.println("sortRoomList Start ...");
 
         // 현재 활성화중인 방 번호 리스트를 얻어온다.
+        SortRoomListRequest sortRoomListRequest = new SortRoomListRequest();
+        sortRoomListRequest.setSort(sort);
+        sortRoomListRequest.setOrder(order);
+        sortRoomListRequest.setLimit(limit);
+        sortRoomListRequest.setOffset(offset);
         List<Room> rooms = roomService.selectRoomList(sortRoomListRequest);
 
         List<SortRoomResponse> roomInfoList = new ArrayList<>();
@@ -174,7 +179,7 @@ public class RoomController {
             int numberOfJoin = roomService.countJoinUser(rooms.get(i).getRoomSeq());
             System.out.println("참여인원 수 : "+numberOfJoin);
             // List<SortRoomResponse> 에 담아준다.
-            sortRoomResponse.setConferenceId(rooms.get(i).getRoomSeq());
+            sortRoomResponse.setRoomSeq(rooms.get(i).getRoomSeq());
             sortRoomResponse.setType(rooms.get(i).getType());
             sortRoomResponse.setPassword(rooms.get(i).getPassword());
             sortRoomResponse.setJoinUserNum(numberOfJoin);
