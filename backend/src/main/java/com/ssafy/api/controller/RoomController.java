@@ -36,7 +36,7 @@ import java.util.List;
  */
 @Api(value = "방 API")
 @RestController
-@RequestMapping("/api/v1/room")
+@RequestMapping("/api/v1/rooms")
 public class RoomController {
 
     @Autowired
