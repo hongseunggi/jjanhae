@@ -229,20 +229,42 @@ public class RoomController {
     @ApiOperation(value = "방 입장", notes = "방에 들어간다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 204, message = "No Contents"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> enterRoom(@RequestBody EnterRoomRequest enterRoomRequest) {
+    public ResponseEntity<? extends BaseResponseBody> enterRoom(@ApiIgnore Authentication authentication, @RequestBody EnterRoomRequest enterRoomRequest) {
         /**
          * 해당 방에 입장한다.
          * 권한 : 해당 유저
          * */
         System.out.println("enterRoom Start ...");
-        // userId로 userSeq 얻어오기
-        User user = userService.getUserByUserId(enterRoomRequest.getUserId());
-        System.out.println("userSeq : " + user.getUserSeq());
 
+        // 로그인 상태 검사
+        if(authentication == null) {
+            System.out.println("로그인 상태가 아닙니다.");
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+        }
+
+        // userId로 userSeq 얻어오기
+        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+        System.out.println("로그인한 유저 : "+ userDetails.getUser());
+        User user = userService.getUserByUserId(userDetails.getUsername());
+        System.out.println("userSeq : " + user.getUserSeq());
+        System.out.println("roomSeq : " + enterRoomRequest.getRoomSeq());
         // target room 정보 얻어오기
-        Room room = roomService.findRoomByRoomSeq(enterRoomRequest.getConferenceId());
+        Room room = roomService.findRoomByRoomSeq(enterRoomRequest.getRoomSeq());
+
+        // room null 체크
+        System.out.println("room ; " + room);
+        if(room == null) {
+            System.out.println("존재하지 않는 방입니다");
+            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "존재하지 않는 방입니다."));
+        }
+        // 만약 닫힌 방이라면
+        if("Y".equals(room.getDelYn())) {
+            System.out.println("파티가 종료된 방입니다");
+            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "파티가 종료된 방입니다."));
+        }
 
         // 방 중복입장 불가
         RoomHistory selectLastYn = roomHistoryService.selectLastYn(user.getUserSeq());
@@ -267,7 +289,7 @@ public class RoomController {
         // history table에 참여 로그 한줄 쌓기
         // action:1(참여), lastYn:Y
         AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
-        addHistoryRequest.setRoomSeq(enterRoomRequest.getConferenceId());
+        addHistoryRequest.setRoomSeq(enterRoomRequest.getRoomSeq());
         addHistoryRequest.setUserSeq(user.getUserSeq());
         addHistoryRequest.setAction(1);
         addHistoryRequest.setLastYn("Y");
