@@ -8,8 +8,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("EnterRoomRequest")
 public class EnterRoomRequest {
-    Long conferenceId;
-    String userId;
+    Long roomSeq;
     String password;
     String ismute;
     String isOn;
