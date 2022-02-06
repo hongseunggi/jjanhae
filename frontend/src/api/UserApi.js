@@ -63,11 +63,18 @@ const getUpdateProfileResult = async (body) => {
   return data;
 }
 
-const getConferenceList = async (month) => {
+const getConferenceDate = async (month) => {
   console.log(month);
   axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
   // const result = await axios.get(`${BASE_URL}/conferences`);
   const result = await axios.get(`${BASE_URL}/conferences?month=${month}`);
+  return result;
+}
+
+const getConferenceList = async (date) => {
+  console.log(date);
+  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
+  const result = await axios.get(`${BASE_URL}/conferences?date=${date}`);
   return result;
 }
 
@@ -81,6 +88,7 @@ const UserApi = {
   getLoginResult,
   getUserProfile,
   getUpdateProfileResult,
+  getConferenceDate,
   getConferenceList
 };
 

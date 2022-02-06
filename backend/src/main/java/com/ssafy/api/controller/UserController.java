@@ -439,6 +439,8 @@ public class UserController {
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<? extends BaseResponseBody> getConferencesList(@ApiIgnore Authentication authentication, @RequestParam @ApiParam(value="날짜 정보", required = true) String date)  throws Exception {
+		System.out.println(date);
+
 		if(authentication == null){
 			System.out.println("인증 실패");
 			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
@@ -446,12 +448,14 @@ public class UserController {
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 
-		List<RoomHistory> roomList = roomHistoryService.getAllList(user.getUserSeq());
+		List<Room> roomList = roomService.getRoomList(user.getUserSeq());
 		List<LocalDate> conferencesDateList = new ArrayList<>();
 		for(int i=0; i<roomList.size(); i++) {
-			conferencesDateList.add(roomList.get(i).getInsertedTime());
+			System.out.println(roomList.get(i));
 		}
 
 		return ResponseEntity.status(200).body(ConferencesGetRes.of(204, "파티리스트 조회 성공", conferencesDateList));
 	}
+
+
 }

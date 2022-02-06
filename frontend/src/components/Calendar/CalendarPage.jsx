@@ -30,11 +30,6 @@ const CalendarPage = () => {
   //conference list
   const [party, setParty] = useState({
     conferences: [
-      "2022-02-01",
-      "2022-01-12",
-      "2022-01-15",
-      "2022-01-23",
-      "2022-01-24",
     ],
   });
 
@@ -45,7 +40,7 @@ const CalendarPage = () => {
   const [listModalOpen, setListModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
 
-  const {getConferenceList} = UserApi;
+  const {getConferenceDate, getConferenceList} = UserApi;
 
   const getDetailModalOpen = (status) => {
     setDetailModalOpen(status);
@@ -56,7 +51,7 @@ const CalendarPage = () => {
     setStartMonth(value.clone().startOf("month").subtract(1, "day"));
     setEndMonth(value.clone().endOf("month"));
 
-    const result = await getConferenceList(value.format("M")*1);
+    const result = await getConferenceDate(value.format("M")*1);
     // const partyListData = result.data.partyList;
 
     //받아온 party data state에 저장
@@ -88,7 +83,6 @@ const CalendarPage = () => {
       }
     });
     
-    //
     // console.log(conferences);
     // console.log(party);
     setParty({
@@ -121,7 +115,7 @@ const CalendarPage = () => {
     return value.format("M") + "월";
   };
 
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     if (event.nativeEvent.path[0].tagName === "svg") {
       setItem({
         month: value.format("M"),
@@ -133,6 +127,10 @@ const CalendarPage = () => {
         day: event.nativeEvent.path[4].innerText,
       });
     }
+
+    //해당 날짜에 진행한 파티목록 가져오는 api호출
+    const result = await getConferenceList(item.day);
+    console.log(result);
     openListModal();
   };
 
@@ -143,7 +141,6 @@ const CalendarPage = () => {
   };
 
   const checkParty = (day) => {
-    console.log(party);
     for (let i = 0; i < party.conferences.length; i++) {
       if (day.format("YYYY-MM-DD") === party.conferences[i]) {
         return (
