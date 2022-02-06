@@ -1,10 +1,12 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.CreateRoomRequest;
+import com.ssafy.api.request.SortRoomListRequest;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -15,4 +17,11 @@ public interface RoomService {
     List<Room> getRoomList(Long uerSeq);
 
 
+    Room createRoom(User user, LocalDateTime now, CreateRoomRequest createRoomRequest);
+    Room findRoomByRoomSeq(Long roomSeq);
+    void exitRoom(Long roomSeq);
+    Room findRoomByOwner(Long roomSeq);
+    List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest);
+    int countJoinUser(Long roomSeq);
+    List<Room> selectRoomByTitle(String title);
 }

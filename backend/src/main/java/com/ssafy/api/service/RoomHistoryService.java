@@ -14,4 +14,5 @@ public interface RoomHistoryService {
     RoomHistory addHistory(User user, Room room, AddHistoryRequest addHistoryRequest);
     RoomHistory selectLastYn(Long userSeq);
     List<RoomHistory> getAllList(Long userSeq);
+    RoomHistory findRoomByUserSeq(Long userSeq);
 }

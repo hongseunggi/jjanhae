@@ -43,4 +43,7 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
 
+    public RoomHistory findRoomByUserSeq(Long userSeq) {
+        return roomHistoryRepository.findRoomByUserSeq(userSeq);
+    }
 }

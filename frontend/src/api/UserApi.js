@@ -2,6 +2,23 @@ import axios from "axios";
 const BASE_URL = "http://localhost:8081/api/v1/user";
 // const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
+axios.interceptors.request.use(
+  function (config) {
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.Authorization =
+        "Bearer " + sessionStorage.getItem("accessToken");
+      console.log(config.headers.Authorization);
+    }
+    return config;
+  },
+  function (error) {
+    // 요청 에러 직전 호출됩니다.
+    console.log(error);
+    return Promise.reject(error);
+  }
+);
+
 // 유저관련 api 설정
 const getRegistResult = async (body) => {
   const result = await axios.post(`${BASE_URL}/signup`, body);
@@ -45,23 +62,34 @@ const getPwdResetResult = async (body) => {
 };
 
 const getLoginResult = async (body) => {
-  console.log(body);
+  console.log(axios.defaults.headers.Authorization);
   const result = await axios.post(`${BASE_URL}/login`, body);
-  console.log(result);
+  sessionStorage.setItem("accessToken", result.data.accessToken);
+  axios.defaults.headers.Authorization =
+    "Bearer " + sessionStorage.getItem("accessToken");
+  console.log(axios.defaults.headers.Authorization);
+  // const { accessToken } = result.data;
+  // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
   return result;
 };
 
 const getUserProfile = async () => {
-  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
+  console.log(axios.defaults.headers.Authorization);
   const result = await axios.get(`${BASE_URL}/profile`);
   return result;
-}
+};
 
 const getUpdateProfileResult = async (body) => {
   const result = await axios.patch(`${BASE_URL}/profile`, body);
   const data = getUserProfile();
   return data;
-}
+};
+
+const getUpdateProfileImgResult = async (body) => {
+  const result = await axios.patch(`${BASE_URL}/profileimg`, body);
+  return result;
+};
 
 const getConferenceDate = async (month) => {
   console.log(month);
@@ -89,7 +117,8 @@ const UserApi = {
   getUserProfile,
   getUpdateProfileResult,
   getConferenceDate,
-  getConferenceList
+  getConferenceList,
+  getUpdateProfileImgResult
 };
 
 export default UserApi;

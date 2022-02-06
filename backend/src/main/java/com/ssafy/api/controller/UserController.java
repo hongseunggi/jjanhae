@@ -352,7 +352,7 @@ public class UserController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원 정보가 수정되었습니다."));
 	}
 
-	@PatchMapping(value = "/profileimg/{userId}")
+	@PatchMapping(value = "/profileimg")
 	@ApiOperation(value = "유저 정보 수정", notes = "이름, 이메일, 생일, 주종, 주량을 수정한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -360,7 +360,7 @@ public class UserController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<BaseResponseBody> updateUserProfileImg(@ApiIgnore Authentication authentication, @PathVariable("userId") String userId,  @RequestBody UserProfileImgPatchReq userProfileImgPatchReq) {
+	public ResponseEntity<BaseResponseBody> updateUserProfileImg(@ApiIgnore Authentication authentication, @RequestBody UserProfileImgPatchReq userProfileImgPatchReq) {
 		/**
 		 * 유저 프로필 정보 수정(이름, 이메일, 생일, 주종, 주량을 수정한다.
 		 * 권한 : 해당 유저
@@ -375,7 +375,7 @@ public class UserController {
 		if(userProfileImgPatchReq.getImageUrl().equals("")) {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 값을 입력했습니다."));
 		}
-		userService.updateUserProfileImg(userId, userProfileImgPatchReq.getImageUrl());
+		userService.updateUserProfileImg(userDetails.getUsername(), userProfileImgPatchReq.getImageUrl());
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 이미지가 수정되었습니다."));
 	}
 
