@@ -208,7 +208,7 @@ public class RoomController {
             System.out.println("참여인원 수 : "+numberOfJoin);
             // List<SearchRoomResponse> 에 담아준다.
             SearchRoomResponse searchRoomResponse = new SearchRoomResponse();
-            searchRoomResponse.setConferenceId(rooms.get(i).getRoomSeq());
+            searchRoomResponse.setRoomSeq(rooms.get(i).getRoomSeq());
             searchRoomResponse.setType(rooms.get(i).getType());
             searchRoomResponse.setPassword(rooms.get(i).getPassword());
             searchRoomResponse.setJoinUserNum(numberOfJoin);
