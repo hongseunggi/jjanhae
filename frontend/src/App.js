@@ -32,7 +32,7 @@ function App() {
               <Route path="user/*" element={<User />} />
               <Route path="conferences/*" element={<Conferences />} />
             </Route>
-            <Route path="conference" element={<Room />} />
+            {/* <Route path="conference" element={<Room />} /> */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>

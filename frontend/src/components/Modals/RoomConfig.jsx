@@ -4,44 +4,47 @@ import ImgApi from "../../api/ImgApi";
 import RoomApi from "../../api/RoomApi";
 import imageUpload from "../../assets/icons/imageUpload.png";
 import styles from "./RoomConfig.module.css";
-
+import { useNavigate } from "react-router-dom";
 
 const RoomConfig = ({ open, onClose }) => {
   // const { open, close, header } = props;
   const [configStatus, setConfigStatus] = useState(false);
   const [roomConfig, setRoomConfig] = useState("public");
   const [drinkConfig, setDrinkConfig] = useState("first");
-  const [thumbnailImg, setThumbnailImg] = useState("https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg");
+  const [thumbnailImg, setThumbnailImg] = useState(
+    "https://s3-us-west-2.amazonaws.com/s.cdpn.io/142996/paris.jpg"
+  );
   const [description, setDesc] = useState("");
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const {getImgUploadResult} = ImgApi;
-  const {getCreateRoomResult} = RoomApi;
+  const { getImgUploadResult } = ImgApi;
+  const { getCreateRoomResult } = RoomApi;
 
   const titleHandler = (e) => {
     e.preventDefault();
     setTitle(e.target.value);
-  }
-  
+  };
+
   const descHandler = (e) => {
     e.preventDefault();
     setDesc(e.target.value);
-  }
+  };
 
   const pwdHandler = (e) => {
     e.preventDefault();
     setPassword(e.target.value);
-  }
+  };
 
-  const imgInputhandler = async (e) =>{
+  const imgInputhandler = async (e) => {
     const formData = new FormData();
-    formData.append('file', e.target.files[0]);
+    formData.append("file", e.target.files[0]);
 
-    const {data} = await getImgUploadResult(formData);
+    const { data } = await getImgUploadResult(formData);
     console.log(data);
     setThumbnailImg(data.url);
-  }
+  };
 
   const handleRoomConfig = (e) => {
     setRoomConfig(e.target.value);
@@ -50,8 +53,8 @@ const RoomConfig = ({ open, onClose }) => {
   const handleDrinkConfig = (e) => {
     setDrinkConfig(e.target.value);
   };
-  
-  const handleStopEvent = (e) =>{
+
+  const handleStopEvent = (e) => {
     e.stopPropagation();
   };
 
@@ -59,33 +62,32 @@ const RoomConfig = ({ open, onClose }) => {
     let type = 1;
     let drinkLimit = 1;
 
-    if(roomConfig === "private"){
+    if (roomConfig === "private") {
       type = 0;
     }
-    if(drinkConfig === "second"){
+    if (drinkConfig === "second") {
       drinkLimit = 2;
-    }
-    else if(drinkConfig === "third"){
+    } else if (drinkConfig === "third") {
       drinkLimit = 3;
     }
 
     const body = {
-      name : title,
-      thumbnail : thumbnailImg,
-      type : type,
-      password : password,
-      description : description,
-      drinkLimit : drinkLimit,
-      ismute : "y",
-      isOn : "y"
-    }
-    const {data} = await getCreateRoomResult(body);
+      name: title,
+      thumbnail: thumbnailImg,
+      type: type,
+      password: password,
+      description: description,
+      drinkLimit: drinkLimit,
+      ismute: "y",
+      isOn: "y",
+    };
+    const { data } = await getCreateRoomResult(body);
     //// -> 리턴 되는 data 가지고 뭘 한다면 이 밑에 작성
-
+    console.log(data);
+    navigate("/conferences/detail");
     //// -> 이 밑 부분에 화상회의 방 ? 으로 라우트 시켜주는게 들어가야 할 듯 합니다. 일단 닫기로 했습니다.
     onClose();
-  }
-
+  };
 
   return (
     <div
@@ -111,21 +113,25 @@ const RoomConfig = ({ open, onClose }) => {
           <main>
             <div className={styles.configForm}>
               <div className={styles.imagePreview}>
-                
                 <img
                   className={styles.thumbnail}
                   src={thumbnailImg}
                   alt="thumbnail"
                 />
                 <label htmlFor="input-img">
-                <img
+                  <img
                     src={imageUpload}
                     alt="upload thumbnail"
                     className={styles.uploadImage}
-                    style={{cursor: "pointer"}}
+                    style={{ cursor: "pointer" }}
                   />
                 </label>
-                <input type="file" id="input-img" className={styles.uploadBtn} onChange={imgInputhandler}/>
+                <input
+                  type="file"
+                  id="input-img"
+                  className={styles.uploadBtn}
+                  onChange={imgInputhandler}
+                />
               </div>
               <form className={styles.configData}>
                 <label htmlFor="title">방 이름</label>
@@ -211,14 +217,17 @@ const RoomConfig = ({ open, onClose }) => {
                   id="description"
                   className={styles.description}
                   placeholder="방에 대한 정보를 입력하세요."
-                  value = {description}
+                  value={description}
                   onChange={descHandler}
                 ></textarea>
               </form>
             </div>
           </main>
           <footer>
-            <button className={styles.createBtn} onClick={createRoomSubmit}> 방 생성 </button>
+            <button className={styles.createBtn} onClick={createRoomSubmit}>
+              {" "}
+              방 생성{" "}
+            </button>
             <button className={styles.closeBtn} onClick={onClose}>
               {" "}
               취소{" "}
