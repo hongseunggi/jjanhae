@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 @ApiModel("CreateRoomResponse")
 public class CreateRoomResponse extends BaseResponseBody {
-    private Long conferenceId;
+    private Long roomSeq;
 
-    public static CreateRoomResponse of (String message, Long conferenceId) {
+    public static CreateRoomResponse of (String message, Long roomSeq) {
         CreateRoomResponse res = new CreateRoomResponse();
         res.setMessage(message);
-        res.setConferenceId(conferenceId);
+        res.setRoomSeq(roomSeq);
         return res;
     }
 }
