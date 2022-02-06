@@ -129,7 +129,7 @@ class Room2 extends Component {
                         )
                         .then(async () => {
                             var devices = await this.OV.getDevices();
-                            console.log("디바이스!!" + devices)
+                            console.log("디바이스!!" + JSON.stringify(devices))
                             var videoDevices = devices.filter(device => device.kind === 'videoinput');
 
                             // --- 5) Get your own camera stream ---
