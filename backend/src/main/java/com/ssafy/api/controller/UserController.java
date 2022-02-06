@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -418,12 +419,15 @@ public class UserController {
 			System.out.println("인증 실패");
 			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
 		}
+		System.out.println("here");
+
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 
-		List<RoomHistory> roomList = roomHistoryService.getAllList(user.getUserSeq());
-		List<LocalDate> conferencesDateList = new ArrayList<>();
+		List<RoomHistory> roomList = roomHistoryService.findAllRoomListByUserSeq(user.getUserSeq());
+		List<LocalDateTime> conferencesDateList = new ArrayList<>();
 		for(int i=0; i<roomList.size(); i++) {
+			System.out.println(roomList.get(i).getInsertedTime());
 			conferencesDateList.add(roomList.get(i).getInsertedTime());
 		}
 
@@ -439,7 +443,9 @@ public class UserController {
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<? extends BaseResponseBody> getConferencesList(@ApiIgnore Authentication authentication, @RequestParam @ApiParam(value="날짜 정보", required = true) String date)  throws Exception {
-		System.out.println(date);
+		System.out.println("date"+date);
+		int numDate = Integer.parseInt(date);
+		if(numDate<10) date = '0'+date;
 
 		if(authentication == null){
 			System.out.println("인증 실패");
@@ -448,13 +454,14 @@ public class UserController {
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 
-		List<Room> roomList = roomService.getRoomList(user.getUserSeq());
-		List<LocalDate> conferencesDateList = new ArrayList<>();
-		for(int i=0; i<roomList.size(); i++) {
-			System.out.println(roomList.get(i));
-		}
+		//현재 유저가 선택된 날짜에 참여한 모든 방의 room seq
+		List<Integer> roomSeqList = roomHistoryService.findAllRoomSeqByUserSeqAndDate(user.getUserSeq(), date);
 
-		return ResponseEntity.status(200).body(ConferencesGetRes.of(204, "파티리스트 조회 성공", conferencesDateList));
+		//room seq에 해당하는 room 정보
+		List<Room> roomList= roomService.findRoomListByRoomSeq(roomSeqList);
+		List<LocalDateTime> conferencesDateList = new ArrayList<>();
+
+		return ResponseEntity.status(200).body(GetRoomListByDateRes.of(204, "파티리스트 조회 성공", roomList));
 	}
 
 

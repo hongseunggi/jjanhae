@@ -22,9 +22,9 @@ import java.util.List;
 @ApiModel("ConferencesGetRes")
 public class ConferencesGetRes extends BaseResponseBody {
     @ApiModelProperty(name="파티 리스트", example="['2022-02-01', '2022-02-02', '2022-02-03']")
-    List<LocalDate> conferencesDateList;
+    List<LocalDateTime> conferencesDateList;
 
-    public static ConferencesGetRes of(Integer statusCode, String message, List<LocalDate> conferencesDateList) {
+    public static ConferencesGetRes of(Integer statusCode, String message, List<LocalDateTime> conferencesDateList) {
         ConferencesGetRes res = new ConferencesGetRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);

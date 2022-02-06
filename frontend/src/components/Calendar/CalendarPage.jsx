@@ -31,18 +31,21 @@ const CalendarPage = () => {
   const [endMonth, setEndMonth] = useState(moment());
   //conference list
   const [party, setParty] = useState({
-    conferences: [
-    ],
+    conferences: [],
   });
 
   const [partyList, setPartyList] = useState({
     conferencesId: [1, 2, 3],
   });
 
+  const [roomList, setRoomList] = useState({
+    roomList : []
+  })
+
   const [listModalOpen, setListModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
 
-  const {getConferenceDate, getConferenceList} = UserApi;
+  const {getRoomDate, getRoomList} = UserApi;
   const [isActive, setIsActive] = useState(false);
 
   const dropDown = useRef([]);
@@ -52,7 +55,6 @@ const CalendarPage = () => {
     setDetailModalOpen(status);
   };
 
-
   const handleCloseList = (event) => {
     if(event.target.nodeName!=="BUTTON") {
       for(let i=0; i<partyIconBtn.current.length; i++) {
@@ -61,12 +63,14 @@ const CalendarPage = () => {
     }
   }
 
+  let isExist = false;
+
   useEffect( async () => {
     setCalendar(buildCalendar(value));
     setStartMonth(value.clone().startOf("month").subtract(1, "day"));
     setEndMonth(value.clone().endOf("month"));
 
-    const result = await getConferenceDate(value.format("M")*1);
+    const result = await getRoomDate(value.format("M")*1);
     // const partyListData = result.data.partyList;
 
     //받아온 party data state에 저장
@@ -77,17 +81,16 @@ const CalendarPage = () => {
 
 
 
-  const handleParyDataList = (data) => {
-    console.log(data);
+  const handleParyDataList = (result) => {
     const arr = [];
-    for(let i=0; i<data.length; i++) {
-      let year = data[i].year;
-      let month = data[i].month;
-      let day = data[i].day;
+    for(let i=0; i<result.length; i++) {
+      let data = result[i].date;
+      let year =data.year;
+      let month = data.month;
+      let day = data.day;
       let date = year+"-"+month+"-"+day;
       date = new Date(date);
       let res = moment(date).format("YYYY-MM-DD");
-      console.log(res);
       arr.push(res);
     }
 
@@ -99,8 +102,6 @@ const CalendarPage = () => {
       }
     });
     
-    // console.log(conferences);
-    // console.log(party);
     setParty({
       conferences
     });
@@ -114,6 +115,11 @@ const CalendarPage = () => {
     console.log(party)
   },[party])
 
+  useEffect(() => {
+    console.log(roomList);
+    makeList();
+  }, [roomList])
+
   useEffect(() => {}, [detailModalOpen]);
 
   useEffect(() => {
@@ -124,6 +130,15 @@ const CalendarPage = () => {
     };
   });
 
+  useEffect( async () => {
+    const result = await getRoomList(item.day);
+    let roomList = [];
+    roomList = result.data.roomList; 
+    setRoomList({roomList});
+    console.log(roomList);
+  }, [item.day])
+
+  
   function dayStyles(day) {
     let yoil = day.day();
     if (day.isAfter(startMonth) && day.isBefore(endMonth)) {
@@ -148,8 +163,8 @@ const CalendarPage = () => {
       day: dataArr[0],
     });
     //해당 날짜에 진행한 파티목록 가져오는 api호출
-    const result = await getConferenceList(item.day);
-    console.log(result);
+    // const result = await getRoomList(item.day);
+    // console.log(result);
   };
 
   function showList(target) {
@@ -177,7 +192,21 @@ const CalendarPage = () => {
     return <div className={styles[yoil]}>{date}</div>;
   };
 
-  const listStyle = {visibility:"hidden"};
+  //make dropdown 
+  const makeList = () => {
+    const dataList = [];
+    for(let i=0; i<roomList.roomList.length; i++) {
+      dataList.push(roomList.roomList[i]);
+    }
+    const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData} onClick={openDetailModal}>{data.title}</button></li>))
+    return (
+      <>
+        {roomListData}
+      </>
+    )
+  }
+
+  const listStyle = {visibility:"visible"};
 
   const checkParty = (day) => {
     for (let i = 0; i < party.conferences.length; i++) {
@@ -189,9 +218,7 @@ const CalendarPage = () => {
                 <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList} style={listStyle}  ref={el => (dropDown.current[i] = el)}>     
                 <p className={styles.listTitle}>파티 목록</p>
                   <ul>
-                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[0]}</button></li>
-                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[1]}</button></li>
-                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[2]}</button></li>
+                  {makeList()}
                   </ul>
                 </div>
               </div>

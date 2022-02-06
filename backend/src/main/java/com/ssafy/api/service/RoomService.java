@@ -24,4 +24,5 @@ public interface RoomService {
     List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest);
     int countJoinUser(Long roomSeq);
     List<Room> selectRoomByTitle(String title);
+    List<Room> findRoomListByRoomSeq(List roomSeqList);
 }

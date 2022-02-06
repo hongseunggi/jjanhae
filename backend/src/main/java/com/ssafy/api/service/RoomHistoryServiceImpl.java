@@ -37,9 +37,13 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
-    public List<RoomHistory> getAllList(Long userSeq) {
+    public List<RoomHistory> findAllRoomListByUserSeq(Long userSeq) {
         return roomHistoryRepository.findByUserSeq(userSeq);
-//        return roomHistoryRepository.findAll();
+    }
+
+    @Override
+    public List<Integer> findAllRoomSeqByUserSeqAndDate(Long userSeq,String date) {
+        return roomHistoryRepository.findAllRoomSeqByUserSeqAndDate(userSeq,date);
     }
 
 

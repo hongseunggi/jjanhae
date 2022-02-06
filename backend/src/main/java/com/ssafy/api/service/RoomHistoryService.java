@@ -13,6 +13,7 @@ import java.util.List;
 public interface RoomHistoryService {
     RoomHistory addHistory(User user, Room room, AddHistoryRequest addHistoryRequest);
     RoomHistory selectLastYn(Long userSeq);
-    List<RoomHistory> getAllList(Long userSeq);
+    List<RoomHistory> findAllRoomListByUserSeq(Long userSeq);
     RoomHistory findRoomByUserSeq(Long userSeq);
+    List<Integer> findAllRoomSeqByUserSeqAndDate(Long userSeq,String date);
 }

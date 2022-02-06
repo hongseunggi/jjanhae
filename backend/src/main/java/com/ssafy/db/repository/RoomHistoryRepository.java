@@ -21,8 +21,13 @@ public interface RoomHistoryRepository extends JpaRepository<RoomHistory, Long> 
     @Query(value = "select * from room_history where user_seq = :userSeq" +
             " order by history_seq desc" , nativeQuery = true)
     public List<RoomHistory> findByUserSeq(@Param(value = "userSeq")Long userSeq);
+
     @Query(value = "select * from room_history" +
             " where user_seq = :userSeq and last_yn = 'Y'" +
             " order by history_seq desc limit 1", nativeQuery = true)
     public RoomHistory findRoomByUserSeq(@Param(value = "userSeq") Long userSeq);
+
+    @Query(value = "select distinct room_seq from room_history where user_seq = :userSeq " +
+            "and date_format(inserted_time, '%d') = :date" , nativeQuery = true)
+    public List<Integer> findAllRoomSeqByUserSeqAndDate(@Param(value = "userSeq")Long userSeq,@Param(value = "date")String date);
 }

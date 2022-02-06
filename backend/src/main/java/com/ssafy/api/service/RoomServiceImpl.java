@@ -45,6 +45,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Room createRoom(User user, LocalDate now, CreateRoomRequest createRoomRequest) {
+        return null;
+    }
+
+    @Override
     public List<Room> getRoomList(Long userSeq) {
         return roomRepository.findAll();
     }
@@ -109,4 +114,11 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> selectRoomByTitle(String title) {
         return roomRepository.selectRoomByTitle(title);
     }
+
+    @Override
+    public List<Room> findRoomListByRoomSeq(List roomSeqList) {
+        return roomRepository.findRoomListByRoomSeq(roomSeqList);
+    }
+
+
 }
