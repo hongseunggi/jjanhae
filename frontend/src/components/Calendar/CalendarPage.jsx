@@ -37,18 +37,18 @@ const CalendarPage = () => {
     conferencesId: [1, 2, 3],
   });
   const [roomList, setRoomList] = useState({
-    roomList : []
-  })
+    roomList: [],
+  });
   const [roomSeq, setRoomSeq] = useState();
   const [userList, setUserList] = useState([]);
-  const [room , setRoom] = useState();
+  const [room, setRoom] = useState();
   const [startTime, setStartTime] = useState();
   const [totalTime, setTotalTime] = useState();
 
   const [listModalOpen, setListModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
 
-  const {getRoomDate, getRoomList, getUserList} = UserApi;
+  const { getRoomDate, getRoomList, getUserList } = UserApi;
   const [isActive, setIsActive] = useState(false);
 
   const dropDown = useRef([]);
@@ -59,37 +59,33 @@ const CalendarPage = () => {
   };
 
   const handleCloseList = (event) => {
-    if(event.target.nodeName!=="BUTTON") {
-      for(let i=0; i<partyIconBtn.current.length; i++) {
-        dropDown.current[i].style.visibility='hidden';
+    if (event.target.nodeName !== "BUTTON") {
+      for (let i = 0; i < partyIconBtn.current.length; i++) {
+        dropDown.current[i].style.visibility = "hidden";
       }
     }
-  }
+  };
 
-
-  useEffect( async () => {
+  useEffect(async () => {
     setCalendar(buildCalendar(value));
     setStartMonth(value.clone().startOf("month").subtract(1, "day"));
     setEndMonth(value.clone().endOf("month"));
 
-    const result = await getRoomDate(value.format("M")*1);
+    const result = await getRoomDate(value.format("M") * 1);
     // const partyListData = result.data.partyList;
 
     //받아온 party data state에 저장
     // console.log(result);
     handleParyDataList(result.data.conferencesDateList);
-
   }, [value]);
 
-  
-  useEffect( async () => {
+  useEffect(async () => {
     const result = await getRoomList(item.day);
     let roomList = [];
-    roomList = result.data.roomList; 
-    setRoomList({roomList});
+    roomList = result.data.roomList;
+    setRoomList({ roomList });
     // console.log(roomList);
-  }, [item.day])
-
+  }, [item.day]);
 
   // useEffect( async () => {
   //   const result = await getUserList(roomSeq);
@@ -101,25 +97,23 @@ const CalendarPage = () => {
 
   useEffect(() => {
     console.log(userList);
-  }, [userList]) 
+  }, [userList]);
 
   useEffect(() => {
-      calcTime();
-      console.log(room);
-  }, [room]) 
+    calcTime();
+    console.log(room);
+  }, [room]);
 
-  const calcTime = () => {
-    
-  }
+  const calcTime = () => {};
 
   const handleParyDataList = (result) => {
     const arr = [];
-    for(let i=0; i<result.length; i++) {
+    for (let i = 0; i < result.length; i++) {
       let data = result[i].date;
-      let year =data.year;
+      let year = data.year;
       let month = data.month;
       let day = data.day;
-      let date = year+"-"+month+"-"+day;
+      let date = year + "-" + month + "-" + day;
       date = new Date(date);
       let res = moment(date).format("YYYY-MM-DD");
       arr.push(res);
@@ -132,35 +126,35 @@ const CalendarPage = () => {
         conferences.push(element);
       }
     });
-    
+
     setParty({
-      conferences
+      conferences,
     });
-  }
+  };
 
   useEffect(() => {
     // console.log(item);
   }, [item]);
 
-  useEffect(()=> {
+  useEffect(() => {
     // console.log(party)
-  },[party])
+  }, [party]);
 
   useEffect(() => {
     // console.log(roomList);
     makeList();
-  }, [roomList])
+  }, [roomList]);
 
   useEffect(() => {}, [detailModalOpen]);
 
   useEffect(() => {
-    document.addEventListener('click', handleCloseList);
+    document.addEventListener("click", handleCloseList);
 
     return () => {
-      document.removeEventListener('click', handleCloseList);
+      document.removeEventListener("click", handleCloseList);
     };
   });
-  
+
   function dayStyles(day) {
     let yoil = day.day();
     if (day.isAfter(startMonth) && day.isBefore(endMonth)) {
@@ -190,24 +184,24 @@ const CalendarPage = () => {
   };
 
   function showList(target) {
-    if(target.visibility==='visible') {
-      target.visibility='hidden';
-      target.opacity='0';
-      target.transform='translateY(0)';
-    }else {
-      target.visibility='visible';
-      target.opacity='1';
-      target.transform='translateY(-20px)';
+    if (target.visibility === "visible") {
+      target.visibility = "hidden";
+      target.opacity = "0";
+      target.transform = "translateY(0)";
+    } else {
+      target.visibility = "visible";
+      target.opacity = "1";
+      target.transform = "translateY(-20px)";
     }
   }
-  
+
   function setUnvisible(event) {
-    for(let i=0; i<dropDown.current.length; i++) {
-      dropDown.current[i].style.visibility='hidden';
+    for (let i = 0; i < dropDown.current.length; i++) {
+      dropDown.current[i].style.visibility = "hidden";
     }
     showList(event.target.nextElementSibling.style);
   }
-  
+
   const calcYoil = (day) => {
     let yoil = dayStyles(day);
     let date = day.format("D").toString();
@@ -217,30 +211,35 @@ const CalendarPage = () => {
   //roomseq로 참석한 모든 인원 데이터 받아오기
   const getRoomDetail = async (roomSeq) => {
     setRoomSeq(roomSeq);
-    const {data} = await getUserList(roomSeq);
-    let userList= data.userList;
-    setUserList({userList});
+    const { data } = await getUserList(roomSeq);
+    let userList = data.userList;
+    setUserList({ userList });
     setRoom(data.room);
     openDetailModal();
-  }
+  };
 
-  //make dropdown 
+  //make dropdown
   const makeList = () => {
     const dataList = [];
-    
-    for(let i=0; i<roomList.roomList.length; i++) {
+
+    for (let i = 0; i < roomList.roomList.length; i++) {
       dataList.push(roomList.roomList[i]);
     }
     // const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData}>{data.title}</button></li>))
-    const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData} onClick={()=> getRoomDetail(data.roomSeq)}>{data.title}</button></li>))
-    return (
-      <>
-        {roomListData}
-      </>
-    )
-  }
+    const roomListData = dataList.map((data, index) => (
+      <li key={index}>
+        <button
+          className={styles.partyData}
+          onClick={() => getRoomDetail(data.roomSeq)}
+        >
+          {data.title}
+        </button>
+      </li>
+    ));
+    return <>{roomListData}</>;
+  };
 
-  const listStyle = {visibility:"visible"};
+  const listStyle = { visibility: "visible" };
 
   const checkParty = (day) => {
     for (let i = 0; i < party.conferences.length; i++) {
@@ -248,14 +247,24 @@ const CalendarPage = () => {
         return (
           <>
             <div className={styles.container}>
-            <button className={styles.partyicon} onClick={handleClick} ref={el => (partyIconBtn.current[i] = el)}></button>
-                <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList} style={listStyle}  ref={el => (dropDown.current[i] = el)}>     
+              <button
+                className={styles.partyicon}
+                onClick={handleClick}
+                ref={(el) => (partyIconBtn.current[i] = el)}
+              ></button>
+              <div
+                className={
+                  isActive
+                    ? `${styles.partyList} ${styles.open}`
+                    : styles.partyList
+                }
+                style={listStyle}
+                ref={(el) => (dropDown.current[i] = el)}
+              >
                 <p className={styles.listTitle}>파티 목록</p>
-                  <ul>
-                  {makeList()}
-                  </ul>
-                </div>
+                <ul>{makeList()}</ul>
               </div>
+            </div>
           </>
         );
       }
