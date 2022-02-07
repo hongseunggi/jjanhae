@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import style from "./RoomList.module.css";
 import RoomApi from "../../api/RoomApi";
 import SettingModalContainer from "./SettingModalContainer";
-import LoadingSpinner from "../Modals/LoadingSpinner";
+import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
 
 function RoomList() {
   const [loading, setLoading] = useState(false);
