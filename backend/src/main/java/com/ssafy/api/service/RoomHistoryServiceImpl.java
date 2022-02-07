@@ -25,7 +25,6 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
         roomHistory.setRoomSeq(room);
         roomHistory.setAction(addHistoryRequest.getAction());
         roomHistory.setInsertedTime(addHistoryRequest.getInsertedTime());
-        roomHistory.setLastYn(addHistoryRequest.getLastYn());
         roomHistory.setUserSeq(user);
 
         return roomHistoryRepository.save(roomHistory);

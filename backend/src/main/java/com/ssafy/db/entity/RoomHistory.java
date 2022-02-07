@@ -25,15 +25,13 @@ public class RoomHistory {
     @JoinColumn(name = "room_seq")
     Room roomSeq;
 
-    int action; // 0: CREATE, 1: JOIN, 2: EXIT
+    String action; // CREATE/JOIN/EXIT
 
     LocalDateTime insertedTime; // 로그가 쌓인 시각
 
-    LocalDateTime updatedTime; // 로그가 쌓인 시각
-
-
 //    String lastYn; // 현재 방에 접속중인지 Y or N
 
-    String
+    LocalDateTime updatedTime; // 업데이트 시각
+
 
 }
