@@ -18,6 +18,5 @@ public interface RoomService {
     void exitRoom(Long roomSeq);
     Room findRoomByOwner(Long roomSeq);
     List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest);
-    int countJoinUser(Long roomSeq);
     List<Room> selectRoomByTitle(String title);
 }

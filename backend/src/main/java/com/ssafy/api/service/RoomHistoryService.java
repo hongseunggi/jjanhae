@@ -16,4 +16,8 @@ public interface RoomHistoryService {
     RoomHistory findRoomByUserSeq(Long userSeq);
     RoomHistory findRoomHistoryByUserAndRoom(User userSeq, Room roomSeq);
     List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq);
+    RoomHistory findOneHistoryAll(Long userSeq);
+    RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq);
+    int countJoinUser(Long roomSeq);
+    void updateRoomAction(RoomHistory roomHistory);
 }

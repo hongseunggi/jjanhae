@@ -61,18 +61,18 @@ public class RoomController {
         }
         // 토큰이 있는 유저일 때만 userId 얻어내기
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        System.out.println("로그인한 유저 : "+ userDetails.getUser());
         User user = userDetails.getUser();
         // 얻어낸 user객체로 userSeq 얻어내기
         System.out.println("user seq : " + user.getUserSeq());
         System.out.println("userId : "+user.getUserId());
 
         // 해당 유저가 방에 접속해있는지
-        RoomHistory selectLastYn = roomHistoryService.selectLastYn(user.getUserSeq());
-//        if(selectLastYn != null && "Y".equals(selectLastYn.getLastYn())) {
-//            // 현재 접속상태이므로 중복입장 불가
-//            return ResponseEntity.status(200).body(BaseResponseBody.of(202, "방 중복 입장 불가"));
-//        }
+        Long userSeq = user.getUserSeq();
+        System.out.println("login userSeq : " + userSeq+", userId : "+user.getUserId());
+        RoomHistory roomHistory = roomHistoryService.findOneHistoryAll(userSeq);
+        if(roomHistory != null && "JOIN".equals(roomHistory.getAction().toUpperCase())) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "현재 참여중인 방이 있습니다."));
+        }
 
         // Room 테이블에 userSeq 포함하여 저장.
         System.out.println("Room 테이블에 userSeq 포함하여 저장");
@@ -80,20 +80,13 @@ public class RoomController {
         Room room = roomService.createRoom(user, LocalDateTime.now(), createRoomRequest);
 
         // 얻어낸 roomSeq로 Room_history 테이블에도 추가
-        // CREATE
         Long roomSeq = room.getRoomSeq();
         AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
         addHistoryRequest.setRoomSeq(roomSeq);
         addHistoryRequest.setUserSeq(user.getUserSeq());
-        addHistoryRequest.setAction("CREATE");
-        addHistoryRequest.setInsertedTime(LocalDateTime.now());
-        System.out.println("얻어낸 roomSeq로 Room_history 테이블에도 추가");
-        roomHistoryService.addHistory(user, room, addHistoryRequest);
-
-        // JOIN도 함께 쌓아줌
         addHistoryRequest.setAction("JOIN");
+        addHistoryRequest.setInsertedTime(LocalDateTime.now());
         roomHistoryService.addHistory(user, room, addHistoryRequest);
-        System.out.println("roomHistory 저장 성공");
         return ResponseEntity.status(200).body(CreateRoomResponse.of("Success", room.getRoomSeq()));
     }
 
@@ -181,7 +174,7 @@ public class RoomController {
             SortRoomResponse sortRoomResponse = new SortRoomResponse();
             System.out.println("roomSeq : "+rooms.get(i).getRoomSeq());
             // 각 방마다 인원수를 구해온다.
-            int numberOfJoin = roomService.countJoinUser(rooms.get(i).getRoomSeq());
+            int numberOfJoin = roomHistoryService.countJoinUser(rooms.get(i).getRoomSeq());
             System.out.println("참여인원 수 : "+numberOfJoin);
             // List<SortRoomResponse> 에 담아준다.
             sortRoomResponse.setRoomSeq(rooms.get(i).getRoomSeq());
@@ -214,7 +207,7 @@ public class RoomController {
         List<SearchRoomResponse> searchRoomList = new ArrayList<>();
         for(int i = 0; i < rooms.size(); i++) {
             // 각 방마다 인원수를 구해온다.
-            int numberOfJoin = roomService.countJoinUser(rooms.get(i).getRoomSeq());
+            int numberOfJoin = roomHistoryService.countJoinUser(rooms.get(i).getRoomSeq());
             System.out.println("참여인원 수 : "+numberOfJoin);
             // List<SearchRoomResponse> 에 담아준다.
             SearchRoomResponse searchRoomResponse = new SearchRoomResponse();
@@ -257,10 +250,12 @@ public class RoomController {
 
         // userId로 userSeq 얻어오기
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        System.out.println("로그인한 유저 : "+ userDetails.getUser());
-        User user = userService.getUserByUserId(userDetails.getUsername());
-        System.out.println("userSeq : " + user.getUserSeq());
-        System.out.println("roomSeq : " + enterRoomRequest.getRoomSeq());
+        System.out.println("로그인한 유저 name : "+ userDetails.getUsername());
+        User user2 = userService.getUserByUserId(userDetails.getUsername());
+        System.out.println("userSeq2 : " + user2.getUserSeq());
+        System.out.println("roomSeq2 : " + enterRoomRequest.getRoomSeq());
+        User user = userDetails.getUser();
+        System.out.println("userSeq : "+user.getUserSeq());
         // target room 정보 얻어오기
         Room room = roomService.findRoomByRoomSeq(enterRoomRequest.getRoomSeq());
 
@@ -277,12 +272,10 @@ public class RoomController {
         }
 
         // 방 중복입장 불가
-        RoomHistory selectLastYn = roomHistoryService.selectLastYn(user.getUserSeq());
-//        if(selectLastYn != null && "Y".equals(selectLastYn.getLastYn())) {
-//            // 현재 접속상태이므로 중복입장 불가
-//            System.out.println("방 중복입장 불가");
-//            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "방 중복 입장 불가"));
-//        }
+        RoomHistory roomHistory = roomHistoryService.findOneHistoryAll(user.getUserSeq());
+        if(roomHistory != null && "JOIN".equals(roomHistory.getAction().toUpperCase())) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "현재 참여중인 방이 있습니다."));
+        }
 
         // 비공개방일 시 패스워드 일치여부 확인
         System.out.println("room type "+room.getType());
@@ -296,14 +289,25 @@ public class RoomController {
             }
         }
 
-        // history table에 참여 로그 한줄 쌓기
-        // action:1(참여), lastYn:Y
-        AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
-        addHistoryRequest.setRoomSeq(enterRoomRequest.getRoomSeq());
-        addHistoryRequest.setUserSeq(user.getUserSeq());
-        addHistoryRequest.setAction("JOIN");
-        addHistoryRequest.setInsertedTime(LocalDateTime.now());
-        roomHistoryService.addHistory(user, room, addHistoryRequest);
+        // 나갔다 들어온 유저인지 확인
+        RoomHistory roomHistoryInTheRoom = roomHistoryService.findOneHistoryInRoom(user.getUserSeq(), room.getRoomSeq());
+        // 만약 해당 방에 처음 들어오는 유저라면 새로 쌓아주고
+        if(roomHistoryInTheRoom == null) {
+            // action:JOIN
+            AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
+            addHistoryRequest.setRoomSeq(enterRoomRequest.getRoomSeq());
+            addHistoryRequest.setUserSeq(user.getUserSeq());
+            addHistoryRequest.setAction("JOIN");
+            addHistoryRequest.setInsertedTime(LocalDateTime.now());
+            roomHistoryService.addHistory(user, room, addHistoryRequest);
+        }
+        // 들어온 이력이 있는 유저(나갔다 들어오는)라면 exit -> join으로 update 쳐준다.
+        else {
+            roomHistoryInTheRoom.setAction("JOIN");
+            roomHistoryInTheRoom.setUpdatedTime(LocalDateTime.now());
+            roomHistoryService.updateRoomAction(roomHistoryInTheRoom);
+        }
+
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 

@@ -31,6 +31,7 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
+
     public RoomHistory exitHistory(RoomHistory roomHistory) {
         roomHistory.setAction("exit");
 
@@ -43,8 +44,13 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
-    public RoomHistory findRoomByUserSeq(Long userSeq) {
-        return roomHistoryRepository.findRoomByUserSeq(userSeq);
+    public RoomHistory findOneHistoryAll(Long userSeq) {
+        return roomHistoryRepository.findOneHistoryDesc(userSeq);
+    }
+
+    @Override
+    public RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq) {
+        return roomHistoryRepository.findOneHistoryInRoom(userSeq, roomSeq);
     }
 
     @Override
@@ -54,4 +60,14 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     public List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq){
         return roomHistoryRepository.findRoomHistoriesByRoomSeq(roomSeq);
     };
+
+    @Override
+    public int countJoinUser(Long roomSeq) {
+        return roomHistoryRepository.countJoinUser(roomSeq);
+    }
+
+    @Override
+    public void updateRoomAction(RoomHistory roomHistory) {
+        roomHistoryRepository.save(roomHistory);
+    }
 }
