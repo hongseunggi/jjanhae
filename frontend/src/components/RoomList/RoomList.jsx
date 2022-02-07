@@ -37,6 +37,7 @@ function RoomList() {
   };
 
   const sendKeyword = async () => {
+
     setLoading(true);
     const { data } = await getRoomSearchResult(keyword);
     setRooms(data.content);
@@ -44,6 +45,17 @@ function RoomList() {
     setTimeout(() => {
       setLoading(false);
     }, 1500);
+  };
+  const sendKeywordEnter = async (e) => {
+    if(e.code === "Enter"){
+      setLoading(true);
+      const { data } = await getRoomSearchResult(keyword);
+      setRooms(data.content);
+      setEndCheck(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+    }
   };
 
   const splitOrderSort = (e) => {
@@ -67,13 +79,10 @@ function RoomList() {
       setIsLoaded(true);
 
       let body = {
-        paging: {
-          hasNext: "T",
-          limit: 6,
-          offset: offsetCountRef.current,
-        },
         sort: sortRef.current,
         order: orderRef.current,
+        limit: 6,
+        offset: offsetCountRef.current,
       };
       const { data } = await getRoomListResult(body);
       if (data.content.length === 0) {
@@ -97,13 +106,6 @@ function RoomList() {
       await loadItem();
       observer.observe(entry.target);
     }
-  };
-  const showRoom = () => {
-    return rooms.map((room, index) => {
-      <Col key={index} md={4}>
-        <SettingModalContainer info={room} />
-      </Col>;
-    });
   };
 
   useEffect(() => {
@@ -148,6 +150,7 @@ function RoomList() {
               className={style.search}
               value={keyword}
               onChange={keywordHandler}
+              onKeyPress={sendKeywordEnter}
             ></input>
             <button className={style.sbutton} onClick={sendKeyword}>
               검색
