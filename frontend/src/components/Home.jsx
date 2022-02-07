@@ -1,14 +1,10 @@
 import { useContext, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "../common/css/Main.css";
-import RoomConfig from "./Modals/RoomConfig";
-import Keyword from "./Game/Keyword";
-import GameList from "./Game/GameList";
-import Setting from "./Game/Setting";
+import RoomConfig from "./Modals/RoomConfig/RoomConfig";
 import { Link } from "react-router-dom";
 import LoginStatusContext from "../contexts/LoginStatusContext";
 import Carousel from "./Carousel/Carousel";
-import RegistMusic from "./Modals/RegistMusic";
 
 function Home() {
   const { loginStatus } = useContext(LoginStatusContext);
@@ -53,10 +49,15 @@ function Home() {
     <>
       {/* <RoomConfig open={modalOpen} /> */}
       <Container fluid="true" className="contain">
-        <Row fluid="true" id="row" className="rowClass h-100" style={{
-          marginLeft : "0",
-          marginRight : "0"
-        }}>
+        <Row
+          fluid="true"
+          id="row"
+          className="rowClass h-100"
+          style={{
+            marginLeft: "0",
+            marginRight: "0",
+          }}
+        >
           <Col lg={1} className="dummy"></Col>
           <Col lg={4} className="h-25">
             <div className="intro_text">WELCOME OUR MEET</div>

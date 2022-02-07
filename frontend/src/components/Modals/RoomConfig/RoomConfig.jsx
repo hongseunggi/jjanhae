@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { ReactComponent as LockIcon } from "../../assets/icons/password.svg";
-import ImgApi from "../../api/ImgApi";
-import RoomApi from "../../api/RoomApi";
-import imageUpload from "../../assets/icons/imageUpload.png";
+import { ReactComponent as LockIcon } from "../../../assets/icons/password.svg";
+import ImgApi from "../../../api/ImgApi";
+import RoomApi from "../../../api/RoomApi";
+import imageUpload from "../../../assets/icons/imageUpload.png";
 import styles from "./RoomConfig.module.css";
 import { useNavigate } from "react-router-dom";
 

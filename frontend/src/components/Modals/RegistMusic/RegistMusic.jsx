@@ -1,5 +1,5 @@
 import React, { createRef, useState } from "react";
-import { ReactComponent as CancelIcon } from "../../assets/icons/cancel.svg";
+import { ReactComponent as CancelIcon } from "../../../assets/icons/cancel.svg";
 import styles from "./RegistMusic.module.css";
 
 const RegistMusic = ({ open, onClose }) => {
@@ -25,11 +25,12 @@ const RegistMusic = ({ open, onClose }) => {
       {open ? (
         <section className={styles.modalForm}>
           <div className={styles.btnRow}>
-            <button className={styles.closeBtn}>
+            <h1 className={styles.title}>신청곡</h1>
+            <button className={styles.closeBtn} onClick={onClose}>
               <CancelIcon width="20" height="20" />
             </button>
           </div>
-          <h1>신청곡</h1>
+
           <form className={styles.inputData}>
             <input ref={singerRef} placeholder="가수" onChange={handleInput} />
             <input
@@ -38,7 +39,7 @@ const RegistMusic = ({ open, onClose }) => {
               onChange={handleInput}
             />
           </form>
-          <div className={styles.btnRow}>
+          <div className={styles.registBtnRow}>
             <button className={styles.registBtn} onClick={handleClick}>
               접수
             </button>
