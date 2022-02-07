@@ -1,24 +1,74 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../../assets/logo.png";
 import Image from "../../assets/picture.PNG";
 import styles from "./ConferenceDetail.module.css";
+import moment from "moment";
 
 const ConferenceDetail = (props) => {
-  const { open, close, date } = props;
+  const { open, close, date, time, userList } = props;
 
-  const [data, setData] = useState({
-    participant : ["소주희", "김정연", "배하은", "송민수", "유소연", "홍승기"],
-    callStartTime : "01:30",
-    totalTime : "07:30",
-  });
+  const [participant, setParticipant] = useState([]);
+  const [roomDetail, setRoomDetail] = useState();
 
   const showParticipant = () => {
-    const result = [];
-    for(let i=0; i<data.participant.length; i++) {
-      result.push(<div className={styles.peopleName}>{data.participant[i]}</div>)
+    console.log(participant);
+    const dataList = [];
+    for(let i=0; i<participant.userList.length; i++) {
+      dataList.push(participant.userList[i]);
     }
-    return result;
+    const userListData = dataList.map((data, index) => (<div className={styles.partyDpeopleNameata} key={index}>{data}</div>))
+
+    return (
+      <>
+        {userListData}
+      </>
+    );
   }
+
+
+  //   const calcTime = () => {
+    
+  //     let startTimeDate = roomDetail.startTime.date;
+  //     let startTime = roomDetail.startTime.time;
+  //     let endTimeDate = roomDetail.endTime.date;
+  //     let endTime = roomDetail.endTime.time;
+  //     const start = new Date(startTimeDate.year,startTimeDate.month,startTimeDate.day,startTime.hour,startTime.minute);
+  //     const end = new Date(endTimeDate.year,endTimeDate.month,endTimeDate.day,endTime.hour,endTime.minute);
+  //     let elapsedSec = end.getTime() - start.getTime();
+  //     let elapsedMin = elapsedSec/1000/60;
+  //     elapsedMin = parseInt(elapsedMin);
+  //     let totalHour = Math.floor(elapsedMin/60); 
+  //     let totalMin = elapsedMin%60; 
+  //     let totalTimeFormat = totalHour+":"+totalMin;
+  
+  //     let startHour = startTime.hour;
+  //     let startMin = startTime.minute;
+  //     let startTimeFormat = startHour+":"+startMin;
+
+  //     console.log(startTimeFormat);
+  //     console.log(totalTimeFormat);
+  
+  //     const timeData = [];
+  //     timeData.push(startTimeFormat);
+  //     timeData.push(totalTimeFormat);
+
+  //     setStartTime(startTimeFormat);
+  //     setTotalTime(totalTimeFormat);
+
+  // }
+
+  useEffect(()=> {
+    setParticipant({userList})
+  },[userList])
+
+  useEffect(()=> {
+    console.log(participant);
+  },[participant])
+  
+  useEffect(() => {
+    console.log(time);
+  },[time])
+
 
 
   return (
@@ -35,16 +85,16 @@ const ConferenceDetail = (props) => {
                   <img src={Logo} className={styles.logo} alt="logo"></img>
                 </div>
                    <h1 className={styles.title}>{date.month}월{date.day}일</h1>  
-                  <div className={styles.partyDetailData}>
-                    <div className={styles.partyStartTimeBorder}>
-                      <div className={styles.partyStartTimeTitle}>시작시간</div>
-                      <div className={styles.partyStartTime}>{data.callStartTime}</div>
-                    </div>
-                    <div className={styles.partyElapsedTimeBorder}>
-                      <div className={styles.partyStartTimeTitle}>총 파티 시간</div>
-                      <div className={styles.partyStartTime}>{data.totalTime}</div>
-                    </div>
+                <div className={styles.partyDetailData}>
+                  <div className={styles.partyStartTimeBorder}>
+                    <div className={styles.partyStartTimeTitle}>시작시간</div>
+                    <div className={styles.partyStartTime}>{time.startTime.time.hour} :{time.startTime.time.minute}</div>
                   </div>
+                  <div className={styles.partyElapsedTimeBorder}>
+                    <div className={styles.partyStartTimeTitle}>종료 시간</div>
+                    <div className={styles.partyStartTime}>{time.endTime.time.hour} :{time.endTime.time.minute} </div>
+                  </div>
+                </div>
                 </div>
                 </div>
                 <div className={styles.partyDetailRight}>

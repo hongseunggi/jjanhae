@@ -6,7 +6,11 @@ import com.ssafy.db.entity.RoomHistory;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  *	방 이력 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -34,6 +38,25 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
+    public List<RoomHistory> findAllRoomListByUserSeq(Long userSeq) {
+        return roomHistoryRepository.findAllRoomListByUserSeq(userSeq);
+    }
+
+    @Override
+    public List<Integer> findAllRoomSeqByUserSeqAndDate(Long userSeq,String date) {
+        return roomHistoryRepository.findAllRoomSeqByUserSeqAndDate(userSeq,date);
+    }
+
+
+    public RoomHistory findRoomByUserSeq(Long userSeq) {
+        return roomHistoryRepository.findRoomByUserSeq(userSeq);
+    }
+
+    @Override
+    public List<Integer> findAllUserSeqByRoomSeq(Long userSeq) {
+        return roomHistoryRepository.findAllUserSeqByRoomSeq(userSeq);
+    }
+
     public RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq) {
         return roomHistoryRepository.findOneHistoryInRoom(userSeq, roomSeq);
     }
