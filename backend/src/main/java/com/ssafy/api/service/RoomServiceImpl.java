@@ -83,24 +83,25 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest) {
-        SortRoomListRequest.Paging paging = sortRoomListRequest.getPaging();
-        System.out.println("paging: " + paging.getHasNext()+", "+paging.getLimit()+", "+paging.getOffset());
+        int limit = sortRoomListRequest.getLimit();
+        int offset = sortRoomListRequest.getOffset();
+        System.out.println("limit: " + limit+", offset: "+offset);
         List<Room> res = new ArrayList<>();
         // sort 기준으로 order(asc, desc)
         if("createdAt".equals(sortRoomListRequest.getSort())) { // 생성시간 기준
             if("asc".equals(sortRoomListRequest.getOrder())) {
-                res = roomRepository.selectRoomListOrderByStartTime(paging.getLimit(), paging.getOffset());
+                res = roomRepository.selectRoomListOrderByStartTime(limit, offset);
             } else {
-                res = roomRepository.selectRoomListOrderByStartTimeDesc(paging.getLimit(), paging.getOffset());
+                res = roomRepository.selectRoomListOrderByStartTimeDesc(limit, offset);
             }
         } else if("drinkLimit".equals(sortRoomListRequest.getSort())) { // 주량 기준
             if("asc".equals(sortRoomListRequest.getOrder())) {
-                res = roomRepository.selectRoomListOrderByDrinkLimit(paging.getLimit(), paging.getOffset());
+                res = roomRepository.selectRoomListOrderByDrinkLimit(limit, offset);
             } else {
-                res = roomRepository.selectRoomListOrderByDrinkLimitDesc(paging.getLimit(), paging.getOffset());
+                res = roomRepository.selectRoomListOrderByDrinkLimitDesc(limit, offset);
             }
         } else { // all
-            res = roomRepository.selectRoomList(paging.getLimit(), paging.getOffset());
+            res = roomRepository.selectRoomList(limit, offset);
         }
         return res;
     }

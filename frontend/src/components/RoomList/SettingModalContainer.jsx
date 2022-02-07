@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import IntoRoom from "../Modals/IntoRoom";
+import IntoRoom from "../Modals/RoomEnter/IntoRoom";
 import style from "./RoomList.module.css";
 import { ReactComponent as Clock } from "../../assets/icons/clock.svg";
 import { ReactComponent as Lock } from "../../assets/icons/lock.svg";
@@ -9,24 +9,21 @@ function SettingModalContainer(props) {
   // console.log(info);
   const [isOpen, setIsOpen] = useState(false);
   const [time, setTime] = useState("");
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     let hour = "";
     let minute = "";
-    if(info.startTime.time.hour <= 9){
-      hour += "0"+info.startTime.time.hour;
-    }
-    else hour = info.startTime.time.hour;
-    
-    if(info.startTime.time.minute <= 9){
-      minute += "0"+info.startTime.time.minute;
-    }
-    else minute = info.startTime.time.minute;
+    if (info.startTime.time.hour <= 9) {
+      hour += "0" + info.startTime.time.hour;
+    } else hour = info.startTime.time.hour;
 
-    setTime(hour+":"+minute);
-  })
-  
-  
+    if (info.startTime.time.minute <= 9) {
+      minute += "0" + info.startTime.time.minute;
+    } else minute = info.startTime.time.minute;
+
+    setTime(hour + ":" + minute);
+  });
+
   const handleIsOpen = (e) => {
     setIsOpen(!isOpen);
   };

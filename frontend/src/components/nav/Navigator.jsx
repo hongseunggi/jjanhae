@@ -68,7 +68,7 @@ function Navigator() {
               </Link>
             </Col>
             <Col>
-              <Link to="/conferences" className={styles.link}>
+              <Link to="/conferences/list" className={styles.link}>
                 EXIT
               </Link>
             </Col>

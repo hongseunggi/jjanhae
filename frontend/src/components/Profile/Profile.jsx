@@ -11,7 +11,7 @@ import image3 from "../../assets/images/default3.png";
 import image4 from "../../assets/images/default4.png";
 import image5 from "../../assets/images/default5.png";
 import image6 from "../../assets/images/default6.png";
-import LoadingSpinner from "../Modals/LoadingSpinner.jsx";
+import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
 
 const Profile = () => {
   const [name, setName] = useState("");
@@ -151,105 +151,29 @@ const Profile = () => {
 
   return (
     <div className={styles.profileForm}>
-      <header className={styles.title}>
-        <h1>{name}님의 프로필</h1>
-      </header>
       <main className={styles.profile}>
-        <section className={styles.userProfile}>
-          {loading ? <LoadingSpinner></LoadingSpinner> : null}
-          <form className={styles.userInfoForm}>
-            <div className={styles.profileRow}>
-              <label htmlFor="input-img">
-                <img
-                  className={styles.profileImg}
-                  src={myImg}
-                  alt="profile"
-                  style={{ cursor: "pointer" }}
-                />
-              </label>
-              <input
-                type="file"
-                id="input-img"
-                style={{ display: "none" }}
-                onChange={imgInputhandler}
-              />
-              <div
-                className={
-                  isEdit
-                    ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
-                    : styles.userInfoData
-                }
-              >
-                <label htmlFor="name">이름</label>
-                <input
-                  id="name"
-                  type="text"
-                  value={name}
-                  disabled={!isEdit}
-                  onChange={nameHandler}
-                />
-              </div>
-              <Link to="/user/calendar">
-                <CalendarIcon width="40" height="40" />
-              </Link>
-            </div>
-            <div className={styles.inputRow}>
-              <div className={styles.userInfoData}>
-                <label htmlFor="id">아이디</label>
-                <input id="id" type="text" value={id} disabled />
-              </div>
-            </div>
-
-            <div className={styles.inputRow}>
-              <div className={styles.userInfoData}>
-                <label htmlFor="email">이메일</label>
-                <input id="email" type="text" value={email} disabled />
-              </div>
-            </div>
-            <div className={styles.inputRow}>
-              <div
-                className={
-                  isEdit
-                    ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
-                    : styles.userInfoData
-                }
-              >
-                <label htmlFor="birthday">생년월일</label>
-                {isEdit ? (
-                  <div>
-                    <input
-                      className={styles.editbirth}
-                      type="text"
-                      value={year * 1}
-                      onChange={yearHandler}
-                    ></input>
-                    -
-                    <input
-                      className={styles.editbirth}
-                      type="text"
-                      value={month * 1}
-                      onChange={monthHandler}
-                    ></input>
-                    -
-                    <input
-                      className={styles.editbirth}
-                      type="text"
-                      value={day * 1}
-                      onChange={dayHandler}
-                    ></input>
-                  </div>
-                ) : (
-                  <input
-                    id="birthday"
-                    type="text"
-                    value={`${year}-${month}-${day}`}
-                    disabled
+        <header className={styles.title}>
+          <h1>{name}님의 프로필</h1>
+        </header>
+        <div className={styles.sections}>
+          <section className={styles.userProfile}>
+            {loading ? <LoadingSpinner></LoadingSpinner> : null}
+            <form className={styles.userInfoForm}>
+              <div className={styles.profileRow}>
+                <label htmlFor="input-img">
+                  <img
+                    className={styles.profileImg}
+                    src={myImg}
+                    alt="profile"
+                    style={{ cursor: "pointer" }}
                   />
-                )}
-              </div>
-            </div>
-            <div className={styles.inputRow}>
-              <div className={styles.inputRowHalf}>
+                </label>
+                <input
+                  type="file"
+                  id="input-img"
+                  style={{ display: "none" }}
+                  onChange={imgInputhandler}
+                />
                 <div
                   className={
                     isEdit
@@ -257,18 +181,33 @@ const Profile = () => {
                       : styles.userInfoData
                   }
                 >
-                  <label htmlFor="drink">선호주종</label>
-                  {isEdit ? (
-                    <select onChange={drinkHandler} value={drink}>
-                      <option value="소주">소주</option>
-                      <option value="맥주">맥주</option>
-                    </select>
-                  ) : (
-                    <input id="drink" type="text" value={drink} disabled />
-                  )}
+                  <label htmlFor="name">이름</label>
+                  <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    disabled={!isEdit}
+                    onChange={nameHandler}
+                  />
+                </div>
+                <Link to="/user/calendar">
+                  <CalendarIcon width="40" height="40" />
+                </Link>
+              </div>
+              <div className={styles.inputRow}>
+                <div className={styles.userInfoData}>
+                  <label htmlFor="id">아이디</label>
+                  <input id="id" type="text" value={id} disabled />
                 </div>
               </div>
-              <div className={styles.inputRowHalf}>
+
+              <div className={styles.inputRow}>
+                <div className={styles.userInfoData}>
+                  <label htmlFor="email">이메일</label>
+                  <input id="email" type="text" value={email} disabled />
+                </div>
+              </div>
+              <div className={styles.inputRow}>
                 <div
                   className={
                     isEdit
@@ -276,62 +215,125 @@ const Profile = () => {
                       : styles.userInfoData
                   }
                 >
-                  <label htmlFor="drinkLimit">주량</label>
+                  <label htmlFor="birthday">생년월일</label>
                   {isEdit ? (
-                    <input
-                      autoComplete="off"
-                      id="drinkLimit"
-                      value={drinkLimit}
-                      type="number"
-                      placeholder="주량(병)"
-                      onChange={drinkLimitHandler}
-                    />
+                    <div>
+                      <input
+                        className={styles.editbirth}
+                        type="text"
+                        value={year * 1}
+                        onChange={yearHandler}
+                      ></input>
+                      -
+                      <input
+                        className={styles.editbirth}
+                        type="text"
+                        value={month * 1}
+                        onChange={monthHandler}
+                      ></input>
+                      -
+                      <input
+                        className={styles.editbirth}
+                        type="text"
+                        value={day * 1}
+                        onChange={dayHandler}
+                      ></input>
+                    </div>
                   ) : (
                     <input
-                      id="drinkLimit"
+                      id="birthday"
                       type="text"
-                      value={drinkLimit}
+                      value={`${year}-${month}-${day}`}
                       disabled
                     />
                   )}
                 </div>
               </div>
-            </div>
-            <div className={styles.editRow}>
-              <button
-                type="submit"
-                onClick={handleEditMode}
-                className={styles.editBtn}
-              >
-                <img src={editIcon} alt="edit" className={styles.editIcon} />
-              </button>
-            </div>
-          </form>
-        </section>
-
-        <section className={styles.friendProfile}>
-          <div className={styles.friendTitle}>
-            <h1 className={styles.mainTitle}>나와 함께한 친구들</h1>
-            <span className={styles.subTitle}>
-              (술자리 참여 횟수 기준 상위 5명)
-            </span>
-          </div>
-          <div className={styles.friends}>
-            {friends.map((friend, index) => (
-              <div key={index} className={styles.friendInfo}>
-                <img
-                  className={styles.friendProfileImg}
-                  src={friend.image}
-                  alt="friend profile"
-                />
-                <div className={styles.friendData}>
-                  <span>{friend.name}/</span>
-                  <span>{friend.count}회</span>
+              <div className={styles.inputRow}>
+                <div className={styles.inputRowHalf}>
+                  <div
+                    className={
+                      isEdit
+                        ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
+                        : styles.userInfoData
+                    }
+                  >
+                    <label htmlFor="drink">선호주종</label>
+                    {isEdit ? (
+                      <select onChange={drinkHandler} value={drink}>
+                        <option value="소주">소주</option>
+                        <option value="맥주">맥주</option>
+                      </select>
+                    ) : (
+                      <input id="drink" type="text" value={drink} disabled />
+                    )}
+                  </div>
+                </div>
+                <div className={styles.inputRowHalf}>
+                  <div
+                    className={
+                      isEdit
+                        ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
+                        : styles.userInfoData
+                    }
+                  >
+                    <label htmlFor="drinkLimit">주량</label>
+                    {isEdit ? (
+                      <input
+                        autoComplete="off"
+                        id="drinkLimit"
+                        value={drinkLimit}
+                        type="number"
+                        placeholder="주량(병)"
+                        onChange={drinkLimitHandler}
+                      />
+                    ) : (
+                      <input
+                        id="drinkLimit"
+                        type="text"
+                        value={drinkLimit}
+                        disabled
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
+              <div className={styles.editRow}>
+                <button
+                  type="submit"
+                  onClick={handleEditMode}
+                  className={styles.editBtn}
+                >
+                  <img src={editIcon} alt="edit" className={styles.editIcon} />
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section className={styles.friendProfile}>
+            <div className={styles.friendTitle}>
+              <h1 className={styles.mainTitle}>나와 함께한 친구들</h1>
+              <span className={styles.subTitle}>
+                (술자리 참여 횟수 기준 상위 5명)
+              </span>
+            </div>
+            <div className={styles.friends}>
+              {friends.map((friend, index) => (
+                <div key={index} className={styles.friendInfo}>
+                  <img
+                    className={styles.friendProfileImg}
+                    src={friend.image}
+                    alt="friend profile"
+                  />
+                  <div className={styles.friendData}>
+                    <span>{friend.name}/</span>
+                    <span>{friend.count}회</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </main>
     </div>
   );
