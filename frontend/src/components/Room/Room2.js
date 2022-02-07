@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import React, { Component } from "react";
 import "./Room2.css";
@@ -353,7 +353,7 @@ class Room2 extends Component {
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({ customSessionId: sessionId });
-      axios
+      axios1
         .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
             Authorization:
@@ -397,7 +397,7 @@ class Room2 extends Component {
   createToken(sessionId) {
     return new Promise((resolve, reject) => {
       var data = {};
-      axios
+      axios1
         .post(
           OPENVIDU_SERVER_URL +
             "/openvidu/api/sessions/" +
