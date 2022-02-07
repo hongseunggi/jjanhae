@@ -6,6 +6,8 @@ import com.ssafy.db.entity.RoomHistory;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,4 +51,11 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     public RoomHistory findRoomByUserSeq(Long userSeq) {
         return roomHistoryRepository.findRoomByUserSeq(userSeq);
     }
+
+    @Override
+    public List<Integer> findAllUserSeqByRoomSeq(Long userSeq) {
+        return roomHistoryRepository.findAllUserSeqByRoomSeq(userSeq);
+    }
+
+
 }

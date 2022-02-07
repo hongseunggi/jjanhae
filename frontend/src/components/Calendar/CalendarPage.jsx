@@ -33,19 +33,22 @@ const CalendarPage = () => {
   const [party, setParty] = useState({
     conferences: [],
   });
-
   const [partyList, setPartyList] = useState({
     conferencesId: [1, 2, 3],
   });
-
   const [roomList, setRoomList] = useState({
     roomList : []
   })
+  const [roomSeq, setRoomSeq] = useState();
+  const [userList, setUserList] = useState([]);
+  const [room , setRoom] = useState();
+  const [startTime, setStartTime] = useState();
+  const [totalTime, setTotalTime] = useState();
 
   const [listModalOpen, setListModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
 
-  const {getRoomDate, getRoomList} = UserApi;
+  const {getRoomDate, getRoomList, getUserList} = UserApi;
   const [isActive, setIsActive] = useState(false);
 
   const dropDown = useRef([]);
@@ -63,7 +66,6 @@ const CalendarPage = () => {
     }
   }
 
-  let isExist = false;
 
   useEffect( async () => {
     setCalendar(buildCalendar(value));
@@ -79,7 +81,36 @@ const CalendarPage = () => {
 
   }, [value]);
 
+  
+  useEffect( async () => {
+    const result = await getRoomList(item.day);
+    let roomList = [];
+    roomList = result.data.roomList; 
+    setRoomList({roomList});
+    // console.log(roomList);
+  }, [item.day])
 
+
+  // useEffect( async () => {
+  //   const result = await getUserList(roomSeq);
+  //   // openDetailModal();
+  //   let userList= result.data.userList;
+  //   setUserList({userList});
+  //   setRoom(result.data.room);
+  // }, [roomSeq])
+
+  useEffect(() => {
+    console.log(userList);
+  }, [userList]) 
+
+  useEffect(() => {
+      calcTime();
+      console.log(room);
+  }, [room]) 
+
+  const calcTime = () => {
+    
+  }
 
   const handleParyDataList = (result) => {
     const arr = [];
@@ -108,15 +139,15 @@ const CalendarPage = () => {
   }
 
   useEffect(() => {
-    console.log(item);
+    // console.log(item);
   }, [item]);
 
   useEffect(()=> {
-    console.log(party)
+    // console.log(party)
   },[party])
 
   useEffect(() => {
-    console.log(roomList);
+    // console.log(roomList);
     makeList();
   }, [roomList])
 
@@ -129,15 +160,6 @@ const CalendarPage = () => {
       document.removeEventListener('click', handleCloseList);
     };
   });
-
-  // useEffect( async () => {
-  //   const result = await getRoomList(item.day);
-  //   let roomList = [];
-  //   roomList = result.data.roomList; 
-  //   setRoomList({roomList});
-  //   console.log(roomList);
-  // }, [item.day])
-
   
   function dayStyles(day) {
     let yoil = day.day();
@@ -192,14 +214,25 @@ const CalendarPage = () => {
     return <div className={styles[yoil]}>{date}</div>;
   };
 
+  //roomseq로 참석한 모든 인원 데이터 받아오기
+  const getRoomDetail = async (roomSeq) => {
+    setRoomSeq(roomSeq);
+    const {data} = await getUserList(roomSeq);
+    let userList= data.userList;
+    setUserList({userList});
+    setRoom(data.room);
+    openDetailModal();
+  }
+
   //make dropdown 
   const makeList = () => {
     const dataList = [];
+    
     for(let i=0; i<roomList.roomList.length; i++) {
       dataList.push(roomList.roomList[i]);
     }
-    const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData}>{data.title}</button></li>))
-    // const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData} onClick={openDetailModal()}>{data.title}</button></li>))
+    // const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData}>{data.title}</button></li>))
+    const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData} onClick={()=> getRoomDetail(data.roomSeq)}>{data.title}</button></li>))
     return (
       <>
         {roomListData}
@@ -234,7 +267,6 @@ const CalendarPage = () => {
   };
 
   const openDetailModal = () => {
-    console.log(detailModalOpen);
     setDetailModalOpen(true);
   };
 
@@ -260,6 +292,8 @@ const CalendarPage = () => {
             open={detailModalOpen}
             close={closeDetailModal}
             date={item}
+            room={room}
+            userList={userList.userList}
           ></ConferenceDetail>
           <div className={styles.calendarHeader}>
             <div className={styles.calendarTitle}>술자리 기록</div>

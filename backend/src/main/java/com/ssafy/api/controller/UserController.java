@@ -407,7 +407,7 @@ public class UserController {
 
 
 
-	@GetMapping(value = "/conferences", params = "month")
+	@GetMapping(value = "/room", params = "month")
 	@ApiOperation(value = "이번달 파티 조회", notes = "로그인한 회원이 참여한 파티 목록을 조회한다")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -428,7 +428,6 @@ public class UserController {
 		List<RoomHistory> roomList = roomHistoryService.findAllRoomListByUserSeq(user.getUserSeq());
 		List<LocalDateTime> conferencesDateList = new ArrayList<>();
 		for(int i=0; i<roomList.size(); i++) {
-			System.out.println(roomList.get(i).getInsertedTime());
 			conferencesDateList.add(roomList.get(i).getInsertedTime());
 		}
 
@@ -436,7 +435,7 @@ public class UserController {
 	}
 
 
-	@GetMapping(value = "/conferences", params = "date")
+	@GetMapping(value = "/room", params = "date")
 	@ApiOperation(value = "특정 날짜 파티 목록 조회", notes = "선택한 날짜에 진행된 파티 목록 조회")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
@@ -463,6 +462,35 @@ public class UserController {
 		List<LocalDateTime> conferencesDateList = new ArrayList<>();
 
 		return ResponseEntity.status(200).body(GetRoomListByDateRes.of(204, "파티리스트 조회 성공", roomList));
+	}
+
+	@GetMapping(value = "/history", params = "roomSeq")
+	@ApiOperation(value = "roomSeq에 해당하는 파티 정보 조회", notes = "roomSeq에 해당하는 파티 정보 조회")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 204, message = "데이터 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> getUserList(@ApiIgnore Authentication authentication, @RequestParam @ApiParam(value="방 정보", required = true) String roomSeq)  throws Exception {
+		System.out.println("roomSeq"+roomSeq);
+		Long roomSeqData = Long.parseLong(roomSeq);
+		if(authentication == null){
+			System.out.println("인증 실패");
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+		}
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		User user = userDetails.getUser();
+
+		//roomSeq에 해당하는 방에 참여한 모든 userSeq list
+		List<Integer> userSeqList = roomHistoryService.findAllUserSeqByRoomSeq(roomSeqData);
+
+		//roomSeq에 해당하는 방 정보
+		Room room = roomService.findRoomByRoomSeq(roomSeqData);
+
+		//userSeqList에 포함되는 user의 정보
+		List<String> userNameList = userService.findUserNameByUserSeq(userSeqList);
+
+		return ResponseEntity.status(200).body(GetUserListByRoomSeqRes.of(204, "파티리스트 조회 성공", userNameList,room));
 	}
 
 

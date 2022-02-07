@@ -16,4 +16,5 @@ public interface RoomHistoryService {
     List<RoomHistory> findAllRoomListByUserSeq(Long userSeq);
     RoomHistory findRoomByUserSeq(Long userSeq);
     List<Integer> findAllRoomSeqByUserSeqAndDate(Long userSeq,String date);
+    List<Integer> findAllUserSeqByRoomSeq(Long userSeq);
 }

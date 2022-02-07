@@ -95,16 +95,24 @@ const getRoomDate = async (month) => {
   console.log(month);
   axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
   // const result = await axios.get(`${BASE_URL}/conferences`);
-  const result = await axios.get(`${BASE_URL}/conferences?month=${month}`);
+  const result = await axios.get(`${BASE_URL}/room?month=${month}`);
   return result;
 }
 
 const getRoomList = async (date) => {
   console.log("date: " +date);
   axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
-  const result = await axios.get(`${BASE_URL}/conferences?date=${date}`);
+  const result = await axios.get(`${BASE_URL}/room?date=${date}`);
   return result;
 }
+
+const getUserList = async (roomSeq) => {
+  console.log("roomSeq: " +roomSeq);
+  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
+  const result = await axios.get(`${BASE_URL}/history?roomSeq=${roomSeq}`);
+  return result;
+}
+
 
 const UserApi = {
   getRegistResult,
@@ -118,7 +126,8 @@ const UserApi = {
   getUpdateProfileResult,
   getRoomDate,
   getRoomList,
-  getUpdateProfileImgResult
+  getUpdateProfileImgResult,
+  getUserList
 };
 
 export default UserApi;
