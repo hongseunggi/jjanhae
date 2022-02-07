@@ -1,15 +1,17 @@
 .container {
   color: #eee;
-  height: 100vh;
+  height: calc(100vh - 100px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 30px 30px 0px 30px;
+  padding: 0px 30px;
+  position: relative;
 }
 .innerContainer {
   display: flex;
-  height: calc(100vh - 90px);
+  /* height: calc(100vh - 90px); */
+  height: 90%;
 }
 
 .contents {
@@ -20,7 +22,7 @@
   margin-right: 20px;
 }
 .title {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 .videos {
   display: flex;
@@ -33,7 +35,7 @@ video {
   background-image: url("../../assets/images/default1.png");
   background-size: contain;
   background-repeat: no-repeat;
-  width: 200px;
+  width: 250px;
   height: 200px;
   margin: 20px;
   border: 1px solid #eee;
@@ -42,6 +44,8 @@ video {
 
 .playerIcon {
   margin-right: 10px;
+}
+.playerIcon.playerStart {
   animation: rotate_image 5s linear infinite;
   transform-origin: 50% 50%;
 }
@@ -57,7 +61,9 @@ video {
   display: flex;
   align-items: center;
   height: 50px;
-  width: 30%;
+  /* width: 30%; */
+  position: absolute;
+  bottom: 0;
 }
 
 .chatting {
@@ -88,8 +94,26 @@ video {
   bottom: 0px;
 }
 
+.icon {
+  cursor: pointer;
+}
+
 @keyframes rotate_image {
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .container {
+    height: calc(100vh - 120px);
+  }
+  video {
+    width: 300px;
+    height: 300px;
+  }
+
+  .chatting {
+    min-width: 400px;
   }
 }
