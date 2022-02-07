@@ -33,8 +33,8 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
-    public RoomHistory selectLastYn(Long userSeq) {
-        return roomHistoryRepository.selectLastYn(userSeq);
+    public RoomHistory findOneHistoryAll(Long userSeq) {
+        return roomHistoryRepository.findOneHistoryDesc(userSeq);
     }
 
     @Override
@@ -57,5 +57,18 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
         return roomHistoryRepository.findAllUserSeqByRoomSeq(userSeq);
     }
 
+    public RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq) {
+        return roomHistoryRepository.findOneHistoryInRoom(userSeq, roomSeq);
+    }
+
+    @Override
+    public int countJoinUser(Long roomSeq) {
+        return roomHistoryRepository.countJoinUser(roomSeq);
+    }
+
+    @Override
+    public void updateRoomAction(RoomHistory roomHistory) {
+        roomHistoryRepository.save(roomHistory);
+    }
 
 }
