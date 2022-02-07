@@ -15,13 +15,19 @@
 }
 .profile {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+
+.sections {
+  display: flex;
 }
 .userProfile {
   width: 400px;
   height: 470px;
   background-color: #eee;
   border-radius: 20px;
+  border-style: none;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -76,8 +82,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-
-.editbirth{
+.editbirth {
   width: 50px;
   text-align: center;
 }
@@ -152,7 +157,7 @@
   background-color: red;
 }
 
-/* @media screen and (min-width: 1800px) {
+@media screen and (min-width: 1800px) {
   .userProfile {
     width: 600px;
     height: 670px;
@@ -201,4 +206,4 @@
     height: 160px;
     border-radius: 50%;
   }
-} */
+}

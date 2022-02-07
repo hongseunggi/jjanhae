@@ -25,7 +25,7 @@ public class S3ImageUploadController {
         System.out.println(file);
         String imgUrl = s3Service.uploadImg(file);
         if(imgUrl == null){
-            return ResponseEntity.status(400).body(BaseResponseBody.of(400,"Upload Fail"));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(400,"Upload Fail"));
         }
         return ResponseEntity.status(200).body(ImgFileResponse.of(200, "Upload Success", imgUrl));
     }

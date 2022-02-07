@@ -17,7 +17,7 @@
   
   .modalForm .title {
     font-size: 30px;
-    margin : 0px 13px 0px 10px;
+    margin : 0px 13px 0px 13px;
     font-weight: bolder;
     color : #252a34;
 ;
@@ -27,12 +27,13 @@
     cursor: pointer;
     border: 0;
   }
+  
   .modal > section {
     width: 250px;
-    height: 300px;
+    height: 380px;
     /* margin: 0 auto; */
     border-radius: 50px;
-    background-color: rgba(238, 238, 238, 0.623);
+    background-color: #eee;
     /* 팝업이 열릴때 스르륵 열리는 효과 */
     animation: modal-show 0.3s;
     overflow: hidden;
@@ -58,11 +59,21 @@
     background-color: #08d9d6;
     margin-right: 20px;
 }
-.confirmBtn {
+.buttonBorder {
+    margin-top: 15px;
+}
+.confirmBtn , .closeBtn {
     background-color: #08d9d6;
     width: 80px;
     height: 30px;
     border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #eee;
+    margin: 0px 10px 0px 10px;
+  }
+.closeBtn {
+    background-color:#ff5722;
   }
   .modal.openModal {
     display: flex;
@@ -74,12 +85,12 @@
   .icon {
     height: 50px;
     width: 50px;
+    margin: 15px 0px 35px 0px;
   }
   
   .main {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     align-items: center;
     height: 100%;
     font-family: 'Poppins', sans-serif;
@@ -97,40 +108,45 @@
     width: 100%;
     margin-bottom: 30px;
   }
-  .closeBtn {
-    float: right;
-    width: 30px;
-    height: 30px;
-    margin: 15px 30px 0px 0px;
-    border-radius: 8px;
-    background-color: #eee;
-  }
-  .informBorder {
-    align-items: center;
+.gameListBorder {
     display: flex;
     flex-direction: column;
-  }
-  .informText {
-      font-weight: bolder;
-      font-size: 20px;
-      width : 80%;
-  }
-  .inputKeyword {
-    border-radius: 10px;
-    height: 33px;
-    background-color: #eee;
-    padding: 10px;
-    font-size: 15px;
-  }
-  .confirmBtn {
-    font-size: 15px;
+    height: 50%;
+    justify-content: space-evenly;
+    width: 80%;
+}
+.game {
+    margin: 3px 0px 3px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     font-weight: bold;
-  }
-  .text {
-    text-align: center;
-    font-size: 20px;
-    font-weight: bolder;
-  }
+}
+.buttonBorder {
+    margin-top: 25px;
+}
+
+input[type=radio] {
+    border: none;
+    background-color: #d1d3d1;
+    width: 20px;
+    height: 20px;
+}
+
+
+input[type='radio']:checked {
+    width: 20px;
+    height: 20px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #ffa500;
+    content: '';
+    /* display: inline-block; */
+    visibility: visible;
+    /* border: 2px solid white; */
+}
 
   @keyframes modal-show {
     from {
