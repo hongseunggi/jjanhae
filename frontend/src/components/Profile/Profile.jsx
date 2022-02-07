@@ -11,7 +11,7 @@ import image3 from "../../assets/images/default3.png";
 import image4 from "../../assets/images/default4.png";
 import image5 from "../../assets/images/default5.png";
 import image6 from "../../assets/images/default6.png";
-import LoadingSpinner from "../Modals/LoadingSpinner.jsx";
+import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
 
 const Profile = () => {
   const [name, setName] = useState("");
