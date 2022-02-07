@@ -42,8 +42,11 @@ const RoomConfig = ({ open, onClose }) => {
     formData.append("file", e.target.files[0]);
 
     const { data } = await getImgUploadResult(formData);
-    console.log(data);
-    setThumbnailImg(data.url);
+    if(data.statusCode === 200){
+      console.log(data);
+      setThumbnailImg(data.url);
+    }
+    else console.log("Upload fail");
   };
 
   const handleRoomConfig = (e) => {
@@ -131,6 +134,7 @@ const RoomConfig = ({ open, onClose }) => {
                   id="input-img"
                   className={styles.uploadBtn}
                   onChange={imgInputhandler}
+                  accept="image/gif, image/jpeg, image/png"
                 />
               </div>
               <form className={styles.configData}>

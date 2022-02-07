@@ -80,16 +80,19 @@ const Profile = () => {
     formData.append("file", e.target.files[0]);
 
     const { data } = await getImgUploadResult(formData);
-    console.log(data);
-    setMyImg(data.url);
-    const body = {
-      imageUrl: data.url,
-    };
-    const result = await getUpdateProfileImgResult(body);
+    if(data.statusCode === 200){
+      console.log(data);
+      setMyImg(data.url);
+      const body = {
+        imageUrl: data.url,
+      };
+        const result = await getUpdateProfileImgResult(body);
+        console.log(result);
+    }
+    else console.log("Upload fail");
     setTimeout(() => {
       setLoading(false);
     }, 1500);
-    console.log(result);
   };
 
   const nameHandler = (e) => {
@@ -173,6 +176,7 @@ const Profile = () => {
                   id="input-img"
                   style={{ display: "none" }}
                   onChange={imgInputhandler}
+                  accept="image/jpeg, image/png"
                 />
                 <div
                   className={
