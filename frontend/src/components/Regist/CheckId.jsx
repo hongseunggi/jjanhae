@@ -8,7 +8,9 @@ import RegistContext from "../../contexts/RegistContext";
 const CheckId = ({ progress }) => {
   const [id, setId] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(true);
+
+  // const [confirm, setConfirm] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const navigate = useNavigate();
 
@@ -27,7 +29,10 @@ const CheckId = ({ progress }) => {
 
   const validation = (value) => {
     const idPattern = /^[a-zA-Z0-9]*$/;
-    if (value.length < 5 || value.length > 16) {
+    if (value === "") {
+      setErrorMsg("아이디를 입력해주세요.");
+      setError(true);
+    } else if (value.length < 5 || value.length > 16) {
       setErrorMsg("5 ~ 16자 사이의 아이디를 입력해주세요.");
       setError(true);
     } else if (!idPattern.test(value)) {

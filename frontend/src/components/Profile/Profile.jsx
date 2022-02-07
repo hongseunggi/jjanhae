@@ -171,6 +171,7 @@ const Profile = () => {
                 <input
                   type="file"
                   id="input-img"
+                  accept="image/png, image/jpeg"
                   style={{ display: "none" }}
                   onChange={imgInputhandler}
                 />
