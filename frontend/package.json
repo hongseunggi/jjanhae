@@ -25,13 +25,8 @@
     "react-scripts": "5.0.0",
     "react-spinners": "^0.11.0",
     "react-table": "^7.7.0",
-<<<<<<< HEAD
-    "web-vitals": "^2.1.0",
-    "openvidu-browser": "2.20.0"
-=======
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.0"
->>>>>>> f8fb8f5788fb5691a7b304cd00d2a6d7b7259612
   },
   "scripts": {
     "start": "react-scripts start",

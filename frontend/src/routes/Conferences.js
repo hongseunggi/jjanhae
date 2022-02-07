@@ -11,11 +11,7 @@ const User = () => {
       <Routes>
         {/* <Route path="" element={<Navigate to={}} /> */}
         <Route path="/list" element={<RoomList />} />
-<<<<<<< HEAD
         <Route path="/detail" element={<Room2 />} />
-=======
-        <Route path="/detail" element={<Room />} />
->>>>>>> f8fb8f5788fb5691a7b304cd00d2a6d7b7259612
       </Routes>
     </div>
   );
