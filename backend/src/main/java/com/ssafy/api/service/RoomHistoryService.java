@@ -10,6 +10,8 @@ import com.ssafy.db.entity.User;
  */
 public interface RoomHistoryService {
     RoomHistory addHistory(User user, Room room, AddHistoryRequest addHistoryRequest);
+    RoomHistory exitHistory(RoomHistory roomHistory);
     RoomHistory selectLastYn(Long userSeq);
     RoomHistory findRoomByUserSeq(Long userSeq);
+    RoomHistory findRoomHistoryByUserAndRoom(User user, Room room);
 }

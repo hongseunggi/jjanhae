@@ -1,6 +1,8 @@
 package com.ssafy.db.repository;
 
 import com.ssafy.db.entity.RoomHistory;
+import com.ssafy.db.entity.User;
+import com.ssafy.db.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +20,6 @@ public interface RoomHistoryRepository extends JpaRepository<RoomHistory, Long> 
             " where user_seq = :userSeq and last_yn = 'Y'" +
             " order by history_seq desc limit 1", nativeQuery = true)
     public RoomHistory findRoomByUserSeq(@Param(value = "userSeq") Long userSeq);
+
+    public RoomHistory findRoomHistoryByUserAndRoom(User user, Room room);
 }
