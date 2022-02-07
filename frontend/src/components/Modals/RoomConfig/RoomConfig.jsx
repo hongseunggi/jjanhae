@@ -132,6 +132,7 @@ const RoomConfig = ({ open, onClose }) => {
                 <input
                   type="file"
                   id="input-img"
+                  accept="image/png, image/jpeg"
                   className={styles.uploadBtn}
                   onChange={imgInputhandler}
                   accept="image/gif, image/jpeg, image/png"
