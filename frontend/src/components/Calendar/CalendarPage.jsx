@@ -87,24 +87,60 @@ const CalendarPage = () => {
     // console.log(roomList);
   }, [item.day]);
 
-  // useEffect( async () => {
-  //   const result = await getUserList(roomSeq);
-  //   // openDetailModal();
-  //   let userList= result.data.userList;
-  //   setUserList({userList});
-  //   setRoom(result.data.room);
-  // }, [roomSeq])
+  useEffect(async () => {
+    const result = await getUserList(roomSeq);
+    // openDetailModal();
+    let userList = result.data.userList;
+    setUserList({ userList });
+    setRoom(result.data.room);
+  }, [roomSeq]);
 
   useEffect(() => {
     console.log(userList);
   }, [userList]);
 
   useEffect(() => {
-    calcTime();
-    console.log(room);
-  }, [room]);
+    // const timeData = calcTime();
+    // setStartTime(timeData[0]);
+    // setTotalTime(timeData[1]);
+  });
 
-  const calcTime = () => {};
+  const calcTime = () => {
+    let startTimeDate = room.startTime.date;
+    let startTime = room.startTime.time;
+    let endTimeDate = room.endTime.date;
+    let endTime = room.endTime.time;
+    const start = new Date(
+      startTimeDate.year,
+      startTimeDate.month,
+      startTimeDate.day,
+      startTime.hour,
+      startTime.minute
+    );
+    const end = new Date(
+      endTimeDate.year,
+      endTimeDate.month,
+      endTimeDate.day,
+      endTime.hour,
+      endTime.minute
+    );
+    let elapsedSec = end.getTime() - start.getTime();
+    let elapsedMin = elapsedSec / 1000 / 60;
+    elapsedMin = parseInt(elapsedMin);
+    let totalHour = Math.floor(elapsedMin / 60);
+    let totalMin = elapsedMin % 60;
+    let totalTimeFormat = totalHour + ":" + totalMin;
+
+    let startHour = startTime.hour;
+    let startMin = startTime.minute;
+    let startTimeFormat = startHour + ":" + startMin;
+
+    const timeData = [];
+    timeData.push(startTimeFormat);
+    timeData.push(totalTimeFormat);
+
+    return timeData;
+  };
 
   const handleParyDataList = (result) => {
     const arr = [];

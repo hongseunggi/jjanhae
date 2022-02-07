@@ -22,6 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void deleteByUserId(String userId);
 
 
-    @Query(value = "select name from user where user_seq in :userSeqList", nativeQuery = true)
+    @Query(value = "select distinct name from user where user_seq in :userSeqList", nativeQuery = true)
     public List<String> findUserNameByUserSeq(@Param(value = "userSeqList")List<Integer> userSeqList);
 }
