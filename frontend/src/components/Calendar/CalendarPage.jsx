@@ -130,13 +130,13 @@ const CalendarPage = () => {
     };
   });
 
-  useEffect( async () => {
-    const result = await getRoomList(item.day);
-    let roomList = [];
-    roomList = result.data.roomList; 
-    setRoomList({roomList});
-    console.log(roomList);
-  }, [item.day])
+  // useEffect( async () => {
+  //   const result = await getRoomList(item.day);
+  //   let roomList = [];
+  //   roomList = result.data.roomList; 
+  //   setRoomList({roomList});
+  //   console.log(roomList);
+  // }, [item.day])
 
   
   function dayStyles(day) {

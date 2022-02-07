@@ -420,6 +420,7 @@ public class UserController {
 			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
 		}
 		System.out.println("here");
+		System.out.println(month);
 
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
