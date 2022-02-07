@@ -14,14 +14,14 @@ public class RoomHistoryRepositorySupport {
     private JPAQueryFactory jpaQueryFactory;
     QRoomHistory qRoomHistory = QRoomHistory.roomHistory;
 
-    public Optional<RoomHistory> findRoomHistoryByUserAndRoom(User userSeq, Room roomSeq) {
+    public Optional<RoomHistory> findRoomHistoryByUserSeqAndRoomSeq(User userSeq, Room roomSeq) {
         RoomHistory roomHistory = jpaQueryFactory.select(qRoomHistory).from(qRoomHistory)
                 .where(qRoomHistory.roomSeq.eq(roomSeq).and(qRoomHistory.userSeq.eq(userSeq))).fetchOne();
         if(roomHistory == null) return Optional.empty();
         return Optional.ofNullable(roomHistory);
     }
 
-    public List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq){
+    public List<RoomHistory> findRoomHistoriesByRoomSeq(Room roomSeq){
         List<RoomHistory> roomHistories = jpaQueryFactory.select(qRoomHistory).from(qRoomHistory)
                 .where(qRoomHistory.roomSeq.eq(roomSeq).and(qRoomHistory.action.eq("join"))).fetch();
         return roomHistories;

@@ -22,7 +22,7 @@ public interface RoomHistoryRepository extends JpaRepository<RoomHistory, Long> 
             " order by history_seq desc limit 1", nativeQuery = true)
     public RoomHistory findRoomByUserSeq(@Param(value = "userSeq") Long userSeq);
 
-    public RoomHistory findRoomHistoryByUserAndRoom(User userSeq, Room roomSeq);
+    public RoomHistory findRoomHistoryByUserSeqAndRoomSeq(User userSeq, Room roomSeq);
 
-    public List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq);
+    public List<RoomHistory> findRoomHistoriesByRoomSeq(Room roomSeq);
 }

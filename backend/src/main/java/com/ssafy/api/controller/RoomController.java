@@ -136,12 +136,16 @@ public class RoomController {
             // TO DO ...
             // room기준으로 action이 join인 user들을 찾아서 roomHistory 여러개를 가져옴
             List<RoomHistory> roomHistories = roomHistoryService.findRoomHistoriesByRoom(room);
-            System.out.println(roomHistories);
+            System.out.println("나갈 기록들" + roomHistories);
+            for (int i = 0; i < roomHistories.size(); i++) {
+                roomHistoryService.exitHistory(roomHistories.get(i));
+            }
 
             // 그 History들의 action을 모두 exit로 바꿈
             System.out.println("방장이므로 방 나갈 시 방도 같이 닫힌다.");
             // 방장이 방을 나갔으므로 endtime을 현재시간으로 넣고, delYn="Y"로 업데이트
             roomService.exitRoom(roomHistory.getRoomSeq().getRoomSeq());
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "방 닫힘"));
         }
 
         // history table 해당 유저의 action을 퇴실로 변경하기

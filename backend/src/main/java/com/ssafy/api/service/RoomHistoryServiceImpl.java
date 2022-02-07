@@ -48,10 +48,10 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
-    public RoomHistory findRoomHistoryByUserAndRoom(User user, Room room) {return roomHistoryRepository.findRoomHistoryByUserAndRoom(user, room); }
+    public RoomHistory findRoomHistoryByUserAndRoom(User userSeq, Room roomSeq) {return roomHistoryRepository.findRoomHistoryByUserSeqAndRoomSeq(userSeq, roomSeq); }
 
     @Override
-    public List<RoomHistory> findRoomHistoriesByRoom(Room room){
-        return roomHistoryRepository.findRoomHistoriesByRoom(room);
+    public List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq){
+        return roomHistoryRepository.findRoomHistoriesByRoomSeq(roomSeq);
     };
 }
