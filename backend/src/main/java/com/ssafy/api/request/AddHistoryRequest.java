@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class AddHistoryRequest {
     Long userSeq; // 행위자 userSeq
     Long roomSeq; // target room
-    int action; // 0:CREATE, 1:JOIN, 2:EXIT
+    String action; // CREATE/JOIN/EXIT
     LocalDateTime insertedTime; // 로그가 쌓인 시각
-    String lastYn; // 현재 방에 접속중인지 Y or N
+    LocalDateTime updatedTime; // 업데이트시각
 }

@@ -23,19 +23,29 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
         roomHistory.setRoomSeq(room);
         roomHistory.setAction(addHistoryRequest.getAction());
         roomHistory.setInsertedTime(addHistoryRequest.getInsertedTime());
-        roomHistory.setLastYn(addHistoryRequest.getLastYn());
         roomHistory.setUserSeq(user);
 
         return roomHistoryRepository.save(roomHistory);
     }
 
     @Override
-    public RoomHistory selectLastYn(Long userSeq) {
-        return roomHistoryRepository.selectLastYn(userSeq);
+    public RoomHistory findOneHistoryAll(Long userSeq) {
+        return roomHistoryRepository.findOneHistoryDesc(userSeq);
     }
 
     @Override
-    public RoomHistory findRoomByUserSeq(Long userSeq) {
-        return roomHistoryRepository.findRoomByUserSeq(userSeq);
+    public RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq) {
+        return roomHistoryRepository.findOneHistoryInRoom(userSeq, roomSeq);
     }
+
+    @Override
+    public int countJoinUser(Long roomSeq) {
+        return roomHistoryRepository.countJoinUser(roomSeq);
+    }
+
+    @Override
+    public void updateRoomAction(RoomHistory roomHistory) {
+        roomHistoryRepository.save(roomHistory);
+    }
+
 }

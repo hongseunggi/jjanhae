@@ -22,15 +22,15 @@ public class QRoomHistory extends EntityPathBase<RoomHistory> {
 
     public static final QRoomHistory roomHistory = new QRoomHistory("roomHistory");
 
-    public final NumberPath<Integer> action = createNumber("action", Integer.class);
+    public final StringPath action = createString("action");
 
     public final NumberPath<Long> historySeq = createNumber("historySeq", Long.class);
 
     public final DateTimePath<java.time.LocalDateTime> insertedTime = createDateTime("insertedTime", java.time.LocalDateTime.class);
 
-    public final StringPath lastYn = createString("lastYn");
-
     public final QRoom roomSeq;
+
+    public final DateTimePath<java.time.LocalDateTime> updatedTime = createDateTime("updatedTime", java.time.LocalDateTime.class);
 
     public final QUser userSeq;
 
