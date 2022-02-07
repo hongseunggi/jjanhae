@@ -5,9 +5,6 @@ import com.ssafy.api.response.*;
 import com.ssafy.api.service.RoomHistoryService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.service.UserService;
-import com.ssafy.api.response.CreateRoomResponse;
-import com.ssafy.api.service.RoomHistoryService;
-import com.ssafy.api.service.RoomService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Room;
@@ -21,10 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.time.LocalDateTime;
@@ -98,48 +91,59 @@ public class RoomController {
     }
 
 
-    @PostMapping(value = "/exit")
+    @PatchMapping(value = "/exit")
     @ApiOperation(value = "방 퇴장", notes = "방에서 나간다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 204, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends BaseResponseBody> exitRoom(@RequestBody ExitRoomRequest exitRoomRequest) {
+    public ResponseEntity<? extends BaseResponseBody> exitRoom(@ApiIgnore Authentication authentication, @RequestBody ExitRoomRequest exitRoomRequest) {
         /**
          * 해당 방에서 나간다.
          * 권한 : 해당 유저
          * */
         System.out.println("ExitRoom Start ...");
         // userId로 userSeq 얻어오기
-        User user = userService.getUserByUserId(exitRoomRequest.getUserId());
-        System.out.println("userSeq : " + user.getUserSeq());
+        if(authentication == null){
+            System.out.println("얘 토큰 없다!!");
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+        }
+        // 토큰이 있는 유저일 때만 userId 얻어내기
+        SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+        System.out.println("방을 나가려는 유저 : "+ userDetails.getUser().getUserId());
+        User user = userDetails.getUser();
 
         // target room 정보 얻어오기
         // 이력 뒤져서 현재 userSeq가 들어있는 방을 찾아와야 한다.
-//        RoomHistory roomHistory = roomHistoryService.findRoomByUserSeq(user.getUserSeq());
-//        Room room = roomHistory.getRoomSeq();
-//        System.out.println("현재 들어있는 방: "+room.getRoomSeq() + ", 방장: "+room.getOwner().getUserSeq());
-//
-//        // 나가려는 유저가 방장이면 방 exit update처리
-//        // 방을 나갔다는건 무조건 그 방 정보가 있단 뜻이므로 null체크 별도로 해주지 않음
-//        if(room.getOwner().getUserSeq() == user.getUserSeq()) {
-//            // 방장이 방나가면 방폭파가 되므로 방에 있는 모든 유저를 나가도록 하는 로직 필요
-//            // TO DO ...
-//
-//            System.out.println("방장이므로 방 나갈 시 방도 같이 닫힌다.");
-//            // 방장이 방을 나갔으므로 endtime을 현재시간으로 넣고, delYn="Y"로 업데이트
-//            roomService.exitRoom(roomHistory.getRoomSeq().getRoomSeq());
-//        }
-//
-//        // history table에 퇴실로그 한줄 쌓기
-//        // action:2(퇴실), lastYn:N
-//        AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
-//        addHistoryRequest.setRoomSeq(exitRoomRequest.getConferenceId());
-//        addHistoryRequest.setUserSeq(user.getUserSeq());
-//        addHistoryRequest.setAction("EXIT");
-//        addHistoryRequest.setInsertedTime(LocalDateTime.now());
-//        roomHistoryService.addHistory(user, room, addHistoryRequest);
+        // RoomHistory roomHistory = roomHistoryService.findRoomByUserSeq(user.getUserSeq());
+        // exitRequest에 받아온 roomSeq로 찾아야 하지 않나..?
+        Room room = roomService.findRoomByRoomSeq(exitRoomRequest.getRoomSeq());
+        RoomHistory roomHistory = roomHistoryService.findRoomHistoryByUserAndRoom(user, room);
+        System.out.println("현재 들어있는 방: "+room.getRoomSeq() + ", 방장: "+room.getOwner().getUserSeq());
+
+        // 나가려는 유저가 방장이면 방 exit update처리
+        // 방을 나갔다는건 무조건 그 방 정보가 있단 뜻이므로 null체크 별도로 해주지 않음
+        if(room.getOwner().getUserSeq() == user.getUserSeq()) {
+            // 방장이 방나가면 방폭파가 되므로 방에 있는 모든 유저를 나가도록 하는 로직 필요
+            // TO DO ...
+            // room기준으로 action이 join인 user들을 찾아서 roomHistory 여러개를 가져옴
+            List<RoomHistory> roomHistories = roomHistoryService.findRoomHistoriesByRoom(room);
+            System.out.println("나갈 기록들" + roomHistories);
+            for (int i = 0; i < roomHistories.size(); i++) {
+                roomHistoryService.exitHistory(roomHistories.get(i));
+            }
+
+            // 그 History들의 action을 모두 exit로 바꿈
+            System.out.println("방장이므로 방 나갈 시 방도 같이 닫힌다.");
+            // 방장이 방을 나갔으므로 endtime을 현재시간으로 넣고, delYn="Y"로 업데이트
+            roomService.exitRoom(roomHistory.getRoomSeq().getRoomSeq());
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "방 닫힘"));
+        }
+
+        // history table 해당 유저의 action을 퇴실로 변경하기
+        // action:exit(퇴실)
+        roomHistoryService.exitHistory(roomHistory);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
