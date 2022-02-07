@@ -1,5 +1,6 @@
 package com.ssafy.db.repository;
 
+import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.RoomHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,5 +11,11 @@ import org.springframework.data.repository.query.Param;
  */
 public interface RoomHistoryRepository extends JpaRepository<RoomHistory, Long> {
     @Query(value = "select * from room_history where user_seq = :userSeq order by history_seq desc limit 1", nativeQuery = true)
-    public RoomHistory findOneHistoryDesc(Long userSeq);
+    public RoomHistory findOneHistoryDesc(@Param(value = "userSeq") Long userSeq);
+
+    @Query(value = "select * from room_history where room_seq = :roomSeq and user_seq = :userSeq", nativeQuery = true)
+    public RoomHistory findOneHistoryInRoom(@Param(value = "userSeq") Long userSeq, @Param(value = "roomSeq") Long roomSeq);
+
+    @Query(value = "select count(*) from room_history where room_seq = :roomSeq and action = 'JOIN'", nativeQuery = true)
+    public int countJoinUser(@Param(value = "roomSeq") Long roomSeq);
 }

@@ -45,12 +45,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             " limit :limit offset :offset", nativeQuery = true)
     public List<Room> selectRoomListOrderByDrinkLimitDesc(@Param(value = "limit") int limit, @Param(value = "offset") int offset);
 
-    @Query(value = "select count(case when action=1 then 1 end)-count(case when action=2 then 1 end) as joinUserNum" +
-            " from room_history" +
-            " where room_seq = :roomSeq" +
-            " group by room_seq", nativeQuery = true)
-    public int countJoinUser(@Param(value = "roomSeq") Long roomSeq);
-
     @Query(value = "select * from room where title like %:title% and del_yn='N'" +
             " order by start_time desc", nativeQuery = true)
     public List<Room> selectRoomByTitle(@Param(value = "title") String title);
