@@ -135,6 +135,9 @@ public class RoomController {
             // 방장이 방나가면 방폭파가 되므로 방에 있는 모든 유저를 나가도록 하는 로직 필요
             // TO DO ...
             // room기준으로 action이 join인 user들을 찾아서 roomHistory 여러개를 가져옴
+            List<RoomHistory> roomHistories = roomHistoryService.findRoomHistoriesByRoom(room);
+            System.out.println(roomHistories);
+
             // 그 History들의 action을 모두 exit로 바꿈
             System.out.println("방장이므로 방 나갈 시 방도 같이 닫힌다.");
             // 방장이 방을 나갔으므로 endtime을 현재시간으로 넣고, delYn="Y"로 업데이트

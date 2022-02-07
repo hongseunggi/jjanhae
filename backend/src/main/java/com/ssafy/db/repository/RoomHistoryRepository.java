@@ -6,6 +6,7 @@ import com.ssafy.db.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import java.util.List;
 
 /**
  * 방 이력 모델 관련 디비 쿼리 생성을 위한 JPA Query Method 인터페이스 정의.
@@ -21,5 +22,7 @@ public interface RoomHistoryRepository extends JpaRepository<RoomHistory, Long> 
             " order by history_seq desc limit 1", nativeQuery = true)
     public RoomHistory findRoomByUserSeq(@Param(value = "userSeq") Long userSeq);
 
-    public RoomHistory findRoomHistoryByUserAndRoom(User user, Room room);
+    public RoomHistory findRoomHistoryByUserAndRoom(User userSeq, Room roomSeq);
+
+    public List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq);
 }

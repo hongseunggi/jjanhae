@@ -8,6 +8,8 @@ import com.ssafy.db.repository.RoomHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  *	방 이력 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
@@ -47,4 +49,9 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
 
     @Override
     public RoomHistory findRoomHistoryByUserAndRoom(User user, Room room) {return roomHistoryRepository.findRoomHistoryByUserAndRoom(user, room); }
+
+    @Override
+    public List<RoomHistory> findRoomHistoriesByRoom(Room room){
+        return roomHistoryRepository.findRoomHistoriesByRoom(room);
+    };
 }
