@@ -41,9 +41,13 @@ const CalendarPage = () => {
   })
   const [roomSeq, setRoomSeq] = useState();
   const [userList, setUserList] = useState([]);
-  const [room , setRoom] = useState();
+  const [room , setRoom] = useState({});
   const [startTime, setStartTime] = useState();
   const [totalTime, setTotalTime] = useState();
+  const [time, setTime] = useState({
+    startTime:"",
+    endTime:"",
+  });
 
   const [listModalOpen, setListModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
@@ -73,10 +77,8 @@ const CalendarPage = () => {
     setEndMonth(value.clone().endOf("month"));
 
     const result = await getRoomDate(value.format("M")*1);
-    // const partyListData = result.data.partyList;
 
     //받아온 party data state에 저장
-    // console.log(result);
     handleParyDataList(result.data.conferencesDateList);
 
   }, [value]);
@@ -87,53 +89,8 @@ const CalendarPage = () => {
     let roomList = [];
     roomList = result.data.roomList; 
     setRoomList({roomList});
-    // console.log(roomList);
   }, [item.day])
 
-
-  useEffect( async () => {
-    const result = await getUserList(roomSeq);
-    // openDetailModal();
-    let userList= result.data.userList;
-    setUserList({userList});
-    setRoom(result.data.room);
-  }, [roomSeq])
-
-  useEffect(() => {
-    console.log(userList);
-  }, [userList]) 
-
-  useEffect(() => {
-      // const timeData = calcTime();
-      // setStartTime(timeData[0]); 
-      // setTotalTime(timeData[1]); 
-  },) 
-
-  const calcTime = () => {
-    
-      let startTimeDate = room.startTime.date;
-      let startTime = room.startTime.time;
-      let endTimeDate = room.endTime.date;
-      let endTime = room.endTime.time;
-      const start = new Date(startTimeDate.year,startTimeDate.month,startTimeDate.day,startTime.hour,startTime.minute);
-      const end = new Date(endTimeDate.year,endTimeDate.month,endTimeDate.day,endTime.hour,endTime.minute);
-      let elapsedSec = end.getTime() - start.getTime();
-      let elapsedMin = elapsedSec/1000/60;
-      elapsedMin = parseInt(elapsedMin);
-      let totalHour = Math.floor(elapsedMin/60); 
-      let totalMin = elapsedMin%60; 
-      let totalTimeFormat = totalHour+":"+totalMin;
-  
-      let startHour = startTime.hour;
-      let startMin = startTime.minute;
-      let startTimeFormat = startHour+":"+startMin;
-  
-      const timeData = [];
-      timeData.push(startTimeFormat);
-      timeData.push(totalTimeFormat);
-
-      return timeData;
-  }
 
   const handleParyDataList = (result) => {
     const arr = [];
@@ -173,6 +130,17 @@ const CalendarPage = () => {
     // console.log(roomList);
     makeList();
   }, [roomList])
+
+  useEffect(() => {
+    setTime({
+      startTime : room.startTime,
+      endTime : room.endTime
+    });
+  }, [room])
+
+  useEffect(() => {
+  },[time])
+
 
   useEffect(() => {}, [detailModalOpen]);
 
@@ -244,6 +212,7 @@ const CalendarPage = () => {
     let userList= data.userList;
     setUserList({userList});
     setRoom(data.room);
+
     openDetailModal();
   }
 
@@ -315,7 +284,7 @@ const CalendarPage = () => {
             open={detailModalOpen}
             close={closeDetailModal}
             date={item}
-            room={room}
+            time={time}
             userList={userList.userList}
           ></ConferenceDetail>
           <div className={styles.calendarHeader}>
