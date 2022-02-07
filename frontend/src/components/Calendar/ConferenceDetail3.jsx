@@ -5,11 +5,9 @@ import styles from "./ConferenceDetail.module.css";
 import moment from "moment";
 
 const ConferenceDetail = (props) => {
-  const { open, close, date, room, userList } = props;
+  const { open, close, date, userList } = props;
 
   const [participant, setParticipant] = useState([]);
-  const [startTime, setStartTime] = useState();
-  const [totalTime, setTotalTime] = useState();
 
   const showParticipant = () => {
     const dataList = [];
@@ -25,36 +23,35 @@ const ConferenceDetail = (props) => {
     );
   }
 
-  const showTime = () => {
+  // const showTime = () => {
 
-    return (
-      <>
-        <div className={styles.partyDetailData}>
-          <div className={styles.partyStartTimeBorder}>
-            <div className={styles.partyStartTimeTitle}>시작시간</div>
-            <div className={styles.partyStartTime}>{startTime}</div>
-          </div>
-          <div className={styles.partyElapsedTimeBorder}>
-            <div className={styles.partyStartTimeTitle}>총 파티 시간</div>
-            <div className={styles.partyStartTime}>{totalTime}</div>
-          </div>
-        </div><div className={styles.partyDetailData}>
-          <div className={styles.partyStartTimeBorder}>
-            <div className={styles.partyStartTimeTitle}>시작시간</div>
-            <div className={styles.partyStartTime}>{startTime}</div>
-          </div>
-          <div className={styles.partyElapsedTimeBorder}>
-            <div className={styles.partyStartTimeTitle}>총 파티 시간</div>
-            <div className={styles.partyStartTime}>{totalTime}</div>
-          </div>
-        </div>
-      </>
-    )
-  }
+  //   return (
+  //     <>
+  //       <div className={styles.partyDetailData}>
+  //         <div className={styles.partyStartTimeBorder}>
+  //           <div className={styles.partyStartTimeTitle}>시작시간</div>
+  //           <div className={styles.partyStartTime}>{startTime}</div>
+  //         </div>
+  //         <div className={styles.partyElapsedTimeBorder}>
+  //           <div className={styles.partyStartTimeTitle}>총 파티 시간</div>
+  //           <div className={styles.partyStartTime}>{totalTime}</div>
+  //         </div>
+  //       </div><div className={styles.partyDetailData}>
+  //         <div className={styles.partyStartTimeBorder}>
+  //           <div className={styles.partyStartTimeTitle}>시작시간</div>
+  //           <div className={styles.partyStartTime}>{startTime}</div>
+  //         </div>
+  //         <div className={styles.partyElapsedTimeBorder}>
+  //           <div className={styles.partyStartTimeTitle}>총 파티 시간</div>
+  //           <div className={styles.partyStartTime}>{totalTime}</div>
+  //         </div>
+  //       </div>
+  //     </>
+  //   )
+  // }
 
 
-  useEffect(()=> {
-  },[room])
+
   
   useEffect(()=> {
     setParticipant({userList})
@@ -78,7 +75,7 @@ const ConferenceDetail = (props) => {
                   <img src={Logo} className={styles.logo} alt="logo"></img>
                 </div>
                    <h1 className={styles.title}>{date.month}월{date.day}일</h1>  
-                 {showTime()}
+                 {/* {showTime()} */}
                 </div>
                 </div>
                 <div className={styles.partyDetailRight}>
