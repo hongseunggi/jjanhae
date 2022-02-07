@@ -68,18 +68,18 @@ public class RoomController {
         }
         // 토큰이 있는 유저일 때만 userId 얻어내기
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        System.out.println("로그인한 유저 : "+ userDetails.getUser());
         User user = userDetails.getUser();
         // 얻어낸 user객체로 userSeq 얻어내기
         System.out.println("user seq : " + user.getUserSeq());
         System.out.println("userId : "+user.getUserId());
 
         // 해당 유저가 방에 접속해있는지
-        RoomHistory selectLastYn = roomHistoryService.selectLastYn(user.getUserSeq());
-//        if(selectLastYn != null && "Y".equals(selectLastYn.getLastYn())) {
-//            // 현재 접속상태이므로 중복입장 불가
-//            return ResponseEntity.status(200).body(BaseResponseBody.of(202, "방 중복 입장 불가"));
-//        }
+        Long userSeq = user.getUserSeq();
+        System.out.println("login userSeq : " + userSeq+", userId : "+user.getUserId());
+        RoomHistory roomHistory = roomHistoryService.findOneHistoryDesc(userSeq);
+        if(roomHistory != null && "JOIN".equals(roomHistory.getAction().toUpperCase())) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "현재 참여중인 방이 있습니다."));
+        }
 
         // Room 테이블에 userSeq 포함하여 저장.
         System.out.println("Room 테이블에 userSeq 포함하여 저장");
@@ -87,20 +87,13 @@ public class RoomController {
         Room room = roomService.createRoom(user, LocalDateTime.now(), createRoomRequest);
 
         // 얻어낸 roomSeq로 Room_history 테이블에도 추가
-        // CREATE
         Long roomSeq = room.getRoomSeq();
         AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
         addHistoryRequest.setRoomSeq(roomSeq);
         addHistoryRequest.setUserSeq(user.getUserSeq());
-        addHistoryRequest.setAction("CREATE");
-        addHistoryRequest.setInsertedTime(LocalDateTime.now());
-        System.out.println("얻어낸 roomSeq로 Room_history 테이블에도 추가");
-        roomHistoryService.addHistory(user, room, addHistoryRequest);
-
-        // JOIN도 함께 쌓아줌
         addHistoryRequest.setAction("JOIN");
+        addHistoryRequest.setInsertedTime(LocalDateTime.now());
         roomHistoryService.addHistory(user, room, addHistoryRequest);
-        System.out.println("roomHistory 저장 성공");
         return ResponseEntity.status(200).body(CreateRoomResponse.of("Success", room.getRoomSeq()));
     }
 
@@ -124,29 +117,29 @@ public class RoomController {
 
         // target room 정보 얻어오기
         // 이력 뒤져서 현재 userSeq가 들어있는 방을 찾아와야 한다.
-        RoomHistory roomHistory = roomHistoryService.findRoomByUserSeq(user.getUserSeq());
-        Room room = roomHistory.getRoomSeq();
-        System.out.println("현재 들어있는 방: "+room.getRoomSeq() + ", 방장: "+room.getOwner().getUserSeq());
-
-        // 나가려는 유저가 방장이면 방 exit update처리
-        // 방을 나갔다는건 무조건 그 방 정보가 있단 뜻이므로 null체크 별도로 해주지 않음
-        if(room.getOwner().getUserSeq() == user.getUserSeq()) {
-            // 방장이 방나가면 방폭파가 되므로 방에 있는 모든 유저를 나가도록 하는 로직 필요
-            // TO DO ...
-
-            System.out.println("방장이므로 방 나갈 시 방도 같이 닫힌다.");
-            // 방장이 방을 나갔으므로 endtime을 현재시간으로 넣고, delYn="Y"로 업데이트
-            roomService.exitRoom(roomHistory.getRoomSeq().getRoomSeq());
-        }
-
-        // history table에 퇴실로그 한줄 쌓기
-        // action:2(퇴실), lastYn:N
-        AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
-        addHistoryRequest.setRoomSeq(exitRoomRequest.getConferenceId());
-        addHistoryRequest.setUserSeq(user.getUserSeq());
-        addHistoryRequest.setAction("EXIT");
-        addHistoryRequest.setInsertedTime(LocalDateTime.now());
-        roomHistoryService.addHistory(user, room, addHistoryRequest);
+//        RoomHistory roomHistory = roomHistoryService.findRoomByUserSeq(user.getUserSeq());
+//        Room room = roomHistory.getRoomSeq();
+//        System.out.println("현재 들어있는 방: "+room.getRoomSeq() + ", 방장: "+room.getOwner().getUserSeq());
+//
+//        // 나가려는 유저가 방장이면 방 exit update처리
+//        // 방을 나갔다는건 무조건 그 방 정보가 있단 뜻이므로 null체크 별도로 해주지 않음
+//        if(room.getOwner().getUserSeq() == user.getUserSeq()) {
+//            // 방장이 방나가면 방폭파가 되므로 방에 있는 모든 유저를 나가도록 하는 로직 필요
+//            // TO DO ...
+//
+//            System.out.println("방장이므로 방 나갈 시 방도 같이 닫힌다.");
+//            // 방장이 방을 나갔으므로 endtime을 현재시간으로 넣고, delYn="Y"로 업데이트
+//            roomService.exitRoom(roomHistory.getRoomSeq().getRoomSeq());
+//        }
+//
+//        // history table에 퇴실로그 한줄 쌓기
+//        // action:2(퇴실), lastYn:N
+//        AddHistoryRequest addHistoryRequest = new AddHistoryRequest();
+//        addHistoryRequest.setRoomSeq(exitRoomRequest.getConferenceId());
+//        addHistoryRequest.setUserSeq(user.getUserSeq());
+//        addHistoryRequest.setAction("EXIT");
+//        addHistoryRequest.setInsertedTime(LocalDateTime.now());
+//        roomHistoryService.addHistory(user, room, addHistoryRequest);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
@@ -273,7 +266,7 @@ public class RoomController {
         }
 
         // 방 중복입장 불가
-        RoomHistory selectLastYn = roomHistoryService.selectLastYn(user.getUserSeq());
+//        RoomHistory selectLastYn = roomHistoryService.selectLastYn(user.getUserSeq());
 //        if(selectLastYn != null && "Y".equals(selectLastYn.getLastYn())) {
 //            // 현재 접속상태이므로 중복입장 불가
 //            System.out.println("방 중복입장 불가");

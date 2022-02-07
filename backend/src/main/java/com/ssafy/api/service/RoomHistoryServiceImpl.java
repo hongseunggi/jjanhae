@@ -29,12 +29,9 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
-    public RoomHistory selectLastYn(Long userSeq) {
-        return roomHistoryRepository.selectLastYn(userSeq);
+    public RoomHistory findOneHistoryDesc(Long userSeq) {
+        return roomHistoryRepository.findOneHistoryDesc(userSeq);
     }
 
-    @Override
-    public RoomHistory findRoomByUserSeq(Long userSeq) {
-        return roomHistoryRepository.findRoomByUserSeq(userSeq);
-    }
+
 }
