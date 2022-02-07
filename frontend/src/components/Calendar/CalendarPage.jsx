@@ -198,7 +198,8 @@ const CalendarPage = () => {
     for(let i=0; i<roomList.roomList.length; i++) {
       dataList.push(roomList.roomList[i]);
     }
-    const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData} onClick={openDetailModal}>{data.title}</button></li>))
+    const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData}>{data.title}</button></li>))
+    // const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData} onClick={openDetailModal()}>{data.title}</button></li>))
     return (
       <>
         {roomListData}
