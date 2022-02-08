@@ -1,23 +1,21 @@
 import React, { useState } from "react";
-import { ReactComponent as LockIcon } from "../../../assets/icons/password.svg";
-import ImgApi from "../../../api/ImgApi";
-import RoomApi from "../../../api/RoomApi";
-import imageUpload from "../../../assets/icons/imageUpload.png";
+import { ReactComponent as LockIcon } from "../../assets/icons/password.svg";
+import ImgApi from "../../api/ImgApi";
+import RoomApi from "../../api/RoomApi";
+import imageUpload from "../../assets/icons/imageUpload.png";
 import styles from "./RoomConfig.module.css";
 import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
-import axios1 from "../../../api/WebRtcApi";
-import RoomContext from "../../../contexts/RoomContext";
+import axios1 from "../../api/WebRtcApi";
+// import RoomContext from "../../../contexts/RoomContext";
 import { useContext } from "react";
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
-
-
-import styles from "./RoomConfig.module.css";
 const RoomConfig = ({ open, onClose }) => {
   // const { open, close, header } = props;
-  const {sessionState, setSessionState} = useContext(RoomContext);
+  const navigate = useNavigate();
+  // const {sessionState, setSessionState} = useContext(RoomContext);
   const [configStatus, setConfigStatus] = useState(false);
   const [sessionId, setSessionId] = useState("");
   const [roomConfig, setRoomConfig] = useState("public");
@@ -142,7 +140,7 @@ const RoomConfig = ({ open, onClose }) => {
     console.log(data);
     let str = joinSession((data.roomSeq).toString());
     console.log(str);
-    setSessionState(str);
+    // setSessionState(str);
     navigate(`/conferences/detail`);
     //// -> 이 밑 부분에 화상회의 방 ? 으로 라우트 시켜주는게 들어가야 할 듯 합니다. 일단 닫기로 했습니다.
     onClose();

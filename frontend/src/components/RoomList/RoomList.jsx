@@ -7,6 +7,7 @@ import SettingModalContainer from "./SettingModalContainer";
 function RoomList() {
 
 
+    const [Loading, setLoading] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [endCheck, setEndCheck] = useState(false);
     const [offsetCount, setOffset] = useState(0);
@@ -22,8 +23,12 @@ function RoomList() {
     const [target, setTarget] = useState(null);
 
     const loadItem = async () => {
+        if(endCheckRef.current){
+            setLoading(false);
+        }
         if(!endCheckRef.current){
             setIsLoaded(true);
+            setLoading(true);
             console.log(offsetCountRef.current);
             let body = {
                 paging : {
@@ -45,6 +50,9 @@ function RoomList() {
             });
 
             setOffset(offsetCountRef.current+6);
+            setTimeout(()=>{
+                setLoading(false);
+            },1500);
             setIsLoaded(false);
         } 
     };
