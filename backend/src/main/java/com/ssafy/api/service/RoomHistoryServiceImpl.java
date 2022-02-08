@@ -6,8 +6,6 @@ import com.ssafy.db.entity.RoomHistory;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +15,7 @@ import java.util.List;
  */
 @Service("roomHistoryService")
 public class RoomHistoryServiceImpl implements RoomHistoryService{
+
     @Autowired
     RoomHistoryRepository roomHistoryRepository;
 
@@ -33,11 +32,19 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
+    public RoomHistory exitHistory(RoomHistory roomHistory) {
+        roomHistory.setAction("exit");
+
+        return roomHistoryRepository.save(roomHistory);
+    }
+
+    @Override
     public RoomHistory findOneHistoryAll(Long userSeq) {
         return roomHistoryRepository.findOneHistoryDesc(userSeq);
     }
 
     @Override
+<<<<<<< HEAD
     public List<Integer> findAllRoomSeqByUserSeq(Long userSeq) {
         return roomHistoryRepository.findAllRoomSeqByUserSeq(userSeq);
     }
@@ -57,9 +64,19 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
         return roomHistoryRepository.findAllUserSeqByRoomSeq(userSeq);
     }
 
+=======
+>>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
     public RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq) {
         return roomHistoryRepository.findOneHistoryInRoom(userSeq, roomSeq);
     }
+
+    @Override
+    public RoomHistory findRoomHistoryByUserAndRoom(User userSeq, Room roomSeq) {return roomHistoryRepository.findRoomHistoryByUserSeqAndRoomSeq(userSeq, roomSeq); }
+
+    @Override
+    public List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq){
+        return roomHistoryRepository.findRoomHistoriesByRoomSeq(roomSeq);
+    };
 
     @Override
     public int countJoinUser(Long roomSeq) {

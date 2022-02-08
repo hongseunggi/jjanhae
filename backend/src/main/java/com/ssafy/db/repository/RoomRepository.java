@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +48,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query(value = "select * from room where title like %:title% and del_yn='N'" +
             " order by start_time desc", nativeQuery = true)
     public List<Room> selectRoomByTitle(@Param(value = "title") String title);
+<<<<<<< HEAD
 
     @Query(value = "select * from room" +
             " where room_seq in :roomSeqList and end_time is not null" , nativeQuery = true)
@@ -58,5 +58,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             " where room_seq in :roomSeqList and end_time is not null" , nativeQuery = true)
     public List<Room> findAllEndRoomSeqByRoomSeq(@Param(value = "roomSeqList") List roomSeqList);
 
+=======
+>>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
 }
-

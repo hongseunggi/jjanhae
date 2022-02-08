@@ -6,11 +6,11 @@ import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.RoomRepositorySupport;
+import com.ssafy.db.repository.UserRepository;
+import com.ssafy.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -45,16 +45,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room createRoom(User user, LocalDate now, CreateRoomRequest createRoomRequest) {
-        return null;
-    }
-
-    @Override
-    public List<Room> getRoomList(Long userSeq) {
-        return roomRepository.findAll();
-    }
-
-
     public Room findRoomByRoomSeq(Long roomSeq) {
         Optional<Room> res = roomRepositorySupport.findRoomByRoomSeq(roomSeq);
         Room room = null;
@@ -111,6 +101,7 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> selectRoomByTitle(String title) {
         return roomRepository.selectRoomByTitle(title);
     }
+<<<<<<< HEAD
 
     @Override
     public List<Room> findEndRoomListByRoomSeq(List roomSeqList) {
@@ -119,4 +110,6 @@ public class RoomServiceImpl implements RoomService {
 
 
 
+=======
+>>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
 }

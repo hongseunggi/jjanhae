@@ -29,9 +29,6 @@ public class RoomHistory {
 
     LocalDateTime insertedTime; // 로그가 쌓인 시각
 
-//    String lastYn; // 현재 방에 접속중인지 Y or N
-
     LocalDateTime updatedTime; // 업데이트 시각
-
 
 }

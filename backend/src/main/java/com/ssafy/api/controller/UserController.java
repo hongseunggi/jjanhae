@@ -4,12 +4,8 @@ package com.ssafy.api.controller;
 import com.ssafy.api.request.*;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.EmailService;
-import com.ssafy.api.service.RoomHistoryService;
-import com.ssafy.api.service.RoomService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import com.ssafy.db.entity.AuthEmail;
-import com.ssafy.db.entity.Room;
-import com.ssafy.db.entity.RoomHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,11 +24,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -49,12 +41,6 @@ public class UserController {
 
 	@Autowired
 	EmailService emailService;
-
-	@Autowired
-	RoomService roomService;
-
-	@Autowired
-	RoomHistoryService roomHistoryService;
 
 	@PostMapping("/signup")
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
@@ -404,6 +390,7 @@ public class UserController {
 		userService.disableUser(userDetails.getUsername());
 		return ResponseEntity.status(204).body(BaseResponseBody.of(204, "회원 탈퇴 완료"));
 	}
+<<<<<<< HEAD
 
 
 
@@ -494,4 +481,6 @@ public class UserController {
 	}
 
 
+=======
+>>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
 }

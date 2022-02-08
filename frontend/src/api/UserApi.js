@@ -1,6 +1,6 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:8081/api/v1/user";
-// const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
+// const BASE_URL = "http://localhost:8081/api/v1/user";
+const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
 axios.interceptors.request.use(
   function (config) {
@@ -91,31 +91,6 @@ const getUpdateProfileImgResult = async (body) => {
   return result;
 };
 
-const getRoomDate = async (month) => {
-  console.log(month);
-  axios.defaults.headers.Authorization =
-    "Bearer " + sessionStorage.getItem("accessToken");
-  // const result = await axios.get(`${BASE_URL}/conferences`);
-  const result = await axios.get(`${BASE_URL}/room?month=${month}`);
-  return result;
-};
-
-const getRoomList = async (date) => {
-  console.log("date: " + date);
-  axios.defaults.headers.Authorization =
-    "Bearer " + sessionStorage.getItem("accessToken");
-  const result = await axios.get(`${BASE_URL}/room?date=${date}`);
-  return result;
-};
-
-const getUserList = async (roomSeq) => {
-  console.log("roomSeq: " + roomSeq);
-  axios.defaults.headers.Authorization =
-    "Bearer " + sessionStorage.getItem("accessToken");
-  const result = await axios.get(`${BASE_URL}/history?roomSeq=${roomSeq}`);
-  return result;
-};
-
 const UserApi = {
   getRegistResult,
   getEmailCheckResult,
@@ -126,10 +101,7 @@ const UserApi = {
   getLoginResult,
   getUserProfile,
   getUpdateProfileResult,
-  getRoomDate,
-  getRoomList,
   getUpdateProfileImgResult,
-  getUserList,
 };
 
 export default UserApi;

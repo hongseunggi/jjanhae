@@ -181,10 +181,6 @@
     padding : 4px;
   }
 
-  .partyStartTimeTitle {
-    width : 95px;
-  }
-
   .partyStartTimeTitle + div {
     font-weight: bolder;
   }

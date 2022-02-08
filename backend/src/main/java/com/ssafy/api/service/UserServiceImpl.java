@@ -12,8 +12,6 @@ import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -169,12 +167,5 @@ public class UserServiceImpl implements UserService {
             System.out.println("====" + user.getUserId() + " 탈퇴 처리 완료====");
         }
     }
-
-    @Override
-    public List<String> findUserNameByUserSeq(List userSeqList) {
-       List<String> userNameList = userRepository.findUserNameByUserSeq(userSeqList);
-       return userNameList;
-    }
-
 
 }
