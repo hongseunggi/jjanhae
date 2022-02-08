@@ -5,16 +5,7 @@ import { ReactComponent as GameIcon } from "../../assets/icons/game.svg";
 
 const Keyword = (props) => {
     const {open, close} = props;
-    const [keyword, setKeyword] = useState();
-
-    const handleInput = (event) => {
-      setKeyword(event.target.value);
-    }
-
-    const confirm = () => {
-      console.log(keyword);
-      close();
-    }
+    const [game, setGame] = useState();
 
     return (
         <div
@@ -31,13 +22,10 @@ const Keyword = (props) => {
                 </div>
                 <div className={styles.informBorder}>
                     <div className={styles.informText}>
-                        <p className={styles.text}>당신의 키워드를 입력해주세요!</p>
+                        <p>당신의 키워드를 입력해주세요!</p>
                     </div>
                     <form>
-                        <input className={styles.inputKeyword}
-                                placeholder="입력하기"
-                                value={keyword}
-                                onChange={handleInput}></input>
+                        <input></input>
                     </form>
                 </div>
                 <button className={styles.confirmBtn} onClick={close}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import IntoRoom from "../Modals/RoomEnter/IntoRoom";
+import IntoRoom from "../Modals/IntoRoom";
 import style from "./RoomList.module.css";
 import { ReactComponent as Clock } from "../../assets/icons/clock.svg";
 import { ReactComponent as Lock } from "../../assets/icons/lock.svg";
@@ -9,32 +9,35 @@ function SettingModalContainer(props) {
   // console.log(info);
   const [isOpen, setIsOpen] = useState(false);
   const [time, setTime] = useState("");
-
-  useEffect(() => {
+  
+  useEffect(()=>{
     let hour = "";
     let minute = "";
-    if (info.startTime.time.hour <= 9) {
-      hour += "0" + info.startTime.time.hour;
-    } else hour = info.startTime.time.hour;
+    if(info.startTime.time.hour <= 9){
+      hour += "0"+info.startTime.time.hour;
+    }
+    else hour = info.startTime.time.hour;
+    
+    if(info.startTime.time.minute <= 9){
+      minute += "0"+info.startTime.time.minute;
+    }
+    else minute = info.startTime.time.minute;
 
-    if (info.startTime.time.minute <= 9) {
-      minute += "0" + info.startTime.time.minute;
-    } else minute = info.startTime.time.minute;
-
-    setTime(hour + ":" + minute);
-  });
-
+    setTime(hour+":"+minute);
+  })
+  
+  
   const handleIsOpen = (e) => {
     setIsOpen(!isOpen);
   };
   const renderDrinkLevel = (value) => {
     // console.log("정상 빌드 배포 완료");
     switch (value) {
-      case 1:
+      case 0:
         return <div className={style.roomlabel}>알쓰방</div>;
-      case 2:
+      case 1:
         return <div className={style.roomlabel}>주당방</div>;
-      case 3:
+      case 2:
         return <div className={style.roomlabel}>술고래방</div>;
       default:
         return null;

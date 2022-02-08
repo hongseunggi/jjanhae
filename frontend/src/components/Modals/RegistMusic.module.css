@@ -17,8 +17,7 @@
 
 .btnRow {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  text-align: right;
 }
 .closeBtn,
 .registBtn,
@@ -28,23 +27,10 @@ input {
   border: 0;
   background-color: transparent;
 }
-.closeBtn {
-  width: auto;
-}
-
-.registBtnRow {
-  text-align: right;
-}
 .registBtn {
   font-size: 30px;
-  width: auto;
 }
 
-.title {
-  font-size: 50px;
-  color: #000;
-  margin: 0;
-}
 input {
   margin-bottom: 30px;
   font-size: 30px;
@@ -54,9 +40,9 @@ input {
   height: 550px;
   /* margin: 0 auto; */
   border-radius: 50px;
-  background-color: #fff9a3;
-  /* background-image: url(../../assets/images/Sketchbook.JPG); */
-  /* background-size: cover; */
+  /* background-color: #fff9a3; */
+  background-image: url(../../assets/images/Sketchbook.JPG);
+  background-size: cover;
   /* 팝업이 열릴때 스르륵 열리는 효과 */
   animation: modal-show 0.3s;
   overflow: hidden;
@@ -66,7 +52,7 @@ input {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 80%;
+  height: 65%;
 }
 
 .configForm {

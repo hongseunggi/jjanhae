@@ -5,8 +5,11 @@
   padding: 0;
   color: #eee;
   width: 580px;
-  height: calc(100vh - 120px);
-  justify-content: center;
+  /* height: calc(100vh - 120px);a */
+}
+.innerContainer {
+  padding: 50px 0 20px 0;
+  height: 100%;
 }
 
 .header {
@@ -24,8 +27,18 @@
 
 .main {
   width: 100%;
-  padding: 50px 60px;
+  height: 100%;
+  padding: 0 60px;
   border: 0.5px solid rgba(238, 238, 238, 0.3);
+}
+
+.article {
+  height: 100%;
+}
+
+.contents {
+  height: 100%;
+  padding: 30px 0;
 }
 
 .progressBar {

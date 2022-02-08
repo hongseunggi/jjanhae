@@ -34,6 +34,7 @@ const FindPwd = () => {
     checkValidation();
   };
 
+  ///// 여기 좀 바꿔야할듯.
   const checkValidation = () => {
     let emailRule =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;

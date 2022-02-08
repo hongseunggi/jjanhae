@@ -2,23 +2,6 @@ import axios from "axios";
 // const BASE_URL = "http://localhost:8081/api/v1/user";
 const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
-axios.interceptors.request.use(
-  function (config) {
-    const accessToken = sessionStorage.getItem("accessToken");
-    if (accessToken) {
-      config.headers.Authorization =
-        "Bearer " + sessionStorage.getItem("accessToken");
-      console.log(config.headers.Authorization);
-    }
-    return config;
-  },
-  function (error) {
-    // 요청 에러 직전 호출됩니다.
-    console.log(error);
-    return Promise.reject(error);
-  }
-);
-
 // 유저관련 api 설정
 const getRegistResult = async (body) => {
   const result = await axios.post(`${BASE_URL}/signup`, body);
@@ -62,34 +45,29 @@ const getPwdResetResult = async (body) => {
 };
 
 const getLoginResult = async (body) => {
-  console.log(axios.defaults.headers.Authorization);
+  console.log(body);
   const result = await axios.post(`${BASE_URL}/login`, body);
   sessionStorage.setItem("accessToken", result.data.accessToken);
-  axios.defaults.headers.Authorization =
-    "Bearer " + sessionStorage.getItem("accessToken");
-  console.log(axios.defaults.headers.Authorization);
-  // const { accessToken } = result.data;
-  // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-
+  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
+  console.log(result);
   return result;
 };
 
 const getUserProfile = async () => {
-  console.log(axios.defaults.headers.Authorization);
   const result = await axios.get(`${BASE_URL}/profile`);
   return result;
-};
+}
 
 const getUpdateProfileResult = async (body) => {
   const result = await axios.patch(`${BASE_URL}/profile`, body);
   const data = getUserProfile();
   return data;
-};
+}
 
-const getUpdateProfileImgResult = async (body) => {
+const getUpdateProfileImgResult = async (body) =>{
   const result = await axios.patch(`${BASE_URL}/profileimg`, body);
   return result;
-};
+}
 
 const UserApi = {
   getRegistResult,
@@ -101,7 +79,7 @@ const UserApi = {
   getLoginResult,
   getUserProfile,
   getUpdateProfileResult,
-  getUpdateProfileImgResult,
+  getUpdateProfileImgResult
 };
 
 export default UserApi;
