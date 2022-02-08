@@ -4,6 +4,7 @@ import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import ChatComponent from "./chat/Chat";
+// import ChatComponent from "./chat/ChatComponent";
 
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -470,11 +471,11 @@ class VideoRoomComponent extends Component {
             );
           })}
 
+        </div>
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
-                className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
+                id ="chatComponent"
               >
                 <ChatComponent
                   user={localUser}
@@ -484,7 +485,6 @@ class VideoRoomComponent extends Component {
                 />
               </div>
             )}
-        </div>
       </div>
     );
   }

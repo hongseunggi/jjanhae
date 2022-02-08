@@ -6,7 +6,8 @@ import StreamComponent from "./stream/StreamComponent";
 
 import UserModel from "../models/user-model";
 // import OpenViduLayout from "../../layout/openvidu-layout";
-import ChatComponent from "./chat/ChatComponent";
+// import ChatComponent from "./chat/ChatComponent";
+import ChatComponent from "./chat/Chat";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 let localUserInit = new UserModel();
@@ -457,19 +458,19 @@ const UserVideo = (props) => {
             </div>
           );
         })}
-        {/* {localUser !== undefined && localUser.getStreamManager() !== undefined && (
-          <div
-            className="OT_root OT_publisher custom-class"
-            style={chatDisplay}
-          >
-            <ChatComponent
-              user={localUser}
-              chatDisplay={chatDisplay}
-              close={toggleChat}
-              messageReceived={checkNotification}
-            />
-          </div>
-        )} */}
+        {localUser !== undefined &&
+            localUser.getStreamManager() !== undefined && (
+              <div
+                id ="chatComponent"
+              >
+                <ChatComponent
+                  user={localUser}
+                  // chatDisplay={this.state.chatDisplay}
+                  close={toggleChat}
+                  messageReceived={checkNotification}
+                />
+              </div>
+            )}
       </div>
     </div>
   );

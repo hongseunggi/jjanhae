@@ -24,6 +24,7 @@ export default class ChatComponent extends Component {
 
 
     componentDidMount() {
+        console.log("here")
         this.props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
             const data = JSON.parse(event.data);
             let messageList = this.state.messageList;
@@ -57,6 +58,7 @@ export default class ChatComponent extends Component {
             let message = this.state.message.replace(/ +(?= )/g, '');
             if (message !== '' && message !== ' ') {
                 const data = { message: message, nickname: this.props.user.getNickname(), streamId: this.props.user.getStreamManager().stream.streamId };
+                console.log("signal");
                 this.props.user.getStreamManager().stream.session.signal({
                     data: JSON.stringify(data),
                     type: 'chat',
