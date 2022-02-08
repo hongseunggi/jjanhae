@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import { ReactComponent as LockIcon } from "../../../assets/icons/password.svg";
-import ImgApi from "../../../api/ImgApi";
-import RoomApi from "../../../api/RoomApi";
-import imageUpload from "../../../assets/icons/imageUpload.png";
+import { ReactComponent as LockIcon } from "../../assets/icons/password.svg";
+import ImgApi from "../../api/ImgApi";
+import RoomApi from "../../api/RoomApi";
+import imageUpload from "../../assets/icons/imageUpload.png";
 import styles from "./RoomConfig.module.css";
 import { useNavigate } from "react-router-dom";
 import { OpenVidu } from "openvidu-browser";
-import axios1 from "../../../api/WebRtcApi";
-import RoomContext from "../../../contexts/RoomContext";
+import axios1 from "../../api/WebRtcApi";
+import RoomContext from "../../contexts/RoomContext";
 import { useContext } from "react";
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 
 
-import styles from "./RoomConfig.module.css";
 const RoomConfig = ({ open, onClose }) => {
   // const { open, close, header } = props;
   const {sessionState, setSessionState} = useContext(RoomContext);
