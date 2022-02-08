@@ -5,10 +5,20 @@ import RoomApi from "../../../api/RoomApi";
 import imageUpload from "../../../assets/icons/imageUpload.png";
 import styles from "./RoomConfig.module.css";
 import { useNavigate } from "react-router-dom";
+import { OpenVidu } from "openvidu-browser";
+import axios1 from "../../../api/WebRtcApi";
+import RoomContext from "../../../contexts/RoomContext";
+import { useContext } from "react";
+const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
+const OPENVIDU_SERVER_SECRET = "jjanhae";
+
+
 
 const RoomConfig = ({ open, onClose }) => {
   // const { open, close, header } = props;
+  const {sessionState, setSessionState} = useContext(RoomContext);
   const [configStatus, setConfigStatus] = useState(false);
+  const [sessionId, setSessionId] = useState("");
   const [roomConfig, setRoomConfig] = useState("public");
   const [drinkConfig, setDrinkConfig] = useState("first");
   const [thumbnailImg, setThumbnailImg] = useState(
@@ -61,6 +71,50 @@ const RoomConfig = ({ open, onClose }) => {
     e.stopPropagation();
   };
 
+  const joinSession = (sessionId) => {
+    const OV = new OpenVidu();
+
+    const mySession = OV.initSession();
+    let subScribers;
+    let currentVideoDvice;
+    let mainStreamManager;
+    let publishers;
+    mySession.on("streamCreated", (e)=>{
+      var subscriber = mySession.subscribe(e.stream, undefined);
+      var subscribers = this.state.subscribers;
+      subscribers.push(subscriber);
+      subScribers = subscribers;
+    });
+
+    getToken(sessionId).then((token)=>{
+      mySession.connect(token, {clientData : "홍승기"})
+      .then(async () => {
+        const devices = await OV.getDevices();
+        const videoDvices = devices.filter((device) => device.kind === "videoinput");
+
+        let publisher = OV.initPublisher(undefined, {
+          audioSource: undefined, // The source of audio. If undefined default microphone
+          videoSource: undefined, // The source of video. If undefined default webcam
+          publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+          publishVideo: true, // Whether you want to start publishing with your video enabled or not
+          resolution: "640x480", // The resolution of your video
+          frameRate: 30, // The frame rate of your video
+          insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
+          mirror: false,
+        });
+        mySession.publish(publisher);
+        currentVideoDvice = videoDvices[0];
+        mainStreamManager = publisher;
+        publishers = publisher;
+      }).catch((error) => {
+        console.log("씨발");
+      })
+    })
+    return mySession;
+  }
+
+
+
   const createRoomSubmit = async () => {
     let type = 1;
     let drinkLimit = 1;
@@ -87,7 +141,10 @@ const RoomConfig = ({ open, onClose }) => {
     const { data } = await getCreateRoomResult(body);
     //// -> 리턴 되는 data 가지고 뭘 한다면 이 밑에 작성
     console.log(data);
-    navigate("/conferences/detail");
+    let str = joinSession((data.roomSeq).toString());
+    console.log(str);
+    setSessionState(str);
+    navigate(`/conferences/detail`);
     //// -> 이 밑 부분에 화상회의 방 ? 으로 라우트 시켜주는게 들어가야 할 듯 합니다. 일단 닫기로 했습니다.
     onClose();
   };
@@ -243,5 +300,82 @@ const RoomConfig = ({ open, onClose }) => {
     </div>
   );
 };
+
+const getToken = (data) => {
+  return createSession(data).then((sessionId) =>
+    createToken(sessionId)
+  );
+}
+
+const createSession = (sessionId) => {
+  return new Promise((resolve, reject) => {
+    var data = JSON.stringify({ customSessionId: sessionId });
+    axios1
+      .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
+        headers: {
+          Authorization:
+            "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("CREATE SESION", response);
+        resolve(response.data.id);
+      })
+      .catch((response) => {
+        var error = Object.assign({}, response);
+        if (error?.response?.status === 409) {
+          resolve(sessionId);
+        } else {
+          console.log(error);
+          console.warn(
+            "No connection to OpenVidu Server. This may be a certificate error at " +
+              OPENVIDU_SERVER_URL
+          );
+          if (
+            window.confirm(
+              'No connection to OpenVidu Server. This may be a certificate error at "' +
+                OPENVIDU_SERVER_URL +
+                '"\n\nClick OK to navigate and accept it. ' +
+                'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                OPENVIDU_SERVER_URL +
+                '"'
+            )
+          ) {
+            window.location.assign(
+              OPENVIDU_SERVER_URL + "/accept-certificate"
+            );
+          }
+        }
+      });
+  });
+}
+
+const createToken = (sessionId) => {
+  return new Promise((resolve, reject) => {
+    var data = {};
+    axios1
+      .post(
+        OPENVIDU_SERVER_URL +
+          "/openvidu/api/sessions/" +
+          sessionId +
+          "/connection",
+        data,
+        {
+          headers: {
+            Authorization:
+              "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("TOKEN", response);
+        resolve(response.data.token);
+      })
+      .catch((error) => reject(error));
+  });
+}
+
 
 export default RoomConfig;
