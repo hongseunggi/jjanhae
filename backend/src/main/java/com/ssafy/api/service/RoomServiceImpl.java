@@ -113,9 +113,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> findRoomListByRoomSeq(List roomSeqList) {
-        return roomRepository.findRoomListByRoomSeq(roomSeqList);
+    public List<Room> findEndRoomListByRoomSeq(List roomSeqList) {
+        return roomRepository.findEndRoomListByRoomSeq(roomSeqList);
     }
+
 
 
 }

@@ -82,10 +82,12 @@ const CalendarPage = () => {
   }, [value]);
 
   useEffect(async () => {
+    console.log(item.day);
     if(item.day!="") {
       const result = await getRoomList(item.day);
       let roomList = [];
       roomList = result.data.roomList; 
+      console.log(roomList)
       setRoomList({roomList});
     }
   }, [item.day])
@@ -212,6 +214,7 @@ const CalendarPage = () => {
     let userList = data.userList;
     setUserList({ userList });
     setRoom(data.room);
+    console.log(room);
 
     openDetailModal();
   };
@@ -311,10 +314,10 @@ const CalendarPage = () => {
           </div>
           <div className={styles.calendarBodyBorder}>
             <div className={styles.calendarBody}>
-              {calendar.map((week, key) => (
-                <div className={styles.week}>
-                  {week.map((day) => (
-                    <div className={styles.day}>
+              {calendar.map((week, index) => (
+                <div key={index} className={styles.week}>
+                  {week.map((day, index) => (
+                    <div key={index} className={styles.day}>
                       {calcYoil(day)}
                       {checkParty(day)}
                     </div>
@@ -328,5 +331,6 @@ const CalendarPage = () => {
     </>
   );
 };
+
 
 export default CalendarPage;

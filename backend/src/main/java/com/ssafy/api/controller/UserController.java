@@ -425,10 +425,11 @@ public class UserController {
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		User user = userDetails.getUser();
 
-		List<RoomHistory> roomList = roomHistoryService.findAllRoomListByUserSeq(user.getUserSeq());
+		List<Integer> roomSeqList = roomHistoryService.findAllRoomSeqByUserSeq(user.getUserSeq());
+		List<Room> endRoomSeqList = roomService.findEndRoomListByRoomSeq(roomSeqList);
 		List<LocalDateTime> conferencesDateList = new ArrayList<>();
-		for(int i=0; i<roomList.size(); i++) {
-			conferencesDateList.add(roomList.get(i).getInsertedTime());
+		for(int i=0; i<endRoomSeqList.size(); i++) {
+			conferencesDateList.add(endRoomSeqList.get(i).getStartTime());
 		}
 
 		return ResponseEntity.status(200).body(ConferencesGetRes.of(204, "파티리스트 조회 성공", conferencesDateList));
@@ -456,9 +457,8 @@ public class UserController {
 
 		//현재 유저가 선택된 날짜에 참여한 모든 방의 room seq
 		List<Integer> roomSeqList = roomHistoryService.findAllRoomSeqByUserSeqAndDate(user.getUserSeq(), date);
-
 		//room seq에 해당하는 room 정보
-		List<Room> roomList= roomService.findRoomListByRoomSeq(roomSeqList);
+		List<Room> roomList= roomService.findEndRoomListByRoomSeq(roomSeqList);
 		List<LocalDateTime> conferencesDateList = new ArrayList<>();
 
 		return ResponseEntity.status(200).body(GetRoomListByDateRes.of(204, "파티리스트 조회 성공", roomList));

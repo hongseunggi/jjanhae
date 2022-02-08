@@ -52,6 +52,11 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query(value = "select * from room" +
             " where room_seq in :roomSeqList and end_time is not null" , nativeQuery = true)
-    public List<Room> findRoomListByRoomSeq(@Param(value = "roomSeqList") List roomSeqList);
+    public List<Room> findEndRoomListByRoomSeq(@Param(value = "roomSeqList") List roomSeqList);
+
+    @Query(value = "select * from room" +
+            " where room_seq in :roomSeqList and end_time is not null" , nativeQuery = true)
+    public List<Room> findAllEndRoomSeqByRoomSeq(@Param(value = "roomSeqList") List roomSeqList);
+
 }
 

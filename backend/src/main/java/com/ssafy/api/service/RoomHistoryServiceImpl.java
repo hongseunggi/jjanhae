@@ -38,8 +38,8 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
-    public List<RoomHistory> findAllRoomListByUserSeq(Long userSeq) {
-        return roomHistoryRepository.findAllRoomListByUserSeq(userSeq);
+    public List<Integer> findAllRoomSeqByUserSeq(Long userSeq) {
+        return roomHistoryRepository.findAllRoomSeqByUserSeq(userSeq);
     }
 
     @Override
@@ -70,5 +70,7 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     public void updateRoomAction(RoomHistory roomHistory) {
         roomHistoryRepository.save(roomHistory);
     }
+
+
 
 }
