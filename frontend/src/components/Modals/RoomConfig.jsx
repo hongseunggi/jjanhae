@@ -6,6 +6,7 @@ import imageUpload from "../../assets/icons/imageUpload.png";
 import styles from "./RoomConfig.module.css";
 import { useNavigate } from "react-router-dom";
 
+
 const RoomConfig = ({ open, onClose }) => {
   // const { open, close, header } = props;
   const [configStatus, setConfigStatus] = useState(false);

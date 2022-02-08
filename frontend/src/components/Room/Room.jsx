@@ -14,6 +14,7 @@ const Room = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
   useEffect(() => {
     setLoginStatus("3");
+    
   }, []);
   return (
     <div className={styles.container}>

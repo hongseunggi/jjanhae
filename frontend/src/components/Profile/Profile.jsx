@@ -44,6 +44,7 @@ const Profile = () => {
     setIsEdit((prev) => !prev);
     if (isEdit) {
       setLoading(true);
+      
       let body = {
         name: name,
         drink: drink,

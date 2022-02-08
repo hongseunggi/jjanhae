@@ -8,6 +8,7 @@ const RegistMusic = ({ open, onClose }) => {
   const singerRef = createRef();
   const songRef = createRef();
 
+  
   const handleInput = (e) => {
     e.preventDefault();
     setSinger(singerRef.current.value);

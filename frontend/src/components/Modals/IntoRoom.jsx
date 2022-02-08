@@ -10,6 +10,7 @@ function IntoRoom({ onClose, room }) {
   const [isMic, setMic] = useState(false);
   const [isVideo, setVideo] = useState(false);
 
+  
   console.log(room, "난 모달");
 
   const handleClose = (e) => {

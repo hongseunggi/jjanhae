@@ -4,14 +4,13 @@ const BASE_URL = "http://localhost:8081/api/v1/rooms";
 
 const getCreateRoomResult = async (body) => {
     const result = await axios.post(`${BASE_URL}`, body);
-    console.log(result);
     return result;
 };
 
 const getRoomListResult = async (body) => {
     const {sort,order,limit,offset} = body;
     const result = await axios.get(`${BASE_URL}/order?sort=${sort}&order=${order}&limit=${limit}&offset=${offset}`, body);
-    console.log(result);
+
     return result;
 }
 const getRoomSearchResult = async (target) => {
