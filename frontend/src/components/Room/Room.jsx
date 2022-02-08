@@ -17,6 +17,7 @@ import Room2 from "./Room2";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import UserVideo from "./UserVideo";
 
 let posX = 0;
 let posY = 0;
@@ -91,7 +92,8 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
-            <VideoRoomComponent sessionName={roomseq} />
+            {/* <VideoRoomComponent sessionName={roomseq} /> */}
+            <UserVideo sessionName={roomseq} />
             {/* <Room2 /> */}
           </div>
           <div

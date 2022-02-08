@@ -10,7 +10,7 @@ import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 var localUser = new UserModel();
-
+console.log(localUser);
 class VideoRoomComponent extends Component {
   constructor(props) {
     super(props);
@@ -20,12 +20,16 @@ class VideoRoomComponent extends Component {
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "jjanhae";
+
     this.hasBeenUpdated = false;
+
     this.layout = new OpenViduLayout();
-    let sessionName = this.props.sessionName ? this.props.sessionName : "room1";
-    let userName = this.props.user
+
+    let sessionName = this.props.sessionName; //roomseq
+    let userName = this.props.user //username
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
+
     this.remotes = [];
     this.localUserAccessAllowed = false;
 
@@ -45,7 +49,7 @@ class VideoRoomComponent extends Component {
     this.updateLayout = this.updateLayout.bind(this);
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
-    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+    // this.toggleFullscreen = this.toggleFullscreen.bind(this);
     // this.closeDialogExtension = this.closeDialogExtension.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
@@ -89,20 +93,44 @@ class VideoRoomComponent extends Component {
 
   joinSession() {
     this.OV = new OpenVidu();
-
     this.setState(
       {
         session: this.OV.initSession(),
       },
       () => {
+        console.log(`1. session : `);
+        console.log(this.state.session);
         this.subscribeToStreamCreated();
         this.connectToSession();
       }
     );
-    console.log(`session : ${this.session}`);
+  }
+  subscribeToStreamCreated() {
+    console.log(`2. subscribeToStreamCreated : `);
+    this.state.session.on("streamCreated", (event) => {
+      console.log("subscribeToStreamCreated");
+      const subscriber = this.state.session.subscribe(event.stream, undefined);
+      subscriber.on("streamPlaying", (e) => {
+        subscriber.videos[0].video.parentElement.classList.remove(
+          "custom-class"
+        );
+      });
+      const newUser = new UserModel();
+      newUser.setStreamManager(subscriber);
+      newUser.setConnectionId(event.stream.connection.connectionId);
+      newUser.setType("remote");
+      const nickname = event.stream.connection.data.split("%")[0];
+      newUser.setNickname(JSON.parse(nickname).clientData);
+      this.remotes.push(newUser);
+      if (this.localUserAccessAllowed) {
+        this.updateSubscribers();
+      }
+    });
+    console.log(this.remotes);
   }
 
   connectToSession() {
+    console.log("3. connect to session");
     if (this.props.token !== undefined) {
       console.log("token received: ", this.props.token);
       this.connect(this.props.token);
@@ -174,9 +202,11 @@ class VideoRoomComponent extends Component {
         this.state.session.publish(publisher).then(() => {
           this.updateSubscribers();
           this.localUserAccessAllowed = true;
+          console.log(this.props);
           if (this.props.joinSession) {
             this.props.joinSession();
           }
+          console.log("들어옴????????????");
         });
       });
     }
@@ -270,29 +300,6 @@ class VideoRoomComponent extends Component {
     }
   }
 
-  subscribeToStreamCreated() {
-    this.state.session.on("streamCreated", (event) => {
-      const subscriber = this.state.session.subscribe(event.stream, undefined);
-      // var subscribers = this.state.subscribers;
-      subscriber.on("streamPlaying", (e) => {
-        // this.checkSomeoneShareScreen();
-        subscriber.videos[0].video.parentElement.classList.remove(
-          "custom-class"
-        );
-      });
-      const newUser = new UserModel();
-      newUser.setStreamManager(subscriber);
-      newUser.setConnectionId(event.stream.connection.connectionId);
-      newUser.setType("remote");
-      const nickname = event.stream.connection.data.split("%")[0];
-      newUser.setNickname(JSON.parse(nickname).clientData);
-      this.remotes.push(newUser);
-      if (this.localUserAccessAllowed) {
-        this.updateSubscribers();
-      }
-    });
-  }
-
   subscribeToStreamDestroyed() {
     // On every Stream destroyed...
     this.state.session.on("streamDestroyed", (event) => {
@@ -344,62 +351,36 @@ class VideoRoomComponent extends Component {
     this.state.session.signal(signalOptions);
   }
 
-  toggleFullscreen() {
-    const document = window.document;
-    const fs = document.getElementById("container");
-    if (
-      !document.fullscreenElement &&
-      !document.mozFullScreenElement &&
-      !document.webkitFullscreenElement &&
-      !document.msFullscreenElement
-    ) {
-      if (fs.requestFullscreen) {
-        fs.requestFullscreen();
-      } else if (fs.msRequestFullscreen) {
-        fs.msRequestFullscreen();
-      } else if (fs.mozRequestFullScreen) {
-        fs.mozRequestFullScreen();
-      } else if (fs.webkitRequestFullscreen) {
-        fs.webkitRequestFullscreen();
-      }
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
-    }
-  }
-
-  //   closeDialogExtension() {
-  //     this.setState({ showExtensionDialog: false });
+  // toggleFullscreen() {
+  //   const document = window.document;
+  //   const fs = document.getElementById("container");
+  //   if (
+  //     !document.fullscreenElement &&
+  //     !document.mozFullScreenElement &&
+  //     !document.webkitFullscreenElement &&
+  //     !document.msFullscreenElement
+  //   ) {
+  //     if (fs.requestFullscreen) {
+  //       fs.requestFullscreen();
+  //     } else if (fs.msRequestFullscreen) {
+  //       fs.msRequestFullscreen();
+  //     } else if (fs.mozRequestFullScreen) {
+  //       fs.mozRequestFullScreen();
+  //     } else if (fs.webkitRequestFullscreen) {
+  //       fs.webkitRequestFullscreen();
+  //     }
+  //   } else {
+  //     if (document.exitFullscreen) {
+  //       document.exitFullscreen();
+  //     } else if (document.msExitFullscreen) {
+  //       document.msExitFullscreen();
+  //     } else if (document.mozCancelFullScreen) {
+  //       document.mozCancelFullScreen();
+  //     } else if (document.webkitExitFullscreen) {
+  //       document.webkitExitFullscreen();
+  //     }
   //   }
-
-  //   checkSomeoneShareScreen() {
-  // return true if at least one passes the test
-  // let isScreenShared;
-  // isScreenShared =
-  //   this.state.subscribers.some((user) => user.isScreenShareActive()) ||
-  //   localUser.isScreenShareActive();
-  // const openviduLayoutOptions = {
-  //   maxRatio: 3 / 2,
-  //   minRatio: 9 / 16,
-  //   fixedRatio: isScreenShared,
-  //   bigClass: "OV_big",
-  //   bigPercentage: 0.8,
-  //   bigFixedRatio: false,
-  //   bigMaxRatio: 3 / 2,
-  //   bigMinRatio: 9 / 16,
-  //   bigFirst: true,
-  //   animate: true,
-  // };
-  // this.layout.setLayoutOptions(openviduLayoutOptions);
-  // this.updateLayout();
-  //   }
+  // }
 
   toggleChat(property) {
     let display = property;
@@ -413,7 +394,7 @@ class VideoRoomComponent extends Component {
       console.log("chat", display);
       this.setState({ chatDisplay: display });
     }
-    // this.updateLayout();
+    this.updateLayout();
   }
 
   checkNotification(event) {
@@ -455,33 +436,37 @@ class VideoRoomComponent extends Component {
           toggleChat={this.toggleChat}
         />
 
-        {/* <DialogExtensionComponent
-          showDialog={this.state.showExtensionDialog}
-          cancelClicked={this.closeDialogExtension}
-        /> */}
-
         <div id="layout" className="bounds">
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
+              <div
+                className="OT_root OT_publisher custom-class"
+                id="localUser"
+                style={{ width: "250px", height: "250px" }}
+              >
                 <StreamComponent
                   user={localUser}
                   handleNickname={this.nicknameChanged}
                 />
               </div>
             )}
-          {this.state.subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className="OT_root OT_publisher custom-class"
-              id="remoteUsers"
-            >
-              <StreamComponent
-                user={sub}
-                streamId={sub.streamManager.stream.streamId}
-              />
-            </div>
-          ))}
+          {this.state.subscribers.map((sub, i) => {
+            console.log(sub);
+            return (
+              <div
+                key={i}
+                className="OT_root OT_publisher custom-class"
+                id="remoteUsers"
+                style={{ width: "250px", height: "250px" }}
+              >
+                <StreamComponent
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
+                />
+              </div>
+            );
+          })}
+
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div

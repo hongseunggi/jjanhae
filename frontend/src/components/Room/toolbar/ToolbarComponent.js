@@ -16,19 +16,13 @@ import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 
 import IconButton from "@material-ui/core/IconButton";
 
-import logo from "../../../assets/logo.png";
-// const logo = require("../..");
-
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);
     this.state = { fullscreen: false };
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
-    this.screenShare = this.screenShare.bind(this);
-    this.stopScreenShare = this.stopScreenShare.bind(this);
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
-    this.switchCamera = this.switchCamera.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.toggleChat = this.toggleChat.bind(this);
   }
@@ -41,21 +35,9 @@ export default class ToolbarComponent extends Component {
     this.props.camStatusChanged();
   }
 
-  screenShare() {
-    this.props.screenShare();
-  }
-
-  stopScreenShare() {
-    this.props.stopScreenShare();
-  }
-
   toggleFullscreen() {
     this.setState({ fullscreen: !this.state.fullscreen });
     this.props.toggleFullscreen();
-  }
-
-  switchCamera() {
-    this.props.switchCamera();
   }
 
   leaveSession() {
@@ -67,21 +49,10 @@ export default class ToolbarComponent extends Component {
   }
 
   render() {
-    const mySessionId = this.props.sessionId;
     const localUser = this.props.user;
     return (
       <AppBar className="toolbar" id="header">
         <Toolbar className="toolbar">
-          <div id="navSessionInfo">
-            <img id="header_img" alt="OpenVidu Logo" src={logo} />
-
-            {this.props.sessionId && (
-              <div id="titleContent">
-                <span id="session-title">{mySessionId}</span>
-              </div>
-            )}
-          </div>
-
           <div className="buttonsContent">
             <IconButton
               color="inherit"

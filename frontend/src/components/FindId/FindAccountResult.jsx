@@ -4,6 +4,21 @@ import styles from "../Regist/RegisterTemplate.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
 const FindAccountResult = ({ id, progress = 100 }) => {
+  const maskingId = (str) => {
+    let originStr = str;
+    let maskingStr;
+    let strLength;
+
+    strLength = originStr.length;
+    if (strLength < 3) {
+      maskingStr = originStr.replace(/(?<=.{1})./gi, "*");
+    } else {
+      maskingStr = originStr.replace(/(?<=.{2})./gi, "*");
+    }
+    return maskingStr;
+  };
+  const securityId = maskingId(id);
+
   const navigate = useNavigate();
 
   const handleClick = (e) => {
@@ -49,7 +64,7 @@ const FindAccountResult = ({ id, progress = 100 }) => {
                   <input
                     className={styles.inputData}
                     id="id"
-                    value={id}
+                    value={securityId}
                     type="text"
                     autoComplete="off"
                     disabled
