@@ -4,7 +4,7 @@ import React, { Component, useState } from "react";
 import "./Room2.css";
 import UserVideoComponent from "./UserVideoComponent";
 import { useParams } from 'react-router-dom';
-import RoomContext from "../../contexts/RoomContext";
+// import RoomContext from "../../contexts/RoomContext";
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 

@@ -13,6 +13,8 @@ import image5 from "../../assets/images/default5.png";
 import image6 from "../../assets/images/default6.png";
 
 const Profile = () => {
+
+  // const [loading, setLoading] = useState(false)
   const [name, setName] = useState("");
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
@@ -83,9 +85,9 @@ const Profile = () => {
         console.log(result);
     }
     else console.log("Upload fail");
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 1500);
   };
 
   const nameHandler = (e) => {
