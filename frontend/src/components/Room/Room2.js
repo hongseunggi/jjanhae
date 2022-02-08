@@ -1,9 +1,8 @@
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import "./Room2.css";
 import UserVideoComponent from "./UserVideoComponent";
-import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -11,7 +10,7 @@ const OPENVIDU_SERVER_SECRET = "jjanhae";
 class Room2 extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
+
     this.state = {
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
@@ -36,9 +35,6 @@ class Room2 extends Component {
   }
 
   componentDidMount() {
-    if (this.props.match.params.id !== "") {
-      this.setState({ session: this.props.match.params.id });
-    }
     window.addEventListener("beforeunload", this.onbeforeunload);
   }
 
@@ -417,4 +413,5 @@ class Room2 extends Component {
     });
   }
 }
+
 export default Room2;

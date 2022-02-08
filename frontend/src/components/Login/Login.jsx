@@ -117,7 +117,7 @@ const Login = () => {
   const loginApi = async () => {
     let userError = 404;
     let pwdError = 401;
-    let errorMsg = "아이디와 비밀번호를 정확히 입력해 주세요.";
+    // let errorMsg = "아이디와 비밀번호를 정확히 입력해 주세요.";
     const body = {
       userId: input.id,
       password: input.password,
@@ -128,11 +128,12 @@ const Login = () => {
       setLoginStatus("2");
       navigate("/");
     } catch ({ response }) {
+      console.log(response);
       if (
         response.data.statusCode === userError ||
         response.data.statusCode === pwdError
       ) {
-        setLoginMsg(errorMsg);
+        setLoginMsg(response.data.message);
       }
     }
   };

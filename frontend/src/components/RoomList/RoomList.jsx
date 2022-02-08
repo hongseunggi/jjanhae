@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import style from "./RoomList.module.css";
 import RoomApi from "../../api/RoomApi";
 import SettingModalContainer from "./SettingModalContainer";
+import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
 
 function RoomList() {
   const [loading, setLoading] = useState(false);
@@ -171,29 +172,21 @@ function RoomList() {
             <Col key={index} md={4}>
               <SettingModalContainer info={room} />
             </Col>
-            </Row>
-            <Row>
-                <div style={{
-                    height : "20px"
-                }}></div>
-            </Row>
-            <Row className={style.list}>
-                {rooms.map((room, index)=>{
-                    return(
-                        <Col key={index} md = {4}>
-                            <SettingModalContainer info = {room}/>                         
-                        </Col>)
-                })}
-                <div ref={setTarget} style={{
-                    width: "100vw",
-                    height: "1px",
-                }}>
-                    {isLoaded}
-                </div>
-            </Row>
-        </Container>
-        
-    )
+          );
+        })}
+        <div
+          ref={setTarget}
+          style={{
+            width: "100vw",
+            height: "5px",
+          }}
+        >
+          {console.log(isLoaded)}
+        </div>
+        {loading ? <LoadingSpinner></LoadingSpinner> : null}
+      </Row>
+    </Container>
+  );
 }
 
 export default RoomList;
