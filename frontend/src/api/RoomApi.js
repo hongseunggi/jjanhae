@@ -17,13 +17,14 @@ const getRoomListResult = async (body) => {
 };
 const getRoomSearchResult = async (target) => {
   const result = await axios.get(`${BASE_URL}/search?keyword=${target}`);
+  console.log(result);
   return result;
 };
 
 const RoomApi = {
   getCreateRoomResult,
   getRoomListResult,
-  getRoomSearchResult
+  getRoomSearchResult,
 };
 
 export default RoomApi;
