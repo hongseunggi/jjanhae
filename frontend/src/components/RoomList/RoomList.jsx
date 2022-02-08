@@ -37,7 +37,6 @@ function RoomList() {
   };
 
   const sendKeyword = async () => {
-
     setLoading(true);
     const { data } = await getRoomSearchResult(keyword);
     setRooms(data.content);
@@ -47,7 +46,7 @@ function RoomList() {
     }, 1500);
   };
   const sendKeywordEnter = async (e) => {
-    if(e.code === "Enter"){
+    if (e.code === "Enter") {
       setLoading(true);
       const { data } = await getRoomSearchResult(keyword);
       setRooms(data.content);
@@ -168,6 +167,7 @@ function RoomList() {
 
       <Row className={style.list} style={{}}>
         {rooms.map((room, index) => {
+          console.log(room);
           return (
             <Col key={index} md={4}>
               <SettingModalContainer info={room} />
