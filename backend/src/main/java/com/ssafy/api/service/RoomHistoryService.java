@@ -11,23 +11,17 @@ import java.util.List;
  */
 public interface RoomHistoryService {
     RoomHistory addHistory(User user, Room room, AddHistoryRequest addHistoryRequest);
-<<<<<<< HEAD
     List<Integer> findAllRoomSeqByUserSeq(Long userSeq);
     RoomHistory findRoomByUserSeq(Long userSeq);
     List<Integer> findAllRoomSeqByUserSeqAndDate(Long userSeq,String date);
     List<Integer> findAllUserSeqByRoomSeq(Long userSeq);
-=======
->>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
     RoomHistory findOneHistoryAll(Long userSeq);
     RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq);
     int countJoinUser(Long roomSeq);
     void updateRoomAction(RoomHistory roomHistory);
-<<<<<<< HEAD
 
 
-=======
     RoomHistory exitHistory(RoomHistory roomHistory);
     RoomHistory findRoomHistoryByUserAndRoom(User userSeq, Room roomSeq);
     List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq);
->>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
 }

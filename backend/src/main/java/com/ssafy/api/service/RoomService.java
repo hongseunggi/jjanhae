@@ -19,9 +19,8 @@ public interface RoomService {
     Room findRoomByOwner(Long roomSeq);
     List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest);
     List<Room> selectRoomByTitle(String title);
-<<<<<<< HEAD
     List<Room> findEndRoomListByRoomSeq(List roomSeqList);
 
-=======
->>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
+
+
 }

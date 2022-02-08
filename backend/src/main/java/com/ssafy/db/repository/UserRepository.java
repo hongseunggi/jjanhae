@@ -6,6 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+
 /**
  * 유저 모델 관련 디비 쿼리 생성을 위한 JPA Query Method 인터페이스 정의.
  */
@@ -17,4 +24,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByNameAndEmail(String name, String email);
     Optional<User> findUserByUserIdAndNameAndEmail(String userId, String name, String email);
     void deleteByUserId(String userId);
+
+    @Query(value = "select distinct name from user where user_seq in :userSeqList", nativeQuery = true)
+    public List<String> findUserNameByUserSeq(@Param(value = "userSeqList")List<Integer> userSeqList);
+
 }

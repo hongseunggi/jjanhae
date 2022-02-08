@@ -44,7 +44,6 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
-<<<<<<< HEAD
     public List<Integer> findAllRoomSeqByUserSeq(Long userSeq) {
         return roomHistoryRepository.findAllRoomSeqByUserSeq(userSeq);
     }
@@ -64,8 +63,6 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
         return roomHistoryRepository.findAllUserSeqByRoomSeq(userSeq);
     }
 
-=======
->>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
     public RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq) {
         return roomHistoryRepository.findOneHistoryInRoom(userSeq, roomSeq);
     }

@@ -101,7 +101,7 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> selectRoomByTitle(String title) {
         return roomRepository.selectRoomByTitle(title);
     }
-<<<<<<< HEAD
+
 
     @Override
     public List<Room> findEndRoomListByRoomSeq(List roomSeqList) {
@@ -109,7 +109,4 @@ public class RoomServiceImpl implements RoomService {
     }
 
 
-
-=======
->>>>>>> 98012cb5c1eb296fc9d31466ed0c49088d5e0b4d
 }
