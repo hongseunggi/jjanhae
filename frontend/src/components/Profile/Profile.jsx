@@ -38,6 +38,7 @@ const Profile = () => {
   ]);
   const [loading, setLoading] = useState(false);
 
+  
   const handleEditMode = async (e) => {
     e.preventDefault();
     console.log(name);
