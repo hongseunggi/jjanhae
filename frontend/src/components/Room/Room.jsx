@@ -19,15 +19,14 @@ import Room2 from "./Room2";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-
-
+import UserVideo from "./UserVideo";
 
 let posX = 0;
 let posY = 0;
 
 const Room = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
-  const {myName, setMyName} = useContext(NameContext);
+  const { myName, setMyName } = useContext(NameContext);
   const [onPlayerClick, setOnPlayerClick] = useState(false);
   const [isPlayMusic, setIsPlayMusic] = useState(false);
 
@@ -96,7 +95,8 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
-            <VideoRoomComponent sessionName={roomseq} user = {myName} />
+            {/* <UserVideo sessionName={roomseq} user={myName} /> */}
+            <VideoRoomComponent sessionName={roomseq} user={myName} />
             {/* <Room2 /> */}
           </div>
           <div
