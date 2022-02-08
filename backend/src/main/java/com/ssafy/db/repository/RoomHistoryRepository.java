@@ -1,5 +1,6 @@
 package com.ssafy.db.repository;
 
+import com.ssafy.api.response.DrinkTogether;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.RoomHistory;
 import com.ssafy.db.entity.User;
@@ -41,5 +42,11 @@ public interface RoomHistoryRepository extends JpaRepository<RoomHistory, Long> 
             "and date_format(inserted_time, '%d') = :date" , nativeQuery = true)
     public List<Integer> findAllRoomSeqByUserSeqAndDate(@Param(value = "userSeq")Long userSeq,@Param(value = "date")String date);
 
-
+    @Query(value = "select user_seq as userSeq, count(user_seq) as numberOf from room_history" +
+            " where room_seq in (select room_seq from room_history where user_seq = :userSeq)" +
+            " and user_seq != :userSeq" +
+            " group by user_seq" +
+            " order by numberOf desc" +
+            " limit 5", nativeQuery = true)
+    public List<DrinkTogether> findDrinkTogether(@Param(value = "userSeq") Long userSeq);
 }
