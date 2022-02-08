@@ -11,7 +11,7 @@ const User = () => {
       <Routes>
         {/* <Route path="" element={<Navigate to={}} /> */}
         <Route path="/list" element={<RoomList />} />
-        <Route path="/detail" element={<Room2 />} />
+        <Route path="/detail/:roomseq" element={<Room />} />
       </Routes>
     </div>
   );

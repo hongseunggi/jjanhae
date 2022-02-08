@@ -27,7 +27,7 @@ function IntoRoom({ onClose, room }) {
   };
   const handleSubmit = () => {
     // axios ???????????
-    navigate("/conferences/detail");
+    navigate(`/conferences/detail/${room.roomSeq}`);
     onClose();
   };
 
