@@ -44,6 +44,25 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
+    public List<Integer> findAllRoomSeqByUserSeq(Long userSeq) {
+        return roomHistoryRepository.findAllRoomSeqByUserSeq(userSeq);
+    }
+
+    @Override
+    public List<Integer> findAllRoomSeqByUserSeqAndDate(Long userSeq,String date) {
+        return roomHistoryRepository.findAllRoomSeqByUserSeqAndDate(userSeq,date);
+    }
+
+
+    public RoomHistory findRoomByUserSeq(Long userSeq) {
+        return roomHistoryRepository.findRoomByUserSeq(userSeq);
+    }
+
+    @Override
+    public List<Integer> findAllUserSeqByRoomSeq(Long userSeq) {
+        return roomHistoryRepository.findAllUserSeqByRoomSeq(userSeq);
+    }
+
     public RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq) {
         return roomHistoryRepository.findOneHistoryInRoom(userSeq, roomSeq);
     }
@@ -65,5 +84,7 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     public void updateRoomAction(RoomHistory roomHistory) {
         roomHistoryRepository.save(roomHistory);
     }
+
+
 
 }

@@ -19,4 +19,8 @@ public interface RoomService {
     Room findRoomByOwner(Long roomSeq);
     List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest);
     List<Room> selectRoomByTitle(String title);
+    List<Room> findEndRoomListByRoomSeq(List roomSeqList);
+
+
+
 }

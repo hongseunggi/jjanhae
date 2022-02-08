@@ -101,4 +101,12 @@ public class RoomServiceImpl implements RoomService {
     public List<Room> selectRoomByTitle(String title) {
         return roomRepository.selectRoomByTitle(title);
     }
+
+
+    @Override
+    public List<Room> findEndRoomListByRoomSeq(List roomSeqList) {
+        return roomRepository.findEndRoomListByRoomSeq(roomSeqList);
+    }
+
+
 }
