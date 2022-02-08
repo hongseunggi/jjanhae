@@ -1,0 +1,209 @@
+.profileForm {
+  padding: 50px;
+  margin-top: -64px;
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.profileForm .title {
+  color: #eee;
+  font-size: 32px;
+  margin-bottom: 50px;
+  width: 100%;
+}
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sections {
+  display: flex;
+}
+.userProfile {
+  width: 400px;
+  height: 470px;
+  background-color: #eee;
+  border-radius: 20px;
+  border-style: none;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 50px;
+}
+
+.profileImg {
+  width: 70px;
+  height: 70px;
+  border-radius: 20px;
+  margin-right: 20px;
+}
+
+.userInfoForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+}
+.userInfoForm .profileRow {
+  display: flex;
+  margin-bottom: 20px;
+}
+.userInfoForm .userInfoData {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.userInfoForm .inputRow {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.userInfoForm .inputRow .inputRowHalf {
+  width: 40%;
+}
+
+.userInfoForm .userInfoData label {
+  margin: 0;
+  font-size: 13px;
+}
+.userInfoForm .userInfoData input {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.editbirth {
+  width: 50px;
+  text-align: center;
+}
+.userInfoData.userInfoDataEdit input {
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+}
+.editRow {
+  width: 100%;
+  text-align: right;
+}
+
+.editRow .editBtn {
+  border: none;
+  padding: 0;
+  width: 24px;
+}
+.editBtn .editIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.friendProfile {
+  width: 800px;
+  height: 470px;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 30px 100px;
+}
+.friendTitle {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  margin-bottom: 20px;
+}
+.mainTitle {
+  font-size: 32px;
+  margin-right: 20px;
+}
+.subTitle {
+  font-size: 16px;
+  color: #ff2e63;
+}
+.friends {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.friendInfo {
+  width: 160px;
+  height: 160px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.friendProfileImg {
+  width: 140px;
+  height: 160px;
+  border-radius: 50%;
+}
+
+.friendData {
+  width: 80%;
+  background-color: #c4c4c4;
+  border-radius: 20px;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.sunday-weekday {
+  background-color: red;
+}
+
+@media screen and (min-width: 1800px) {
+  .userProfile {
+    width: 600px;
+    height: 670px;
+  }
+
+  .userInfoForm .userInfoData label {
+    font-size: 20px;
+  }
+  .userInfoForm .userInfoData input {
+    font-size: 28px;
+  }
+
+  .friendTitle {
+    margin-bottom: 50px;
+  }
+  .friendProfile {
+    width: 1000px;
+    height: 670px;
+    background-color: #eee;
+    border-radius: 20px;
+    padding: 30px 100px;
+  }
+
+  .profileImg {
+    width: 170px;
+    height: 170px;
+    border-radius: 20px;
+    margin-right: 20px;
+  }
+
+  .editIcon {
+    width: 50px;
+    height: 50px;
+  }
+  .friendInfo {
+    width: 250px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .friendProfileImg {
+    width: 140px;
+    height: 160px;
+    border-radius: 50%;
+  }
+}
