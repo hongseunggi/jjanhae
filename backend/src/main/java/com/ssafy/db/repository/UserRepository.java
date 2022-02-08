@@ -28,4 +28,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select distinct name from user where user_seq in :userSeqList", nativeQuery = true)
     public List<String> findUserNameByUserSeq(@Param(value = "userSeqList")List<Integer> userSeqList);
 
+    @Query(value = "select * from user where user_seq = :userSeq", nativeQuery = true)
+    public User findOneUserByUserSeq(@Param(value = "userSeq") Long userSeq);
 }
