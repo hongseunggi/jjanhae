@@ -10,12 +10,12 @@ function RoomList() {
   const [endCheck, setEndCheck] = useState(false);
   const [offsetCount, setOffset] = useState(0);
   const [rooms, setRooms] = useState([]);
+
   const { getRoomListResult } = RoomApi;
 
   const offsetCountRef = useRef(offsetCount);
   offsetCountRef.current = offsetCount;
 
-  
   const endCheckRef = useRef(endCheck);
   endCheckRef.current = endCheck;
 
