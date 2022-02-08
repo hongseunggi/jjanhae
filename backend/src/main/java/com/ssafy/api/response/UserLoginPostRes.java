@@ -18,13 +18,14 @@ import java.time.LocalDate;
 public class UserLoginPostRes extends BaseResponseBody{
 	@ApiModelProperty(name="유저 토큰", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.ey")
 	String accessToken;
-
+	String name;
 	
-	public static UserLoginPostRes of (Integer statusCode, String message, String accessToken) {
+	public static UserLoginPostRes of (Integer statusCode, String message, String accessToken, String userName) {
 		UserLoginPostRes res = new UserLoginPostRes();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
 		res.setAccessToken(accessToken);
+		res.setName(userName);
 		return res;
 	}
 }

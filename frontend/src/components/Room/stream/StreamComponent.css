@@ -34,6 +34,7 @@
 }
 
 .streamComponent {
+  width: 100%;
   height: 100%;
 }
 
@@ -87,7 +88,14 @@ video {
   position: absolute;
   overflow: hidden;
 }
-
+/* .controlbox{
+  bottom:-50px;
+  transition: all ease 1s 0s;
+} */
+/* .OT_widget-container:hover > .controlbox{
+  bottom:0px;
+  transition: all ease 1s 0s;
+} */
 #input,
 #label {
   color: white;

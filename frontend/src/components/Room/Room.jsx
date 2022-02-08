@@ -9,6 +9,8 @@ import { ReactComponent as MusicIcon } from "../../assets/icons/music.svg";
 import { ReactComponent as SettingIcon } from "../../assets/icons/setting.svg";
 import Marquee from "react-fast-marquee";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
+import NameContext from "../../contexts/NameContext";
+
 import RegistMusic from "../Modals/RegistMusic/RegistMusic";
 import GameList from "../Modals/Game/GameList";
 import Setting from "../Modals/Setting/Setting";
@@ -24,6 +26,7 @@ let posY = 0;
 
 const Room = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
+  const { myName, setMyName } = useContext(NameContext);
   const [onPlayerClick, setOnPlayerClick] = useState(false);
   const [isPlayMusic, setIsPlayMusic] = useState(false);
 
@@ -92,8 +95,7 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
-            {/* <VideoRoomComponent sessionName={roomseq} /> */}
-            <UserVideo sessionName={roomseq} />
+            <VideoRoomComponent sessionName={roomseq} user={myName} />
             {/* <Room2 /> */}
           </div>
           <div
