@@ -93,12 +93,6 @@ const Room = () => {
           <div className={styles.videos}>
             <VideoRoomComponent sessionName={roomseq} />
             {/* <Room2 /> */}
-            {/* <video />
-            <video />
-            <video />
-            <video />
-            <video />
-            <video /> */}
           </div>
           <div
             className={styles.player}

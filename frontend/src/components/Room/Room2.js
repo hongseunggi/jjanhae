@@ -3,7 +3,6 @@ import { OpenVidu } from "openvidu-browser";
 import React, { Component } from "react";
 import "./Room2.css";
 import UserVideoComponent from "./UserVideoComponent";
-import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
