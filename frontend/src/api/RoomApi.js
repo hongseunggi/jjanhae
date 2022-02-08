@@ -23,6 +23,7 @@ const getRoomSearchResult = async (target) => {
 const RoomApi = {
   getCreateRoomResult,
   getRoomListResult,
+  getRoomSearchResult,
 };
 
 export default RoomApi;
