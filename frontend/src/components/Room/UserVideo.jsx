@@ -162,8 +162,8 @@ const UserVideo = (props) => {
     publisher = OV.initPublisher(undefined, {
       audioSource: undefined,
       videoSource: undefined,
-      publishAudio: localUserInit.isAudioActive(),
-      publishVideo: localUserInit.isVideoActive(),
+      publishAudio: props.media.audio,
+      publishVideo: props.media.video,
       resolution: "640x480",
       frameRate: 30,
       insertMode: "APPEND",
