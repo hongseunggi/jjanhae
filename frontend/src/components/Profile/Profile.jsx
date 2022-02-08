@@ -72,15 +72,21 @@ const Profile = () => {
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
 
-    const {data} = await getImgUploadResult(formData);
-    console.log(data);
-    setMyImg(data.url);
-    const body = {
-      imageUrl : data.url
+    const { data } = await getImgUploadResult(formData);
+    if(data.statusCode === 200){
+      console.log(data);
+      setMyImg(data.url);
+      const body = {
+        imageUrl: data.url,
+      };
+        const result = await getUpdateProfileImgResult(body);
+        console.log(result);
     }
-    const result = await getUpdateProfileImgResult(body);
-    console.log(result);
-  }
+    else console.log("Upload fail");
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
 
   const nameHandler = (e) => {
     e.preventDefault();
@@ -177,10 +183,12 @@ const Profile = () => {
               >
                 <label htmlFor="email">이메일</label>
                 <input
-                  id="email"
-                  type="text"
-                  value={email}
-                  disabled
+                  type="file"
+                  id="input-img"
+                  accept="image/png, image/jpeg"
+                  style={{ display: "none" }}
+                  onChange={imgInputhandler}
+                  accept="image/jpeg, image/png"
                 />
               </div>
             </div>

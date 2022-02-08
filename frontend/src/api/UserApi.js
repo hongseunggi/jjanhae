@@ -1,6 +1,6 @@
 import axios from "axios";
-// const BASE_URL = "http://localhost:8081/api/v1/user";
-const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
+const BASE_URL = "http://localhost:8081/api/v1/user";
+// const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
 // 유저관련 api 설정
 const getRegistResult = async (body) => {

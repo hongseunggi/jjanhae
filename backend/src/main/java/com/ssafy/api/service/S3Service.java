@@ -67,10 +67,12 @@ public class S3Service {
         connection.getOutputStream().write(pic);
         connection.getResponseCode();
         System.out.println("HTTP response code is " + connection.getResponseCode());
-
-        S3Object object = s3Client.getObject(bucket, fileName);
-
-        System.out.println(object.getKey());
+        if(connection.getResponseCode() != 200){
+            return null;
+        }
+//        S3Object object = s3Client.getObject(bucket, fileName);
+//
+//        System.out.println(object.getKey());
 
         return s3Client.getUrl(bucket, fileName).toString();
     }

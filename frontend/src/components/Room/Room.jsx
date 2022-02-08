@@ -7,6 +7,17 @@ import { ReactComponent as GameIcon } from "../../assets/icons/game.svg";
 import { ReactComponent as MusicIcon } from "../../assets/icons/music.svg";
 import { ReactComponent as SettingIcon } from "../../assets/icons/setting.svg";
 import Marquee from "react-fast-marquee";
+import LoginStatusContext from "../../contexts/LoginStatusContext";
+import RegistMusic from "../Modals/RegistMusic/RegistMusic";
+import GameList from "../Modals/Game/GameList";
+import Setting from "../Modals/Setting/Setting";
+// import VideoRoomComponent from "./VideoRoomComponent";
+import Room2 from "./Room2";
+import { useEffect } from "react";
+import { useState } from "react";
+
+let posX = 0;
+let posY = 0;
 
 const Room = () => {
   return (
@@ -17,12 +28,14 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
+            {/* <VideoRoomComponent /> */}
+            <Room2 />
+            {/* <video />
             <video />
             <video />
             <video />
             <video />
-            <video />
-            <video />
+            <video /> */}
           </div>
           <div className={styles.player}>
             <div className={styles.playerIcon}>
