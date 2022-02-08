@@ -82,10 +82,12 @@ const CalendarPage = () => {
   }, [value]);
 
   useEffect(async () => {
-    const result = await getRoomList(item.day);
-    let roomList = [];
-    roomList = result.data.roomList; 
-    setRoomList({roomList});
+    if(item.day!="") {
+      const result = await getRoomList(item.day);
+      let roomList = [];
+      roomList = result.data.roomList; 
+      setRoomList({roomList});
+    }
   }, [item.day])
 
 
@@ -129,6 +131,7 @@ const CalendarPage = () => {
   }, [roomList]);
 
   useEffect(() => {
+    console.log(room);
     setTime({
       startTime : room.startTime,
       endTime : room.endTime

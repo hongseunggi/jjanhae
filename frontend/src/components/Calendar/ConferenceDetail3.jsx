@@ -25,38 +25,6 @@ const ConferenceDetail = (props) => {
     );
   }
 
-
-  //   const calcTime = () => {
-    
-  //     let startTimeDate = roomDetail.startTime.date;
-  //     let startTime = roomDetail.startTime.time;
-  //     let endTimeDate = roomDetail.endTime.date;
-  //     let endTime = roomDetail.endTime.time;
-  //     const start = new Date(startTimeDate.year,startTimeDate.month,startTimeDate.day,startTime.hour,startTime.minute);
-  //     const end = new Date(endTimeDate.year,endTimeDate.month,endTimeDate.day,endTime.hour,endTime.minute);
-  //     let elapsedSec = end.getTime() - start.getTime();
-  //     let elapsedMin = elapsedSec/1000/60;
-  //     elapsedMin = parseInt(elapsedMin);
-  //     let totalHour = Math.floor(elapsedMin/60); 
-  //     let totalMin = elapsedMin%60; 
-  //     let totalTimeFormat = totalHour+":"+totalMin;
-  
-  //     let startHour = startTime.hour;
-  //     let startMin = startTime.minute;
-  //     let startTimeFormat = startHour+":"+startMin;
-
-  //     console.log(startTimeFormat);
-  //     console.log(totalTimeFormat);
-  
-  //     const timeData = [];
-  //     timeData.push(startTimeFormat);
-  //     timeData.push(totalTimeFormat);
-
-  //     setStartTime(startTimeFormat);
-  //     setTotalTime(totalTimeFormat);
-
-  // }
-
   useEffect(()=> {
     setParticipant({userList})
   },[userList])
