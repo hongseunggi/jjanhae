@@ -286,6 +286,7 @@ class OpenViduLayout {
   }
 
   updateLayout() {
+    console.log(this.layoutContainer + "hihiihihihii");
     if (this.layoutContainer.style.display === "none") {
       return;
     }

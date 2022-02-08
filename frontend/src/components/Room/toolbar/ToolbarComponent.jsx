@@ -1,4 +1,3 @@
-
 import styles from "./ToolbarComponent.module.css";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,52 +15,50 @@ import QuestionAnswer from "@material-ui/icons/QuestionAnswer";
 import IconButton from "@material-ui/core/IconButton";
 
 import logo from "../../../assets/logo.png";
-import {useState} from "react";
+import { useState } from "react";
 
+function ToolbarComponent({
+  sessionId,
+  user,
+  camStatusChanged,
+  micStatusChanged,
+}) {
+  const [fullscreen, setFullscreen] = useState(false);
+  const mySessionId = sessionId;
+  const localUser = user;
+  console.log(localUser.isAudioActive());
 
+  // const activeFullscreen = () => {
+  //     setFullscreen(!fullscreen);
+  //     toggleFullscreen();
+  // }
 
-function ToolbarComponent({sessionId, user, camStatusChanged, micStatusChanged}){
-    
-    const [fullscreen, setFullscreen] = useState(false);
-    const mySessionId = sessionId;
-    const localUser = user;
-
-    // const activeFullscreen = () => {
-    //     setFullscreen(!fullscreen);
-    //     toggleFullscreen();
-    // }
-
-
-    return(
-
+  return (
     <div className={styles.toolbar}>
-        
-
-        <div className={styles.buttonClass}>
-        <button
-            className={styles.buttons}
-            onClick={micStatusChanged}
-        >
-            {localUser !== undefined && localUser.isAudioActive() ? (
-            <Mic style={{
-                marginTop : "5px"
-            }} />
-            ) : (
-            <MicOff style={{
-                marginTop : "5px"
-            }} color="secondary" />
-            )}
+      <div className={styles.buttonClass}>
+        <button className={styles.buttons} onClick={micStatusChanged}>
+          {localUser !== undefined && localUser.isAudioActive() ? (
+            <Mic
+              style={{
+                marginTop: "5px",
+              }}
+            />
+          ) : (
+            <MicOff
+              style={{
+                marginTop: "5px",
+              }}
+              color="secondary"
+            />
+          )}
         </button>
 
-        <button
-            className={styles.buttons}
-            onClick={camStatusChanged}
-        >
-            {localUser !== undefined && localUser.isVideoActive() ? (
+        <button className={styles.buttons} onClick={camStatusChanged}>
+          {localUser !== undefined && localUser.isVideoActive() ? (
             <Videocam />
-            ) : (
+          ) : (
             <VideocamOff color="secondary" />
-            )}
+          )}
         </button>
 
         {/* <IconButton
@@ -93,11 +90,9 @@ function ToolbarComponent({sessionId, user, camStatusChanged, micStatusChanged})
             <QuestionAnswer />
             </Tooltip>
         </IconButton> */}
-        </div>
+      </div>
     </div>
-
-    )
-
+  );
 }
 
 export default ToolbarComponent;

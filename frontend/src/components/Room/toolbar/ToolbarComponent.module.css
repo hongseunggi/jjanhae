@@ -1,28 +1,28 @@
-  .toolbar{
-    color: #ffffff;
-    width: inherit;
-    height: max-content;
-    /* background-color: #333333; */
-    text-align: center;
-    /* padding: 0 14px 0 0; */
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: 999999;
-    /* min-width: 400px !important; */
-  }
-  
-  .buttonClass{
-    background-color: #ffffff;
-  }
-  .buttons{
-    margin: 0 auto;
-    border: none;
-    background-color: rgba(255, 255, 255, 0);
-    width: 50px;
-  }
-  
-  /* .headerLight{
+.toolbar {
+  color: #ffffff;
+  width: inherit;
+  height: max-content;
+  /* background-color: #333333; */
+  text-align: center;
+  /* padding: 0 14px 0 0; */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 999999;
+  /* min-width: 400px !important; */
+}
+
+.buttonClass {
+  background-color: #ffffff;
+}
+.buttons {
+  margin: 0 auto;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  width: 50px;
+}
+
+/* .headerLight{
     color: #706969 !important;
     background-color: #eeeeee !important;
   }
@@ -64,6 +64,9 @@
     font-family: 'Open Sans', sans-serif; 
   } */
 
+#session-title {
+  font-family: "Open Sans", sans-serif;
+}
 
 /* #point{
   width: 10px;
@@ -76,14 +79,15 @@
   border: 1px solid #000;
   z-index: 99999;
 }
-.pointLight{
+.pointLight {
   border: 1px solid #ffffff !important;
 } */
 
 /* 
 @media only screen and (max-width: 700px) {
-  #titleContent, #navChatButton {
-      display: none;
+  #titleContent,
+  #navChatButton {
+    display: none;
   }
 } */
 

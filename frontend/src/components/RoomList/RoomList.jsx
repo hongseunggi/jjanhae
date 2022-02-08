@@ -167,7 +167,6 @@ function RoomList() {
 
       <Row className={style.list} style={{}}>
         {rooms.map((room, index) => {
-          console.log(room);
           return (
             <Col key={index} md={4}>
               <SettingModalContainer info={room} />
