@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Room.module.css";
 import { ReactComponent as PlayerIcon } from "../../assets/icons/player.svg";
 import { ReactComponent as PlayIcon } from "../../assets/icons/play.svg";

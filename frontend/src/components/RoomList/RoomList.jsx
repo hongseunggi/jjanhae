@@ -5,16 +5,12 @@ import RoomApi from "../../api/RoomApi";
 import SettingModalContainer from "./SettingModalContainer";
 
 function RoomList() {
-  const [loading, setLoading] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [endCheck, setEndCheck] = useState(false);
   const [offsetCount, setOffset] = useState(0);
-  const [order, setOrder] = useState("desc");
-  const [sort, setSort] = useState("createdAt");
   const [rooms, setRooms] = useState([]);
-  const [keyword, setKeyword] = useState("");
-
-  const { getRoomListResult, getRoomSearchResult } = RoomApi;
+  const { getRoomListResult } = RoomApi;
 
   const offsetCountRef = useRef(offsetCount);
   offsetCountRef.current = offsetCount;
@@ -22,65 +18,24 @@ function RoomList() {
   const endCheckRef = useRef(endCheck);
   endCheckRef.current = endCheck;
 
-  const orderRef = useRef(order);
-  orderRef.current = order;
-
-  const sortRef = useRef(sort);
-  sortRef.current = sort;
-
   const [target, setTarget] = useState(null);
 
-  const keywordHandler = (e) => {
-    e.preventDefault();
-    setKeyword(e.target.value);
-  };
-
-  const sendKeyword = async () => {
-    setLoading(true);
-    const { data } = await getRoomSearchResult(keyword);
-    setRooms(data.content);
-    setEndCheck(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-  };
-  const sendKeywordEnter = async (e) => {
-    if (e.code === "Enter") {
-      setLoading(true);
-      const { data } = await getRoomSearchResult(keyword);
-      setRooms(data.content);
-      setEndCheck(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1500);
-    }
-  };
-
-  const splitOrderSort = (e) => {
-    e.preventDefault();
-
-    let splitstr = e.target.value.split(" ");
-    setKeyword("");
-    setEndCheck(false);
-    setRooms([]);
-    setSort(splitstr[0]);
-    setOrder(splitstr[1]);
-    setOffset(0);
-  };
-
   const loadItem = async () => {
+    if (endCheckRef.current) {
+      setLoading(false);
+    }
     if (!endCheckRef.current) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1500);
       setIsLoaded(true);
-
+      setLoading(true);
+      console.log(offsetCountRef.current);
       let body = {
-        sort: sortRef.current,
-        order: orderRef.current,
-        limit: 6,
-        offset: offsetCountRef.current,
+        paging: {
+          hasNext: "T",
+          limit: 6,
+          offset: offsetCountRef.current,
+        },
+        sort: "all",
+        order: "",
       };
       const { data } = await getRoomListResult(body);
       if (data.content.length === 0) {
@@ -93,7 +48,9 @@ function RoomList() {
       });
 
       setOffset(offsetCountRef.current + 6);
-
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
       setIsLoaded(false);
     }
   };
@@ -110,7 +67,7 @@ function RoomList() {
     let observer;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.2,
+        threshold: 0.4,
       });
       observer.observe(target);
     }
@@ -123,11 +80,11 @@ function RoomList() {
       <Row className={style.srow}>
         <Col className={style.searchbox}>
           <div className={style.searchdiv}>
-            <select className={style.select} onChange={splitOrderSort}>
-              <option value="createdAt desc">최근생성순</option>
-              <option value="createdAt asc">오래된 생성순</option>
-              <option value="drinkLimit desc">주량 높은순</option>
-              <option value="drinkLimit asc">주량 낮은순</option>
+            <select className={style.select}>
+              <option>전체보기</option>
+              <option>생성시간순</option>
+              <option>주량 높은순</option>
+              <option>주량 낮은순</option>
             </select>
             <svg
               className={style.svg}
@@ -144,15 +101,8 @@ function RoomList() {
                 fill="#ffff"
               />
             </svg>
-            <input
-              className={style.search}
-              value={keyword}
-              onChange={keywordHandler}
-              onKeyPress={sendKeywordEnter}
-            ></input>
-            <button className={style.sbutton} onClick={sendKeyword}>
-              검색
-            </button>
+            <input className={style.search}></input>
+            <button className={style.sbutton}>검색</button>
           </div>
         </Col>
       </Row>
@@ -163,37 +113,26 @@ function RoomList() {
           }}
         ></div>
       </Row>
-
-      <Row className={style.list} style={{}}>
+      <Row className={style.list}>
         {rooms.map((room, index) => {
-          console.log(room);
           return (
             <Col key={index} md={4}>
               <SettingModalContainer info={room} />
             </Col>
-            </Row>
-            <Row>
-                <div style={{
-                    height : "20px"
-                }}></div>
-            </Row>
-            <Row className={style.list}>
-                {rooms.map((room, index)=>{
-                    return(
-                        <Col key={index} md = {4}>
-                            <SettingModalContainer info = {room}/>                         
-                        </Col>)
-                })}
-                <div ref={setTarget} style={{
-                    width: "100vw",
-                    height: "1px",
-                }}>
-                    {isLoaded}
-                </div>
-            </Row>
-        </Container>
-        
-    )
+          );
+        })}
+        <div
+          ref={setTarget}
+          style={{
+            width: "100vw",
+            height: "1px",
+          }}
+        >
+          {isLoaded}
+        </div>
+      </Row>
+    </Container>
+  );
 }
 
 export default RoomList;
