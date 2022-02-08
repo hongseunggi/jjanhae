@@ -12,6 +12,7 @@ function IntoRoom({ onClose, room }) {
   const [isVideo, setVideo] = useState(false);
   const navigate = useNavigate();
 
+  
   console.log(room, "난 모달");
 
   const handleClose = (e) => {

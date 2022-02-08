@@ -93,6 +93,7 @@ function SettingModalContainer(props) {
           <h5>{info.description}</h5>
         </div>
         <div className={style.footer}>
+          
           <Clock
             fill="#EEE"
             width="20"

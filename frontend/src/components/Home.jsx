@@ -17,6 +17,7 @@ function Home() {
 
   const openRoomConfigModal = () => {
     setModalOpen(true);
+    
   };
   const closeRoomConfigModal = () => {
     setModalOpen(false);

@@ -42,7 +42,9 @@ const Profile = () => {
     e.preventDefault();
     console.log(name);
     setIsEdit((prev) => !prev);
-    if(isEdit){
+    if (isEdit) {
+      setLoading(true);
+      
       let body = {
         name : name,
         drink : drink,

@@ -10,6 +10,7 @@
     /* opacity: 0.5; */
     backdrop-filter: blur(10px);
 }
+
 .modal.openModal {
     display: flex;
     align-items: center;

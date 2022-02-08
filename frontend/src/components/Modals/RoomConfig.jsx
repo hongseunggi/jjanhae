@@ -12,6 +12,7 @@ import { useContext } from "react";
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
+
 const RoomConfig = ({ open, onClose }) => {
   // const { open, close, header } = props;
   const navigate = useNavigate();

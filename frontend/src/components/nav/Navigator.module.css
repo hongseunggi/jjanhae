@@ -3,6 +3,7 @@
   height: 64px;
   display: inline-block;
 }
+
 .link {
   z-index: 1;
   position: relative;

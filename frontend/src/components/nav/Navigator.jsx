@@ -56,6 +56,7 @@ function Navigator() {
           </Row>
         </Container>
       );
+      
     case "3":
       return (
         <Container fluid>
