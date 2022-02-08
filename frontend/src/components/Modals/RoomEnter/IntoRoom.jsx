@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import style from "./IntoRoom.module.css";
-import { ReactComponent as Micx } from "../../assets/icons/micx.svg";
-import { ReactComponent as Mic } from "../../assets/icons/mic.svg";
-import { ReactComponent as Videox } from "../../assets/icons/videox.svg";
-import { ReactComponent as Video } from "../../assets/icons/video.svg";
+import { ReactComponent as Micx } from "../../../assets/icons/micx.svg";
+import { ReactComponent as Mic } from "../../../assets/icons/mic.svg";
+import { ReactComponent as Videox } from "../../../assets/icons/videox.svg";
+import { ReactComponent as Video } from "../../../assets/icons/video.svg";
 import { useNavigate } from "react-router-dom";
 
 function IntoRoom({ onClose, room }) {
@@ -27,7 +27,7 @@ function IntoRoom({ onClose, room }) {
   };
   const handleSubmit = () => {
     // axios ???????????
-    navigate("/conferences/detail");
+    navigate(`/conferences/detail/${room.roomSeq}`);
     onClose();
   };
 

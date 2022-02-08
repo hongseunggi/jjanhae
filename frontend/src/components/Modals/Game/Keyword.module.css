@@ -8,7 +8,7 @@
     bottom: 0;
     left: 0;
     z-index: 99;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.473);
   }
   .modalForm header {
     display: flex;
@@ -32,7 +32,7 @@
     height: 300px;
     /* margin: 0 auto; */
     border-radius: 50px;
-    background-color: #fff;
+    background-color: rgba(238, 238, 238, 0.623);
     /* 팝업이 열릴때 스르륵 열리는 효과 */
     animation: modal-show 0.3s;
     overflow: hidden;
@@ -106,12 +106,30 @@
     background-color: #eee;
   }
   .informBorder {
-    align-items: center; 
+    align-items: center;
+    display: flex;
+    flex-direction: column;
   }
   .informText {
       font-weight: bolder;
       font-size: 20px;
       width : 80%;
+  }
+  .inputKeyword {
+    border-radius: 10px;
+    height: 33px;
+    background-color: #eee;
+    padding: 10px;
+    font-size: 15px;
+  }
+  .confirmBtn {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .text {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bolder;
   }
 
   @keyframes modal-show {

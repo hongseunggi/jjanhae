@@ -1,24 +1,16 @@
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import "./Room2.css";
 import UserVideoComponent from "./UserVideoComponent";
-import { useParams } from 'react-router-dom';
-// import RoomContext from "../../contexts/RoomContext";
+
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
-export function withRouter(Children){
-  return(props)=>{
-
-     const match  = {params: useParams()};
-     return <Children {...props}  match = {match}/>
- }
-}
 class Room2 extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
+
     this.state = {
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
@@ -35,12 +27,14 @@ class Room2 extends Component {
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.camStatusChanged = this.camStatusChanged.bind(this);
+    this.micStatusChanged = this.micStatusChanged.bind(this);
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+    this.toggleChat = this.toggleChat.bind(this);
+    this.checkNotification = this.checkNotification.bind(this);
   }
 
   componentDidMount() {
-    if(this.props.match.params.id !== ''){
-      this.setState({session : this.props.match.params.id})
-    }
     window.addEventListener("beforeunload", this.onbeforeunload);
   }
 
@@ -199,43 +193,19 @@ class Room2 extends Component {
     });
   }
 
-  async switchCamera() {
-    try {
-      const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
-        (device) => device.kind === "videoinput"
-      );
+  // camStatusChanged() {
+  //   localUser.setVideoActive(!localUser.isVideoActive());
+  //   localUser.getStreamManager().publishVideo(localUser.isVideoActive());
+  //   this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
+  //   this.setState({ localUser: localUser });
+  // }
 
-      if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
-          (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
-        );
-
-        if (newVideoDevice.length > 0) {
-          // Creating a new publisher with specific videoSource
-          // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
-            videoSource: newVideoDevice[0].deviceId,
-            publishAudio: true,
-            publishVideo: true,
-            mirror: true,
-          });
-
-          //newPublisher.once("accessAllowed", () => {
-          await this.state.session.unpublish(this.state.mainStreamManager);
-
-          await this.state.session.publish(newPublisher);
-          this.setState({
-            currentVideoDevice: newVideoDevice,
-            mainStreamManager: newPublisher,
-            publisher: newPublisher,
-          });
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  // micStatusChanged() {
+  //   localUser.setAudioActive(!localUser.isAudioActive());
+  //   localUser.getStreamManager().publishAudio(localUser.isAudioActive());
+  //   this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
+  //   this.setState({ localUser: localUser });
+  // }
 
   render() {
     const mySessionId = this.state.mySessionId;
@@ -292,17 +262,27 @@ class Room2 extends Component {
         {this.state.session !== undefined ? (
           <div id="session">
             <div id="session-header">
-              <h1 id="session-title">{mySessionId}</h1>
-              <input
+              {/* <h1 id="session-title">{mySessionId}</h1> */}
+              {/* <input
                 className="btn btn-large btn-danger"
                 type="button"
                 id="buttonLeaveSession"
                 onClick={this.leaveSession}
                 value="Leave session"
-              />
+              /> */}
+              {/* <ToolbarComponent
+                sessionId={mySessionId}
+                // user={localUser}
+                showNotification={this.state.messageReceived}
+                camStatusChanged={this.camStatusChanged}
+                micStatusChanged={this.micStatusChanged}
+                toggleFullscreen={this.toggleFullscreen}
+                leaveSession={this.leaveSession}
+                toggleChat={this.toggleChat}
+              /> */}
             </div>
 
-            {this.state.mainStreamManager !== undefined ? (
+            {/* {this.state.mainStreamManager !== undefined ? (
               <div id="main-video" className="col-md-6">
                 <UserVideoComponent
                   streamManager={this.state.mainStreamManager}
@@ -315,7 +295,7 @@ class Room2 extends Component {
                   value="Switch Camera"
                 />
               </div>
-            ) : null}
+            ) : null} */}
             <div id="video-container" className="col-md-6">
               {this.state.publisher !== undefined ? (
                 <div
@@ -364,6 +344,7 @@ class Room2 extends Component {
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
       var data = JSON.stringify({ customSessionId: sessionId });
+      console.log(data);
       axios1
         .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
@@ -379,6 +360,7 @@ class Room2 extends Component {
         .catch((response) => {
           var error = Object.assign({}, response);
           if (error?.response?.status === 409) {
+            console.log(error);
             resolve(sessionId);
           } else {
             console.log(error);
@@ -431,5 +413,5 @@ class Room2 extends Component {
     });
   }
 }
-export default withRouter(Room2);
-// export default Room2;
+
+export default Room2;
