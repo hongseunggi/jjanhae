@@ -7,12 +7,13 @@ import { ReactComponent as GoogleIcon } from "../../assets/icons/google.svg";
 import infoLogo from "../../assets/infoLogo.png";
 import UserApi from "../../api/UserApi.js";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
+import NameContext from "../../contexts/NameContext";
 import GoogleLoginBtn from "./GoogleLogin";
 import GoogleLogin from "react-google-login";
 
 const Login = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
-
+  const { setMyName } = useContext(NameContext);
   const [input, setInput] = useState({
     id: "",
     password: "",
@@ -126,6 +127,8 @@ const Login = () => {
       const { data } = await getLoginResult(body);
       setLoginMsg("");
       setLoginStatus("2");
+      // console.log(data);
+      setMyName(data.name);
       navigate("/");
     } catch ({ response }) {
       console.log(response);
