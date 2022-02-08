@@ -8,7 +8,7 @@ import { ReactComponent as MusicIcon } from "../../assets/icons/music.svg";
 import { ReactComponent as SettingIcon } from "../../assets/icons/setting.svg";
 import Marquee from "react-fast-marquee";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
-import RegistMusic from "../Modals/RegistMusic/RegistMusic";
+import RegistMusic from "../Modals/RegistMusic";
 import GameList from "../Modals/Game/GameList";
 import Setting from "../Modals/Setting/Setting";
 // import VideoRoomComponent from "./VideoRoomComponent";
