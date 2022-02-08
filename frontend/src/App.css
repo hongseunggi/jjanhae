@@ -1,0 +1,10 @@
+.App {
+  background-color: #252a34;
+}
+html,
+body,
+#root,
+.App {
+  height: 100%;
+  /* width: 100%; */
+}

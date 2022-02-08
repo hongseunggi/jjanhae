@@ -1,0 +1,282 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0;
+  color: #eee;
+  width: 580px;
+  height: calc(100vh - 120px);
+  justify-content: center;
+}
+
+.header {
+  width: 100%;
+  margin: 0 auto 40px auto;
+}
+
+.header h1 {
+  display: block;
+  margin: 0 auto;
+  width: 80px;
+  font-size: 32px;
+  text-align: center;
+}
+
+.main {
+  width: 100%;
+  padding: 50px 60px;
+  border: 0.5px solid rgba(238, 238, 238, 0.3);
+}
+
+.progressBar {
+  margin-bottom: 20px;
+}
+
+.info {
+  margin: 20px 0px 40px 0px;
+  font-size: 28px;
+}
+
+.inputRow {
+  width: 100%;
+}
+
+.inputRow label {
+  font-weight: 400;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.checkbox input {
+  width: 20px;
+  height: 20px;
+}
+.checkbox label {
+  margin: 0 0 0 10px;
+  font-size: 20px;
+}
+
+.policy {
+  height: 100px;
+  overflow: scroll;
+  border: 0.25px solid #dcdcdc80;
+  padding: 8px;
+  margin-bottom: 30px;
+}
+
+.policy h1 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.policy h2 {
+  font-size: 15px;
+}
+
+.policy span {
+  font-size: 12px;
+}
+.unchecked {
+  /* border: 1px solid 000; */
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  border-radius: 50%;
+  background-size: contain;
+  background-image: url("../../assets/icons/uncheck.svg");
+}
+
+.checked {
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  border-radius: 50%;
+  background-size: contain;
+  background-image: url("../../assets/icons/check.svg");
+}
+.input {
+  display: flex;
+  flex-direction: column;
+}
+.inputWithBtn {
+  display: flex;
+  flex-direction: row;
+}
+
+/* .input .complete {} */
+
+.input label {
+  font-size: 18px;
+  opacity: 70%;
+}
+.label::after {
+  display: inline-block;
+  margin: 0 0 4px 5px;
+  content: "";
+  width: 5px;
+  height: 5px;
+  background-color: #f44336;
+  border-radius: 3px;
+}
+
+.inputData {
+  height: 50px;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  border: 0.5px solid rgba(238, 238, 238, 0.5);
+  border-radius: 10px;
+  background-color: transparent;
+  color: white;
+  padding: 10px;
+  font-weight: 500;
+  width: 100%;
+  cursor: text;
+}
+.inputData.birthInput {
+  margin-bottom: 30px;
+}
+.inputData.complete {
+  height: 30px;
+  border: none;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.inputData.inputError {
+  border: 1px solid tomato;
+}
+
+.inputData:focus {
+  border: 0.5px solid rgba(27, 100, 218, 0.7);
+}
+
+.alertMsg {
+  color: #eee;
+  opacity: 50%;
+  font-size: 13px;
+  padding-left: 20px;
+}
+
+.maskingMsg {
+  padding: 0;
+  color: #eee;
+  opacity: 50%;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.errorMsg {
+  position: relative;
+  color: #ff5722;
+  font-size: 15px;
+  white-space: pre-wrap;
+  margin: 0;
+  height: 30px;
+}
+
+.nextBtn {
+  width: 100%;
+  height: 50px;
+  background-color: #ff2e63;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  outline: none;
+  transition: 0.2s;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.nextBtn.disabled {
+  background-color: rgba(219, 219, 219, 0.5);
+  cursor: default;
+}
+.checkBtn {
+  width: 100px;
+  background-color: #ff2e63;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: 20px;
+  color: #eee;
+  font-weight: 600;
+  border: none;
+}
+.confirmBtn {
+  width: 100px;
+  background-color: #08d9d6;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: 20px;
+  font-weight: 600;
+}
+
+.dateHeader {
+  width: 300px;
+}
+.dateHeader select {
+  margin: 0 5px;
+}
+.selectYear {
+  height: 50px;
+  overflow: scroll;
+}
+.dateBtn {
+  width: 50px;
+  border: none;
+}
+
+.drinkInfo {
+  display: flex;
+}
+
+.drinkSelect {
+  width: 100px;
+  border: 0.5px solid rgba(238, 238, 238, 0.5);
+  border-radius: 10px;
+  font-size: 16px;
+  color: #eee;
+  margin-right: 30px;
+  background-color: #252a34;
+  padding-left: 15px;
+}
+
+.drinkLimit {
+  width: 100px;
+}
+
+.btnRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.findPwdBtn {
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  outline: none;
+  color: #eee;
+  padding: 0;
+}
+
+.inputRow.findpwdInput {
+  margin-bottom: 20px;
+}
+/* @media screen and (min-width: 1800px) {
+  .innerContainer {
+    padding: 150px 0;
+  }
+
+  .contents {
+    padding: 50px 0;
+  }
+} */
