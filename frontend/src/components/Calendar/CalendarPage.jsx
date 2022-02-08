@@ -53,12 +53,12 @@ const CalendarPage = () => {
   };
 
   const handleCloseList = (event) => {
-    if(event.target.nodeName!=="BUTTON") {
-      for(let i=0; i<partyIconBtn.current.length; i++) {
-        dropDown.current[i].style.visibility='hidden';
+    if (event.target.nodeName !== "BUTTON") {
+      for (let i = 0; i < partyIconBtn.current.length; i++) {
+        dropDown.current[i].style.visibility = "hidden";
       }
     }
-  }
+  };
 
   useEffect(() => {
     setCalendar(buildCalendar(value));
@@ -73,10 +73,10 @@ const CalendarPage = () => {
   useEffect(() => {}, [detailModalOpen]);
 
   useEffect(() => {
-    document.addEventListener('click', handleCloseList);
+    document.addEventListener("click", handleCloseList);
 
     return () => {
-      document.removeEventListener('click', handleCloseList);
+      document.removeEventListener("click", handleCloseList);
     };
   });
 
@@ -109,31 +109,31 @@ const CalendarPage = () => {
   };
 
   function showList(target) {
-    if(target.visibility==='visible') {
-      target.visibility='hidden';
-      target.opacity='0';
-      target.transform='translateY(0)';
-    }else {
-      target.visibility='visible';
-      target.opacity='1';
-      target.transform='translateY(-20px)';
+    if (target.visibility === "visible") {
+      target.visibility = "hidden";
+      target.opacity = "0";
+      target.transform = "translateY(0)";
+    } else {
+      target.visibility = "visible";
+      target.opacity = "1";
+      target.transform = "translateY(-20px)";
     }
   }
-  
+
   function setUnvisible(event) {
-    for(let i=0; i<dropDown.current.length; i++) {
-      dropDown.current[i].style.visibility='hidden';
+    for (let i = 0; i < dropDown.current.length; i++) {
+      dropDown.current[i].style.visibility = "hidden";
     }
     showList(event.target.nextElementSibling.style);
   }
-  
+
   const calcYoil = (day) => {
     let yoil = dayStyles(day);
     let date = day.format("D").toString();
     return <div className={styles[yoil]}>{date}</div>;
   };
 
-  const listStyle = {visibility:"hidden"};
+  const listStyle = { visibility: "hidden" };
 
   const checkParty = (day) => {
     for (let i = 0; i < party.conferences.length; i++) {
@@ -141,16 +141,49 @@ const CalendarPage = () => {
         return (
           <>
             <div className={styles.container}>
-            <button className={styles.partyicon} onClick={handleClick} ref={el => (partyIconBtn.current[i] = el)}></button>
-                <div className={isActive ? `${styles.partyList} ${styles.open}` : styles.partyList} style={listStyle}  ref={el => (dropDown.current[i] = el)}>     
+              <button
+                className={styles.partyicon}
+                onClick={handleClick}
+                ref={(el) => (partyIconBtn.current[i] = el)}
+              ></button>
+              <div
+                className={
+                  isActive
+                    ? `${styles.partyList} ${styles.open}`
+                    : styles.partyList
+                }
+                style={listStyle}
+                ref={(el) => (dropDown.current[i] = el)}
+              >
                 <p className={styles.listTitle}>파티 목록</p>
-                  <ul>
-                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[0]}</button></li>
-                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[1]}</button></li>
-                    <li><button className={styles.partyData} onClick={openDetailModal}>{partyList.conferencesId[2]}</button></li>
-                  </ul>
-                </div>
+                <ul>
+                  <li>
+                    <button
+                      className={styles.partyData}
+                      onClick={openDetailModal}
+                    >
+                      {partyList.conferencesId[0]}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className={styles.partyData}
+                      onClick={openDetailModal}
+                    >
+                      {partyList.conferencesId[1]}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className={styles.partyData}
+                      onClick={openDetailModal}
+                    >
+                      {partyList.conferencesId[2]}
+                    </button>
+                  </li>
+                </ul>
               </div>
+            </div>
           </>
         );
       }
