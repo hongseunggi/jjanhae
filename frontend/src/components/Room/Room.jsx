@@ -12,10 +12,11 @@ import LoginStatusContext from "../../contexts/LoginStatusContext";
 import RegistMusic from "../Modals/RegistMusic/RegistMusic";
 import GameList from "../Modals/Game/GameList";
 import Setting from "../Modals/Setting/Setting";
-// import VideoRoomComponent from "./VideoRoomComponent";
+import VideoRoomComponent from "./VideoRoomComponent";
 import Room2 from "./Room2";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 let posX = 0;
 let posY = 0;
@@ -29,7 +30,7 @@ const Room = () => {
   const [onGameList, setOnGameList] = useState(false);
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [onSetting, setOnSetting] = useState(false);
-
+  const { roomseq } = useParams();
   useEffect(() => {
     setLoginStatus("3");
     return () => setLoginStatus("2");
@@ -90,14 +91,8 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
-            {/* <VideoRoomComponent /> */}
-            <Room2 />
-            {/* <video />
-            <video />
-            <video />
-            <video />
-            <video />
-            <video /> */}
+            <VideoRoomComponent sessionName={roomseq} />
+            {/* <Room2 /> */}
           </div>
           <div
             className={styles.player}
