@@ -21,9 +21,7 @@ const UserVideo = (props) => {
   let publisher = undefined;
 
   const [mySessionId, setMySessionId] = useState(props.sessionName);
-  const [myUserName, setMyUserName] = useState(
-    `OpenVidu_User ${Math.floor(Math.random() * 100)}`
-  );
+  const [myUserName, setMyUserName] = useState(props.user);
   const [session, setSession] = useState(undefined);
   const [localUser, setLocalUser] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
@@ -414,7 +412,7 @@ const UserVideo = (props) => {
 
   return (
     <div className="container" id="container">
-      <ToolbarComponent
+      {/* <ToolbarComponent
         sessionId={mySessionId}
         user={localUser}
         showNotification={messageReceived}
@@ -423,7 +421,7 @@ const UserVideo = (props) => {
         // toggleFullscreen={toggleFullscreen}
         leaveSession={leaveSession}
         toggleChat={toggleChat}
-      />
+      /> */}
 
       <div id="layout" className="bounds">
         {localUser !== undefined && localUser.getStreamManager() !== undefined && (
@@ -432,7 +430,15 @@ const UserVideo = (props) => {
             id="localUser"
             style={{ width: "250px", height: "250px" }}
           >
-            <StreamComponent user={localUser} />
+            <StreamComponent
+              user={localUser}
+              sessionId={mySessionId}
+              camStatusChanged={camStatusChanged}
+              micStatusChanged={micStatusChanged}
+              // showNotification={messageReceived}
+              // leaveSession={leaveSession}
+              // toggleChat={toggleChat}
+            />
           </div>
         )}
         {subscribersRef.current.map((sub, i) => {

@@ -425,16 +425,16 @@ class VideoRoomComponent extends Component {
 
     return (
       <div className="container" id="container">
-        <ToolbarComponent
-          sessionId={mySessionId}
+        {/* <ToolbarComponent
           user={localUser}
+          sessionId={mySessionId}
           showNotification={this.state.messageReceived}
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}
           toggleFullscreen={this.toggleFullscreen}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
-        />
+        /> */}
 
         <div id="layout" className="bounds">
           {localUser !== undefined &&
@@ -447,6 +447,9 @@ class VideoRoomComponent extends Component {
                 <StreamComponent
                   user={localUser}
                   handleNickname={this.nicknameChanged}
+                  camStatusChanged={this.camStatusChanged}
+                  micStatusChanged={this.micStatusChanged}
+                  sessionId={mySessionId}
                 />
               </div>
             )}

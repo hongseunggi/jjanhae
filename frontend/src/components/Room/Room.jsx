@@ -95,6 +95,7 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
+            {/* <UserVideo sessionName={roomseq} user={myName} /> */}
             <VideoRoomComponent sessionName={roomseq} user={myName} />
             {/* <Room2 /> */}
           </div>
