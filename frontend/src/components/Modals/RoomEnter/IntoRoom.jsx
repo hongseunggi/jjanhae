@@ -11,13 +11,11 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 
-
-let localUser = new UserModel();
-const VIDEO = { video: true, audio : false };
+const VIDEO = { video: true, audio: false };
 let localstream;
 function IntoRoom({ onClose, room }) {
   const videoRef = useRef(null);
-  const {myVMstate, setMyVMstate} = useContext(VideoMicContext);
+  const { myVMstate, setMyVMstate } = useContext(VideoMicContext);
   // const { open, close, header } = props;
   const [isMic, setMic] = useState(true);
   const [isVideo, setVideo] = useState(true);
@@ -33,36 +31,34 @@ function IntoRoom({ onClose, room }) {
     }
   };
 
-
   console.log(room, "난 모달");
-  useEffect(()=>{
+  useEffect(() => {
     startVideo();
-  },[]);
-  
-
+  }, []);
 
   const handleClose = (e) => {
     e.stopPropagation();
   };
   const handleMic = () => {
-    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
-    setMic(!isMic);
+    setMic((prev) => !prev);
   };
   const handleVideo = () => {
-    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
-    if(isVideo){
+    if (isVideo) {
       videoRef.current.pause();
       videoRef.current.src = "";
       localstream.getTracks()[0].stop();
-    }
-    else{
+    } else {
       startVideo();
     }
-    setVideo(!isVideo);
+    setVideo((prev) => !prev);
   };
+  useEffect(() => {
+    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
+  }, [isMic, isVideo]);
+
   const handleSubmit = () => {
     // axios ???????????
-    setMyVMstate({video : isVideo, audio : isMic})
+    setMyVMstate({ video: isVideo, audio: isMic });
     navigate(`/conferences/detail/${room.title}/${room.roomSeq}/`);
     onClose();
   };
@@ -75,19 +71,17 @@ function IntoRoom({ onClose, room }) {
         </button>
         <h1>{room.title}</h1>
         <div className={style.videoPreview}>
-            <video
-                autoPlay={true}
-                className={style.videoPreview}
-                // id={'video-'+ user.getStreamManager().stream.streamId}
-                ref={videoRef}
-                muted={isMic}
-                style={
-                    {
-                        width : "100%",
-                        height : "100%"
-                    }
-                }
-            />
+          <video
+            autoPlay={true}
+            className={style.videoPreview}
+            // id={'video-'+ user.getStreamManager().stream.streamId}
+            ref={videoRef}
+            muted={isMic}
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
         </div>
         <div style={{ display: "inline-block" }} onClick={handleMic}>
           {isMic ? (

@@ -14,20 +14,18 @@ import VideoMicContext from "../../contexts/VideoMicContext";
 import RegistMusic from "../Modals/RegistMusic/RegistMusic";
 import GameList from "../Modals/Game/GameList";
 import Setting from "../Modals/Setting/Setting";
-import VideoRoomComponent from "./VideoRoomComponent";
-import Room2 from "./Room2";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import UserVideo from "./UserVideo";
+import RoomContents from "./RoomContents";
 
 let posX = 0;
 let posY = 0;
 
 const Room = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
-  const {myVMstate} = useContext(VideoMicContext);
-  const { myName, setMyName } = useContext(NameContext);
+  const { myVMstate } = useContext(VideoMicContext);
+  const { myName } = useContext(NameContext);
   const [onPlayerClick, setOnPlayerClick] = useState(false);
   const [isPlayMusic, setIsPlayMusic] = useState(false);
 
@@ -35,12 +33,14 @@ const Room = () => {
   const [onGameList, setOnGameList] = useState(false);
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [onSetting, setOnSetting] = useState(false);
-  const { title,roomseq } = useParams();
+  const { title, roomseq } = useParams();
+
+  console.log(myName);
+
   useEffect(() => {
     setLoginStatus("3");
     console.log(myVMstate);
     return () => setLoginStatus("2");
-    
   }, []);
 
   const handleMusicPlayer = () => {
@@ -97,10 +97,12 @@ const Room = () => {
           <div className={styles.title}>
             <h1>{title}</h1>
           </div>
-          <div className={styles.videos}>
-            {/* <UserVideo sessionName={roomseq} user={myName} media={myVMstate}/> */}
-            <VideoRoomComponent sessionName={roomseq} user={myName} media={myVMstate} />
-            {/* <Room2 /> */}
+          <div className={styles["main-contents"]}>
+            <RoomContents
+              sessionName={roomseq}
+              userName={myName}
+              media={myVMstate}
+            />
           </div>
           <div
             className={styles.player}

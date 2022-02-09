@@ -10,25 +10,20 @@
 }
 .innerContainer {
   display: flex;
-  /* height: calc(100vh - 90px); */
+  width: 100%;
   height: 90%;
 }
 
 .contents {
-  /* width: 1200px; */
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  margin-right: 20px;
 }
-.title {
-  margin-bottom: 10px;
-}
-.videos {
+
+.main-contents {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 20px;
+  height: 100%;
 }
 
 video {
@@ -85,7 +80,7 @@ video {
   padding: 20px 40px;
   border-radius: 40px;
   position: relative;
-  bottom: -50px;
+  bottom: -40px;
   transition: all ease 1s 0s;
 }
 
