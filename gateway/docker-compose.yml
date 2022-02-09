@@ -21,6 +21,8 @@ services:
     image: nginx-react
   api:
     image: jjanhae
+    environment:
+      - TZ=Asia/Seoul
     #jenkins:
     #image: jenkins
     #sql:
