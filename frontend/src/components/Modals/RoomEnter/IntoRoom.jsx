@@ -1,33 +1,65 @@
 import React, { useState } from "react";
 import style from "./IntoRoom.module.css";
+import UserModel from "../../models/user-model";
+import VideoMicContext from "../../../contexts/VideoMicContext";
 import { ReactComponent as Micx } from "../../../assets/icons/micx.svg";
 import { ReactComponent as Mic } from "../../../assets/icons/mic.svg";
 import { ReactComponent as Videox } from "../../../assets/icons/videox.svg";
 import { ReactComponent as Video } from "../../../assets/icons/video.svg";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
+import { useEffect } from "react";
+import { useContext } from "react";
 
+const VIDEO = { video: true, audio: false };
+let localstream;
 function IntoRoom({ onClose, room }) {
+  const videoRef = useRef(null);
+  const { myVMstate, setMyVMstate } = useContext(VideoMicContext);
   // const { open, close, header } = props;
-  const [isMic, setMic] = useState(false);
-  const [isVideo, setVideo] = useState(false);
+  const [isMic, setMic] = useState(true);
+  const [isVideo, setVideo] = useState(true);
   const navigate = useNavigate();
 
+  const startVideo = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia(VIDEO);
+
+    if (videoRef && videoRef.current) {
+      console.log("들어옴", stream);
+      videoRef.current.srcObject = stream;
+      localstream = stream;
+    }
+  };
+
   console.log(room, "난 모달");
+  useEffect(() => {
+    startVideo();
+  }, []);
 
   const handleClose = (e) => {
     e.stopPropagation();
   };
   const handleMic = () => {
-    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
-    setMic(!isMic);
+    setMic((prev) => !prev);
   };
   const handleVideo = () => {
-    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
-    setVideo(!isVideo);
+    if (isVideo) {
+      videoRef.current.pause();
+      videoRef.current.src = "";
+      localstream.getTracks()[0].stop();
+    } else {
+      startVideo();
+    }
+    setVideo((prev) => !prev);
   };
+  useEffect(() => {
+    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
+  }, [isMic, isVideo]);
+
   const handleSubmit = () => {
     // axios ???????????
-    navigate(`/conferences/detail/${room.roomSeq}`);
+    setMyVMstate({ video: isVideo, audio: isMic });
+    navigate(`/conferences/detail/${room.title}/${room.roomSeq}/`);
     onClose();
   };
 
@@ -39,7 +71,17 @@ function IntoRoom({ onClose, room }) {
         </button>
         <h1>{room.title}</h1>
         <div className={style.videoPreview}>
-          {/*비디오 들어가는 자리 추후에 추가 하면 될듯 합니다  */}
+          <video
+            autoPlay={true}
+            className={style.videoPreview}
+            // id={'video-'+ user.getStreamManager().stream.streamId}
+            ref={videoRef}
+            muted={isMic}
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+          />
         </div>
         <div style={{ display: "inline-block" }} onClick={handleMic}>
           {isMic ? (

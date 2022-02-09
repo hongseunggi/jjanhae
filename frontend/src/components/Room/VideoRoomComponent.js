@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import axios1 from "../../api/WebRtcApi";
 import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
-import StreamComponent from "./stream/StreamComponent";
-import ChatComponent from "./chat/ChatComponent";
+import StreamComponent from "./stream/StreamComponent.jsx";
+// import ChatComponent from "./chat/ChatComponent";
+import Chat from "./chat/Chat";
 
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../models/user-model";
-import ToolbarComponent from "./toolbar/ToolbarComponent";
+import ToolbarComponent from "./toolbar/ToolbarComponent.jsx";
 
 var localUser = new UserModel();
 
@@ -21,14 +22,15 @@ class VideoRoomComponent extends Component {
       ? this.props.openviduSecret
       : "jjanhae";
     this.hasBeenUpdated = false;
-    this.layout = new OpenViduLayout();
+    // this.layout.= new OpenViduLayout();
     let sessionName = this.props.sessionName ? this.props.sessionName : "room1";
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
     this.remotes = [];
     this.localUserAccessAllowed = false;
-
+    localUser.setAudioActive(this.props.media.audio);
+    localUser.setVideoActive(this.props.media.video);
     this.state = {
       mySessionId: sessionName,
       myUserName: userName,
@@ -66,10 +68,10 @@ class VideoRoomComponent extends Component {
       animate: true, // Whether you want to animate the transitions
     };
 
-    this.layout.initLayoutContainer(
-      document.getElementById("layout"),
-      openViduLayoutOptions
-    );
+    // // this.layout.initLayoutContainer(
+    //   document.getElementById("layout"),
+    //   openViduLayoutOptions
+    // );
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
@@ -332,7 +334,7 @@ class VideoRoomComponent extends Component {
 
   updateLayout() {
     setTimeout(() => {
-      this.layout.updateLayout();
+      // this.layout.updateLayout();
     }, 20);
   }
 
@@ -397,7 +399,7 @@ class VideoRoomComponent extends Component {
   //   bigFirst: true,
   //   animate: true,
   // };
-  // this.layout.setLayoutOptions(openviduLayoutOptions);
+  // // this.layout.setLayoutOptions(openviduLayoutOptions);
   // this.updateLayout();
   //   }
 
@@ -444,58 +446,62 @@ class VideoRoomComponent extends Component {
 
     return (
       <div className="container" id="container">
-        <ToolbarComponent
-          sessionId={mySessionId}
-          user={localUser}
-          showNotification={this.state.messageReceived}
-          camStatusChanged={this.camStatusChanged}
-          micStatusChanged={this.micStatusChanged}
-          toggleFullscreen={this.toggleFullscreen}
-          leaveSession={this.leaveSession}
-          toggleChat={this.toggleChat}
-        />
-
         {/* <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
         /> */}
 
         <div id="layout" className="bounds">
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
-                <StreamComponent
-                  user={localUser}
-                  handleNickname={this.nicknameChanged}
-                />
-              </div>
-            )}
-          {this.state.subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className="OT_root OT_publisher custom-class"
-              id="remoteUsers"
-            >
-              <StreamComponent
-                user={sub}
-                streamId={sub.streamManager.stream.streamId}
-              />
-            </div>
-          ))}
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
+          <div style={{ width: "1200px" }}>
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className="OT_root OT_publisher custom-class"
+                  id="localUser"
+                  style={{ width: "250px", height: "250px" }}
+                >
+                  {
+                    <StreamComponent
+                      user={localUser}
+                      handleNickname={this.nicknameChanged}
+                      sessionId={mySessionId}
+                      camStatusChanged={this.camStatusChanged}
+                      micStatusChanged={this.micStatusChanged}
+                    />
+                  }
+                </div>
+              )}
+            {this.state.subscribers.map((sub, i) => (
               <div
+                key={i}
                 className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
+                id="remoteUsers"
+                style={{ width: "200px", height: "200px" }}
               >
-                <ChatComponent
-                  user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
+                <StreamComponent
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
                 />
               </div>
-            )}
+            ))}
+          </div>
+          <div
+            style={{
+              height: "inherit",
+            }}
+          >
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div id="chatComponent">
+                  <Chat
+                    user={localUser}
+                    // chatDisplay={this.state.chatDisplay}
+                    close={this.toggleChat}
+                    messageReceived={this.checkNotification}
+                  />
+                </div>
+              )}
+          </div>
         </div>
       </div>
     );

@@ -56,6 +56,6 @@ public class AuthController {
 			return ResponseEntity.status(401).body(BaseResponseBody.of(401, "비밀번호가 일치하지 않습니다."));
 		}
 		// 정상적인 경우
-		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
+		return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId), user.getName()));
 	}
 }
