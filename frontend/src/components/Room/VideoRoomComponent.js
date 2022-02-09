@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios1 from "../../api/WebRtcApi";
 import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
-import StreamComponent from "./stream/StreamComponent";
+import StreamComponent from "./stream/StreamComponent.jsx";
 // import ChatComponent from "./chat/ChatComponent";
 import Chat from "./chat/Chat";
 
@@ -452,48 +452,56 @@ class VideoRoomComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
+          <div style={{ width: "1200px" }}>
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div
+                  className="OT_root OT_publisher custom-class"
+                  id="localUser"
+                  style={{ width: "250px", height: "250px" }}
+                >
+                  {
+                    <StreamComponent
+                      user={localUser}
+                      handleNickname={this.nicknameChanged}
+                      sessionId={mySessionId}
+                      camStatusChanged={this.camStatusChanged}
+                      micStatusChanged={this.micStatusChanged}
+                    />
+                  }
+                </div>
+              )}
+            {this.state.subscribers.map((sub, i) => (
               <div
+                key={i}
                 className="OT_root OT_publisher custom-class"
-                id="localUser"
-                style={{ width: "250px", height: "250px" }}
+                id="remoteUsers"
+                style={{ width: "200px", height: "200px" }}
               >
-                {
-                  <StreamComponent
-                    user={localUser}
-                    handleNickname={this.nicknameChanged}
-                    sessionId={mySessionId}
-                    camStatusChanged={this.camStatusChanged}
-                    micStatusChanged={this.micStatusChanged}
-                  />
-                }
-              </div>
-            )}
-          {this.state.subscribers.map((sub, i) => (
-            <div
-              key={i}
-              className="OT_root OT_publisher custom-class"
-              id="remoteUsers"
-              style={{ width: "200px", height: "200px" }}
-            >
-              <StreamComponent
-                user={sub}
-                streamId={sub.streamManager.stream.streamId}
-              />
-            </div>
-          ))}
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div id="chatComponent">
-                <Chat
-                  user={localUser}
-                  // chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
+                <StreamComponent
+                  user={sub}
+                  streamId={sub.streamManager.stream.streamId}
                 />
               </div>
-            )}
+            ))}
+          </div>
+          <div
+            style={{
+              height: "inherit",
+            }}
+          >
+            {localUser !== undefined &&
+              localUser.getStreamManager() !== undefined && (
+                <div id="chatComponent">
+                  <Chat
+                    user={localUser}
+                    // chatDisplay={this.state.chatDisplay}
+                    close={this.toggleChat}
+                    messageReceived={this.checkNotification}
+                  />
+                </div>
+              )}
+          </div>
         </div>
       </div>
     );

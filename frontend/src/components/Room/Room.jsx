@@ -36,7 +36,7 @@ const Room = () => {
   const [onGameList, setOnGameList] = useState(false);
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [onSetting, setOnSetting] = useState(false);
-  const { roomseq } = useParams();
+  const { title, roomseq } = useParams();
   useEffect(() => {
     setLoginStatus("3");
     console.log(myVMstate);
@@ -95,11 +95,15 @@ const Room = () => {
       <div className={styles.innerContainer}>
         <div className={styles.contents}>
           <div className={styles.title}>
-            <h1>방 제목</h1>
+            <h1>{title}</h1>
           </div>
           <div className={styles.videos}>
-            {/* <UserVideo sessionName={roomseq} user={myName} /> */}
-            {/* <VideoRoomComponent sessionName={roomseq} user={myName} /> */}
+            {/* <UserVideo sessionName={roomseq} user={myName} media={myVMstate}/> */}
+            <VideoRoomComponent
+              sessionName={roomseq}
+              user={myName}
+              media={myVMstate}
+            />
             {/* <Room2 /> */}
             <UserVideo2 sessionName={roomseq} user={myName} />
           </div>
