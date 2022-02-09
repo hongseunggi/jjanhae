@@ -98,13 +98,8 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
-<<<<<<< HEAD
             <UserVideo sessionName={roomseq} user={myName} />
             {/* <VideoRoomComponent sessionName={roomseq} user={myName} /> */}
-=======
-            {/* <UserVideo sessionName={roomseq} user={myName} media={myVMstate} /> */}
-            <VideoRoomComponent sessionName={roomseq} user={myName} media={myVMstate}/>
->>>>>>> 2ce9130285b8218b8c573d4e5cf45c47be8b9058
             {/* <Room2 /> */}
           </div>
           <div

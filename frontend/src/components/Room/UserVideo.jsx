@@ -463,12 +463,12 @@ const UserVideo = (props) => {
               <div
                 id ="chatComponent"
               >
-                <ChatComponent
+                {/* <ChatComponent
                   user={localUser}
                   // chatDisplay={this.state.chatDisplay}
                   close={toggleChat}
                   messageReceived={checkNotification}
-                />
+                /> */}
                 <Chat
                   user={localUser}
                   // chatDisplay={this.state.chatDisplay}
