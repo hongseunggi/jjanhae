@@ -23,7 +23,7 @@
     right: 0;
     top: -8px;
   }
-  
+/*   
   #chatComponent {
     background-color: #b8b8b8;
     position: absolute;
@@ -36,7 +36,7 @@
     height: calc(100% - 30px);
     width: calc(100% - 30px);
     border-radius: 20px;
-  }
+  } */
   
   .message-wrap {
     padding: 0 15px;

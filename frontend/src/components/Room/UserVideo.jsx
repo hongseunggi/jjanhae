@@ -1,11 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import styles from "./UserVideo.module.css";
 import UserModel from "../models/user-model";
-import { useCallback } from "react";
+// import OpenViduLayout from "../../layout/openvidu-layout";
+import ChatComponent from "./chat/ChatComponent";
+import Chat from "./chat/Chat";
+import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -165,8 +168,8 @@ const UserVideo = (props) => {
     publisher = OV.initPublisher(undefined, {
       audioSource: undefined,
       videoSource: undefined,
-      publishAudio: localUserInit.isAudioActive(),
-      publishVideo: localUserInit.isVideoActive(),
+      publishAudio: props.media.audio,
+      publishVideo: props.media.video,
       resolution: "640x480",
       frameRate: 30,
       insertMode: "APPEND",
@@ -412,19 +415,22 @@ const UserVideo = (props) => {
             </div>
           );
         })}
-        {/* {localUser !== undefined && localUser.getStreamManager() !== undefined && (
-          <div
-            className="OT_root OT_publisher custom-class"
-            style={chatDisplay}
-          >
-            <ChatComponent
+        {localUser !== undefined && localUser.getStreamManager() !== undefined && (
+          <div id="chatComponent">
+            {/* <ChatComponent
+                  user={localUser}
+                  // chatDisplay={this.state.chatDisplay}
+                  close={toggleChat}
+                  messageReceived={checkNotification}
+                /> */}
+            <Chat
               user={localUser}
-              chatDisplay={chatDisplay}
-              close={toggleChat}
-              messageReceived={checkNotification}
+              // chatDisplay={this.state.chatDisplay}
+              // close={toggleChat}
+              // messageReceived={checkNotification}
             />
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
