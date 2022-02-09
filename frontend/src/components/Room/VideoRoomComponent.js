@@ -210,18 +210,18 @@ class VideoRoomComponent extends Component {
     this.setState(
       {
         subscribers: subscribers,
+      },
+      () => {
+        if (this.state.localUser) {
+          this.sendSignalUserChanged({
+            isAudioActive: this.state.localUser.isAudioActive(),
+            isVideoActive: this.state.localUser.isVideoActive(),
+            nickname: this.state.localUser.getNickname(),
+            isScreenShareActive: this.state.localUser.isScreenShareActive(),
+          });
+        }
+        this.updateLayout();
       }
-      // () => {
-      //   if (this.state.localUser) {
-      //     this.sendSignalUserChanged({
-      //       isAudioActive: this.state.localUser.isAudioActive(),
-      //       isVideoActive: this.state.localUser.isVideoActive(),
-      //       nickname: this.state.localUser.getNickname(),
-      //       isScreenShareActive: this.state.localUser.isScreenShareActive(),
-      //     });
-      //   }
-      //   this.updateLayout();
-      // }
     );
   }
 
@@ -447,16 +447,7 @@ class VideoRoomComponent extends Component {
 
     return (
       <div className="container" id="container">
-        <ToolbarComponent
-          sessionId={mySessionId}
-          user={localUser}
-          showNotification={this.state.messageReceived}
-          camStatusChanged={this.camStatusChanged}
-          micStatusChanged={this.micStatusChanged}
-          toggleFullscreen={this.toggleFullscreen}
-          leaveSession={this.leaveSession}
-          toggleChat={this.toggleChat}
-        />
+
 
         {/* <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
