@@ -1,17 +1,23 @@
 .nickname {
   background: rgba(58, 64, 74, 0.651);
-  padding: 5px !important;
+  width: 100%;
+  padding: 5px  10px !important;
   position: absolute;
   z-index: 999;
+  top : -100%;
   color: #ffffff;
+  cursor: pointer;
+  text-align: left;
+  
+  transition: all ease 1s 0s;
 }
 .form-control {
   color: black;
 }
 
-.pointer {
+/* .pointer {
   cursor: pointer;
-}
+} */
 
 #closeButton {
   position: absolute;
@@ -36,13 +42,14 @@
 .streamComponent {
   width: 100%;
   height: 100%;
+  z-index: 1000;
 }
 
 video {
   -o-object-fit: cover;
   object-fit: cover;
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   color: #ffffff;
   margin: 0;
   padding: 0;
@@ -52,50 +59,63 @@ video {
 }
 
 #statusIcons {
-  bottom: 0;
-  background: #c71100;
-  width: 40px;
-  height: fit-content;
+  /* bottom: 0; */
+  top:0;
+  right:0;
+  width: 80px;
+  height: 40px;
+  /* border-radius: 15px; */
+  /* float: right; */
+  z-index: 9999;
   position: absolute;
   color: #ffffff;
 }
 
 #camIcon,
 #micIcon {
+  /* background: #c71100; */
+  
   text-align: center;
+  margin-left: -12px;
+  float: right;
+  display: block;
+  width: 40px;
   padding: 6px;
 }
 
-#fullscreenButton {
-  position: absolute;
-  bottom: 1px;
-  right: 1px;
-  z-index: 1000;
-  background-color: #000000c4;
-}
-#volumeButton {
-  background-color: #000000c4;
-  position: absolute;
-  bottom: 45px;
-  right: 1px;
-  z-index: 1000;
-  color: #ffffff;
-}
 /* Contains the video element, used to fix video letter-boxing */
 .OT_widget-container {
+  border-radius: 15px;
   width: 100%;
   height: 100%;
   position: absolute;
+  margin-left: 20%;
+  /* margin-bottom: 5%; */
   overflow: hidden;
 }
-/* .controlbox{
-  bottom:-50px;
-  transition: all ease 1s 0s;
+.controlbox{
+  width: 100px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  /* border-radius: 15px 0px px 0px; */
+  /* float: right; */
+  /* bottom : -100%; */
+  /* animation: out 5s; */
+
+  /* transition: all ease 1s 0s; */
+}
+/* @keyframes out {
+  from {
+    bottom : 0;
+  }
+  to {
+  }
 } */
-/* .OT_widget-container:hover > .controlbox{
-  bottom:0px;
+.OT_widget-container:hover > .nickname{
+  top: 0%;
   transition: all ease 1s 0s;
-} */
+}
 #input,
 #label {
   color: white;

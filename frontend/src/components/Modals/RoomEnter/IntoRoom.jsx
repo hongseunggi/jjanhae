@@ -63,7 +63,7 @@ function IntoRoom({ onClose, room }) {
   const handleSubmit = () => {
     // axios ???????????
     setMyVMstate({video : isVideo, audio : isMic})
-    navigate(`/conferences/detail/${room.roomSeq}`);
+    navigate(`/conferences/detail/${room.title}/${room.roomSeq}/`);
     onClose();
   };
 
