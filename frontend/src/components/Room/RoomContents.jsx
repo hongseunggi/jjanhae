@@ -3,9 +3,9 @@ import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-import styles from "./UserVideo.module.css";
+import styles from "./RoomContents.module.css";
+import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
-import UserVideoComponent from "./UserVideoComponent";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -13,9 +13,10 @@ const OPENVIDU_SERVER_SECRET = "jjanhae";
 let localUserInit = new UserModel();
 let OV = undefined;
 
-const UserVideo2 = (props) => {
-  const [mySessionId, setMySessionId] = useState(props.sessionName);
-  const [myUserName, setMyUserName] = useState(props.user);
+const RoomContents = ({ sessionName, userName, media }) => {
+  console.log(media);
+  const [mySessionId, setMySessionId] = useState(sessionName);
+  const [myUserName, setMyUserName] = useState(userName);
   const [session, setSession] = useState(undefined);
   const [localUser, setLocalUser] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
@@ -50,13 +51,48 @@ const UserVideo2 = (props) => {
 
   useEffect(() => {
     if (sessionRef.current) {
+      // 상대방이 들어왔을 때 실행
       sessionRef.current.on("streamCreated", (event) => {
         let subscriber = sessionRef.current.subscribe(event.stream, undefined);
-        setSubscribers([...subscribersRef.current, subscriber]);
+        console.log(event);
+        const newUser = new UserModel();
+        newUser.setStreamManager(subscriber);
+        newUser.setConnectionId(event.stream.connection.connectionId);
+        newUser.setAudioActive(event.stream.audioActive);
+        newUser.setVideoActive(event.stream.videoActive);
+        newUser.setType("remote");
+
+        const nickname = event.stream.connection.data.split("%")[0];
+        console.log(nickname);
+        newUser.setNickname(JSON.parse(nickname).clientData);
+
+        setSubscribers([...subscribersRef.current, newUser]);
+      });
+
+      // 상대방이 상태를 변경했을 때 실행 (카메라 / 마이크 등)
+      sessionRef.current.on("signal:userChanged", (event) => {
+        console.log("1");
+        console.log(subscribersRef.current);
+        subscribersRef.current.forEach((user) => {
+          if (user.getConnectionId() === event.from.connectionId) {
+            const data = JSON.parse(event.data);
+            console.log(data);
+            console.log("EVENTO REMOTE: ", event.data);
+            if (data.isAudioActive !== undefined) {
+              user.setAudioActive(data.isAudioActive);
+            }
+            if (data.isVideoActive !== undefined) {
+              user.setVideoActive(data.isVideoActive);
+            }
+          }
+        });
+        console.log("2");
+        console.log(subscribersRef.current);
+        setSubscribers([...subscribersRef.current]);
       });
 
       sessionRef.current.on("streamDestroyed", (event) => {
-        deleteSubscriber(event.stream.streamManager);
+        deleteSubscriber(event.stream);
       });
 
       sessionRef.current.on("exception", (exception) => {
@@ -70,9 +106,8 @@ const UserVideo2 = (props) => {
             let publisherTemp = OV.initPublisher(undefined, {
               audioSource: undefined,
               videoSource: undefined,
-              // props로 받아서 처리
-              publishAudio: localUserInit.isAudioActive(),
-              publishVideo: localUserInit.isVideoActive(),
+              publishAudio: media.audio,
+              publishVideo: media.video,
               resolution: "640x480",
               frameRate: 30,
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
@@ -83,17 +118,15 @@ const UserVideo2 = (props) => {
 
             sessionRef.current.publish(publisherTemp);
 
+            localUserInit.setAudioActive(media.audio);
+            localUserInit.setVideoActive(media.video);
             localUserInit.setNickname(myUserName);
             localUserInit.setConnectionId(
               sessionRef.current.connection.connectionId
             );
             localUserInit.setStreamManager(publisherTemp);
-            console.log(localUserInit);
-            // console.log({ ...localUserInit });
 
             // Set the main video in the page to display our webcam and store our Publisher
-            // setCurrentVideoDevice(videoDevices[0]);
-            // setMainStreamManager(publisherTemp);
             setPublisher(publisherTemp);
             setLocalUser(localUserInit);
           })
@@ -108,20 +141,6 @@ const UserVideo2 = (props) => {
     }
   }, [session]);
 
-  useEffect(() => {
-    console.log("local :");
-    console.log(localUser);
-  }, [localUser]);
-
-  useEffect(() => {
-    console.log("sub :");
-    console.log(subscribers);
-  }, [subscribers]);
-
-  useEffect(() => {
-    console.log(publisher);
-  }, [publisher]);
-
   const leaveSession = () => {
     const mySession = sessionRef.current;
     console.log(mySession);
@@ -134,15 +153,15 @@ const UserVideo2 = (props) => {
     setSubscribers([]);
     setMySessionId(undefined);
     setMyUserName(undefined);
-    // setMainStreamManager(undefined);
     setPublisher(undefined);
     setLocalUser(undefined);
   };
 
-  const deleteSubscriber = (streamManager) => {
-    // let subscribersTemp = subscribersRef.current;
-    let index = subscribersRef.current.indexOf(streamManager, 0);
-
+  const deleteSubscriber = (stream) => {
+    const userStream = subscribersRef.current.filter(
+      (user) => user.getStreamManager().stream === stream
+    )[0];
+    let index = subscribersRef.current.indexOf(userStream, 0);
     if (index > -1) {
       subscribersRef.current.splice(index, 1);
       setSubscribers([...subscribersRef.current]);
@@ -154,6 +173,7 @@ const UserVideo2 = (props) => {
   };
 
   const sendSignalUserChanged = (data) => {
+    console.log("시그널 보내 시그널 보내");
     const signalOptions = {
       data: JSON.stringify(data),
       type: "userChanged",
@@ -162,7 +182,7 @@ const UserVideo2 = (props) => {
   };
 
   const camStatusChanged = () => {
-    console.log("cam status");
+    console.log("캠 상태 변경!!!");
     localUserInit.setVideoActive(!localUserInit.isVideoActive());
     console.log(localUserInit);
     localUserInit
@@ -176,6 +196,7 @@ const UserVideo2 = (props) => {
   };
 
   const micStatusChanged = () => {
+    console.log("마이크 상태 변경!!!");
     localUserInit.setAudioActive(!localUserInit.isAudioActive());
     localUserInit
       .getStreamManager()
@@ -261,38 +282,32 @@ const UserVideo2 = (props) => {
   };
 
   return (
-    <div>
-      {/* <div id="session"> */}
-      {/* <div id="session-header"></div> */}
-
-      <div id="video-container" className="col-md-6">
-        {/* {publisherRef.current !== undefined ? ( */}
-        {localUser !== undefined && localUser.getStreamManager() !== undefined && (
-          <div className="stream-container col-md-6 col-xs-6">
-            {/* <StreamComponent
+    <>
+      <div className={styles["video-container"]}>
+        {localUserRef.current !== undefined &&
+          localUserRef.current.getStreamManager() !== undefined && (
+            <StreamComponent
               user={localUserRef.current}
               sessionId={mySessionId}
               camStatusChanged={camStatusChanged}
               micStatusChanged={micStatusChanged}
-            /> */}
-            <UserVideoComponent streamManager={publisherRef.current} />
-          </div>
-        )}
-        {/* // ) : null} */}
+            />
+          )}
         {subscribersRef.current.map((sub, i) => {
-          // {subscribers.map((sub, i) => {
           console.log(sub);
           return (
-            <div key={i} className="stream-container col-md-6 col-xs-6">
-              {/* <StreamComponent user={sub} streamId={sub.stream.streamId} /> */}
-              <UserVideoComponent streamManager={sub} />
-            </div>
+            <StreamComponent key={i} user={sub} />
+            // <UserVideoComponent user={sub} />
           );
         })}
       </div>
-    </div>
-    // </div>
+      {localUser !== undefined && localUser.getStreamManager() !== undefined && (
+        <div className={styles["chat-container"]}>
+          <Chat user={localUserRef.current} />
+        </div>
+      )}
+    </>
   );
 };
 
-export default UserVideo2;
+export default RoomContents;
