@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
+
 .chatContainer {
     position: absolute;
     z-index: 0;
@@ -46,6 +48,8 @@
     padding: 0 15px;
     height: calc(100% - 80px);
     overflow: auto;
+    display: flex;
+    flex-direction: column;
   }
   
   .message {
@@ -61,44 +65,53 @@
   }
   
   .msg-detail {
-    width: calc(100% - 65px);
-    display: inline-block;
+    /* width: calc(100% - 65px); */
   }
   
   .msg-detail p {
     margin: 0;
-    font-size: 15px;
+    font-size: 12px;
+    font-weight: bold;
   }
   
   .msg-info p {
     font-size: 0.8em;
     color: #000000;
-    font-style: italic;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
   }
   
   .msg-content {
     position: relative;
     margin-top: 5px;
     border-radius: 5px;
-    padding: 8px;
+    padding: 7px;
     color: #000000;
-    width: auto;
-    max-width: 80%;
+    height : 50%;
+    background-color: 	#FEE500;
+    border-radius: 10px;
+    font-family: "Poppins", sans-serif;
+    width: fit-content;
+    display: inline-block;
+    height: fit-content;
   }
-  
-  span.triangle {
-    border-radius: 2px;
-    height: 8px;
-    width: 8px;
-    top: 12px;
-    display: block;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
+
+  .triangle {
+    border-top: 13px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #FEE500;
+    content: "";
     position: absolute;
+    top: -18px;
+    right: 1px;
+    border-bottom-right-radius: 3px;
   }
   
   .text {
-    word-break: break-all;color: #000000;
+    word-break: break-all;
+    color: #000000;
+    font-size: 13px;
   }
   
   /* Start message from other user */
@@ -111,6 +124,10 @@
     padding-left: 65px;
   }
   
+  .user-img {
+    left: -5px;
+  }
+
   .message.left .user-img {
     left: -5px;
     border: 1px solid #f0f0f094;
@@ -133,6 +150,10 @@
   
   .message.right .msg-detail .msg-info {
     text-align: right;
+    margin-left: 50%;
+    display: flex;
+    justify-content: flex-end;
+    text-align: end;
   }
   .message.right .user-img {
     right: -5px;
@@ -208,5 +229,3 @@
   .chatComponentLight ::-webkit-scrollbar-thumb {
     background-color: #eeeeee !important;
   }
-
-  
