@@ -183,6 +183,7 @@ public class RoomController {
             sortRoomResponse.setJoinUserNum(numberOfJoin);
             sortRoomResponse.setOwnerId(rooms.get(i).getOwner().getUserId()); // 방장 userId
             sortRoomResponse.setStartTime(rooms.get(i).getStartTime()); // 시작시간
+            System.out.println(sortRoomResponse.getStartTime());
             sortRoomResponse.setThumbnail(rooms.get(i).getThumbnailUrl()); // 썸네일 이미지
             sortRoomResponse.setTitle(rooms.get(i).getTitle());
             sortRoomResponse.setDescription(rooms.get(i).getDescription());
