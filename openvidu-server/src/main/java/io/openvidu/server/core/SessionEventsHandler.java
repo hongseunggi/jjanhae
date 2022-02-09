@@ -339,24 +339,24 @@ public class SessionEventsHandler {
 	}
 
 	// TODO: REMOVE ON 2.18.0 지우라고?
-//	public void onSubscribe(Participant participant, Session session, String sdpAnswer, Integer transactionId,
-//			OpenViduException error) {
-//		if (error != null) {
-//			rpcNotificationService.sendErrorResponse(participant.getParticipantPrivateId(), transactionId, null, error);
-//			return;
-//		}
-//		JsonObject result = new JsonObject();
-//		result.addProperty(ProtocolElements.RECEIVEVIDEO_SDPANSWER_PARAM, sdpAnswer);
-//		rpcNotificationService.sendResponse(participant.getParticipantPrivateId(), transactionId, result);
-//
-//		if (ProtocolElements.RECORDER_PARTICIPANT_PUBLICID.equals(participant.getParticipantPublicId())) {
-//			recordingsToSendClientEvents.computeIfPresent(session.getSessionId(), (key, value) -> {
-//				sendRecordingStartedNotification(session, value);
-//				return null;
-//			});
-//		}
-//	}
-	// END TODO 주석처리해도 잘 되면 지우기
+	public void onSubscribe(Participant participant, Session session, String sdpAnswer, Integer transactionId,
+			OpenViduException error) {
+		if (error != null) {
+			rpcNotificationService.sendErrorResponse(participant.getParticipantPrivateId(), transactionId, null, error);
+			return;
+		}
+		JsonObject result = new JsonObject();
+		result.addProperty(ProtocolElements.RECEIVEVIDEO_SDPANSWER_PARAM, sdpAnswer);
+		rpcNotificationService.sendResponse(participant.getParticipantPrivateId(), transactionId, result);
+
+		if (ProtocolElements.RECORDER_PARTICIPANT_PUBLICID.equals(participant.getParticipantPublicId())) {
+			recordingsToSendClientEvents.computeIfPresent(session.getSessionId(), (key, value) -> {
+				sendRecordingStartedNotification(session, value);
+				return null;
+			});
+		}
+	}
+	// END TODO 지우면 안됨!!!!
 
 	// subscribe 실행
 	public void onSubscribe(Participant participant, Session session, Integer transactionId, OpenViduException error) {
@@ -656,7 +656,7 @@ public class SessionEventsHandler {
 	}
 
 	// 필터 이벤트가 실행
-	public void onFilerEventDispatched(String sessionId, String uniqueSessionId, String connectionId, String streamId,
+	public void onFilterEventDispatched(String sessionId, String uniqueSessionId, String connectionId, String streamId,
 			String filterType, GenericMediaEvent event, Set<Participant> participants,
 			Set<String> subscribedParticipants) {
 
