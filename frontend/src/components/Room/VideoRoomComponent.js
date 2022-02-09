@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios1 from "../../api/WebRtcApi";
 import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
-import StreamComponent from "./stream/StreamComponent";
+import StreamComponent from "./stream/StreamComponent.jsx";
 // import ChatComponent from "./chat/ChatComponent";
 import Chat from "./chat/Chat";
 
@@ -446,7 +446,7 @@ class VideoRoomComponent extends Component {
     var chatDisplay = { display: this.state.chatDisplay };
 
     return (
-      <div className="container" id="container">
+      <div >
 
 
         {/* <DialogExtensionComponent
@@ -455,6 +455,7 @@ class VideoRoomComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
+          <div style={{width : "1200px"}}>
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined 
             && (
@@ -475,7 +476,7 @@ class VideoRoomComponent extends Component {
               key={i}
               className="OT_root OT_publisher custom-class"
               id="remoteUsers"
-              style={{width : "200px", height : "200px"}}
+              style={{width : "250px", height : "250px"}}
             >
               <StreamComponent
                 user={sub}
@@ -483,6 +484,12 @@ class VideoRoomComponent extends Component {
               />
             </div>
           ))}
+          </div>
+          <div style={
+            {
+              height : "inherit",
+            }
+          }>
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
@@ -496,6 +503,7 @@ class VideoRoomComponent extends Component {
                 />
               </div>
             )}
+            </div>
         </div>
       </div>
     );
