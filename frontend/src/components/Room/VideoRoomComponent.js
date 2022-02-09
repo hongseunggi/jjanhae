@@ -3,7 +3,9 @@ import axios1 from "../../api/WebRtcApi";
 import "./VideoRoomComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-import ChatComponent from "./chat/ChatComponent";
+// import ChatComponent from "./chat/ChatComponent";
+import Chat from "./chat/Chat";
+
 
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -493,12 +495,11 @@ class VideoRoomComponent extends Component {
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
-                className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
+                id ="chatComponent"
               >
-                <ChatComponent
+                <Chat
                   user={localUser}
-                  chatDisplay={this.state.chatDisplay}
+                  // chatDisplay={this.state.chatDisplay}
                   close={this.toggleChat}
                   messageReceived={this.checkNotification}
                 />

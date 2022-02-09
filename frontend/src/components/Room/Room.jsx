@@ -98,8 +98,8 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
-            {/* <UserVideo sessionName={roomseq} user={myName} media={myVMstate} /> */}
-            <VideoRoomComponent sessionName={roomseq} user={myName} media={myVMstate}/>
+            {/* <UserVideo sessionName={roomseq} user={myName} /> */}
+            <VideoRoomComponent sessionName={roomseq} user={myName} media={myVMstate} />
             {/* <Room2 /> */}
           </div>
           <div
@@ -152,7 +152,6 @@ const Room = () => {
             )}
           </div>
         </div>
-        <div className={styles.chatting}></div>
       </div>
       <div className={styles.dockBar}>
         <div className={styles.dock}>
