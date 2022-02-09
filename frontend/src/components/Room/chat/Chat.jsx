@@ -23,22 +23,28 @@ const Chat = (props) => {
     useEffect (() => {
         console.log("here")
         props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
-            // console.log("chat"+event.data);
             const data = JSON.parse(event.data);
+            console.log(event);
             let messageListData = messageList;
             messageListData.push({connectionId:event.from.connectionId, nickname:data.nickname, message : data.message});
             const document = window.document;
-            setTimeout(() => {
-                const userImg = document.getElementById('userImg-' + (messageListData.length - 1));
-                const video = document.getElementById('video-' + data.streamId);
-                // const avatar = userImg.getContext('2d');
-                // avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-                props.messageReceived();
-            }, 50);
-            setMessageList(messageListData);
+            // setTimeout(() => {
+            //     const userImg = document.getElementById('userImg-' + (messageListData.length - 1));
+            //     console.log(userImg);
+            //     const video = document.getElementById('video-' + data.streamId);
+            //     const avatar = userImg.getContext('2d');
+            //     avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
+            //     props.messageReceived();
+            // }, 50);
+            setMessageList([...messageListData]);
+            console.log(messageList);
             scrollToBottom();
         });
-    });
+    }, []);
+
+    useEffect(()=> {
+        // console.log(messageList);
+    },[messageList])
 
     const handlePressKey = (event) => {
         if (event.key === 'Enter') {
@@ -95,15 +101,15 @@ const Chat = (props) => {
                         <div
                         key = {i}
                         id="remoteUsers"
-                        className={`${'message' + (data.connectionId !== props.user.getConnectionId() ? ' left' : ' right')}${styles.remoteUsers}`}
+                        className={`${'message' + (data.connectionId !== props.user.getConnectionId() ? ' left' : ' right')}`}
                         >
                         <canvas id={'userImg-' + i} width="60" height="60"  className={styles['user-img']}/>
                             <div className={styles['msg-detail']}>
                                 <div className={styles['msg-info']}>
-                                    <p>{data.nickname}</p>
+                                    <p class={styles.nickname}>{data.nickname}</p>
                                 </div>
                                 <div className={styles['msg-content']}>
-                                    <span className={styles.triangle}/>
+                                    <span className={`${'triangle' + (data.connectionId !== props.user.getConnectionId() ? ' left' : ' right')}`}/>
                                         <p className={styles.text}>{data.message}</p>
                                 </div>
                             </div>
@@ -118,6 +124,7 @@ const Chat = (props) => {
                         value={message}
                         onChange={handleChange}
                         onKeyPress={handlePressKey}
+                        autocomplete="off"
                     />
                     <Tooltip title="전송">
                     <SendIcon className={styles.sendButton} onClick={sendMessage}>
