@@ -25,22 +25,22 @@ export default class ChatComponent extends Component {
 
     componentDidMount() {
         console.log("here")
-        this.props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
-            // console.log("origin"+event.data);
-            const data = JSON.parse(event.data);
-            let messageList = this.state.messageList;
-            messageList.push({ connectionId: event.from.connectionId, nickname: data.nickname, message: data.message });
-            const document = window.document;
-            setTimeout(() => {
-                const userImg = document.getElementById('userImg-' + (this.state.messageList.length - 1));
-                const video = document.getElementById('video-' + data.streamId);
-                const avatar = userImg.getContext('2d');
-                avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
-                this.props.messageReceived();
-            }, 50);
-            this.setState({ messageList: messageList });
-            this.scrollToBottom();
-        });
+        // this.props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
+        //     // console.log("origin"+event.data);
+        //     const data = JSON.parse(event.data);
+        //     let messageList = this.state.messageList;
+        //     messageList.push({ connectionId: event.from.connectionId, nickname: data.nickname, message: data.message });
+        //     const document = window.document;
+        //     setTimeout(() => {
+        //         const userImg = document.getElementById('userImg-' + (this.state.messageList.length - 1));
+        //         const video = document.getElementById('video-' + data.streamId);
+        //         const avatar = userImg.getContext('2d');
+        //         avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
+        //         this.props.messageReceived();
+        //     }, 50);
+        //     this.setState({ messageList: messageList });
+        //     this.scrollToBottom();
+        // });
     }
 
     handleChange(event) {
