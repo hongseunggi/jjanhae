@@ -5,7 +5,6 @@ import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import styles from "./UserVideo.module.css";
 import UserModel from "../models/user-model";
-import { useCallback } from "react";
 import UserVideoComponent from "./UserVideoComponent";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
@@ -21,8 +20,6 @@ const UserVideo2 = (props) => {
   const [localUser, setLocalUser] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   const [publisher, setPublisher] = useState(undefined);
-  const [mainStreamManager, setMainStreamManager] = useState(undefined);
-  const [currentVideoDevice, setCurrentVideoDevice] = useState(undefined);
 
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
@@ -39,13 +36,11 @@ const UserVideo2 = (props) => {
   const joinSession = () => {
     OV = new OpenVidu();
     setSession(OV.initSession());
-    console.log("1");
   };
 
   useEffect(() => {
     window.addEventListener("beforeunload", onbeforeunload);
     joinSession();
-    console.log("2");
 
     return () => {
       window.removeEventListener("beforeunload", onbeforeunload);
@@ -54,21 +49,11 @@ const UserVideo2 = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(sessionRef.current);
     if (sessionRef.current) {
-      console.log("3");
-      // let mySession = sessionRef.current;
       sessionRef.current.on("streamCreated", (event) => {
-        console.log(event.stream);
-        console.log(sessionRef.current);
         let subscriber = sessionRef.current.subscribe(event.stream, undefined);
-        console.log(subscriber);
-        let subscribersTemp = subscribersRef.current;
-        subscribersTemp.push(subscriber);
-        console.log(subscribersTemp);
-        setSubscribers(subscribersTemp);
+        setSubscribers([...subscribersRef.current, subscriber]);
       });
-      console.log(subscribers);
 
       sessionRef.current.on("streamDestroyed", (event) => {
         deleteSubscriber(event.stream.streamManager);
@@ -82,21 +67,16 @@ const UserVideo2 = (props) => {
         sessionRef.current
           .connect(token, { clientData: myUserName })
           .then(async () => {
-            const devices = await OV.getDevices();
-            console.log("디바이스!!" + JSON.stringify(devices));
-            const videoDevices = devices.filter(
-              (device) => device.kind === "videoinput"
-            );
-
             let publisherTemp = OV.initPublisher(undefined, {
-              audioSource: undefined, // The source of audio. If undefined default microphone
-              videoSource: undefined, // The source of video. If undefined default webcam
-              publishAudio: localUserInit.isAudioActive(), // Whether you want to start publishing with your audio unmuted or not
-              publishVideo: localUserInit.isVideoActive(), // Whether you want to start publishing with your video enabled or not
-              resolution: "640x480", // The resolution of your video
-              frameRate: 30, // The frame rate of your video
+              audioSource: undefined,
+              videoSource: undefined,
+              // props로 받아서 처리
+              publishAudio: localUserInit.isAudioActive(),
+              publishVideo: localUserInit.isVideoActive(),
+              resolution: "640x480",
+              frameRate: 30,
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-              mirror: false, // Whether to mirror your local video or not
+              mirror: false,
             });
 
             // --- 6) Publish your stream ---
@@ -108,10 +88,12 @@ const UserVideo2 = (props) => {
               sessionRef.current.connection.connectionId
             );
             localUserInit.setStreamManager(publisherTemp);
+            console.log(localUserInit);
+            // console.log({ ...localUserInit });
 
             // Set the main video in the page to display our webcam and store our Publisher
-            setCurrentVideoDevice(videoDevices[0]);
-            setMainStreamManager(publisherTemp);
+            // setCurrentVideoDevice(videoDevices[0]);
+            // setMainStreamManager(publisherTemp);
             setPublisher(publisherTemp);
             setLocalUser(localUserInit);
           })
@@ -124,7 +106,21 @@ const UserVideo2 = (props) => {
           });
       });
     }
-  }, [subscribers, session]);
+  }, [session]);
+
+  useEffect(() => {
+    console.log("local :");
+    console.log(localUser);
+  }, [localUser]);
+
+  useEffect(() => {
+    console.log("sub :");
+    console.log(subscribers);
+  }, [subscribers]);
+
+  useEffect(() => {
+    console.log(publisher);
+  }, [publisher]);
 
   const leaveSession = () => {
     const mySession = sessionRef.current;
@@ -144,12 +140,12 @@ const UserVideo2 = (props) => {
   };
 
   const deleteSubscriber = (streamManager) => {
-    let subscribersTemp = subscribersRef.current;
-    let index = subscribersTemp.indexOf(streamManager, 0);
+    // let subscribersTemp = subscribersRef.current;
+    let index = subscribersRef.current.indexOf(streamManager, 0);
 
     if (index > -1) {
-      subscribersTemp.splice(index, 1);
-      setSubscribers(subscribersTemp);
+      subscribersRef.current.splice(index, 1);
+      setSubscribers([...subscribersRef.current]);
     }
   };
 
@@ -165,27 +161,28 @@ const UserVideo2 = (props) => {
     sessionRef.current.signal(signalOptions);
   };
 
-  const camStatusChanged = useCallback(() => {
+  const camStatusChanged = () => {
+    console.log("cam status");
     localUserInit.setVideoActive(!localUserInit.isVideoActive());
+    console.log(localUserInit);
     localUserInit
       .getStreamManager()
       .publishVideo(localUserInit.isVideoActive());
-    sendSignalUserChanged({ isVideoActive: localUserInit.isVideoActive() });
-    setLocalUser(localUserInit);
-  }, []);
 
-  const micStatusChanged = useCallback(() => {
+    console.log(localUser === localUserInit);
+    console.log(typeof localUser);
+    setLocalUser(localUserInit);
+    sendSignalUserChanged({ isVideoActive: localUserInit.isVideoActive() });
+  };
+
+  const micStatusChanged = () => {
     localUserInit.setAudioActive(!localUserInit.isAudioActive());
     localUserInit
       .getStreamManager()
       .publishAudio(localUserInit.isAudioActive());
     sendSignalUserChanged({ isAudioActive: localUserInit.isAudioActive() });
     setLocalUser(localUserInit);
-  }, []);
-
-  useEffect(() => {
-    console.log(localUser);
-  }, [localUser]);
+  };
 
   const getToken = () => {
     return createSession(mySessionId).then((sessionId) =>
@@ -272,25 +269,23 @@ const UserVideo2 = (props) => {
         {/* {publisherRef.current !== undefined ? ( */}
         {localUser !== undefined && localUser.getStreamManager() !== undefined && (
           <div className="stream-container col-md-6 col-xs-6">
-            <StreamComponent
+            {/* <StreamComponent
               user={localUserRef.current}
               sessionId={mySessionId}
               camStatusChanged={camStatusChanged}
               micStatusChanged={micStatusChanged}
-            />
-            {/* <UserVideoComponent streamManager={publisherRef.current} /> */}
+            /> */}
+            <UserVideoComponent streamManager={publisherRef.current} />
           </div>
         )}
         {/* // ) : null} */}
         {subscribersRef.current.map((sub, i) => {
+          // {subscribers.map((sub, i) => {
           console.log(sub);
           return (
             <div key={i} className="stream-container col-md-6 col-xs-6">
-              <StreamComponent
-                user={sub}
-                streamId={sub.streamManager.stream.streamId}
-              />
-              {/* <UserVideoComponent streamManager={sub} /> */}
+              {/* <StreamComponent user={sub} streamId={sub.stream.streamId} /> */}
+              <UserVideoComponent streamManager={sub} />
             </div>
           );
         })}

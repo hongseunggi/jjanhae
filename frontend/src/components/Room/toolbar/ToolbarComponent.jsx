@@ -26,7 +26,8 @@ function ToolbarComponent({
   const [fullscreen, setFullscreen] = useState(false);
   const mySessionId = sessionId;
   const localUser = user;
-//   console.log(localUser.isAudioActive());
+  console.log(localUser);
+  //   console.log(localUser.isAudioActive());
 
   // const activeFullscreen = () => {
   //     setFullscreen(!fullscreen);

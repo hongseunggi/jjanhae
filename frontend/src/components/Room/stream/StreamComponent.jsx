@@ -24,47 +24,47 @@ function StreamComponent({
   micStatusChanged,
 }) {
   console.log(user);
-  const [nickname, setNickname] = useState(user.getNickname());
+  // const [nickname, setNickname] = useState(user.getNickname());
   const [showForm, setShowForm] = useState(false);
   const [mutedSound, setMuted] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [controlBox, setControl] = useState(false);
-  const handleChange = (e) => {
-    setNickname(e.target.value);
-    e.preventDefault();
-  };
+  // const handleChange = (e) => {
+  //   setNickname(e.target.value);
+  //   e.preventDefault();
+  // };
 
   const handleChangeControlBox = (e) => {
     setControl(!controlBox);
     e.preventDefault();
   };
 
-  const toggleNicknameForm = () => {
-    if (user.isLocal()) {
-      setShowForm(!showForm);
-    }
-  };
+  // const toggleNicknameForm = () => {
+  //   if (user.isLocal()) {
+  //     setShowForm(!showForm);
+  //   }
+  // };
 
-  const toggleSound = () => {
-    setMuted(!mutedSound);
-  };
+  // const toggleSound = () => {
+  //   setMuted(!mutedSound);
+  // };
 
-  const handlePressKey = (e) => {
-    if (e.key === "Enter") {
-      console.log(nickname);
-      if (nickname.length >= 3 && nickname.length <= 20) {
-        handleNickNname(nickname);
-        toggleNicknameForm();
-        setIsFormValid(true);
-      } else {
-        setIsFormValid(false);
-      }
-    }
-  };
+  // const handlePressKey = (e) => {
+  //   if (e.key === "Enter") {
+  //     console.log(nickname);
+  //     if (nickname.length >= 3 && nickname.length <= 20) {
+  //       handleNickNname(nickname);
+  //       toggleNicknameForm();
+  //       setIsFormValid(true);
+  //     } else {
+  //       setIsFormValid(false);
+  //     }
+  //   }
+  // };
 
   return (
-    <div className="OT_widget-container" style={{}}>
-      <div className="pointer nickname">
+    <div className="video-container">
+      {/* <div className="pointer nickname">
         {showForm ? (
           <FormControl id="nicknameForm">
             <IconButton
@@ -102,7 +102,7 @@ function StreamComponent({
             {user.isLocal() && <span id=""> (edit)</span>}
           </div>
         )}
-      </div>
+      </div> */}
 
       {user !== undefined && user.getStreamManager() !== undefined ? (
         <div
