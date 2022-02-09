@@ -6,6 +6,7 @@ import User from "./routes/User";
 import Conferences from "./routes/Conferences";
 import LoginStatusContext from "./contexts/LoginStatusContext";
 import NameContext from "./contexts/NameContext";
+import VideoMicContext from "./contexts/VideoMicContext";
 import Main from "./Main";
 import Home from "./components/Home.jsx";
 import "./assets/fonts/font.css";
@@ -16,6 +17,7 @@ function App() {
   // 1 : 비로그인 상태 2 : 로그인 상태 3 : 파티룸 입장 상태
   const [loginStatus, setLoginStatus] = useState("1");
   const [myName, setMyName] = useState("");
+  const [myVMstate, setMyVMstate] = useState({video : true, audio : true});
   // 추후 refreshtoken을 사용하여 엑세스 토큰 업데이트하는 코드로 변경~~!@~!~!
   useEffect(() => {
     const accessToken = sessionStorage.getItem("accessToken");
@@ -24,6 +26,7 @@ function App() {
     }
   }, []);
   return (
+    <VideoMicContext.Provider value={{myVMstate, setMyVMstate}}>
     <NameContext.Provider value={{myName, setMyName}}>
     <LoginStatusContext.Provider value={{ loginStatus, setLoginStatus }}>
       <div className="App">
@@ -41,6 +44,7 @@ function App() {
       </div>
     </LoginStatusContext.Provider>
     </NameContext.Provider>
+    </VideoMicContext.Provider>
   );
 }
 

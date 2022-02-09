@@ -10,7 +10,7 @@ import { ReactComponent as SettingIcon } from "../../assets/icons/setting.svg";
 import Marquee from "react-fast-marquee";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
-
+import VideoMicContext from "../../contexts/VideoMicContext";
 import RegistMusic from "../Modals/RegistMusic/RegistMusic";
 import GameList from "../Modals/Game/GameList";
 import Setting from "../Modals/Setting/Setting";
@@ -26,6 +26,7 @@ let posY = 0;
 
 const Room = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
+  const {myVMstate} = useContext(VideoMicContext);
   const { myName, setMyName } = useContext(NameContext);
   const [onPlayerClick, setOnPlayerClick] = useState(false);
   const [isPlayMusic, setIsPlayMusic] = useState(false);
@@ -37,7 +38,9 @@ const Room = () => {
   const { roomseq } = useParams();
   useEffect(() => {
     setLoginStatus("3");
+    console.log(myVMstate);
     return () => setLoginStatus("2");
+    
   }, []);
 
   const handleMusicPlayer = () => {
@@ -95,8 +98,13 @@ const Room = () => {
             <h1>방 제목</h1>
           </div>
           <div className={styles.videos}>
+<<<<<<< HEAD
             <UserVideo sessionName={roomseq} user={myName} />
             {/* <VideoRoomComponent sessionName={roomseq} user={myName} /> */}
+=======
+            {/* <UserVideo sessionName={roomseq} user={myName} media={myVMstate} /> */}
+            <VideoRoomComponent sessionName={roomseq} user={myName} media={myVMstate}/>
+>>>>>>> 2ce9130285b8218b8c573d4e5cf45c47be8b9058
             {/* <Room2 /> */}
           </div>
           <div
