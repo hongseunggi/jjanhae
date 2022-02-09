@@ -21,11 +21,12 @@ const Chat = (props) => {
     };
 
     useEffect (() => {
+        console.log("here")
         props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
+            // console.log("chat"+event.data);
             const data = JSON.parse(event.data);
             let messageListData = messageList;
-            messageListData.push({conndectionId:event.from.connectionId, nickname:data.nickname, message : data.message});
-            console.log(messageListData);
+            messageListData.push({connectionId:event.from.connectionId, nickname:data.nickname, message : data.message});
             const document = window.document;
             setTimeout(() => {
                 const userImg = document.getElementById('userImg-' + (messageListData.length - 1));
@@ -35,7 +36,6 @@ const Chat = (props) => {
                 props.messageReceived();
             }, 50);
             setMessageList(messageListData);
-            console.log(messageList);
             scrollToBottom();
         });
     });
@@ -47,11 +47,12 @@ const Chat = (props) => {
     };
 
     const sendMessage = () => {
+        console.log("chat"+message);
         if(props.user && message) {
             let messageData = message.replace(/ +(?= )/g, '');
             if (messageData !== '' && messageData !== ' ') {
                 const data = {message : messageData, nickname : props.user.getNickname(),streamId: props.user.getStreamManager().stream.streamId }
-                console.log(data);
+                console.log("chat"+data);
                 props.user.getStreamManager().stream.session.signal({
                     data: JSON.stringify(data),
                     type: 'chat',
@@ -120,7 +121,6 @@ const Chat = (props) => {
                     />
                     <Tooltip title="전송">
                     <SendIcon className={styles.sendButton} onClick={sendMessage}>
-                            <Send/>
                     </SendIcon>
                     </Tooltip>
                 </div>
