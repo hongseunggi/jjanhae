@@ -888,3 +888,11 @@
   margin-top: 40px;
 }
   
+
+#chatComponent {
+  width : 25%;
+  position : absolute;
+  top : 0%;
+  left : 75%;
+  height : 100%;
+}
