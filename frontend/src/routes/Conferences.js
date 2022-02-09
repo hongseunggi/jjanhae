@@ -10,7 +10,7 @@ const User = () => {
       <Routes>
         {/* <Route path="" element={<Navigate to={}} /> */}
         <Route path="/list" element={<RoomList />} />
-        <Route path="/detail/:roomseq" element={<Room />} />
+        <Route path="/detail/:title/:roomseq" element={<Room />} />
       </Routes>
     </div>
   );
