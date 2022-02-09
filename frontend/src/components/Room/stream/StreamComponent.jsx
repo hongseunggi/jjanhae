@@ -18,10 +18,12 @@ import ToolbarComponent from "../toolbar/ToolbarComponent.jsx";
 
 function StreamComponent({
   user,
+  handleNickNname,
   sessionId,
   camStatusChanged,
   micStatusChanged,
 }) {
+  console.log(user);
   const [nickname, setNickname] = useState(user.getNickname());
   const [showForm, setShowForm] = useState(false);
   const [mutedSound, setMuted] = useState(false);
@@ -51,7 +53,7 @@ function StreamComponent({
     if (e.key === "Enter") {
       console.log(nickname);
       if (nickname.length >= 3 && nickname.length <= 20) {
-        // handleNickNname(nickname);
+        handleNickNname(nickname);
         toggleNicknameForm();
         setIsFormValid(true);
       } else {
@@ -116,7 +118,7 @@ function StreamComponent({
             camStatusChanged={camStatusChanged}
             micStatusChanged={micStatusChanged}
           ></ToolbarComponent>
-          )
+
           {/* <div id="statusIcons">
             {!user.isVideoActive() ? (
                 <div id="camIcon">

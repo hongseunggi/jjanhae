@@ -3,23 +3,21 @@ import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-
+import styles from "./UserVideo.module.css";
 import UserModel from "../models/user-model";
-// import OpenViduLayout from "../../layout/openvidu-layout";
-import ChatComponent from "./chat/ChatComponent";
-import ToolbarComponent from "./toolbar/ToolbarComponent";
+import { useCallback } from "react";
+
+const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
+const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
 let OV = undefined;
 
+let localUserAccessAllowed = false;
+let publisher = undefined;
+let remotes = [];
+
 const UserVideo = (props) => {
-  const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
-  const OPENVIDU_SERVER_SECRET = "jjanhae";
-
-  let remotes = [];
-  let localUserAccessAllowed = false;
-  let publisher = undefined;
-
   const [mySessionId, setMySessionId] = useState(props.sessionName);
   const [myUserName, setMyUserName] = useState(props.user);
   const [session, setSession] = useState(undefined);
@@ -29,45 +27,46 @@ const UserVideo = (props) => {
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
 
-  const [chatDisplay, setChatDisplay] = useState("none");
+  const sessionRef = useRef(session);
+  sessionRef.current = session;
+
   const [currentVideoDevice, setCurrentVideoDevice] = useState(undefined);
 
-  const [messageReceived, setMessageReceived] = useState(false);
-  // const [hasBeenUpdated, setHasBeenUpdated] = useState(false);
-
-  // const layout = new OpenViduLayout();
-
-  const joinSession = () => {
+  const joinSession = useCallback(() => {
     OV = new OpenVidu();
-    console.log("join session start");
     setSession(OV.initSession());
-  };
+  }, []);
 
   useEffect(() => {
+    window.addEventListener("beforeunload", onbeforeunload);
     joinSession();
+
     console.log("1. join session");
+
     return () => {
       leaveSession();
     };
   }, []);
 
   useEffect(() => {
-    if (session) {
+    if (sessionRef.current) {
       console.log(`session:`);
-      console.log(session);
+      console.log(sessionRef.current);
       subscribeToStreamCreated();
       connectToSession();
     }
   }, [session]);
 
-  const leaveSession = () => {
-    const mySession = session;
+  const leaveSession = useCallback(() => {
+    const mySession = sessionRef.current;
+    console.log(mySession);
     if (mySession) {
+      console.log("leave");
       mySession.disconnect();
     }
     OV = null;
     setSession(undefined);
-    // setSubscribers([]);
+    setSubscribers([]);
     setMySessionId(undefined);
     setMyUserName(undefined);
     setLocalUser(undefined);
@@ -75,31 +74,31 @@ const UserVideo = (props) => {
     // if (leaveSession) {
     //   leaveSession();
     // }
-  };
+  }, [session]);
 
   const subscribeToStreamCreated = () => {
     console.log(`2. subscribeToStreamCreated : `);
-    session.on("streamCreated", (event) => {
+    sessionRef.current.on("streamCreated", (event) => {
       console.log("subscribeToStreamCreated");
-      const subscriber = session.subscribe(event.stream, undefined);
-      subscriber.on("streamPlaying", (e) => {
-        subscriber.videos[0].video.parentElement.classList.remove(
-          "custom-class"
-        );
-      });
+      const subscriber = sessionRef.current.subscribe(event.stream, undefined);
+      // subscriber.on("streamPlaying", (e) => {
+      //   subscriber.videos[0].video.parentElement.classList.remove(
+      //     "custom-class"
+      //   );
+      // });
       const newUser = new UserModel();
       newUser.setStreamManager(subscriber);
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
+      console.log(event.stream.connection.data);
       const nickname = event.stream.connection.data.split("%")[0];
       newUser.setNickname(JSON.parse(nickname).clientData);
       remotes.push(newUser);
-      console.log(localUserAccessAllowed);
+      console.log(remotes);
       if (localUserAccessAllowed) {
         updateSubscribers();
       }
     });
-    console.log(remotes);
   };
 
   const connectToSession = () => {
@@ -132,7 +131,7 @@ const UserVideo = (props) => {
   };
 
   const connect = (token) => {
-    session
+    sessionRef.current
       .connect(token, { clientData: myUserName })
       .then(() => {
         connectWebCam();
@@ -156,8 +155,12 @@ const UserVideo = (props) => {
   };
 
   const connectWebCam = async () => {
-    var devices = await OV.getDevices();
-    var videoDevices = devices.filter((device) => device.kind === "videoinput");
+    console.log(OV);
+    const devices = await OV.getDevices();
+    console.log(devices);
+    const videoDevices = devices.filter(
+      (device) => device.kind === "videoinput"
+    );
 
     publisher = OV.initPublisher(undefined, {
       audioSource: undefined,
@@ -169,43 +172,42 @@ const UserVideo = (props) => {
       insertMode: "APPEND",
     });
 
-    if (session.capabilities.publish) {
+    if (sessionRef.current.capabilities.publish) {
       publisher.on("accessAllowed", () => {
-        session.publish(publisher).then(() => {
+        sessionRef.current.publish(publisher).then(() => {
+          ////////////////////////////////////////////////
           updateSubscribers();
           localUserAccessAllowed = true;
           if (props.joinSession) {
+            console.log("들어오긴 함?");
             props.joinSession();
           }
         });
       });
     }
     localUserInit.setNickname(myUserName);
-    localUserInit.setConnectionId(session.connection.connectionId);
+    localUserInit.setConnectionId(sessionRef.current.connection.connectionId);
     localUserInit.setStreamManager(publisher);
+    console.log(localUserInit);
     subscribeToUserChanged();
     subscribeToStreamDestroyed();
-    sendSignalUserChanged({
-      isScreenShareActive: localUserInit.isScreenShareActive(),
-    });
-
     setCurrentVideoDevice(videoDevices[0]);
     setLocalUser(localUserInit);
   };
 
   const updateSubscribers = () => {
-    let subscribers2 = remotes;
-    setSubscribers(subscribers2);
+    console.log("update subscribers");
+    console.log(remotes);
+    setSubscribers(remotes);
   };
 
   useEffect(() => {
     if (localUser) {
-      console.log(subscribersRef.current);
+      // console.log(subscribersRef.current);
       sendSignalUserChanged({
         isAudioActive: localUser.isAudioActive(),
         isVideoActive: localUser.isVideoActive(),
         nickname: localUser.getNickname(),
-        isScreenShareActive: localUser.isScreenShareActive(),
       });
     }
   }, [subscribers]);
@@ -231,20 +233,21 @@ const UserVideo = (props) => {
       remoteUsers.splice(index, 1);
       setSubscribers(remoteUsers);
     }
+    console.log("deleteSubscriber");
   };
 
   const subscribeToStreamDestroyed = () => {
-    session.on("streamDestroyed", (event) => {
+    sessionRef.current.on("streamDestroyed", (event) => {
       deleteSubscriber(event.stream);
       event.preventDefault();
-      // updateLayout();
     });
+    console.log("streamDestroyed");
   };
 
   const subscribeToUserChanged = () => {
-    session.on("signal:userChanged", (event) => {
-      console.log(subscribersRef.current);
+    sessionRef.current.on("signal:userChanged", (event) => {
       let remoteUsers = subscribersRef.current;
+      // let remoteUsers = subscribers;
       remoteUsers.forEach((user) => {
         if (user.getConnectionId() === event.from.connectionId) {
           const data = JSON.parse(event.data);
@@ -276,7 +279,7 @@ const UserVideo = (props) => {
       data: JSON.stringify(data),
       type: "userChanged",
     };
-    session.signal(signalOptions);
+    sessionRef.current.signal(signalOptions);
   };
 
   const camStatusChanged = () => {
@@ -296,43 +299,6 @@ const UserVideo = (props) => {
     sendSignalUserChanged({ isAudioActive: localUserInit.isAudioActive() });
     setLocalUser(localUserInit);
   };
-
-  const toggleChat = (property) => {
-    let display = property;
-
-    if (display === undefined) {
-      display = chatDisplay === "none" ? "block" : "none";
-    }
-    if (display === "block") {
-      setChatDisplay(display);
-      setMessageReceived(false);
-    } else {
-      console.log("chat", display);
-      setChatDisplay(display);
-    }
-    // updateLayout();
-  };
-
-  const checkNotification = (event) => {
-    if (chatDisplay === "none") {
-      setMessageReceived(true);
-    } else {
-      setMessageReceived(false);
-    }
-  };
-
-  // const checkSize = () => {
-  //   if (
-  //     document.getElementById("layout").offsetWidth <= 700 &&
-  //     !hasBeenUpdated
-  //   ) {
-  //     toggleChat("none");
-  //     setHasBeenUpdated(true);
-  //   }
-  //   if (document.getElementById("layout").offsetWidth > 700 && hasBeenUpdated) {
-  //     setHasBeenUpdated(false);
-  //   }
-  // };
 
   const getToken = () => {
     return createSession(mySessionId).then((sessionId) =>
@@ -411,18 +377,7 @@ const UserVideo = (props) => {
   };
 
   return (
-    <div className="container" id="container">
-      {/* <ToolbarComponent
-        sessionId={mySessionId}
-        user={localUser}
-        showNotification={messageReceived}
-        camStatusChanged={camStatusChanged}
-        micStatusChanged={micStatusChanged}
-        // toggleFullscreen={toggleFullscreen}
-        leaveSession={leaveSession}
-        toggleChat={toggleChat}
-      /> */}
-
+    <div className={styles.container} id="container">
       <div id="layout" className="bounds">
         {localUser !== undefined && localUser.getStreamManager() !== undefined && (
           <div

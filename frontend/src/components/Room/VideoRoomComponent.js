@@ -8,6 +8,7 @@ import ChatComponent from "./chat/Chat";
 import OpenViduLayout from "../../layout/openvidu-layout";
 import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
+import Chat from "./chat/Chat";
 
 var localUser = new UserModel();
 console.log(localUser);
@@ -425,6 +426,7 @@ class VideoRoomComponent extends Component {
 
     return (
       <div className="container" id="container">
+        {/* <Chat /> */}
         {/* <ToolbarComponent
           user={localUser}
           sessionId={mySessionId}

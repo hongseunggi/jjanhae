@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import UserVideo from "./UserVideo";
+import UserVideo2 from "./UserVideo2";
 
 let posX = 0;
 let posY = 0;
@@ -96,8 +97,9 @@ const Room = () => {
           </div>
           <div className={styles.videos}>
             {/* <UserVideo sessionName={roomseq} user={myName} /> */}
-            <VideoRoomComponent sessionName={roomseq} user={myName} />
+            {/* <VideoRoomComponent sessionName={roomseq} user={myName} /> */}
             {/* <Room2 /> */}
+            <UserVideo2 sessionName={roomseq} user={myName} />
           </div>
           <div
             className={styles.player}

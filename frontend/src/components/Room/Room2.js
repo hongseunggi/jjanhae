@@ -22,16 +22,12 @@ class Room2 extends Component {
 
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
-    this.switchCamera = this.switchCamera.bind(this);
     this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
-    this.camStatusChanged = this.camStatusChanged.bind(this);
-    this.micStatusChanged = this.micStatusChanged.bind(this);
-    this.toggleFullscreen = this.toggleFullscreen.bind(this);
-    this.toggleChat = this.toggleChat.bind(this);
-    this.checkNotification = this.checkNotification.bind(this);
+    // this.camStatusChanged = this.camStatusChanged.bind(this);
+    // this.micStatusChanged = this.micStatusChanged.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +36,7 @@ class Room2 extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.onbeforeunload);
+    this.leaveSession();
   }
 
   onbeforeunload(event) {
@@ -97,19 +94,22 @@ class Room2 extends Component {
         mySession.on("streamCreated", (event) => {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
+          console.log(event);
           var subscriber = mySession.subscribe(event.stream, undefined);
+          console.log(subscriber);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
-
+          console.log(subscribers);
           // Update the state with the new subscribers
           this.setState({
             subscribers: subscribers,
           });
         });
-
+        console.log(this.subscribers);
         // On every Stream destroyed...
         mySession.on("streamDestroyed", (event) => {
           // Remove the stream from 'subscribers' array
+
           this.deleteSubscriber(event.stream.streamManager);
         });
 
@@ -176,7 +176,7 @@ class Room2 extends Component {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
     const mySession = this.state.session;
-
+    console.log(mySession);
     if (mySession) {
       mySession.disconnect();
     }
