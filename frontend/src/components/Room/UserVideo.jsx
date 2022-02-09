@@ -6,8 +6,8 @@ import StreamComponent from "./stream/StreamComponent";
 
 import UserModel from "../models/user-model";
 // import OpenViduLayout from "../../layout/openvidu-layout";
-// import ChatComponent from "./chat/ChatComponent";
-import ChatComponent from "./chat/Chat";
+import ChatComponent from "./chat/ChatComponent";
+import Chat from "./chat/Chat";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 let localUserInit = new UserModel();
@@ -463,7 +463,13 @@ const UserVideo = (props) => {
               <div
                 id ="chatComponent"
               >
-                <ChatComponent
+                {/* <ChatComponent
+                  user={localUser}
+                  // chatDisplay={this.state.chatDisplay}
+                  close={toggleChat}
+                  messageReceived={checkNotification}
+                /> */}
+                <Chat
                   user={localUser}
                   // chatDisplay={this.state.chatDisplay}
                   close={toggleChat}

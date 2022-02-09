@@ -21,20 +21,20 @@ const Chat = (props) => {
     };
 
     useEffect (() => {
-        props.user.getStreamManager().stream.session.on('single:chat', (event) => {
+        props.user.getStreamManager().stream.session.on('signal:chat', (event) => {
             const data = JSON.parse(event.data);
             let messageListData = messageList;
-            messageListData.push({conndectionId:event.from.conndectionId, nickname:data.nickname, message : data.message});
+            messageListData.push({conndectionId:event.from.connectionId, nickname:data.nickname, message : data.message});
             console.log(messageListData);
             const document = window.document;
             setTimeout(() => {
                 const userImg = document.getElementById('userImg-' + (messageListData.length - 1));
                 const video = document.getElementById('video-' + data.streamId);
-                const avatar = userImg.getContext('2d');
-                avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
+                // const avatar = userImg.getContext('2d');
+                // avatar.drawImage(video, 200, 120, 285, 285, 0, 0, 60, 60);
                 props.messageReceived();
             }, 50);
-            setMessageList({messageListData});
+            setMessageList(messageListData);
             console.log(messageList);
             scrollToBottom();
         });
