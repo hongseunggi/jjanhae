@@ -85,6 +85,9 @@ import io.openvidu.server.utils.QuarantineKillerDummy;
 import io.openvidu.server.utils.SDPMunging;
 import io.openvidu.server.webhook.CDRLoggerWebhook;
 
+import io.openvidu.server.contents.MusicService;
+import io.openvidu.server.contents.GameService;
+
 /**
  * OpenVidu Server application
  *
@@ -121,6 +124,17 @@ public class OpenViduServer implements JsonRpcConfigurer {
 			log.info("OpenVidu Webhook service is disabled (may be enabled with 'OPENVIDU_WEBHOOK=true')");
 		}
 		return new CallDetailRecord(loggers);
+	}
+	@Bean
+	@ConditionalOnMissingBean
+	public MusicService musicService() {
+		return new MusicService();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public GameService gameService() {
+		return new GameService();
 	}
 
 	@Bean
