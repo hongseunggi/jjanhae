@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import io.openvidu.server.contents.GameService;
 import org.kurento.client.GenericMediaEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,9 @@ public class SessionEventsHandler {
 
 	@Autowired
 	protected MusicService musicService;
+	
+	@Autowired
+	protected GameService gameService;
 
 	@Autowired
 	protected CallDetailRecord CDR;
@@ -425,6 +429,9 @@ public class SessionEventsHandler {
 
 		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
 			System.out.println("신청곡 요청이 들어왔습니다.");
+		} else if (message.has("type") && message.get("type").getAsString().equals("signal:chat")) {
+			System.out.println("Request Game ...");
+			gameService.controlGame(participant, message, participants, rpcNotificationService);
 		}
 
 		Set<String> toSet = new HashSet<String>();

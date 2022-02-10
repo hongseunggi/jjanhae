@@ -1,4 +1,4 @@
-FROM maven:3.8-jdk-11 as builder
+FROM maven:3.6.0-jdk-11-slim as builder
 WORKDIR /app
 # COPY build.gradle settings.gradle gradlew ./
 # COPY gradle ./gradle
@@ -8,11 +8,12 @@ WORKDIR /app
 # || return 0
 COPY src ./src
 COPY pom.xml ./pom.xml
-RUN mvn clean install -U
 # RUN ./gradlew bootJar
+# CMD mvn clean install -U
+RUN mvn -f pom.xml clean package
 FROM adoptopenjdk/openjdk11:latest
 WORKDIR /app
 # COPY --from=builder /app/build/libs/openvidu-server-2.20.0.jar ./openvidu.jar
-COPY --from=builder /app/build/libs/openvidu-server.jar ./openvidu.jar
+COPY --from=builder /app/build/libs/openvidu-server-2.20.0.jar ./openvidu.jar
 EXPOSE 8443
 ENTRYPOINT ["java", "-jar", "openvidu.jar"]
