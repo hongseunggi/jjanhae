@@ -1,10 +1,13 @@
 .postitInput {
     background-color:  #fff44f;
     height: 80%;
-    width : 60%;
-    position : absolute;
+    width: 60%;
+    position: absolute;
     text-align: center;
     border-radius: 2px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .postit {
@@ -17,6 +20,8 @@
     color : #252525;
     font-weight: bolder;
     border-radius: 2px;
+    flex-direction: row;
+    align-items: center;
 }
 
 .keyword, .subKeyword {
