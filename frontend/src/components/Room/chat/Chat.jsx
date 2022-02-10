@@ -6,13 +6,10 @@ import { ReactComponent as SendIcon } from "../../../assets/icons/send.svg";
 const Chat = (props) => {
   const [messageList, setMessageList] = useState([]);
   const [message, setMessage] = useState("");
-
   const chatScroll = useRef();
-
   const handleChange = (event) => {
     setMessage(event.target.value);
   };
-
   useEffect(() => {
     console.log("here");
     props.user.getStreamManager().stream.session.on("signal:chat", (event) => {
@@ -24,7 +21,6 @@ const Chat = (props) => {
         nickname: data.nickname,
         message: data.message,
       });
-
       setMessageList([...messageListData]);
       console.log(messageList);
       scrollToBottom();
@@ -118,7 +114,7 @@ const Chat = (props) => {
             value={message}
             onChange={handleChange}
             onKeyPress={handlePressKey}
-            autocomplete="off"
+            autoComplete="off"
           />
           {/* <Tooltip title="전송"> */}
           <div className={styles.sendIcon}>

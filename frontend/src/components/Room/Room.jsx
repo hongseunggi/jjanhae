@@ -8,6 +8,7 @@ import { ReactComponent as GameIcon } from "../../assets/icons/game.svg";
 import { ReactComponent as MusicIcon } from "../../assets/icons/music.svg";
 import { ReactComponent as SettingIcon } from "../../assets/icons/setting.svg";
 import Marquee from "react-fast-marquee";
+
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
 import VideoMicContext from "../../contexts/VideoMicContext";
@@ -40,7 +41,7 @@ const Room = () => {
   useEffect(() => {
     setLoginStatus("3");
     console.log(myVMstate);
-    return () => setLoginStatus("2");
+    // return () => setLoginStatus("2");
   }, []);
 
   const handleMusicPlayer = () => {
