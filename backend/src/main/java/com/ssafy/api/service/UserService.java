@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.UserProfilePatchReq;
 import com.ssafy.api.request.UserSignupPostReq;
+import com.ssafy.api.response.DrinkTogether;
 import com.ssafy.db.entity.User;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface UserService {
 	void updateUserPassword(String userId, String password);
 	void disableUser(String userId);
 	List<String> findUserNameByUserSeq(List<Integer> userSeqList);
+	List<DrinkTogether> findDrinkTogether(Long userSeq);
+	User findOneUserByUserSeq(Long userSeq);
 }

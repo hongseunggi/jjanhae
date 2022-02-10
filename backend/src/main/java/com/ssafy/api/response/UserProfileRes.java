@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 회원 본인 정보 조회 API ([GET] /user/profile) 요청에 대한 응답값 정의.
@@ -34,8 +35,10 @@ public class UserProfileRes extends BaseResponseBody {
 	LocalDate birthday;
 	@ApiModelProperty(name="프로필 링크", example="default.png")
 	String imageUrl;
+	@ApiModelProperty(name="함께 마신 친구 정보", example="[name, numberOf]")
+	List<DrinkTogetherResponse> friends;
 	
-	public static UserProfileRes of(Integer statusCode, String message, User user) {
+	public static UserProfileRes of(Integer statusCode, String message, User user, List<DrinkTogetherResponse> friends) {
 		UserProfileRes res = new UserProfileRes();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
@@ -46,6 +49,7 @@ public class UserProfileRes extends BaseResponseBody {
 		res.setDrinkLimit(user.getDrinkLimit());
 		res.setBirthday(user.getBirthday());
 		res.setImageUrl(user.getImageUrl());
+		res.setFriends(friends);
 		return res;
 	}
 }

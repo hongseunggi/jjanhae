@@ -318,7 +318,22 @@ public class UserController {
 		}
 		System.out.println("조회하려는 유저: " + user);
 
-		return ResponseEntity.ok(UserProfileRes.of(200, "조회에 성공하였습니다.", user));
+		// 해당 유저와 함께 마셨던 상위 5명 조회
+		List<DrinkTogether> friends = userService.findDrinkTogether(user.getUserSeq());
+		List<DrinkTogetherResponse> res = new ArrayList<>();
+		System.out.println("friends size : "+friends.size());
+		for(int i = 0; i < friends.size(); i++) {
+			// userSeq로 username 얻어오기
+			System.out.println("frined user seq "+friends.get(i).getUserSeq()+", numberOf "+friends.get(i).getNumberOf());
+			User friend = userService.findOneUserByUserSeq(friends.get(i).getUserSeq()); // username포함
+			// username 담아주기
+			DrinkTogetherResponse drinkTogetherResponse = new DrinkTogetherResponse();
+			drinkTogetherResponse.setName(friend.getName());
+			drinkTogetherResponse.setNumberOf(friends.get(i).getNumberOf());
+			res.add(drinkTogetherResponse);
+		}
+
+		return ResponseEntity.ok(UserProfileRes.of(200, "조회에 성공하였습니다.", user, res));
 	}
 
 

@@ -84,7 +84,7 @@ const RoomConfig = ({ open, onClose }) => {
     const { data } = await getCreateRoomResult(body);
     //// -> 리턴 되는 data 가지고 뭘 한다면 이 밑에 작성
     console.log(data);
-    navigate("/conferences/detail");
+    navigate(`/conferences/detail/${title}/${data.roomSeq}`);
     //// -> 이 밑 부분에 화상회의 방 ? 으로 라우트 시켜주는게 들어가야 할 듯 합니다. 일단 닫기로 했습니다.
     onClose();
   };

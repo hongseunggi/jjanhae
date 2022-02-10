@@ -2,6 +2,8 @@ package com.ssafy.api.service;
 
 
 import com.ssafy.api.request.*;
+import com.ssafy.api.response.DrinkTogether;
+import com.ssafy.db.repository.RoomHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepositorySupport userRepositorySupport;
+
+    @Autowired
+    RoomHistoryRepository roomHistoryRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -167,6 +172,16 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
             System.out.println("====" + user.getUserId() + " 탈퇴 처리 완료====");
         }
+    }
+
+    @Override
+    public List<DrinkTogether> findDrinkTogether(Long userSeq) {
+        return roomHistoryRepository.findDrinkTogether(userSeq);
+    }
+
+    @Override
+    public User findOneUserByUserSeq(Long userSeq) {
+        return userRepository.findOneUserByUserSeq(userSeq);
     }
 
     @Override
