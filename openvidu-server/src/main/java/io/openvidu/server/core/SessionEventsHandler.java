@@ -422,52 +422,57 @@ public class SessionEventsHandler {
 			from = participant.getParticipantPublicId();
 			params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_FROM_PARAM, from);
 		}
-
-		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
-			System.out.println("신청곡 요청이 들어왔습니다.");
-		}
-
 		Set<String> toSet = new HashSet<String>();
 
-		if (message.has("to")) {
-			JsonArray toJson = message.get("to").getAsJsonArray();
-			for (int i = 0; i < toJson.size(); i++) {
-				JsonElement el = toJson.get(i);
-				if (el.isJsonNull()) {
-					throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
-							"Signal \"to\" field invalid format: null");
-				}
-				toSet.add(el.getAsString());
-			}
+		// 음악 관련 요청
+		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
+			System.out.println("음악 관련 요청이 들어왔습니다.");
+			musicService.requestMusic(participant, message, participants, rpcNotificationService);
 		}
+		else {
 
-		if (toSet.isEmpty()) {
-			for (Participant p : participants) {
-				toSet.add(p.getParticipantPublicId());
-				rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-						ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+			if (message.has("to")) {
+				JsonArray toJson = message.get("to").getAsJsonArray();
+				for (int i = 0; i < toJson.size(); i++) {
+					JsonElement el = toJson.get(i);
+					if (el.isJsonNull()) {
+						throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
+								"Signal \"to\" field invalid format: null");
+					}
+					toSet.add(el.getAsString());
+				}
 			}
-		} else {
-			Set<String> participantPublicIds = participants.stream().map(Participant::getParticipantPublicId)
-					.collect(Collectors.toSet());
-			if (participantPublicIds.containsAll(toSet)) {
-				for (String to : toSet) {
-					Optional<Participant> p = participants.stream().filter(x -> to.equals(x.getParticipantPublicId()))
-							.findFirst();
-					rpcNotificationService.sendNotification(p.get().getParticipantPrivateId(),
+
+			if (toSet.isEmpty()) {
+				for (Participant p : participants) {
+					toSet.add(p.getParticipantPublicId());
+					rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
 							ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+					System.out.println("onSendMessage의 반환 : " + params);
 				}
 			} else {
-				throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
-						"Signal \"to\" field invalid format: some connectionId does not exist in this session");
+				Set<String> participantPublicIds = participants.stream().map(Participant::getParticipantPublicId)
+						.collect(Collectors.toSet());
+				if (participantPublicIds.containsAll(toSet)) {
+					for (String to : toSet) {
+						Optional<Participant> p = participants.stream().filter(x -> to.equals(x.getParticipantPublicId()))
+								.findFirst();
+						rpcNotificationService.sendNotification(p.get().getParticipantPrivateId(),
+								ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+					}
+				} else {
+					throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
+							"Signal \"to\" field invalid format: some connectionId does not exist in this session");
+				}
 			}
-		}
 
+
+		}
 		if (isRpcCall) {
 			rpcNotificationService.sendResponse(participant.getParticipantPrivateId(), transactionId, new JsonObject());
 		}
-
 		CDR.recordSignalSent(sessionId, uniqueSessionId, from, toSet.toArray(new String[toSet.size()]), type, data);
+
 	}
 
 	// stream의 속성이 바뀌었을 때

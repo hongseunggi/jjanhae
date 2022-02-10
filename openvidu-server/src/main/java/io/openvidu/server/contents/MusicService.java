@@ -34,10 +34,41 @@ public class MusicService {
         // data 파싱
         String dataString = message.get("data").getAsString();
         JsonObject data = (JsonObject) JsonParser.parseString(dataString);
-        System.out.println(data); //{"singer":"ㅎㅎㅎ","song":"ㅎㅎㅎ","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
-        String singer = data.get("singer").getAsString();
-        String song = data.get("song").getAsString();
 
-        System.out.println(data.get("singer"));
+        System.out.println("음악 data : " + data); //{"videoId":"5uk6cFPL19w","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
+        System.out.println("음악 params : " + params); // {"from":"con_AG3mOjqFdT","type":"signal:music"}
+
+        // 재생 & 일시정지
+        if (data.has("isPlaying") && message.get("type").getAsString().equals("signal:music")){
+            String isPlaying = data.get("isPlaying").getAsString();
+            System.out.println("바꿔줬으면 하는 노래 진행 상태 : " + isPlaying);
+            data.addProperty("loveya", "hi");
+
+            params.addProperty("data", data.toString());
+            for (Participant p : participants) {
+                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+                System.out.println("노래상태 반환 " + params);
+            }
+
+        }
+
+        // 음악 추가
+        if (data.has("videoId") && message.get("type").getAsString().equals("signal:music")){
+            String videoId = data.get("videoId").getAsString();
+            System.out.println("이 비디오 아이디를 뿌려주세요 : " + videoId);
+
+//            for (Participant p : participants) {
+//                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+//                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+//                System.out.println("비디오 아이디 반환 " + params);
+//            }
+
+        }
+//        String videoId = data.get("videoId").getAsString();
+//        System.out.println("요청받은 비디오아이디 : " + videoId);
+
     }
+
+
 }
