@@ -423,7 +423,9 @@ public class SessionEventsHandler {
 			params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_FROM_PARAM, from);
 		}
 
-
+		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
+			System.out.println("신청곡 요청이 들어왔습니다.");
+		}
 
 		Set<String> toSet = new HashSet<String>();
 
