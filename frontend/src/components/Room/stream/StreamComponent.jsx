@@ -15,8 +15,6 @@ function StreamComponent({
   camStatusChanged,
   micStatusChanged,
 }) {
-  console.log(user);
-  console.log(sessionId);
   const [mutedSound, setMuted] = useState(false);
   const [controlBox, setControl] = useState(false);
 
@@ -37,6 +35,7 @@ function StreamComponent({
           onMouseLeave={handleChangeControlBox}
         >
           <OvVideoComponent user={user} mutedSound={mutedSound} />
+
           <div className={styles.controlbox}>
             {sessionId ? (
               <ToolbarComponent
