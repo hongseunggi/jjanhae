@@ -1,14 +1,12 @@
+echo remove existed home/ubuntu/CustomOpenvidu/openvidu-server
+rm /home/ubuntu/CustomOpenvidu/openvidu-server
+cp -r ./openvidu-server /home/ubuntu/CustomOpenvidu
+cp /home/ubuntu/i6a507.p.ssafy.io /home/ubuntu/CustomOpenvidu/openvidu-server/src/main/resources
+cd /home/ubuntu/CustomOpenvidu/openvidu-server
 mvn clean install -U
 
-VERSION=$1
-if [[ ! -z $VERSION ]]; then
-    cp ./target/openvidu-server-*.jar ./openvidu-server.jar
-    cp ./utils/discover_my_public_ip.sh ./discover_my_public_ip.sh
-
-    docker build --pull --no-cache --rm=true -t openvidu/openvidu-server:$VERSION .
-
-    rm ./openvidu-server.jar
-    rm ./discover_my_public_ip.sh
-else
-    echo "Error: You need to specify a version as first argument"
-fi
+DOCKER_BUILDKIT=1 docker build --progress=plain -t openvidu-server .
+docker rm openvidu-server -f
+docker run -d -p 8443:8443 --name openvidu-server openvidu-server
+#docker-compose -f ../gateway/docker-compose.yml up -d --force-recreate --no-deps api
+docker image prune -f
