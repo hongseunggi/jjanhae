@@ -13,6 +13,6 @@ CMD mvn clean install -U
 FROM adoptopenjdk/openjdk11:latest
 WORKDIR /app
 # COPY --from=builder /app/build/libs/openvidu-server-2.20.0.jar ./openvidu.jar
-COPY --from=builder /app/openvidu-server.jar ./openvidu.jar
+COPY --from=builder openvidu-server.jar ./openvidu.jar
 EXPOSE 8443
 ENTRYPOINT ["java", "-jar", "openvidu.jar"]
