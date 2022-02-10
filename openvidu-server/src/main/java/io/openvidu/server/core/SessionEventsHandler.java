@@ -392,7 +392,7 @@ public class SessionEventsHandler {
 		rpcNotificationService.sendResponse(participant.getParticipantPrivateId(), transactionId, new JsonObject());
 	}
 
-
+	// 딱!!! 이 함수로 모든 것을 소통함
 	public void onSendMessage(Participant participant, JsonObject message, Set<Participant> participants,
 							  String sessionId, String uniqueSessionId, Integer transactionId, OpenViduException error) {
 
@@ -424,13 +424,13 @@ public class SessionEventsHandler {
 		}
 		Set<String> toSet = new HashSet<String>();
 
-		// 음악 관련 요청
+		// ********* 여기서부터 type에 맞춰서 우리 서비스 실행하면 됨
 		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
 			System.out.println("음악 관련 요청이 들어왔습니다.");
 			musicService.requestMusic(participant, message, participants, rpcNotificationService);
 		}
 		else {
-
+			// 여기가 채팅일 때 실행되도록 type:chat
 			if (message.has("to")) {
 				JsonArray toJson = message.get("to").getAsJsonArray();
 				for (int i = 0; i < toJson.size(); i++) {
@@ -443,6 +443,7 @@ public class SessionEventsHandler {
 				}
 			}
 
+			// toSet이 비어있다면 '모든' 사용자에게 반환해주는 것. "to"라는 optional 데이터가 있다면 그 사람들에게만 메세지 반환.
 			if (toSet.isEmpty()) {
 				for (Participant p : participants) {
 					toSet.add(p.getParticipantPublicId());
