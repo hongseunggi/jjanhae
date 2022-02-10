@@ -393,14 +393,11 @@ public class SessionEventsHandler {
 	}
 
 
-	// *** 중요한 함수 !! *** 메세지가 왔을 때! 채팅 처리 여기서 한다.
 	public void onSendMessage(Participant participant, JsonObject message, Set<Participant> participants,
-			String sessionId, String uniqueSessionId, Integer transactionId, OpenViduException error) {
+							  String sessionId, String uniqueSessionId, Integer transactionId, OpenViduException error) {
 
-		// trasaction 은 서버와 클라이언트의 소통
 		boolean isRpcCall = transactionId != null;
 		if (isRpcCall) {
-			// 에러가 있으면 에러 보냄
 			if (error != null) {
 				rpcNotificationService.sendErrorResponse(participant.getParticipantPrivateId(), transactionId, null,
 						error);
@@ -408,76 +405,67 @@ public class SessionEventsHandler {
 			}
 		}
 
-		// 게임 요청 signal
-		if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
-//			gameService.controlGame(participant, message, participants, rpcNotificationService);
-		}
-		// 음악 요청 signal
-		else if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
-			System.out.println("신청곡 요청이 들어왔습니다.");
-			musicService.requestMusic(participant, message, participants, rpcNotificationService);
-		}
-		// 채팅 요청 signal 여기 아래부터는 원본 코드와 거의 동일
-		else {
-			JsonObject params = new JsonObject();
-			if (message.has("data")) {
-				params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_DATA_PARAM, message.get("data").getAsString());
-			}
-			if (message.has("type")) {
-				params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_TYPE_PARAM, message.get("type").getAsString());
-			}
-			if (participant != null) {
-				params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_FROM_PARAM, participant.getParticipantPublicId());
-			}
+		String from = null;
+		String type = null;
+		String data = null;
 
-			Set<String> toSet = new HashSet<String>();
+		JsonObject params = new JsonObject();
+		if (message.has("data")) {
+			data = message.get("data").getAsString();
+			params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_DATA_PARAM, data);
+		}
+		if (message.has("type")) {
+			type = message.get("type").getAsString();
+			params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_TYPE_PARAM, type);
+		}
+		if (participant != null) {
+			from = participant.getParticipantPublicId();
+			params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_FROM_PARAM, from);
+		}
 
-			// to는 signal을 보내고 싶은 식별자의 리스트, 만약 비어있다면 모든 참여자에게 전송한다.
-			// 특별히 누구에게 보내야한다는 정보가 있을 경우!
-			if (message.has("to")) {
-				JsonArray toJson = message.get("to").getAsJsonArray();
-				for (int i = 0; i < toJson.size(); i++) {
-					JsonElement el = toJson.get(i);
-					if (el.isJsonNull()) {
-						throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
-								"Signal \"to\" field invalid format: null");
-					}
-					toSet.add(el.getAsString());
+
+
+		Set<String> toSet = new HashSet<String>();
+
+		if (message.has("to")) {
+			JsonArray toJson = message.get("to").getAsJsonArray();
+			for (int i = 0; i < toJson.size(); i++) {
+				JsonElement el = toJson.get(i);
+				if (el.isJsonNull()) {
+					throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
+							"Signal \"to\" field invalid format: null");
 				}
+				toSet.add(el.getAsString());
 			}
+		}
 
-			// 모든 참여자에게 signal을 보낸다.
-			if (toSet.isEmpty()) {
-				for (Participant p : participants) {
-					toSet.add(p.getParticipantPublicId());
-					rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+		if (toSet.isEmpty()) {
+			for (Participant p : participants) {
+				toSet.add(p.getParticipantPublicId());
+				rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+						ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+			}
+		} else {
+			Set<String> participantPublicIds = participants.stream().map(Participant::getParticipantPublicId)
+					.collect(Collectors.toSet());
+			if (participantPublicIds.containsAll(toSet)) {
+				for (String to : toSet) {
+					Optional<Participant> p = participants.stream().filter(x -> to.equals(x.getParticipantPublicId()))
+							.findFirst();
+					rpcNotificationService.sendNotification(p.get().getParticipantPrivateId(),
 							ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
 				}
 			} else {
-				// 아니라면? 위에서 처리해준게 아닌가?
-				// 여기 뭐 하는 앤지 모르겠음...
-				Set<String> participantPublicIds = participants.stream().map(Participant::getParticipantPublicId)
-						.collect(Collectors.toSet());
-				if (participantPublicIds.containsAll(toSet)) {
-					for (String to : toSet) {
-						Optional<Participant> p = participants.stream().filter(x -> to.equals(x.getParticipantPublicId()))
-								.findFirst();
-						rpcNotificationService.sendNotification(p.get().getParticipantPrivateId(),
-								ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-					}
-				} else {
-					throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
-							"Signal \"to\" field invalid format: some connectionId does not exist in this session");
-				}
+				throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
+						"Signal \"to\" field invalid format: some connectionId does not exist in this session");
 			}
 		}
 
-		// 트랜잭션 Id값이 있다면!
 		if (isRpcCall) {
 			rpcNotificationService.sendResponse(participant.getParticipantPrivateId(), transactionId, new JsonObject());
 		}
 
-//		CDR.recordSignalSent(sessionId, uniqueSessionId, from, toSet.toArray(new String[toSet.size()]), type, data);
+		CDR.recordSignalSent(sessionId, uniqueSessionId, from, toSet.toArray(new String[toSet.size()]), type, data);
 	}
 
 	// stream의 속성이 바뀌었을 때
