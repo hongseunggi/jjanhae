@@ -8,11 +8,11 @@ WORKDIR /app
 # || return 0
 COPY src ./src
 COPY pom.xml ./pom.xml
-CMD mvn clean install -U
+RUN mvn clean install -U
 # RUN ./gradlew bootJar
 FROM adoptopenjdk/openjdk11:latest
 WORKDIR /app
 # COPY --from=builder /app/build/libs/openvidu-server-2.20.0.jar ./openvidu.jar
-COPY --from=builder openvidu-server.jar ./openvidu.jar
+COPY --from=builder /app/build/libs/openvidu-server.jar ./openvidu.jar
 EXPOSE 8443
 ENTRYPOINT ["java", "-jar", "openvidu.jar"]
