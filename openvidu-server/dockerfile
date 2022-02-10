@@ -1,19 +1,12 @@
-FROM maven:3.6.0-jdk-11-slim as builder
-WORKDIR /app
-# COPY build.gradle settings.gradle gradlew ./
-# COPY gradle ./gradle
-# RUN \
-# chmod +x ./gradlew \
-# && ./gradlew build \
-# || return 0
-COPY src ./src
-COPY pom.xml ./pom.xml
-# RUN ./gradlew bootJar
-# CMD mvn clean install -U
-RUN mvn -f pom.xml clean package
-FROM adoptopenjdk/openjdk11:latest
-WORKDIR /app
-# COPY --from=builder /app/build/libs/openvidu-server-2.20.0.jar ./openvidu.jar
-COPY --from=builder /app/build/libs/openvidu-server-2.20.0.jar ./openvidu.jar
+FROM adoptopenjdk/openjdk11:latest as builder
+# Copy OpenVidu Server
+RUN rm -rf /var/lib/apt/lists/*
+COPY openvidu-server.jar /
+COPY ./docker/openvidu-server/entrypoint.sh /usr/local/bin
+COPY ./docker/openvidu-server/discover_my_public_ip.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    chmod +x /usr/local/bin/discover_my_public_ip.sh
+
 EXPOSE 8443
-ENTRYPOINT ["java", "-jar", "openvidu.jar"]
+
+CMD /usr/local/bin/entrypoint.sh
