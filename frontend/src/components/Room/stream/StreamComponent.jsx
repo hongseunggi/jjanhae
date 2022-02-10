@@ -15,10 +15,10 @@ function StreamComponent({
   sessionId,
   camStatusChanged,
   micStatusChanged,
+  targetSubscriber,
 }) {
   const [mutedSound, setMuted] = useState(false);
   const [controlBox, setControl] = useState(false);
-
   const handleChangeControlBox = (e) => {
     setControl(!controlBox);
     e.preventDefault();
@@ -37,11 +37,11 @@ function StreamComponent({
         >
           <OvVideoComponent user={user} mutedSound={mutedSound} />
 
-
           <div className={styles.yangGame}>
                 <YangGameComponent
                 sessionId={sessionId}
                 user={user}
+                targetSubscriber = {targetSubscriber}
               />
           </div>
 
