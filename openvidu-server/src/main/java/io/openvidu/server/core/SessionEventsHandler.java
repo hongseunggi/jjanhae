@@ -44,12 +44,18 @@ import io.openvidu.server.kurento.kms.Kms;
 import io.openvidu.server.recording.Recording;
 import io.openvidu.server.rpc.RpcNotificationService;
 
+import io.openvidu.server.contents.MusicService;
+
+
 public class SessionEventsHandler {
 
 	private static final Logger log = LoggerFactory.getLogger(SessionEventsHandler.class);
 
 	@Autowired
 	protected RpcNotificationService rpcNotificationService;
+
+	@Autowired
+	protected MusicService musicService;
 
 	@Autowired
 	protected CallDetailRecord CDR;
@@ -408,7 +414,8 @@ public class SessionEventsHandler {
 		}
 		// 음악 요청 signal
 		else if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
-//			musicService.controlMusic(participant, message, participants, rpcNotificationService);
+			System.out.println("신청곡 요청이 들어왔습니다.");
+			musicService.requestMusic(participant, message, participants, rpcNotificationService);
 		}
 		// 채팅 요청 signal 여기 아래부터는 원본 코드와 거의 동일
 		else {
