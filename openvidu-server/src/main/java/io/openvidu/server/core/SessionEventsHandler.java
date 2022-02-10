@@ -396,7 +396,7 @@ public class SessionEventsHandler {
 		rpcNotificationService.sendResponse(participant.getParticipantPrivateId(), transactionId, new JsonObject());
 	}
 
-
+	// 딱!!! 이 함수로 모든 것을 소통함
 	public void onSendMessage(Participant participant, JsonObject message, Set<Participant> participants,
 							  String sessionId, String uniqueSessionId, Integer transactionId, OpenViduException error) {
 
@@ -427,54 +427,61 @@ public class SessionEventsHandler {
 			params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_FROM_PARAM, from);
 		}
 
+		Set<String> toSet = new HashSet<String>();
+
+		// ********* 여기서부터 type에 맞춰서 우리 서비스 실행하면 됨
 		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
-			System.out.println("신청곡 요청이 들어왔습니다.");
+			System.out.println("음악 관련 요청이 들어왔습니다.");
+			musicService.requestMusic(participant, message, participants, rpcNotificationService);
 		} else if (message.has("type") && message.get("type").getAsString().equals("signal:chat")) {
 			System.out.println("Request Game ...");
 			gameService.controlGame(participant, message, participants, rpcNotificationService);
 		}
-
-		Set<String> toSet = new HashSet<String>();
-
-		if (message.has("to")) {
-			JsonArray toJson = message.get("to").getAsJsonArray();
-			for (int i = 0; i < toJson.size(); i++) {
-				JsonElement el = toJson.get(i);
-				if (el.isJsonNull()) {
-					throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
-							"Signal \"to\" field invalid format: null");
+		else {
+			// 여기가 채팅일 때 실행되도록 type:chat
+			if (message.has("to")) {
+				JsonArray toJson = message.get("to").getAsJsonArray();
+				for (int i = 0; i < toJson.size(); i++) {
+					JsonElement el = toJson.get(i);
+					if (el.isJsonNull()) {
+						throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
+								"Signal \"to\" field invalid format: null");
+					}
+					toSet.add(el.getAsString());
 				}
-				toSet.add(el.getAsString());
 			}
-		}
 
-		if (toSet.isEmpty()) {
-			for (Participant p : participants) {
-				toSet.add(p.getParticipantPublicId());
-				rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-						ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-			}
-		} else {
-			Set<String> participantPublicIds = participants.stream().map(Participant::getParticipantPublicId)
-					.collect(Collectors.toSet());
-			if (participantPublicIds.containsAll(toSet)) {
-				for (String to : toSet) {
-					Optional<Participant> p = participants.stream().filter(x -> to.equals(x.getParticipantPublicId()))
-							.findFirst();
-					rpcNotificationService.sendNotification(p.get().getParticipantPrivateId(),
+			// toSet이 비어있다면 '모든' 사용자에게 반환해주는 것. "to"라는 optional 데이터가 있다면 그 사람들에게만 메세지 반환.
+			if (toSet.isEmpty()) {
+				for (Participant p : participants) {
+					toSet.add(p.getParticipantPublicId());
+					rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
 							ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+					System.out.println("onSendMessage의 반환 : " + params);
 				}
 			} else {
-				throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
-						"Signal \"to\" field invalid format: some connectionId does not exist in this session");
+				Set<String> participantPublicIds = participants.stream().map(Participant::getParticipantPublicId)
+						.collect(Collectors.toSet());
+				if (participantPublicIds.containsAll(toSet)) {
+					for (String to : toSet) {
+						Optional<Participant> p = participants.stream().filter(x -> to.equals(x.getParticipantPublicId()))
+								.findFirst();
+						rpcNotificationService.sendNotification(p.get().getParticipantPrivateId(),
+								ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+					}
+				} else {
+					throw new OpenViduException(Code.SIGNAL_TO_INVALID_ERROR_CODE,
+							"Signal \"to\" field invalid format: some connectionId does not exist in this session");
+				}
 			}
-		}
 
+
+		}
 		if (isRpcCall) {
 			rpcNotificationService.sendResponse(participant.getParticipantPrivateId(), transactionId, new JsonObject());
 		}
-
 		CDR.recordSignalSent(sessionId, uniqueSessionId, from, toSet.toArray(new String[toSet.size()]), type, data);
+
 	}
 
 	// stream의 속성이 바뀌었을 때
