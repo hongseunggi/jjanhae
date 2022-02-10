@@ -11,19 +11,22 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 
-const VIDEO = { video: true, audio: false };
+
+const VIDEO = { video: true, audio : false };
 let localstream;
 function IntoRoom({ onClose, room }) {
   const videoRef = useRef(null);
-  const { myVMstate, setMyVMstate } = useContext(VideoMicContext);
+  const {myVMstate, setMyVMstate} = useContext(VideoMicContext);
+  const [errorPwd, setErrorPwd] = useState("");
+  const [type, setType] = useState(room.type);
   // const { open, close, header } = props;
   const [isMic, setMic] = useState(true);
   const [isVideo, setVideo] = useState(true);
   const navigate = useNavigate();
-
+  const [pwd, setPwd] = useState(""); 
   const startVideo = async () => {
     const stream = await navigator.mediaDevices.getUserMedia(VIDEO);
-
+    
     if (videoRef && videoRef.current) {
       console.log("들어옴", stream);
       videoRef.current.srcObject = stream;
@@ -32,12 +35,36 @@ function IntoRoom({ onClose, room }) {
   };
 
   console.log(room, "난 모달");
-  useEffect(() => {
-    startVideo();
-  }, []);
+  useEffect(()=>{
+    if(type === 1) startVideo();
+    return () => {
+      localstream.getTracks()[0].stop();
+    };
+  },[]);
+  
+
 
   const handleClose = (e) => {
     e.stopPropagation();
+  };
+
+  const handleCheckPwd = () => {
+    if(pwd === room.password){
+      startVideo();
+      setType(1);
+    }
+    else{
+      setErrorPwd("올바르지 않은 비밀번호 입니다.");
+    }
+  }
+  const handleInputPwd = (e) => {
+    e.preventDefault();
+    setPwd(e.target.value);
+  }
+  const onCheckEnter = (e) => {
+    if (e.key === "Enter") {
+      handleCheckPwd();
+    }
   };
   const handleMic = () => {
     setMic((prev) => !prev);
@@ -65,23 +92,48 @@ function IntoRoom({ onClose, room }) {
 
   return (
     <div className={`${style.openModal} ${style.modal}`} onClick={onClose}>
-      <div className={style.modalForm} onClick={handleClose}>
+      {type === 0 ? (
+        <div className={style.pwdmodalForm} onClick={handleClose}>
+        <button className={style.close} onClick={onClose}>
+          X
+        </button>
+        <h2>비밀번호</h2>
+        <div className={style.pwdbox}>
+        <input
+          className={style.inputData}
+          id="name"
+          type="password"
+          autoComplete="off"
+          onChange={handleInputPwd}
+          onKeyPress={onCheckEnter}
+        />
+        <span className={style.errorMsg}>{errorPwd}</span>
+        <button className={style.check} onClick={handleCheckPwd} >
+          확인
+        </button>
+        </div>
+      </div>
+
+      ) : null}
+      {type === 1 ? (
+        <div className={style.modalForm} onClick={handleClose}>
         <button className={style.close} onClick={onClose}>
           X
         </button>
         <h1>{room.title}</h1>
         <div className={style.videoPreview}>
-          <video
-            autoPlay={true}
-            className={style.videoPreview}
-            // id={'video-'+ user.getStreamManager().stream.streamId}
-            ref={videoRef}
-            muted={isMic}
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-          />
+            <video
+                autoPlay={true}
+                className={style.videoPreview}
+                ref={videoRef}
+                muted={isMic}
+                style={
+                    {
+                        width : "100%",
+                        height : "100%"
+                    }
+                }
+            />
         </div>
         <div style={{ display: "inline-block" }} onClick={handleMic}>
           {isMic ? (
@@ -135,8 +187,9 @@ function IntoRoom({ onClose, room }) {
         <button className={style.closeBtn} onClick={handleSubmit}>
           입장
         </button>
+        </div>
+      ): null}
         {/* </a> */}
-      </div>
     </div>
   );
 }
