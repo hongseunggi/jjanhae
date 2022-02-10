@@ -34,7 +34,6 @@ function IntoRoom({ onClose, room }) {
     }
   };
 
-
   console.log(room, "난 모달");
   useEffect(()=>{
     if(type === 1) startVideo();
@@ -68,24 +67,25 @@ function IntoRoom({ onClose, room }) {
     }
   };
   const handleMic = () => {
-    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
-    setMic(!isMic);
+    setMic((prev) => !prev);
   };
   const handleVideo = () => {
-    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
-    if(isVideo){
+    if (isVideo) {
       videoRef.current.pause();
       videoRef.current.src = "";
       localstream.getTracks()[0].stop();
-    }
-    else{
+    } else {
       startVideo();
     }
-    setVideo(!isVideo);
+    setVideo((prev) => !prev);
   };
+  useEffect(() => {
+    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
+  }, [isMic, isVideo]);
+
   const handleSubmit = () => {
     // axios ???????????
-    setMyVMstate({video : isVideo, audio : isMic})
+    setMyVMstate({ video: isVideo, audio: isMic });
     navigate(`/conferences/detail/${room.title}/${room.roomSeq}/`);
     onClose();
   };

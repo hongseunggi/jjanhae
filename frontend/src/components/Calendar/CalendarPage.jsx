@@ -5,6 +5,7 @@ import moment from "moment";
 import buildCalendar from "./buildCalendar";
 import ConferenceList from "./ConferenceList";
 import ConferenceDetail from "./ConferenceDetail3";
+import UserApi from "../../api/UserApi.js";
 // import ConferenceDetail from "./ConferenceDetail2";
 import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
 import { ReactComponent as PartyIcon } from "../../assets/icons/party.svg";
@@ -22,27 +23,36 @@ const CalendarPage = () => {
     month: "",
     day: "",
   });
+  //
+  const [month, setMonth] = useState();
   //startDate
   const [startMonth, setStartMonth] = useState(moment());
   //endDate
   const [endMonth, setEndMonth] = useState(moment());
   //conference list
   const [party, setParty] = useState({
-    conferences: [
-      "2022-02-01",
-      "2022-02-06",
-      "2022-02-10",
-      // "2022-02-22",
-    ],
+    conferences: [],
   });
-
   const [partyList, setPartyList] = useState({
     conferencesId: [1, 2, 3],
+  });
+  const [roomList, setRoomList] = useState({
+    roomList: [],
+  });
+  const [roomSeq, setRoomSeq] = useState();
+  const [userList, setUserList] = useState([]);
+  const [room , setRoom] = useState({});
+  const [startTime, setStartTime] = useState();
+  const [totalTime, setTotalTime] = useState();
+  const [time, setTime] = useState({
+    startTime:"",
+    endTime:"",
   });
 
   const [listModalOpen, setListModalOpen] = useState(false);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
 
+  const { getRoomDate, getRoomList, getUserList } = UserApi;
   const [isActive, setIsActive] = useState(false);
 
   const dropDown = useRef([]);
@@ -60,15 +70,79 @@ const CalendarPage = () => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     setCalendar(buildCalendar(value));
     setStartMonth(value.clone().startOf("month").subtract(1, "day"));
     setEndMonth(value.clone().endOf("month"));
+
+    const result = await getRoomDate(value.format("M")*1);
+
+    //받아온 party data state에 저장
+    handleParyDataList(result.data.conferencesDateList);
   }, [value]);
 
+  useEffect(async () => {
+    console.log(item.day);
+    if(item.day!="") {
+      const result = await getRoomList(item.day);
+      let roomList = [];
+      roomList = result.data.roomList; 
+      console.log(roomList)
+      setRoomList({roomList});
+    }
+  }, [item.day])
+
+
+  const handleParyDataList = (result) => {
+    const arr = [];
+    for (let i = 0; i < result.length; i++) {
+      let data = result[i].date;
+      let year = data.year;
+      let month = data.month;
+      let day = data.day;
+      let date = year + "-" + month + "-" + day;
+      date = new Date(date);
+      let res = moment(date).format("YYYY-MM-DD");
+      arr.push(res);
+    }
+
+    //중복제거
+    let conferences = [];
+    arr.forEach((element) => {
+      if (!conferences.includes(element)) {
+        conferences.push(element);
+      }
+    });
+
+    setParty({
+      conferences,
+    });
+  };
+
   useEffect(() => {
-    console.log(item);
+    // console.log(item);
   }, [item]);
+
+  useEffect(() => {
+    // console.log(party)
+  }, [party]);
+
+  useEffect(() => {
+    // console.log(roomList);
+    makeList();
+  }, [roomList]);
+
+  useEffect(() => {
+    console.log(room);
+    setTime({
+      startTime : room.startTime,
+      endTime : room.endTime
+    });
+  }, [room])
+
+  useEffect(() => {
+  },[time])
+
 
   useEffect(() => {}, [detailModalOpen]);
 
@@ -95,8 +169,7 @@ const CalendarPage = () => {
     return value.format("M") + "월";
   };
 
-  //선택된것 말고 다 hidden
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     setUnvisible(event);
     const data = event.nativeEvent.path[2].outerText;
     const dataArr = data.split("\n");
@@ -104,8 +177,9 @@ const CalendarPage = () => {
       month: value.format("M"),
       day: dataArr[0],
     });
-    // if(event.target.nextElementSibling.style.visibility==='hidden') {
-    // }
+    //해당 날짜에 진행한 파티목록 가져오는 api호출
+    // const result = await getRoomList(item.day);
+    // console.log(result);
   };
 
   function showList(target) {
@@ -133,7 +207,40 @@ const CalendarPage = () => {
     return <div className={styles[yoil]}>{date}</div>;
   };
 
-  const listStyle = { visibility: "hidden" };
+  //roomseq로 참석한 모든 인원 데이터 받아오기
+  const getRoomDetail = async (roomSeq) => {
+    setRoomSeq(roomSeq);
+    const { data } = await getUserList(roomSeq);
+    let userList = data.userList;
+    setUserList({ userList });
+    setRoom(data.room);
+    console.log(room);
+
+    openDetailModal();
+  };
+
+  //make dropdown
+  const makeList = () => {
+    const dataList = [];
+
+    for (let i = 0; i < roomList.roomList.length; i++) {
+      dataList.push(roomList.roomList[i]);
+    }
+    // const roomListData = dataList.map((data, index) => (<li key={index}><button className={styles.partyData}>{data.title}</button></li>))
+    const roomListData = dataList.map((data, index) => (
+      <li key={index}>
+        <button
+          className={styles.partyData}
+          onClick={() => getRoomDetail(data.roomSeq)}
+        >
+          {data.title}
+        </button>
+      </li>
+    ));
+    return <>{roomListData}</>;
+  };
+
+  const listStyle = { visibility: "visible" };
 
   const checkParty = (day) => {
     for (let i = 0; i < party.conferences.length; i++) {
@@ -156,32 +263,7 @@ const CalendarPage = () => {
                 ref={(el) => (dropDown.current[i] = el)}
               >
                 <p className={styles.listTitle}>파티 목록</p>
-                <ul>
-                  <li>
-                    <button
-                      className={styles.partyData}
-                      onClick={openDetailModal}
-                    >
-                      {partyList.conferencesId[0]}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className={styles.partyData}
-                      onClick={openDetailModal}
-                    >
-                      {partyList.conferencesId[1]}
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className={styles.partyData}
-                      onClick={openDetailModal}
-                    >
-                      {partyList.conferencesId[2]}
-                    </button>
-                  </li>
-                </ul>
+                <ul>{makeList()}</ul>
               </div>
             </div>
           </>
@@ -195,7 +277,6 @@ const CalendarPage = () => {
   };
 
   const openDetailModal = () => {
-    console.log(detailModalOpen);
     setDetailModalOpen(true);
   };
 
@@ -221,6 +302,8 @@ const CalendarPage = () => {
             open={detailModalOpen}
             close={closeDetailModal}
             date={item}
+            time={time}
+            userList={userList.userList}
           ></ConferenceDetail>
           <div className={styles.calendarHeader}>
             <div className={styles.calendarTitle}>술자리 기록</div>
@@ -231,10 +314,10 @@ const CalendarPage = () => {
           </div>
           <div className={styles.calendarBodyBorder}>
             <div className={styles.calendarBody}>
-              {calendar.map((week, key) => (
-                <div className={styles.week}>
-                  {week.map((day) => (
-                    <div className={styles.day}>
+              {calendar.map((week, index) => (
+                <div key={index} className={styles.week}>
+                  {week.map((day, index) => (
+                    <div key={index} className={styles.day}>
                       {calcYoil(day)}
                       {checkParty(day)}
                     </div>
@@ -248,5 +331,6 @@ const CalendarPage = () => {
     </>
   );
 };
+
 
 export default CalendarPage;

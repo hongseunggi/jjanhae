@@ -11,10 +11,16 @@ import java.util.List;
  */
 public interface RoomHistoryService {
     RoomHistory addHistory(User user, Room room, AddHistoryRequest addHistoryRequest);
+    List<Integer> findAllRoomSeqByUserSeq(Long userSeq);
+    RoomHistory findRoomByUserSeq(Long userSeq);
+    List<Integer> findAllRoomSeqByUserSeqAndDate(Long userSeq,String date);
+    List<Integer> findAllUserSeqByRoomSeq(Long userSeq);
     RoomHistory findOneHistoryAll(Long userSeq);
     RoomHistory findOneHistoryInRoom(Long userSeq, Long roomSeq);
     int countJoinUser(Long roomSeq);
     void updateRoomAction(RoomHistory roomHistory);
+
+
     RoomHistory exitHistory(RoomHistory roomHistory);
     RoomHistory findRoomHistoryByUserAndRoom(User userSeq, Room roomSeq);
     List<RoomHistory> findRoomHistoriesByRoom(Room roomSeq);
