@@ -1,0 +1,12 @@
+.video-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  width: 80%;
+}
+
+.chat-container {
+  max-width: 400px;
+  width: 30%;
+  height: 100%;
+}
