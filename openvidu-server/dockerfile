@@ -7,7 +7,7 @@ WORKDIR /app
 # && ./gradlew build \
 # || return 0
 COPY src ./src
-COPY pox.xml ./pom.xml
+COPY pom.xml ./pom.xml
 CMD mvn clean install -U
 # RUN ./gradlew bootJar
 FROM adoptopenjdk/openjdk11:latest
