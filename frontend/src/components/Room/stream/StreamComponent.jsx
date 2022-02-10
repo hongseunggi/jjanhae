@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./StreamComponent.module.css";
 import OvVideoComponent from "./OvVideo.jsx";
+import YangGameComponent from ".././game/YangGameComponent";
 
 import MicOff from "@material-ui/icons/MicOff";
 import Mic from "@material-ui/icons/Mic";
@@ -35,6 +36,14 @@ function StreamComponent({
           onMouseLeave={handleChangeControlBox}
         >
           <OvVideoComponent user={user} mutedSound={mutedSound} />
+
+
+          <div className={styles.yangGame}>
+                <YangGameComponent
+                sessionId={sessionId}
+                user={user}
+              />
+          </div>
 
           <div className={styles.controlbox}>
             {sessionId ? (

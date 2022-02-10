@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   margin-bottom: 20px;
   width: 80%;
+  flex-direction: column;
 }
 
 .chat-container {

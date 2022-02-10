@@ -3,6 +3,8 @@ import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
+import YangGameComponent from "././game/YangGameComponent";
+
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
@@ -14,7 +16,6 @@ let localUserInit = new UserModel();
 let OV = undefined;
 
 const RoomContents = ({ sessionName, userName, media }) => {
-  console.log(userName);
 
   const [mySessionId, setMySessionId] = useState(sessionName);
   const [myUserName, setMyUserName] = useState(userName);
@@ -298,6 +299,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
         {subscribersRef.current.map((sub, i) => {
           console.log(sub);
           return (
+            //양세찬 게임 키워드 props로 같이 보내줘야할듯
             <StreamComponent key={i} user={sub} />
             // <UserVideoComponent user={sub} />
           );
