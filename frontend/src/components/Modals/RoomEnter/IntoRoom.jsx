@@ -28,13 +28,13 @@ function IntoRoom({ onClose, room }) {
     const stream = await navigator.mediaDevices.getUserMedia(VIDEO);
     
     if (videoRef && videoRef.current) {
-      console.log("들어옴", stream);
+      //console.log("들어옴", stream);
       videoRef.current.srcObject = stream;
       localstream = stream;
     }
   };
 
-  console.log(room, "난 모달");
+  //console.log(room, "난 모달");
   useEffect(()=>{
     if(type === 1) startVideo();
     return () => {
@@ -80,7 +80,7 @@ function IntoRoom({ onClose, room }) {
     setVideo((prev) => !prev);
   };
   useEffect(() => {
-    console.log("마이크 : ", isMic, "비디오 : ", isVideo);
+    //console.log("마이크 : ", isMic, "비디오 : ", isVideo);
   }, [isMic, isVideo]);
 
   const handleSubmit = () => {

@@ -127,11 +127,11 @@ const Login = () => {
       const { data } = await getLoginResult(body);
       setLoginMsg("");
       setLoginStatus("2");
-      // console.log(data);
+      // //console.log(data);
       setMyName(data.name);
       navigate("/");
     } catch ({ response }) {
-      console.log(response);
+      //console.log(response);
       if (
         response.data.statusCode === userError ||
         response.data.statusCode === pwdError

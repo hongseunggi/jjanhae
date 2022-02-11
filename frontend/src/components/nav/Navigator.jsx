@@ -63,9 +63,9 @@ function Navigator() {
         <Container fluid>
           <Row className="nav">
             <Col>
-              <Link to="/" className={styles.logo}>
+              {/* <Link to="/" className={styles.logo}>
                 <img src={Logo} className={styles.logo} alt="logo"></img>
-              </Link>
+              </Link> */}
             </Col>
             <Col>
               <Link to="/conferences/list" className={styles.link}>
@@ -76,7 +76,7 @@ function Navigator() {
         </Container>
       );
     default:
-      return console.log("error");
+      return //console.log("error");
   }
 }
 

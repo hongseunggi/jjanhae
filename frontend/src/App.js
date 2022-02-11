@@ -19,12 +19,20 @@ function App() {
   const [myName, setMyName] = useState("");
   const [myVMstate, setMyVMstate] = useState({video : true, audio : true});
   // 추후 refreshtoken을 사용하여 엑세스 토큰 업데이트하는 코드로 변경~~!@~!~!
-  useEffect(() => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    if (accessToken) {
-      setLoginStatus("2");
-    }
-  }, []);
+  const accessToken = sessionStorage.getItem("accessToken");
+  if (accessToken && loginStatus === "1") {
+    setLoginStatus("2");
+    console.log("??????????????????!@@##$@");
+  }
+  console.log("App.js render");
+  // useEffect(() => {
+  //   const accessToken = sessionStorage.getItem("accessToken");
+  //   if (accessToken) {
+  //     setLoginStatus("2");
+  //     console.log("??????????????????!@@##$@");
+  //   }
+  // }, []);
+  // console.log("App.js render");
   return (
     <VideoMicContext.Provider value={{myVMstate, setMyVMstate}}>
     <NameContext.Provider value={{myName, setMyName}}>

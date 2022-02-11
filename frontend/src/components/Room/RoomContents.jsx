@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
@@ -6,6 +6,10 @@ import StreamComponent from "./stream/StreamComponent";
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
+import LoginStatusContext from "../../contexts/LoginStatusContext";
+import NameContext from "../../contexts/NameContext";
+import { useController } from "react-hook-form";
+
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -14,8 +18,11 @@ let localUserInit = new UserModel();
 let OV = undefined;
 
 const RoomContents = ({ sessionName, userName, media }) => {
-  console.log(userName);
-
+  //console.log(userName);
+  const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
+  const {myName} = useContext(NameContext);
+  //console.log(loginStatus, myName);
+  console.log("room content render", loginStatus);
   const [mySessionId, setMySessionId] = useState(sessionName);
   const [myUserName, setMyUserName] = useState(userName);
   const [session, setSession] = useState(undefined);
@@ -35,14 +42,17 @@ const RoomContents = ({ sessionName, userName, media }) => {
   const localUserRef = useRef(localUser);
   localUserRef.current = localUser;
 
-  console.log(myUserName);
+  //console.log(myUserName);
   const joinSession = () => {
     OV = new OpenVidu();
     setSession(OV.initSession());
   };
 
   useEffect(() => {
+    setLoginStatus("3");
+    
     window.addEventListener("beforeunload", onbeforeunload);
+    console.log("?????????????????");
     joinSession();
 
     return () => {
@@ -56,7 +66,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
       // 상대방이 들어왔을 때 실행
       sessionRef.current.on("streamCreated", (event) => {
         let subscriber = sessionRef.current.subscribe(event.stream, undefined);
-        console.log(event);
+        //console.log(event);
         const newUser = new UserModel();
         newUser.setStreamManager(subscriber);
         newUser.setConnectionId(event.stream.connection.connectionId);
@@ -65,7 +75,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
         newUser.setType("remote");
 
         const nickname = event.stream.connection.data.split("%")[0];
-        console.log(nickname);
+        //console.log(nickname);
         newUser.setNickname(JSON.parse(nickname).clientData);
 
         setSubscribers([...subscribersRef.current, newUser]);
@@ -73,13 +83,13 @@ const RoomContents = ({ sessionName, userName, media }) => {
 
       // 상대방이 상태를 변경했을 때 실행 (카메라 / 마이크 등)
       sessionRef.current.on("signal:userChanged", (event) => {
-        console.log("1");
-        console.log(subscribersRef.current);
+        //console.log("1");
+        //console.log(subscribersRef.current);
         subscribersRef.current.forEach((user) => {
           if (user.getConnectionId() === event.from.connectionId) {
             const data = JSON.parse(event.data);
-            console.log(data);
-            console.log("EVENTO REMOTE: ", event.data);
+            //console.log(data);
+            //console.log("EVENTO REMOTE: ", event.data);
             if (data.isAudioActive !== undefined) {
               user.setAudioActive(data.isAudioActive);
             }
@@ -88,8 +98,8 @@ const RoomContents = ({ sessionName, userName, media }) => {
             }
           }
         });
-        console.log("2");
-        console.log(subscribersRef.current);
+        //console.log("2");
+        //console.log(subscribersRef.current);
         setSubscribers([...subscribersRef.current]);
       });
 
@@ -145,9 +155,9 @@ const RoomContents = ({ sessionName, userName, media }) => {
 
   const leaveSession = () => {
     const mySession = sessionRef.current;
-    console.log(mySession);
+    //console.log(mySession);
     if (mySession) {
-      console.log("leave");
+      //console.log("leave");
       mySession.disconnect();
     }
     OV = null;
@@ -171,11 +181,15 @@ const RoomContents = ({ sessionName, userName, media }) => {
   };
 
   const onbeforeunload = (e) => {
-    leaveSession();
+    //console.log("tlfgodehla");
+    setTimeout(()=>{
+      //console.log("dfsdfsdf");
+      leaveSession();
+    },1500);
   };
 
   const sendSignalUserChanged = (data) => {
-    console.log("시그널 보내 시그널 보내");
+    //console.log("시그널 보내 시그널 보내");
     const signalOptions = {
       data: JSON.stringify(data),
       type: "userChanged",
@@ -184,21 +198,21 @@ const RoomContents = ({ sessionName, userName, media }) => {
   };
 
   const camStatusChanged = () => {
-    console.log("캠 상태 변경!!!");
+    //console.log("캠 상태 변경!!!");
     localUserInit.setVideoActive(!localUserInit.isVideoActive());
-    console.log(localUserInit);
+    //console.log(localUserInit);
     localUserInit
       .getStreamManager()
       .publishVideo(localUserInit.isVideoActive());
 
-    console.log(localUser === localUserInit);
-    console.log(typeof localUser);
+    //console.log(localUser === localUserInit);
+    //console.log(typeof localUser);
     setLocalUser(localUserInit);
     sendSignalUserChanged({ isVideoActive: localUserInit.isVideoActive() });
   };
 
   const micStatusChanged = () => {
-    console.log("마이크 상태 변경!!!");
+    //console.log("마이크 상태 변경!!!");
     localUserInit.setAudioActive(!localUserInit.isAudioActive());
     localUserInit
       .getStreamManager()
@@ -225,7 +239,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
+          //console.log("CREATE SESION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
@@ -233,7 +247,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
           if (error.response && error.response.status === 409) {
             resolve(sessionId);
           } else {
-            console.log(error);
+            ////console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
                 OPENVIDU_SERVER_URL
@@ -276,7 +290,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
           }
         )
         .then((response) => {
-          console.log("TOKEN", response);
+          ////console.log("TOKEN", response);
           resolve(response.data.token);
         })
         .catch((error) => reject(error));
@@ -296,7 +310,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
             />
           )}
         {subscribersRef.current.map((sub, i) => {
-          console.log(sub);
+          ////console.log(sub);
           return (
             <StreamComponent key={i} user={sub} />
             // <UserVideoComponent user={sub} />

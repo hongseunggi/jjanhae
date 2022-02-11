@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./OvVideo.module.css";
 function OvVideo({ user, mutedSound }) {
   const videoRef = useRef();
-
+  console.log("video render");
   useEffect(() => {
     if (user.streamManager && !!videoRef) {
       user.getStreamManager().addVideoElement(videoRef.current);

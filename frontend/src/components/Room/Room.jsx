@@ -35,13 +35,15 @@ const Room = () => {
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [onSetting, setOnSetting] = useState(false);
   const { title, roomseq } = useParams();
-
-  console.log(myName);
+  
+  //console.log(myName);
 
   useEffect(() => {
-    setLoginStatus("3");
-    console.log(myVMstate);
-    // return () => setLoginStatus("2");
+    console.log("room render");
+    // setLoginStatus("3");
+    //console.log(myVMstate);
+    console.log("?????????????");
+    return () => setLoginStatus("2");
   }, []);
 
   const handleMusicPlayer = () => {
@@ -75,8 +77,8 @@ const Room = () => {
     posX = e.clientX;
     posY = e.clientY;
 
-    console.log(posX);
-    console.log(posY);
+    //console.log(posX);
+    //console.log(posY);
   };
 
   const dragHandler = (e) => {

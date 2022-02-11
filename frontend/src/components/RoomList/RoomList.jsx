@@ -14,7 +14,7 @@ function RoomList() {
   const [sort, setSort] = useState("createdAt");
   const [rooms, setRooms] = useState([]);
   const [keyword, setKeyword] = useState("");
-
+  console.log("room list render");
   const { getRoomListResult, getRoomSearchResult } = RoomApi;
 
   const offsetCountRef = useRef(offsetCount);
@@ -180,7 +180,7 @@ function RoomList() {
             height: "5px",
           }}
         >
-          {console.log(isLoaded)}
+          {/* {console.log(isLoaded)} */}
         </div>
         {loading ? <LoadingSpinner></LoadingSpinner> : null}
       </Row>

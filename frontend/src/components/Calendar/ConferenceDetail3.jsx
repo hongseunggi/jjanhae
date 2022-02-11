@@ -11,7 +11,7 @@ const ConferenceDetail = (props) => {
   const [roomDetail, setRoomDetail] = useState();
 
   const showParticipant = () => {
-    console.log(participant);
+    //console.log(participant);
     const dataList = [];
     for(let i=0; i<participant.userList.length; i++) {
       dataList.push(participant.userList[i]);
@@ -30,11 +30,11 @@ const ConferenceDetail = (props) => {
   },[userList])
 
   useEffect(()=> {
-    console.log(participant);
+    //console.log(participant);
   },[participant])
   
   useEffect(() => {
-    console.log(time);
+    //console.log(time);
   },[time])
 
 

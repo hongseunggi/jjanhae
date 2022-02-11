@@ -17,7 +17,7 @@ function StreamComponent({
 }) {
   const [mutedSound, setMuted] = useState(false);
   const [controlBox, setControl] = useState(false);
-
+  console.log("stream render");
   const handleChangeControlBox = (e) => {
     setControl(!controlBox);
     e.preventDefault();
