@@ -4,6 +4,7 @@ import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import YangGameComponent from "././game/YangGameComponent";
+import SelectingGame from "././game/SelectingGame";
 
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
@@ -38,6 +39,7 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
+  const [isSelecting, setIsSelecting] = useState(true)
 
   console.log(targetSubscriber);
 
@@ -391,8 +393,12 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
     link.click();
     document.body.removeChild(link);
   };
+  const closeSelectingPage = () => {
+    setIsSelecting(false);
+  }
   return (
     <div className={styles["contents-container"]}>
+      <SelectingGame open={isSelecting} close={closeSelectingPage} />
       {mode === "snapshot" ? (
         <div className={styles.countContainer}>
           <p className={styles.count}>{count}</p>

@@ -33,6 +33,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber, subscribers }) {
   const [userId, setUserId] = useState("");
   const [nickname, setNickname] = useState([]);
   const [myNickname, setMyNickname] = useState("");
+  const [isSelecting, setIsSelecting] = useState(true);
 
   useEffect(() => {
     for (let i = 0; i < nickname.length; i++) {
@@ -87,6 +88,19 @@ function YangGameComponent({ sessionId, user, targetSubscriber, subscribers }) {
   };
 
   useEffect(() => {
+    //양게임 시작하면 바로 요청 보냄
+    const initalData = {
+      streamId: user.connectionId,
+        sessionId: sessionId,
+        gameStatus: 1,
+        gameId: 1,
+    };
+    user.getStreamManager().stream.session.signal({
+      data: JSON.stringify(initalData),
+      type: "game",
+    });
+
+
     console.log("here");
     user.getStreamManager().stream.session.on("signal:game", (event) => {
       const data = JSON.parse(event.data);
