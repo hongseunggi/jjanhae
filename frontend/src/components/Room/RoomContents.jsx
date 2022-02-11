@@ -3,28 +3,35 @@ import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
+import YangGameComponent from "././game/YangGameComponent";
+
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
 
+import ReactPlayer from "react-player";
+
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
+// const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
 let OV = undefined;
 
 const RoomContents = ({ sessionName, userName, media }) => {
-  console.log(userName);
-
   const [mySessionId, setMySessionId] = useState(sessionName);
   const [myUserName, setMyUserName] = useState(userName);
   const [session, setSession] = useState(undefined);
   const [localUser, setLocalUser] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   const [publisher, setPublisher] = useState(undefined);
-
+  const [playYangGame, setPlayYangGame] = useState();
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
+  const [targetSubscriber, setTargetSubscriber] = useState({});
+  const [keyWords, setKeywords] = useState([]);
+
+  console.log(targetSubscriber);
 
   const sessionRef = useRef(session);
   sessionRef.current = session;
@@ -34,6 +41,9 @@ const RoomContents = ({ sessionName, userName, media }) => {
 
   const localUserRef = useRef(localUser);
   localUserRef.current = localUser;
+
+  const targetSubscriberRef = useRef(targetSubscriber);
+  targetSubscriberRef.current = targetSubscriber;
 
   console.log(myUserName);
   const joinSession = () => {
@@ -142,6 +152,11 @@ const RoomContents = ({ sessionName, userName, media }) => {
       });
     }
   }, [session]);
+
+  useEffect(() => {
+    console.log(subscribers);
+    setTargetSubscriber(subscribers[0]);
+  }, [subscribers]);
 
   const leaveSession = () => {
     const mySession = sessionRef.current;
@@ -296,13 +311,34 @@ const RoomContents = ({ sessionName, userName, media }) => {
             />
           )}
         {subscribersRef.current.map((sub, i) => {
-          console.log(sub);
           return (
-            <StreamComponent key={i} user={sub} />
+            //양세찬 게임 키워드 props로 같이 보내줘야할듯
+            <StreamComponent
+              key={i}
+              user={sub}
+              targetSubscriber={targetSubscriber}
+              subscribers={subscribers}
+            />
             // <UserVideoComponent user={sub} />
           );
         })}
       </div>
+      <ReactPlayer
+        url={[
+          "https://www.youtube.com/watch?v=7C2z4GqqS5E",
+          "https://youtu.be/Bf_tncvBZ7Y",
+          "https://youtu.be/sqgxcCjD04s",
+        ]}
+        playing
+        controls
+        width="300px"
+        height="300px"
+      />
+      {/* url={'https://youtu.be/Z5M8LH9qZtY'}
+        width = '200px'
+        height = '200px'
+        playing = {true}
+         /> */}
       {localUser !== undefined && localUser.getStreamManager() !== undefined && (
         <div className={styles["chat-container"]}>
           <Chat user={localUserRef.current} />
