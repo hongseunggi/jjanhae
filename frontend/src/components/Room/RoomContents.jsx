@@ -11,7 +11,8 @@ import UserModel from "../models/user-model";
 
 import ReactPlayer from 'react-player'
 
-const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
+const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
+// const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
@@ -29,6 +30,8 @@ const RoomContents = ({ sessionName, userName, media }) => {
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
+  const [keyWords, setKeywords] = useState([]);
+
 
   console.log(targetSubscriber);
 
@@ -312,7 +315,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
         {subscribersRef.current.map((sub, i) => {
           return (
             //양세찬 게임 키워드 props로 같이 보내줘야할듯
-            <StreamComponent key={i} user={sub} targetSubscriber={targetSubscriber}/>
+            <StreamComponent key={i} user={sub} targetSubscriber={targetSubscriber} />
             // <UserVideoComponent user={sub} />
           );
         })}
