@@ -32,7 +32,7 @@ const Room = () => {
   const { myName } = useContext(NameContext);
   const [onPlayerClick, setOnPlayerClick] = useState(false);
   const [isPlayMusic, setIsPlayMusic] = useState(false);
-  const [mode, setMode] = useState("basic");
+  const [mode, setMode] = useState("game1");
   const [contentTitle, setContentTitle] = useState("");
   // const [onCamera, setOnCamera] = useState(false);
   const [onGameList, setOnGameList] = useState(false);

@@ -45,23 +45,41 @@ function StreamComponent({
           // onMouseLeave={handleChangeControlBox}
         >
           <OvVideoComponent user={user} mutedSound={mutedSound} />
-          <div className={styles.yangGame}>
-            <YangGameComponent
-              sessionId={sessionId}
-              user={user}
-              targetSubscriber={targetSubscriber}
-              subscribers={subscribers}
-            />
-          </div>
           {mode === "snapshot" ? null : mode === "game1" ? (
-            <div className={styles.yangGame}>
-              <YangGameComponent
-                sessionId={sessionId}
-                user={user}
-                targetSubscriber={targetSubscriber}
-                subscribers={subscribers}
-              />
-            </div>
+            <>
+              <div className={styles.yangGame}>
+                <YangGameComponent
+                  sessionId={sessionId}
+                  user={user}
+                  targetSubscriber={targetSubscriber}
+                  subscribers={subscribers}
+                />
+              </div>
+              <div className={styles.controlbox}>
+                {sessionId ? (
+                  <ToolbarComponent
+                    sessionId={sessionId}
+                    user={user}
+                    camStatusChanged={camStatusChanged}
+                    micStatusChanged={micStatusChanged}
+                  ></ToolbarComponent>
+                ) : null}
+              </div>
+
+              <div id={styles.statusIcons}>
+                {sessionId ? null : !user.isVideoActive() ? (
+                  <div id={styles.camIcon}>
+                    <VideocamOff id={styles.statusCam} color="secondary" />
+                  </div>
+                ) : null}
+
+                {sessionId ? null : !user.isAudioActive() ? (
+                  <div id={styles.micIcon}>
+                    <MicOff id={styles.statusMic} color="secondary" />
+                  </div>
+                ) : null}
+              </div>
+            </>
           ) : (
             <>
               <div className={styles.controlbox}>
