@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-sudo rm -rf /home/ubuntu/CustomOpenvidu/openvidu-server
-cd /home/ubuntu/CustomOpenvidu
-mkdir openvidu-server
-sudo cp -r /home/jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
-sudo cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu-server/src/main/resources
-cd /home/ubuntu/CustomOpenvidu/openvidu-server
-=======
 sudo rm -rf /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server
 cd /home/ubuntu/CustomOpenvidu
 mkdir openvidu-server
 sudo cp -r /home/jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
 sudo cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/src/main/resources
-cd /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server
->>>>>>> feat/#S06P12A507-236/openvidu
+
 mvn clean install -U
 cd /home/ubuntu/CustomOpenvidu/openvidu
 mvn package -DskipTests
