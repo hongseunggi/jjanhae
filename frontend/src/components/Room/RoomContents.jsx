@@ -23,7 +23,7 @@ const OPENVIDU_SERVER_SECRET = "jjanhae";
 let localUserInit = new UserModel();
 let OV = undefined;
 
-const RoomContents = ({ sessionName, userName, media }) => {
+const RoomContents = ({ sessionName, userName, media, mode }) => {
   //console.log(userName);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
   const {myName} = useContext(NameContext);
