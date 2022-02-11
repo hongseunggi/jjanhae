@@ -433,7 +433,7 @@ public class SessionEventsHandler {
 		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
 			System.out.println("음악 관련 요청이 들어왔습니다.");
 			musicService.requestMusic(participant, message, participants, rpcNotificationService);
-		} else if (message.has("type") && message.get("type").getAsString().equals("signal:chat")) {
+		} else if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
 			System.out.println("Request Game ...");
 			gameService.controlGame(participant, message, participants, rpcNotificationService);
 		}
