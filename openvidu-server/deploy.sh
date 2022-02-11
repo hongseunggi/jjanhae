@@ -1,7 +1,8 @@
 rm -rf /home/ubuntu/CustomOpenvidu/openvidu-server
-mkdir /home/ubuntu/CustomOpenVidu/openvidu-server
-cp -r * /home/ubuntu/CustomOpenvidu/openvidu-server
-cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu-server/src/main/resources
+cd /home/ubuntu/CustomOpenvidu
+mkdir openvidu-server
+sudo cp -r /home/jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
+sudo cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu-server/src/main/resources
 cd /home/ubuntu/CustomOpenvidu/openvidu-server
 mvn clean install -U
 
