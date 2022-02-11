@@ -8,9 +8,9 @@ import RegistContext from "../../contexts/RegistContext";
 const CheckId = ({ progress }) => {
   const [id, setId] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
 
-  // const [confirm, setConfirm] = useState(false);
+  const [complete, setComplete] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const navigate = useNavigate();
 
@@ -32,15 +32,19 @@ const CheckId = ({ progress }) => {
     if (value === "") {
       setErrorMsg("아이디를 입력해주세요.");
       setError(true);
+      setComplete(false);
     } else if (value.length < 5 || value.length > 16) {
       setErrorMsg("5 ~ 16자 사이의 아이디를 입력해주세요.");
       setError(true);
+      setComplete(false);
     } else if (!idPattern.test(value)) {
       setErrorMsg("아이디는 숫자와 영어만 입력이 가능합니다.");
       setError(true);
+      setComplete(false);
     } else {
       setErrorMsg("");
       setError(false);
+      setComplete(true);
     }
   };
 
@@ -125,7 +129,7 @@ const CheckId = ({ progress }) => {
             <div className={styles.nextBtns}>
               <button
                 className={
-                  error
+                  !complete
                     ? `${styles.nextBtn} ${styles.disabled}`
                     : styles.nextBtn
                 }

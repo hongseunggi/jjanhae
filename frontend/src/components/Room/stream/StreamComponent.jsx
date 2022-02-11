@@ -14,7 +14,9 @@ function StreamComponent({
   sessionId,
   camStatusChanged,
   micStatusChanged,
+  mode,
 }) {
+  console.log(mode);
   const [mutedSound, setMuted] = useState(false);
   const [controlBox, setControl] = useState(false);
 
@@ -24,7 +26,13 @@ function StreamComponent({
   };
 
   return (
-    <div className={styles["video-innerContainer"]}>
+    <div
+      className={
+        mode === "snapshot"
+          ? `${styles["video-innerContainer"]} ${styles.snapshotMode}`
+          : styles["video-innerContainer"]
+      }
+    >
       <div className={styles.nickname}>
         <span id={styles.nickname}>{user.getNickname()}</span>
       </div>
@@ -35,31 +43,34 @@ function StreamComponent({
           onMouseLeave={handleChangeControlBox}
         >
           <OvVideoComponent user={user} mutedSound={mutedSound} />
-
-          <div className={styles.controlbox}>
-            {sessionId ? (
-              <ToolbarComponent
-                sessionId={sessionId}
-                user={user}
-                camStatusChanged={camStatusChanged}
-                micStatusChanged={micStatusChanged}
-              ></ToolbarComponent>
-            ) : null}
-          </div>
-
-          <div id={styles.statusIcons}>
-            {sessionId ? null : !user.isVideoActive() ? (
-              <div id={styles.camIcon}>
-                <VideocamOff id={styles.statusCam} color="secondary" />
+          {mode === "snapshot" ? null : (
+            <>
+              <div className={styles.controlbox}>
+                {sessionId ? (
+                  <ToolbarComponent
+                    sessionId={sessionId}
+                    user={user}
+                    camStatusChanged={camStatusChanged}
+                    micStatusChanged={micStatusChanged}
+                  ></ToolbarComponent>
+                ) : null}
               </div>
-            ) : null}
 
-            {sessionId ? null : !user.isAudioActive() ? (
-              <div id={styles.micIcon}>
-                <MicOff id={styles.statusMic} color="secondary" />
+              <div id={styles.statusIcons}>
+                {sessionId ? null : !user.isVideoActive() ? (
+                  <div id={styles.camIcon}>
+                    <VideocamOff id={styles.statusCam} color="secondary" />
+                  </div>
+                ) : null}
+
+                {sessionId ? null : !user.isAudioActive() ? (
+                  <div id={styles.micIcon}>
+                    <MicOff id={styles.statusMic} color="secondary" />
+                  </div>
+                ) : null}
               </div>
-            ) : null}
-          </div>
+            </>
+          )}
         </div>
       ) : null}
     </div>

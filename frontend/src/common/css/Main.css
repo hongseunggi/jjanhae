@@ -6,7 +6,7 @@
   height: 100%;
   overflow: auto;
 } */
-.contain{
+.contain {
   margin-top: -128px;
   width: 100vw;
   height: 100vh;
@@ -36,8 +36,8 @@
   position: relative;
   margin-right: 2rem;
   font-size: 4.45rem;
-  color: #08d9d6;
   font-weight: bolder;
+  color: #08d9d6;
   text-shadow: 0.5rem -0.03rem 0rem #ff2e63;
   text-align: right;
 }
@@ -182,7 +182,6 @@
 }
 
 @media screen and (width <= 2065px) {
-
   .intro_text {
     margin-top: 50%;
     margin-left: 1.6rem;
@@ -351,7 +350,6 @@
 }
 
 @media screen and (width <= 2065px) {
-
   .intro_text {
     margin-top: 50%;
     margin-left: 1.6rem;
@@ -521,7 +519,6 @@
 }
 
 @media screen and (width <= 1775px) {
-
   .intro_text {
     margin-top: 50%;
     margin-left: 1.6rem;
@@ -633,7 +630,6 @@
   }
   .intro_text {
     margin-top: 50%;
-
   }
   .welcome_text {
     margin-top: 5%;

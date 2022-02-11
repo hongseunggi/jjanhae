@@ -1,28 +1,36 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import axios1 from "../../api/WebRtcApi";
+import axios1 from "../../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
-import StreamComponent from "./stream/StreamComponent";
-import styles from "./RoomContents.module.css";
-import Chat from "./chat/Chat";
-import UserModel from "../models/user-model";
-import SnapShotResult from "./snapshot/SnapShotResult";
+import StreamComponent from "../stream/StreamComponent";
+import styles from "./SnapShot.module.css";
+import Chat from "../chat/Chat";
+import UserModel from "../../models/user-model";
 import html2canvas from "html2canvas";
+import SnapShotResult from "./SnapShotResult";
 
-const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
+const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
 let OV = undefined;
 
-const SnapShot = ({ sessionName, userName, media, mode }) => {
-  // 기본 파티룸
+const SnapShot = ({ sessionName, userName, media }) => {
   const [mySessionId, setMySessionId] = useState(sessionName);
   const [myUserName, setMyUserName] = useState(userName);
   const [session, setSession] = useState(undefined);
   const [localUser, setLocalUser] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   const [publisher, setPublisher] = useState(undefined);
+  const [snapshot, setSnapshot] = useState("");
+  const [count, setCount] = useState(5);
+  const [images, setImages] = useState([]);
+
+  const imagesRef = useRef(images);
+  imagesRef.current = images;
+
+  const countRef = useRef(count);
+  countRef.current = count;
 
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
@@ -35,18 +43,6 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
 
   const localUserRef = useRef(localUser);
   localUserRef.current = localUser;
-
-  // 인생네컷
-  const [count, setCount] = useState(5);
-  const [images, setImages] = useState([]);
-  const [status, setStatus] = useState(0); // 0 : ready 1 : start 2 : complete
-  // const [ready, setReady] = useState(true);
-
-  const countRef = useRef(count);
-  countRef.current = count;
-
-  const imagesRef = useRef(images);
-  imagesRef.current = images;
 
   const joinSession = () => {
     OV = new OpenVidu();
@@ -295,27 +291,33 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
     });
   };
 
+  function sleep(ms) {
+    console.log("들어옴?");
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {}
+  }
+
   const onCapture = () => {
     let flag = 0;
-    setStatus(1);
     const loop = setInterval(() => {
+      // clearTimeout(loop);
       setCount((prev) => prev - 1);
       if (countRef.current === 0) {
-        let cameraSound = new Audio(require("../../assets/sounds/camera.mp3"));
+        let cameraSound = new Audio(
+          require("../../../assets/sounds/camera.mp3")
+        );
         cameraSound.volume = 0.1;
         cameraSound.play();
 
         setCount(5);
-        console.log(flag);
 
         html2canvas(document.getElementById("user-video")).then((canvas) => {
+          setSnapshot({ index: flag, image: canvas.toDataURL() });
           setImages([...imagesRef.current, canvas.toDataURL()]);
           flag++;
-
           // onSaveAs(canvas.toDataURL("image/png"), "image-download.png");
         });
         if (flag === 3) {
-          setStatus(2);
           clearInterval(loop);
         }
         // sleep(1500);
@@ -323,17 +325,8 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
     }, 1500);
   };
 
-  const onRetry = () => {
-    setImages([]);
-    onCapture();
-  };
-
-  const onSave = () => {
-    html2canvas(document.getElementById("image-container")).then((canvas) => {
-      saveImg(canvas.toDataURL("image/png"), "오늘의 추억.png");
-    });
-  };
-  const saveImg = (uri, filename) => {
+  const onSaveAs = (uri, filename) => {
+    console.log("save");
     let link = document.createElement("a");
     document.body.appendChild(link);
     link.href = uri;
@@ -341,13 +334,12 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
     link.click();
     document.body.removeChild(link);
   };
+
   return (
     <div className={styles["contents-container"]}>
-      {mode === "snapshot" ? (
-        <div className={styles.countContainer}>
-          <p className={styles.count}>{count}</p>
-        </div>
-      ) : null}
+      <div className={styles.countContainer}>
+        <p className={styles.count}>{count}</p>
+      </div>
       <div id="user-video" className={styles["video-container"]}>
         {localUserRef.current !== undefined &&
           localUserRef.current.getStreamManager() !== undefined && (
@@ -356,33 +348,30 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
               sessionId={mySessionId}
               camStatusChanged={camStatusChanged}
               micStatusChanged={micStatusChanged}
-              mode={mode}
             />
           )}
         {subscribersRef.current.map((sub, i) => {
           console.log(sub);
           return (
-            <StreamComponent key={i} user={sub} mode={mode} />
+            <StreamComponent key={i} user={sub} />
             // <UserVideoComponent user={sub} />
           );
         })}
+        <button onClick={onCapture}>촬영</button>
       </div>
-      {localUser !== undefined &&
-        localUser.getStreamManager() !== undefined && (
-          <div className={styles["chat-container"]}>
-            {mode === "snapshot" ? (
-              <SnapShotResult
-                images={images}
-                status={status}
-                onStart={onCapture}
-                onRetry={onRetry}
-                onSave={onSave}
-              />
-            ) : (
-              <Chat user={localUserRef.current} />
-            )}
-          </div>
-        )}
+      {localUser !== undefined && localUser.getStreamManager() !== undefined && (
+        // <div className={styles["chat-container"]}>
+        //   <Chat user={localUserRef.current} />
+        //   <button onClick={onCapture}>촬영</button>
+        // </div>
+        <div className={styles["chat-container"]}>
+          <SnapShotResult
+            user={localUserRef.current}
+            snapshot={snapshot}
+            images={images}
+          />
+        </div>
+      )}
     </div>
   );
 };

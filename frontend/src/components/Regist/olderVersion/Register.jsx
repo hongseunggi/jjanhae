@@ -2,15 +2,15 @@ import React, { createRef, useState } from "react";
 import BirthDate from "../BirthDate";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Register.module.css";
-import { ReactComponent as IdIcon } from "../../assets/icons/userid.svg";
-import { ReactComponent as BeerIcon } from "../../assets/icons/beer.svg";
-import { ReactComponent as BirthIcon } from "../../assets/icons/birth.svg";
-import { ReactComponent as EmailIcon } from "../../assets/icons/email.svg";
-import { ReactComponent as NameIcon } from "../../assets/icons/name.svg";
-import { ReactComponent as PwdIcon } from "../../assets/icons/password.svg";
-import { ReactComponent as SojuIcon } from "../../assets/icons/soju.svg";
-import { ReactComponent as EmailConfirmIcon } from "../../assets/icons/confirm.svg";
-import logo from "../../assets/logo.png";
+// import { ReactComponent as IdIcon } from "../../../assets/icons/userid.svg";
+// import { ReactComponent as BeerIcon } from "../../../assets/icons/beer.svg";
+// import { ReactComponent as BirthIcon } from "../../../assets/icons/birth.svg";
+// import { ReactComponent as EmailIcon } from "../../../assets/icons/email.svg";
+// import { ReactComponent as NameIcon } from "../../../assets/icons/name.svg";
+// import { ReactComponent as PwdIcon } from "../../../assets/icons/password.svg";
+// import { ReactComponent as SojuIcon } from "../../../assets/icons/soju.svg";
+// import { ReactComponent as EmailConfirmIcon } from "../../../assets/icons/confirm.svg";
+import logo from "../../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
 import UserApi from "../../../api/UserApi.js";
@@ -259,9 +259,7 @@ const Register = () => {
         <div className={styles.inputArea}>
           {/* 유저아이디 */}
           <div className={styles.inputRow}>
-            <div>
-              <IdIcon fill="#EEE" width="20" height="20" />
-            </div>
+            <div>{/* <IdIcon fill="#EEE" width="20" height="20" /> */}</div>
             <div className={styles.input}>
               <div className={styles.inputWithBtn}>
                 <input
@@ -293,9 +291,7 @@ const Register = () => {
           </div>
           {/* 비밀번호 */}
           <div className={styles.inputRow}>
-            <div>
-              <PwdIcon fill="#EEE" width="20" height="20" />
-            </div>
+            <div>{/* <PwdIcon fill="#EEE" width="20" height="20" /> */}</div>
             <div className={styles.input}>
               <input
                 ref={pwdRef}
@@ -312,9 +308,7 @@ const Register = () => {
           </div>
           {/* 비밀번호 확인 */}
           <div className={styles.inputRow}>
-            <div>
-              <PwdIcon fill="#EEE" width="20" height="20" />
-            </div>
+            <div>{/* <PwdIcon fill="#EEE" width="20" height="20" /> */}</div>
             <div className={styles.input}>
               <input
                 autoComplete="off"
@@ -331,9 +325,7 @@ const Register = () => {
           </div>
           {/* 이메일 */}
           <div className={styles.inputRow}>
-            <div>
-              <EmailIcon fill="#EEE" width="20" height="20" />
-            </div>
+            <div>{/* <EmailIcon fill="#EEE" width="20" height="20" /> */}</div>
             <div className={styles.input}>
               <div className={styles.inputWithBtn}>
                 <input
@@ -363,7 +355,7 @@ const Register = () => {
           {isSend && (
             <div className={styles.inputRow}>
               <div>
-                <EmailConfirmIcon fill="#EEE" width="20" height="20" />
+                {/* <EmailConfirmIcon fill="#EEE" width="20" height="20" /> */}
               </div>
               <div className={styles.input}>
                 <div className={styles.inputWithBtn}>
@@ -396,9 +388,7 @@ const Register = () => {
           )}
           {/* 이름 */}
           <div className={styles.inputRow}>
-            <div>
-              <NameIcon fill="#EEE" width="20" height="20" />
-            </div>
+            <div>{/* <NameIcon fill="#EEE" width="20" height="20" /> */}</div>
             <div className={styles.input}>
               <input
                 id="name"
@@ -414,9 +404,7 @@ const Register = () => {
             </div>
           </div>
           <div className={styles.inputRow}>
-            <div>
-              <BirthIcon fill="#EEE" width="20" height="20" />
-            </div>
+            <div>{/* <BirthIcon fill="#EEE" width="20" height="20" /> */}</div>
             <div className={styles.birthInput}>
               <BirthDate
                 date={birthday}
@@ -431,13 +419,9 @@ const Register = () => {
           </div>
           <div className={styles.inputRow}>
             {drink === "맥주" ? (
-              <div>
-                <BeerIcon fill="#eee" width="20" height="20" />
-              </div>
+              <div>{/* <BeerIcon fill="#eee" width="20" height="20" /> */}</div>
             ) : (
-              <div>
-                <SojuIcon fill="#eee" width="20" height="20" />
-              </div>
+              <div>{/* <SojuIcon fill="#eee" width="20" height="20" /> */}</div>
             )}
             <div className={`${styles.input} ${styles.drinkInfo}`}>
               <select className={styles.drinkSelect} onChange={iconChange}>
