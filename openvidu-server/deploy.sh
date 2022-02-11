@@ -1,4 +1,4 @@
-sudo rm -d /home/ubuntu/CustomOpenvidu/openvidu-server
+rm -rf /home/ubuntu/CustomOpenvidu/openvidu-server
 cp -r * /home/ubuntu/CustomOpenvidu/openvidu-server
 cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu-server/src/main/resources
 cd /home/ubuntu/CustomOpenvidu/openvidu-server
