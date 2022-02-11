@@ -1,4 +1,4 @@
-rm -rf /home/ubuntu/CustomOpenvidu/openvidu-server
+sudo rm -rf /home/ubuntu/CustomOpenvidu/openvidu-server
 cd /home/ubuntu/CustomOpenvidu
 mkdir openvidu-server
 sudo cp -r /home/jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
