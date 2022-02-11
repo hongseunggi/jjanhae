@@ -8,20 +8,29 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
      "#a3c9f0", "#e3ae64", "#a1e884", "#84e8c5", "#ceb1e3", "#e3b1d2", "#e3b1b1", "#d4ff8f", "#98ff8f", "#b6f0db", "#b6e3f0",  "#f288e9"];
     
     const [keyword, setKeyword] = useState('');
+    const [subscriberkeyword, setSubscriberKeyword] = useState('');
     const [bgcolor, setBgcolor] = useState('');
     const [targetId, setTargetId] = useState('');
     const [userId, setUserId] = useState('');
+    
 
     const handleChange = (event) => {
         setKeyword(event.target.value);
+    }
+
+    const handleSubscriberChange = (event) => {
+        setSubscriberKeyword(event.target.value);
     }
 
     const submitKeyword = () => {
         console.log(keyword);
         if(keyword !=="" && keyword !== " ") {
             const data = {
-                keyword : keyword,
-                streamId : user.getStreamManager().stream.streamId,
+                gamename : keyword,
+                streamId : user.connectionId,
+                sessionId : sessionId,
+                gameStatus : 2,
+                gameId : 1,
             };
             user.getStreamManager().stream.session.signal({
                 data: JSON.stringify(data),
@@ -29,6 +38,32 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
             });
         }
     }
+
+    const submitSubscriberKeyword = () => {
+        console.log(subscriberkeyword);
+        if(subscriberkeyword !=="" && subscriberkeyword !== " ") {
+            const data = {
+                streamId : user.connectionId,
+                sessionId : sessionId,
+                gameStatus : 1,
+                gameId : 1,
+                gamename : subscriberkeyword,
+            };
+            user.getStreamManager().stream.session.signal({
+                data: JSON.stringify(data),
+                type : "game",
+            });
+        }
+
+    }
+
+    useEffect(() => {
+        console.log("here");
+        user.getStreamManager().stream.session.on("signal:game", (event) => {
+          const data = JSON.parse(event.data);
+          console.log(data);
+        });
+      }, []);
 
     useEffect(()=>{
         let index = Math.floor(Math.random()*21);
@@ -68,8 +103,8 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
                     <input
                         className={styles.subKeyword}
                         placeholder={"키워드 정해주세요"}
-                        onChange={handleChange}
-                        onKeyPress={submitKeyword}
+                        onChange={handleSubscriberChange}
+                        onKeyPress={submitSubscriberKeyword}
                     >
                     </input>
             ) : (
