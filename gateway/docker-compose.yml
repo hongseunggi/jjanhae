@@ -23,6 +23,8 @@ services:
     image: jjanhae
     environment:
       - TZ=Asia/Seoul
+  kurento:
+    image: kurento/kurento-media-server
     #jenkins:
     #image: jenkins
     #sql:
