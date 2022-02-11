@@ -12,8 +12,8 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
     const [bgcolor, setBgcolor] = useState('');
     const [targetId, setTargetId] = useState('');
     const [userId, setUserId] = useState('');
-    const [nickname, setNickname] = useState({});
-    
+    const [nickname, setNickname] = useState([]);
+    console.log(user.nickname);
 
     const handleChange = (event) => {
         setKeyword(event.target.value);
@@ -57,11 +57,6 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
         }
     }
 
-    const changeNickname = () => {
-        setNickname("안녕하세요");
-    }
-
-
     useEffect(() => {
         console.log("here");
         user.getStreamManager().stream.session.on("signal:game", (event) => {
@@ -71,9 +66,16 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
           if(data.connectionId===user.connectionId) {
             console.log("정답맞추기 실행");
           //키워드 설정해줬을 시
-          }else if(data.connectionId===targetId) {
+          }else  {
             console.log("키워드 정해주기 실행");
-            // setNickname();
+            let nicknameList = [];
+            nicknameList = nickname;
+            nicknameList.push({
+                connectionId : data.streamId,
+                keyword : data.gamename,
+            })
+            setNickname([...nicknameList]);
+            console.log(nicknameList);
           }
         });
       }, []);
@@ -92,7 +94,6 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
 
     useEffect(() => {
         setUserId(user.connectionId);
-        setNickname(user.nickname);
     }, [user]);
 
     console.log(targetId);
@@ -122,10 +123,22 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
                     >
                     </input>
             ) : (
-                <div className={styles.postit} style={{backgroundColor :`${bgcolor}`}} onClick={changeNickname}>{nickname}</div>
-            )}
+                nickname.map((data, index) => {
+                    console.log("here");
+                    if(data.connectionId===user.connectionId) {
+                        console.log("dataId :" + data.connectionId + " user :" + user.connectionId);
+                        return (
+                            <div key={index} className={styles.postit} style={{backgroundColor :`${bgcolor}`}} >{data.nickname}</div>
+                        )
+                    }else { 
+                        return (
+                            <div key={index} className={styles.postit} style={{backgroundColor :`${bgcolor}`}} >{user.nickname}</div>
+                        )
+                    }
+                }
+            )
+                )}
             </div>
-
             )}
         </div>
     );
