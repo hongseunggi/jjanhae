@@ -7,6 +7,8 @@ import { ReactComponent as CameraIcon } from "../../assets/icons/camera.svg";
 import { ReactComponent as GameIcon } from "../../assets/icons/game.svg";
 import { ReactComponent as MusicIcon } from "../../assets/icons/music.svg";
 import { ReactComponent as SettingIcon } from "../../assets/icons/setting.svg";
+import { ReactComponent as RetryIcon } from "../../assets/icons/retry.svg";
+import { ReactComponent as SaveIcon } from "../../assets/icons/save.svg";
 import Marquee from "react-fast-marquee";
 
 import LoginStatusContext from "../../contexts/LoginStatusContext";
@@ -19,6 +21,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import RoomContents from "./RoomContents";
+import SnapShot from "./snapshot/SnapShot";
 
 let posX = 0;
 let posY = 0;
@@ -29,8 +32,9 @@ const Room = () => {
   const { myName } = useContext(NameContext);
   const [onPlayerClick, setOnPlayerClick] = useState(false);
   const [isPlayMusic, setIsPlayMusic] = useState(false);
-
-  const [onCamera, setOnCamera] = useState(false);
+  const [mode, setMode] = useState("game1");
+  const [contentTitle, setContentTitle] = useState("");
+  // const [onCamera, setOnCamera] = useState(false);
   const [onGameList, setOnGameList] = useState(false);
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [onSetting, setOnSetting] = useState(false);
@@ -42,16 +46,21 @@ const Room = () => {
     console.log("room render");
     // setLoginStatus("3");
     //console.log(myVMstate);
+    setContentTitle(title);
     console.log("?????????????");
     return () => setLoginStatus("2");
   }, []);
+
+  const handleCameraClick = () => {
+    setContentTitle("인생네컷");
+    setMode("snapshot");
+  };
 
   const handleMusicPlayer = () => {
     setIsPlayMusic((prev) => !prev);
   };
 
   const handleModalClose = () => {
-    setOnCamera(false);
     setOnGameList(false);
     setOnRegistMusic(false);
     setOnSetting(false);
@@ -98,13 +107,19 @@ const Room = () => {
       <div className={styles.innerContainer}>
         <div className={styles.contents}>
           <div className={styles.title}>
-            <h1>{title}</h1>
+            <h1>{contentTitle}</h1>
           </div>
           <div className={styles["main-contents"]}>
+            {/* <SnapShot
+              sessionName={roomseq}
+              userName={myName}
+              media={myVMstate}
+            /> */}
             <RoomContents
               sessionName={roomseq}
               userName={myName}
               media={myVMstate}
+              mode={mode}
             />
           </div>
           <div
@@ -160,7 +175,12 @@ const Room = () => {
       </div>
       <div className={styles.dockBar}>
         <div className={styles.dock}>
-          <CameraIcon width="50" height="50" className={styles.icon} />
+          <CameraIcon
+            width="50"
+            height="50"
+            className={styles.icon}
+            onClick={handleCameraClick}
+          />
           <GameIcon
             width="50"
             height="50"
@@ -181,13 +201,37 @@ const Room = () => {
             onClick={handleSetting}
           />
         </div>
+        {/* <div className={styles.snapshotBtn}>
+          <div>
+            <button className={styles.retryBtn}>
+              <RetryIcon width="50" height="50" />
+            </button>
+          </div>
+          <div>
+            <button className={styles.saveBtn}>
+              <SaveIcon width="50" height="50" />
+            </button>
+          </div>
+        </div> */}
       </div>
 
       {/* 카메라 기능 */}
-      {/* <RegistMusic open={onRegistMusic} onClose={handleModalClose} /> */}
-      <GameList open={onGameList} onClose={handleModalClose} />
-      <RegistMusic open={onRegistMusic} onClose={handleModalClose} />
-      <Setting open={onSetting} onClose={handleModalClose} />
+      {/* <CameraIcon onClick={handleCameraClick} /> */}
+      <GameList
+        open={onGameList}
+        onClose={handleModalClose}
+        // onChange={handleModeChange}
+      />
+      <RegistMusic
+        open={onRegistMusic}
+        onClose={handleModalClose}
+        // onChange={handleModeChange}
+      />
+      <Setting
+        open={onSetting}
+        onClose={handleModalClose}
+        // onChange={handleModeChange}
+      />
     </div>
   );
 };
