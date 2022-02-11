@@ -13,6 +13,5 @@ sudo chmod +x create_image.sh
 ./create_image.sh 2.20.1
 
 cd /home/ubuntu/opt/openvidu
-./openvidu restart &
-^Z
+nohup ./openvidu restart & > /dev/null
 docker image prune -f
