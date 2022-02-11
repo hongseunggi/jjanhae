@@ -9,7 +9,7 @@ import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
 
-import ReactPlayer from 'react-player'
+import ReactPlayer from "react-player";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 // const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
@@ -19,7 +19,6 @@ let localUserInit = new UserModel();
 let OV = undefined;
 
 const RoomContents = ({ sessionName, userName, media }) => {
-
   const [mySessionId, setMySessionId] = useState(sessionName);
   const [myUserName, setMyUserName] = useState(userName);
   const [session, setSession] = useState(undefined);
@@ -31,7 +30,6 @@ const RoomContents = ({ sessionName, userName, media }) => {
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
   const [keyWords, setKeywords] = useState([]);
-
 
   console.log(targetSubscriber);
 
@@ -155,10 +153,10 @@ const RoomContents = ({ sessionName, userName, media }) => {
     }
   }, [session]);
 
-  useEffect (()=> {
+  useEffect(() => {
     console.log(subscribers);
     setTargetSubscriber(subscribers[0]);
-  }, [subscribers])
+  }, [subscribers]);
 
   const leaveSession = () => {
     const mySession = sessionRef.current;
@@ -315,17 +313,28 @@ const RoomContents = ({ sessionName, userName, media }) => {
         {subscribersRef.current.map((sub, i) => {
           return (
             //양세찬 게임 키워드 props로 같이 보내줘야할듯
-            <StreamComponent key={i} user={sub} targetSubscriber={targetSubscriber} subscribers={subscribers} />
+            <StreamComponent
+              key={i}
+              user={sub}
+              targetSubscriber={targetSubscriber}
+              subscribers={subscribers}
+            />
             // <UserVideoComponent user={sub} />
           );
         })}
       </div>
-      <ReactPlayer 
-      url={['https://www.youtube.com/watch?v=7C2z4GqqS5E', 'https://youtu.be/Bf_tncvBZ7Y', 'https://youtu.be/sqgxcCjD04s']}  playing controls
-      width = '300px'
-      height = '300px'
+      <ReactPlayer
+        url={[
+          "https://www.youtube.com/watch?v=7C2z4GqqS5E",
+          "https://youtu.be/Bf_tncvBZ7Y",
+          "https://youtu.be/sqgxcCjD04s",
+        ]}
+        playing
+        controls
+        width="300px"
+        height="300px"
       />
-        {/* url={'https://youtu.be/Z5M8LH9qZtY'}
+      {/* url={'https://youtu.be/Z5M8LH9qZtY'}
         width = '200px'
         height = '200px'
         playing = {true}
@@ -335,7 +344,6 @@ const RoomContents = ({ sessionName, userName, media }) => {
           <Chat user={localUserRef.current} />
         </div>
       )}
-
     </>
   );
 };
