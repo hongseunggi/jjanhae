@@ -11,8 +11,8 @@ import UserModel from "../models/user-model";
 
 import ReactPlayer from 'react-player'
 
-// const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
-const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
+const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
+// const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();

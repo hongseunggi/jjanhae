@@ -33,8 +33,8 @@ function StreamComponent({
       {user !== undefined && user.getStreamManager() !== undefined ? (
         <div
           className={styles.streamComponent}
-          onMouseEnter={handleChangeControlBox}
-          onMouseLeave={handleChangeControlBox}
+          // onMouseEnter={handleChangeControlBox}
+          // onMouseLeave={handleChangeControlBox}
         >
           <OvVideoComponent user={user} mutedSound={mutedSound} />
 

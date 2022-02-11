@@ -23,7 +23,6 @@ function YangGameComponent({sessionId, user, targetSubscriber, subscribers}) {
     }
 
     const submitKeyword = () => {
-        console.log(keyword);
         if(keyword !=="" && keyword !== " ") {
             const data = {
                 streamId : user.connectionId,
@@ -57,7 +56,6 @@ function YangGameComponent({sessionId, user, targetSubscriber, subscribers}) {
     }
 
     useEffect(() => {
-        console.log("here");
         user.getStreamManager().stream.session.on("signal:game", (event) => {
           const data = JSON.parse(event.data);
           console.log(data);
@@ -86,7 +84,6 @@ function YangGameComponent({sessionId, user, targetSubscriber, subscribers}) {
 
     useEffect(() => {
         if(targetSubscriber!==undefined) {
-            console.log(targetSubscriber);
             setTargetId(targetSubscriber.connectionId);
         }
     }, [targetSubscriber]);
@@ -94,6 +91,10 @@ function YangGameComponent({sessionId, user, targetSubscriber, subscribers}) {
     useEffect(() => {
         setUserId(user.connectionId);
     }, [user]);
+
+    useEffect(() => {
+
+    }, [])
 
     console.log("targetId: "+targetId);
 
@@ -123,16 +124,17 @@ function YangGameComponent({sessionId, user, targetSubscriber, subscribers}) {
                     </input>
             ) : (
                 //nicknames 배열이랑 subscribers배열이랑 비교해서 connectionId가 일치하면 해당하는 닉네임 바꿔준다
+                //target도 아니고 use도 아니라면
                 nickname.map((data, index) => {
-                    console.log("here");
-                    let result = "";
+                    {/* console.log("here"); */}
                     for(let i=0; i<subscribers.length; i++) {
-                        console.log("dataId :" + data.connectionId + " user :" + subscribers[i].connectionId);
                         if(data.connectionId===subscribers[i].connectionId) { 
-                            result = data.keyword;
+                            console.log("setKeyword!!!!  dataId :" + data.connectionId + " user :" + subscribers[i].connectionId + " curUser : "+ user.connectionId);
+                            return <div key={index} className={styles.postit} style={{backgroundColor :`${bgcolor}`}} >{data.keyword}</div>
                         }
                     }
-                    return <div key={index} className={styles.postit} style={{backgroundColor :`${bgcolor}`}} >{result}</div>
+                        {/* console.log("unsetKeyword!!!!  dataId :" + data.connectionId); */}
+                        return <div key={index} className={styles.postit} style={{backgroundColor :`${bgcolor}`}} >{user.nickname}</div>
                 }
             )
             )}
