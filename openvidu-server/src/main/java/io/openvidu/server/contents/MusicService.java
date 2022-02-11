@@ -51,7 +51,7 @@ public class MusicService {
             System.out.println("바꿔줬으면 하는 노래 진행 상태 : " + isPlaying);
             if (Objects.equals(isPlaying, "next")) {
                 requestSongsMap.get(sessionId).remove(0); // 리스트의 제일 앞의 노래를 제거
-                data.addProperty("songList", requestSongsMap.get(sessionId));
+//                data.addProperty("songList", requestSongsMap.get(sessionId));
             }
 
             params.addProperty("data", data.toString());

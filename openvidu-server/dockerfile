@@ -1,5 +1,0 @@
-FROM adoptopenjdk/openjdk11:latest
-WORKDIR /app
-COPY target/openvidu-*.jar  ./openvidu-custom.jar
-RUN chmod +x ./openvidu-custom.jar
-ENTRYPOINT  ["java","-jar","openvidu-custom.jar"]

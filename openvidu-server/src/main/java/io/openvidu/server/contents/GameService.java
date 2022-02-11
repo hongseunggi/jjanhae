@@ -5,7 +5,10 @@ import com.google.gson.JsonParser;
 import io.openvidu.client.internal.ProtocolElements;
 import io.openvidu.server.core.Participant;
 import io.openvidu.server.rpc.RpcNotificationService;
+import org.apache.commons.collections.IterableMap;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -90,7 +93,8 @@ public class GameService {
 
     /**
      * 게임 준비
-     * 특정 사용자가 게임을 고르는 동안, 다른 사용자들은 '게임을 선택중입니다' 문구가 화면이 보여야 한다.
+     * 게임이 실행되고 있지 않은 단계
+     * gameStatus: 0
      * */
     private void prepareGame(Participant participant, JsonObject message, Set<Participant> participants,
                              JsonObject params, JsonObject data) {
@@ -106,19 +110,65 @@ public class GameService {
 
     /**
      * 게임 선택
+     * 특정 사용자가 게임을 고르는 동안, 다른 사용자들은 '게임을 선택중입니다' 문구가 화면이 보여야 한다.
      * 특정 사용자가 게임을 선택했을 때, 그에 맞는 게임 진행을 위해 미리 준비
+     * gameStatus: 1
      * */
     private void selectGame(Participant participant, JsonObject message, Set<Participant> participants,
                             JsonObject params, JsonObject data) {
         System.out.println("Select Game ...");
-
+        System.out.println("[ data ] " + data);
         // 게임 아이디를 받아 그에 해당하는 게임을 진행
         int gameId = data.get("gameId").getAsInt();
 
         // 업다운 게임이 랜덤숫자를 생성해야 하기 때문에
         // 선택단계에서 미리 랜덤숫자 생성
         if(gameId == UPDOWN) {
-            
+            System.out.println("Select UPDOWN ...");
+            // 각 세션ID에 랜덤숫자 생성해서 넣기, 세션ID는 각 방 번호를 뜻함.
+            int number = (int) (Math.random() * 100) + 1;
+            System.out.printf("sessionId : %s, number : %d\n", data.get("sessionId").getAsString(), number);
+            numberMap.put(data.get("sessionId").getAsString(), number);
+            // 생성해서 맵에 저장하고 있다가 후에 startGame에서 정답맞출때에 쓰임
+
+        } else if (gameId == YANGSECHAN) {
+            System.out.println("Select YANGSECHAN ...");
+            // 나중에 정답맞출것을 대비해서 Map에 저장
+            System.out.printf("streamId : %s, gamename : %s\n", data.get("streamId").getAsString(),
+                    data.get("gamename").toString());
+
+            // TODO 저장하기 전에 이미 같은 gamename이 있는지 중복검사는 프론트에서 해야되네...?
+
+            nicknameMap.put(data.get("streamId").getAsString(), data.get("gamename").toString());
+            Iterator<Map.Entry<String, String>> iter = nicknameMap.entrySet().iterator();
+            while(iter.hasNext()) {
+                System.out.println("open Map ...");
+                Map.Entry<String, String> map = iter.next();
+                System.out.printf("Key : %s, Value : %s\n", map.getKey(), map.getValue());
+            }
+            // 그리고 클라이언트에서 보낸 data 그대로 브로드 캐스팅...
+
+        } else if (gameId == FORBIDDEN) {
+            System.out.println("Select FORBIDDEN ...");
+            // 나중에 정답맞출것을 대비해서 Map에 저장
+            System.out.printf("streamId : %s, word : %s\n", data.get("streamId").getAsString(),
+                    data.get("word").toString());
+            wordMap.put(data.get("streamId").getAsString(), String.valueOf(data.get("word")));
+            Iterator<Map.Entry<String, String>> iter = wordMap.entrySet().iterator();
+            while(iter.hasNext()) {
+                System.out.println("open Map ...");
+                Map.Entry<String, String> map = iter.next();
+                System.out.printf("Key : %s, Value : %s\n", map.getKey(), map.getValue());
+            }
+            // 그리고 클라이언트에서 보낸 data 그대로 브로드 캐스팅...
+        }
+
+        // 브로드캐스팅
+        System.out.println("data : " + data);
+        params.addProperty("data", data.toString());
+        for (Participant p : participants) {
+            rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                    ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
         }
 
     } // end of selectGame
@@ -127,28 +177,108 @@ public class GameService {
     /**
      * 게임 시작
      * 게임 선택 완료 후 진행
+     * gameStatus: 2
      * */
     private void startGame(Participant participant, JsonObject message, Set<Participant> participants,
                            JsonObject params, JsonObject data) {
         System.out.println("Start Game ...");
+
+        int gameId = data.get("gameId").getAsInt();
+        String streamId = data.get("streamId").getAsString();
+
+        switch (gameId) {
+            case YANGSECHAN: // 양세찬 게임
+                // 자신의 닉네임(gamename)을 맞추기
+                // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
+                String userAnswer = nicknameMap.get(streamId);
+                System.out.println("map size : " + nicknameMap.size());
+                System.out.println("userAnswer : " + userAnswer);
+                if(nicknameMap.size()!=0 && userAnswer.equals(data.get("gamename").toString())) { // 정답일 시 종료
+                    System.out.printf("%s님 정답입니다!\n", streamId);
+                    data.addProperty("answerYn", "Y");
+                } else { // 정답 아닐 시 계속 진행
+                    System.out.printf("%s님 아쉬워요.. 정답이 아닙니다ㅠ,ㅜ\n", streamId);
+                    data.addProperty("answerYn", "N");
+                }
+
+                break;
+            case FORBIDDEN: // 금지어 게임
+                // 사용자가 경고버튼 누르면 어차피 siren = 1로 오므로 브로드캐스트만 하면됨
+                // 한사람 걸리면 끝?
+                // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
+                String wordAnswer = wordMap.get(streamId);
+                System.out.println("map size : " + nicknameMap.size());
+                System.out.println("userAnswer : " + wordAnswer);
+                if(wordMap.size()!=0 && wordAnswer.equals(data.get("word").toString())) {
+                    System.out.printf("%s님 정답입니다!\n", streamId);
+                    data.addProperty("answerYn", "Y");
+                } else { // 정답 아닐 시 계속 진행
+                    System.out.printf("%s님 아쉬워요.. 정답이 아닙니다ㅠ,ㅜ\n", streamId);
+                    data.addProperty("answerYn", "N");
+                }
+
+                break;
+            case UPDOWN: // 업다운 게임
+                // streamId와 해당사용자가 입력한 숫자가 넘어오면,
+                // 답과 숫자가 맞는지 판별
+                // 정답이 나오면 종료
+                String sessionId = data.get("sessionId").getAsString();
+                if(numberMap.get(sessionId) == data.get("number").getAsInt()) { // 정답일 시 updown = "same"
+                    System.out.printf("%d 정답 입니다!!\n", data.get("number").getAsInt());
+                    data.addProperty("updown", "same");
+                    data.addProperty("gameStatus", 3); // 정답일 시 게임종료
+                } else if (numberMap.get(sessionId) > data.get("number").getAsInt()) { // 정답보다 작을 시 updown = "up"
+                    System.out.printf("정답 : %d, 사용자입력숫자 : %d => up!!\n", numberMap.get(sessionId),
+                            data.get("number").getAsInt());
+                    data.addProperty("updown", "up");
+                } else { // 정답보다 클 시 updown = "down"
+                    System.out.printf("정답 : %d, 사용자입력숫자 : %d => down!!\n", numberMap.get(sessionId),
+                            data.get("number").getAsInt());
+                    data.addProperty("updown", "down");
+                }
+
+        }
+
+        // 브로드캐스팅
+        System.out.println("data : " + data);
+        params.addProperty("data", data.toString());
+        for (Participant p : participants) {
+            rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                    ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+        }
+
     } // end of startGame
 
 
     /**
      * 게임 종료
+     * gameStatus: 3
      * */
     private void finishGame(Participant participant, JsonObject message, Set<Participant> participants,
                             JsonObject params, JsonObject data) {
         System.out.println("Finish Game ...");
+        data.addProperty("gameStatus", 3);
+        params.add("data", data);
+        for (Participant p : participants) {
+            rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                    ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+        }
     } // end of finishGame
 
 
     /**
      * 벌칙
+     * gameStatus: 4
      * */
     private  void completePenalty(Participant participant, JsonObject message, Set<Participant> participants,
                                   JsonObject params, JsonObject data) {
         System.out.println("Complete Penalty ...");
+        data.addProperty("gameStatus", 0);
+        params.add("data", data);
+        for (Participant p : participants) {
+            rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                    ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+        }
     } // end of completePenalty
 
 }
