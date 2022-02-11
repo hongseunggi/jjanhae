@@ -16,6 +16,7 @@ function StreamComponent({
   camStatusChanged,
   micStatusChanged,
   targetSubscriber,
+  subscribers,
 }) {
   const [mutedSound, setMuted] = useState(false);
   const [controlBox, setControl] = useState(false);
@@ -42,6 +43,7 @@ function StreamComponent({
                 sessionId={sessionId}
                 user={user}
                 targetSubscriber = {targetSubscriber}
+                subscribers = {subscribers}
               />
           </div>
 

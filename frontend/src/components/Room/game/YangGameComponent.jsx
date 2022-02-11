@@ -1,7 +1,7 @@
 import React, {useEffect, useState}  from "react";
 import styles from "./YangGameComponent.module.css";
 
-function YangGameComponent({sessionId, user, targetSubscriber}) {
+function YangGameComponent({sessionId, user, targetSubscriber, subscribers}) {
     
 
     const color =  ["#adeac9", "#ff98ad", "#abece7", "#ffff7f", "#FFC0CB", "#FFEB46", "#EE82EE", "#B2FA5C",
@@ -13,7 +13,6 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
     const [targetId, setTargetId] = useState('');
     const [userId, setUserId] = useState('');
     const [nickname, setNickname] = useState([]);
-    console.log(user.nickname);
 
     const handleChange = (event) => {
         setKeyword(event.target.value);
@@ -96,7 +95,7 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
         setUserId(user.connectionId);
     }, [user]);
 
-    console.log(targetId);
+    console.log("targetId: "+targetId);
 
     return (
         <div className={styles.yangGame}>
@@ -123,21 +122,20 @@ function YangGameComponent({sessionId, user, targetSubscriber}) {
                     >
                     </input>
             ) : (
+                //nicknames 배열이랑 subscribers배열이랑 비교해서 connectionId가 일치하면 해당하는 닉네임 바꿔준다
                 nickname.map((data, index) => {
                     console.log("here");
-                    if(data.connectionId===user.connectionId) {
-                        console.log("dataId :" + data.connectionId + " user :" + user.connectionId);
-                        return (
-                            <div key={index} className={styles.postit} style={{backgroundColor :`${bgcolor}`}} >{data.nickname}</div>
-                        )
-                    }else { 
-                        return (
-                            <div key={index} className={styles.postit} style={{backgroundColor :`${bgcolor}`}} >{user.nickname}</div>
-                        )
+                    let result = "";
+                    for(let i=0; i<subscribers.length; i++) {
+                        console.log("dataId :" + data.connectionId + " user :" + subscribers[i].connectionId);
+                        if(data.connectionId===subscribers[i].connectionId) { 
+                            result = data.keyword;
+                        }
                     }
+                    return <div key={index} className={styles.postit} style={{backgroundColor :`${bgcolor}`}} >{result}</div>
                 }
             )
-                )}
+            )}
             </div>
             )}
         </div>

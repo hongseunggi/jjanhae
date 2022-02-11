@@ -315,7 +315,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
         {subscribersRef.current.map((sub, i) => {
           return (
             //양세찬 게임 키워드 props로 같이 보내줘야할듯
-            <StreamComponent key={i} user={sub} targetSubscriber={targetSubscriber} />
+            <StreamComponent key={i} user={sub} targetSubscriber={targetSubscriber} subscribers={subscribers} />
             // <UserVideoComponent user={sub} />
           );
         })}
