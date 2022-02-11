@@ -7,6 +7,8 @@ import io.openvidu.server.core.Participant;
 import io.openvidu.server.rpc.RpcNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,11 +16,12 @@ public class MusicService {
 
     static RpcNotificationService rpcNotificationService;
 
-    // < sessionId, sentence >
-//    protected ConcurrentHashMap<String, String> requestSongsMap = new ConcurrentHashMap<>();
+     // < sessionId, 노래목록(비디오아이디 여러개) >
+    protected ConcurrentHashMap<String, ArrayList<String>> requestSongsMap = new ConcurrentHashMap<>();
 
-    public void requestMusic(Participant participant, JsonObject message, Set<Participant> participants,
+    public void controlMusic(Participant participant, JsonObject message, Set<Participant> participants,
                              RpcNotificationService rnfs) {
+        // 초기화 과정
         rpcNotificationService = rnfs;
         JsonObject params = new JsonObject();
 
@@ -35,16 +38,24 @@ public class MusicService {
         String dataString = message.get("data").getAsString();
         JsonObject data = (JsonObject) JsonParser.parseString(dataString);
 
+        // 세션 아이디 저장
+        String sessionId = data.get("sessionId").getAsString();
+
+        // 입력받은 값들 출력
         System.out.println("음악 data : " + data); //{"videoId":"5uk6cFPL19w","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
         System.out.println("음악 params : " + params); // {"from":"con_AG3mOjqFdT","type":"signal:music"}
 
-        // 재생 & 일시정지
-        if (data.has("isPlaying") && message.get("type").getAsString().equals("signal:music")){
+        // 노래 상태 변경 : 재생 , 일시정지 , 멈춤, 다음곡
+        if (data.has("isPlaying")){
             String isPlaying = data.get("isPlaying").getAsString();
             System.out.println("바꿔줬으면 하는 노래 진행 상태 : " + isPlaying);
-            data.addProperty("loveya", "hi");
+            if (Objects.equals(isPlaying, "next")) {
+                requestSongsMap.get(sessionId).remove(0); // 리스트의 제일 앞의 노래를 제거
+//                data.addProperty("songList", requestSongsMap.get(sessionId));
+            }
 
             params.addProperty("data", data.toString());
+            // 브로드 캐스팅
             for (Participant p : participants) {
                 rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                         ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
@@ -54,14 +65,18 @@ public class MusicService {
         }
 
         // 음악 추가
-        if (data.has("videoId") && message.get("type").getAsString().equals("signal:music")){
+        if (data.has("videoId")){
             String videoId = data.get("videoId").getAsString();
             System.out.println("이 비디오 아이디를 뿌려주세요 : " + videoId);
+            requestSongsMap.get(sessionId).add(videoId);
+            data.addProperty("songList", requestSongsMap.get(sessionId).toString());
+            System.out.println(data);
 
+            params.addProperty("data", data.toString());
             for (Participant p : participants) {
                 rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                         ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-                System.out.println("비디오 아이디 반환 " + params);
+                System.out.println("음악 추가 반환 내용 : " + params);
             }
 
         }

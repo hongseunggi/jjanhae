@@ -1,15 +1,25 @@
+<<<<<<< HEAD
 sudo rm -rf /home/ubuntu/CustomOpenvidu/openvidu-server
 cd /home/ubuntu/CustomOpenvidu
 mkdir openvidu-server
 sudo cp -r /home/jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
 sudo cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu-server/src/main/resources
 cd /home/ubuntu/CustomOpenvidu/openvidu-server
+=======
+sudo rm -rf /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server
+cd /home/ubuntu/CustomOpenvidu
+mkdir openvidu-server
+sudo cp -r /home/jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
+sudo cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/src/main/resources
+cd /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server
+>>>>>>> feat/#S06P12A507-236/openvidu
 mvn clean install -U
+cd /home/ubuntu/CustomOpenvidu/openvidu
+mvn package -DskipTests
+cd /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/docker/openvidu-server
+sudo chmod +x .create_image.sh
+./create_image.sh 2.20.1
 
-docker stop openvidu-server-custom
-DOCKER_BUILDKIT=1 docker build --progress=plain -t openvidu/openvidu-server .
-docker rm openvidu-server-custom -f
-docker run -d -p 4443:4443 --name openvidu-server-custom openvidu/openvidu-server
-docker cp target/openvidu-*.jar openvidu-server-custom:/
-#docker-compose -f ../gateway/docker-compose.yml up -d --force-recreate --no-deps api
+cd /home/ubuntu/opt/openvidu
+./openvidu restart
 docker image prune -f
