@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./StreamComponent.module.css";
 import OvVideoComponent from "./OvVideo.jsx";
+import YangGameComponent from ".././game/YangGameComponent";
 
 import MicOff from "@material-ui/icons/MicOff";
 import Mic from "@material-ui/icons/Mic";
@@ -15,11 +16,12 @@ function StreamComponent({
   camStatusChanged,
   micStatusChanged,
   mode,
+  targetSubscriber,
+  subscribers,
 }) {
   console.log(user);
   const [mutedSound, setMuted] = useState(false);
   const [controlBox, setControl] = useState(false);
-
   const handleChangeControlBox = (e) => {
     setControl(!controlBox);
     e.preventDefault();
@@ -39,11 +41,28 @@ function StreamComponent({
       {user !== undefined && user.getStreamManager() !== undefined ? (
         <div
           className={styles.streamComponent}
-          onMouseEnter={handleChangeControlBox}
-          onMouseLeave={handleChangeControlBox}
+          // onMouseEnter={handleChangeControlBox}
+          // onMouseLeave={handleChangeControlBox}
         >
           <OvVideoComponent user={user} mutedSound={mutedSound} />
-          {mode === "snapshot" ? null : (
+          <div className={styles.yangGame}>
+            <YangGameComponent
+              sessionId={sessionId}
+              user={user}
+              targetSubscriber={targetSubscriber}
+              subscribers={subscribers}
+            />
+          </div>
+          {mode === "snapshot" ? null : mode === "game1" ? (
+            <div className={styles.yangGame}>
+              <YangGameComponent
+                sessionId={sessionId}
+                user={user}
+                targetSubscriber={targetSubscriber}
+                subscribers={subscribers}
+              />
+            </div>
+          ) : (
             <>
               <div className={styles.controlbox}>
                 {sessionId ? (

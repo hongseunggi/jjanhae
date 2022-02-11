@@ -97,7 +97,7 @@ const Chat = (props) => {
               />
               <div className={styles["msg-detail"]}>
                 <div className={styles["msg-info"]}>
-                  <p class={styles.nickname}>{data.nickname}</p>
+                  <p className={styles.nickname}>{data.nickname}</p>
                 </div>
                 <div className={styles["msg-content"]}>
                   <p className={styles.text}>{data.message}</p>

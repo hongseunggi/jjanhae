@@ -83,3 +83,12 @@ video {
   top: 0%;
   transition: all ease 1s 0s;
 }
+
+.yangGame {
+  position: absolute;
+  width: 250px;
+  height : 20%;
+  left : 50px;
+  bottom : 0;
+}
+

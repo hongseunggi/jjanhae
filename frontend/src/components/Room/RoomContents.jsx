@@ -3,29 +3,35 @@ import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
+import YangGameComponent from "././game/YangGameComponent";
+
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
 import SnapShotResult from "./snapshot/SnapShotResult";
 import html2canvas from "html2canvas";
 
-const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
+import ReactPlayer from "react-player";
+
+const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
+// const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
 let OV = undefined;
 
-const SnapShot = ({ sessionName, userName, media, mode }) => {
-  // 기본 파티룸
+const RoomContents = ({ sessionName, userName, media, mode }) => {
   const [mySessionId, setMySessionId] = useState(sessionName);
   const [myUserName, setMyUserName] = useState(userName);
   const [session, setSession] = useState(undefined);
   const [localUser, setLocalUser] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   const [publisher, setPublisher] = useState(undefined);
-
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
+  const [targetSubscriber, setTargetSubscriber] = useState({});
+
+  console.log(targetSubscriber);
 
   const sessionRef = useRef(session);
   sessionRef.current = session;
@@ -48,6 +54,10 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
   const imagesRef = useRef(images);
   imagesRef.current = images;
 
+  const targetSubscriberRef = useRef(targetSubscriber);
+  targetSubscriberRef.current = targetSubscriber;
+
+  console.log(myUserName);
   const joinSession = () => {
     OV = new OpenVidu();
     setSession(OV.initSession());
@@ -158,6 +168,11 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
       });
     }
   }, [session]);
+
+  useEffect(() => {
+    console.log(subscribers);
+    setTargetSubscriber(subscribers[0]);
+  }, [subscribers]);
 
   const leaveSession = () => {
     const mySession = sessionRef.current;
@@ -381,31 +396,46 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
             />
           )}
         {subscribersRef.current.map((sub, i) => {
-          console.log(sub);
           return (
-            <StreamComponent key={i} user={sub} mode={mode} />
-            // <UserVideoComponent user={sub} />
+            //양세찬 게임 키워드 props로 같이 보내줘야할듯
+            <StreamComponent
+              key={i}
+              user={sub}
+              targetSubscriber={targetSubscriber}
+              subscribers={subscribers}
+              mode={mode}
+            />
           );
         })}
       </div>
-      {localUser !== undefined &&
-        localUser.getStreamManager() !== undefined && (
-          <div className={styles["chat-container"]}>
-            {mode === "snapshot" ? (
-              <SnapShotResult
-                images={images}
-                status={status}
-                onStart={onCapture}
-                onRetry={onRetry}
-                onSave={onSave}
-              />
-            ) : (
-              <Chat user={localUserRef.current} />
-            )}
-          </div>
-        )}
+      {localUser !== undefined && localUser.getStreamManager() !== undefined && (
+        <div className={styles["chat-container"]}>
+          {mode === "snapshot" ? (
+            <SnapShotResult
+              images={images}
+              status={status}
+              onStart={onCapture}
+              onRetry={onRetry}
+              onSave={onSave}
+            />
+          ) : (
+            <Chat user={localUserRef.current} />
+          )}
+        </div>
+        //   <ReactPlayer
+        //   url={[
+        //     "https://www.youtube.com/watch?v=7C2z4GqqS5E",
+        //     "https://youtu.be/Bf_tncvBZ7Y",
+        //     "https://youtu.be/sqgxcCjD04s",
+        //   ]}
+        //   playing
+        //   controls
+        //   width="300px"
+        //   height="300px"
+        // />
+      )}
     </div>
   );
 };
 
-export default SnapShot;
+export default RoomContents;
