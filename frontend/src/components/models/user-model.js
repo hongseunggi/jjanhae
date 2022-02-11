@@ -43,6 +43,7 @@ class UserModel {
     return !this.isLocal();
   }
   setAudioActive(isAudioActive) {
+    
     this.audioActive = isAudioActive;
   }
   setVideoActive(isVideoActive) {
