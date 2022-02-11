@@ -94,10 +94,7 @@ public class GameService {
     /**
      * 게임 준비
      * 게임이 실행되고 있지 않은 단계
-<<<<<<< HEAD
-=======
      * gameStatus: 0
->>>>>>> feat/#S06P12A507-236/openvidu
      * */
     private void prepareGame(Participant participant, JsonObject message, Set<Participant> participants,
                              JsonObject params, JsonObject data) {
@@ -157,15 +154,12 @@ public class GameService {
             System.out.printf("streamId : %s, word : %s\n", data.get("streamId").getAsString(),
                     data.get("word").toString());
             wordMap.put(data.get("streamId").getAsString(), String.valueOf(data.get("word")));
-<<<<<<< HEAD
-=======
             Iterator<Map.Entry<String, String>> iter = wordMap.entrySet().iterator();
             while(iter.hasNext()) {
                 System.out.println("open Map ...");
                 Map.Entry<String, String> map = iter.next();
                 System.out.printf("Key : %s, Value : %s\n", map.getKey(), map.getValue());
             }
->>>>>>> feat/#S06P12A507-236/openvidu
             // 그리고 클라이언트에서 보낸 data 그대로 브로드 캐스팅...
         }
 
@@ -195,20 +189,12 @@ public class GameService {
         switch (gameId) {
             case YANGSECHAN: // 양세찬 게임
                 // 자신의 닉네임(gamename)을 맞추기
-<<<<<<< HEAD
-                // 사용자가 종료버튼 누르면 끝나도록
-=======
                 // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
->>>>>>> feat/#S06P12A507-236/openvidu
                 String userAnswer = nicknameMap.get(streamId);
                 System.out.println("map size : " + nicknameMap.size());
                 System.out.println("userAnswer : " + userAnswer);
                 if(nicknameMap.size()!=0 && userAnswer.equals(data.get("gamename").toString())) { // 정답일 시 종료
                     System.out.printf("%s님 정답입니다!\n", streamId);
-<<<<<<< HEAD
-                    data.addProperty("gameStatus", 3);
-=======
->>>>>>> feat/#S06P12A507-236/openvidu
                     data.addProperty("answerYn", "Y");
                 } else { // 정답 아닐 시 계속 진행
                     System.out.printf("%s님 아쉬워요.. 정답이 아닙니다ㅠ,ㅜ\n", streamId);
@@ -217,12 +203,6 @@ public class GameService {
 
                 break;
             case FORBIDDEN: // 금지어 게임
-<<<<<<< HEAD
-                // 사용자가 경고버튼 누르면 siren 0->1 바꿔넣기
-                // 한사람 걸리면 끝?
-                // 사용자가 종료버튼 누르면 끝나도록
-
-=======
                 // 사용자가 경고버튼 누르면 어차피 siren = 1로 오므로 브로드캐스트만 하면됨
                 // 한사람 걸리면 끝?
                 // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
@@ -236,16 +216,12 @@ public class GameService {
                     System.out.printf("%s님 아쉬워요.. 정답이 아닙니다ㅠ,ㅜ\n", streamId);
                     data.addProperty("answerYn", "N");
                 }
->>>>>>> feat/#S06P12A507-236/openvidu
 
                 break;
             case UPDOWN: // 업다운 게임
                 // streamId와 해당사용자가 입력한 숫자가 넘어오면,
                 // 답과 숫자가 맞는지 판별
                 // 정답이 나오면 종료
-<<<<<<< HEAD
-
-=======
                 String sessionId = data.get("sessionId").getAsString();
                 if(numberMap.get(sessionId) == data.get("number").getAsInt()) { // 정답일 시 updown = "same"
                     System.out.printf("%d 정답 입니다!!\n", data.get("number").getAsInt());
@@ -260,7 +236,6 @@ public class GameService {
                             data.get("number").getAsInt());
                     data.addProperty("updown", "down");
                 }
->>>>>>> feat/#S06P12A507-236/openvidu
 
         }
 
