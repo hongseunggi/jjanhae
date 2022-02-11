@@ -1,13 +1,30 @@
-rm -d /home/ubuntu/CustomOpenvidu/openvidu-server
-cp -r * /home/ubuntu/CustomOpenvidu/openvidu-server
-cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu-server/src/main/resources
-cd /home/ubuntu/CustomOpenvidu/openvidu-server
-mvn clean install -U
+echo #*#*#*#* delete existed openvidu-server
+sudo rm -rf /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server
+echo #*#*#*#* change direcotry to openvidu
+cd /home/ubuntu/CustomOpenvidu/openvidu
+echo #*#*#*#* create new openvidu-server directory
+mkdir openvidu-server
+echo #*#*#*#* copy openvidu-server
+sudo cp -r /home/jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
+echo #*#*#*#* copy key
+sudo cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/src/main/resources
 
-docker stop openvidu-server-custom
-DOCKER_BUILDKIT=1 docker build --progress=plain -t openvidu/openvidu-server .
-docker rm openvidu-server-custom -f
-docker run -d -p 4443:4443 --name openvidu-server-custom openvidu/openvidu-server
-docker cp target/openvidu-*.jar openvidu-server-custom:/
-#docker-compose -f ../gateway/docker-compose.yml up -d --force-recreate --no-deps api
+echo #*#*#*#* move to openvidu-server
+cd /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/
+echo #*#*#*#* build maven openvidu-server
+mvn clean install -U
+echo #*#*#*#* build maven openvidu
+cd /home/ubuntu/CustomOpenvidu/openvidu
+mvn package -DskipTests
+echo #*#*#*#* move to docker
+cd /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/docker/openvidu-server
+echo #*#*#*#* run create_image.sh
+sudo chmod +x create_image.sh
+sudo su
+./create_image.sh 2.20.1
+
+#su ubuntu
+#cd /home/ubuntu/opt/openvidu
+#미치겠네 이거 매번 다시켜야하나....
+#nohup ./openvidu restart & > /dev/null
 docker image prune -f
