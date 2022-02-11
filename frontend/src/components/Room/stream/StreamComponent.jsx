@@ -16,7 +16,7 @@ function StreamComponent({
   micStatusChanged,
   mode,
 }) {
-  console.log(mode);
+  console.log(user);
   const [mutedSound, setMuted] = useState(false);
   const [controlBox, setControl] = useState(false);
 

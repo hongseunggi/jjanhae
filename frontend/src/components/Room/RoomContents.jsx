@@ -77,9 +77,11 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
         newUser.setType("remote");
 
         const nickname = event.stream.connection.data.split("%")[0];
-        console.log(nickname);
         newUser.setNickname(JSON.parse(nickname).clientData);
 
+        console.log(newUser);
+        console.log(subscribersRef.current);
+        console.log(subscribers);
         setSubscribers([...subscribersRef.current, newUser]);
       });
 
@@ -87,6 +89,7 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
       sessionRef.current.on("signal:userChanged", (event) => {
         console.log("1");
         console.log(subscribersRef.current);
+        console.log(subscribers);
         subscribersRef.current.forEach((user) => {
           if (user.getConnectionId() === event.from.connectionId) {
             const data = JSON.parse(event.data);
@@ -102,6 +105,7 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
         });
         console.log("2");
         console.log(subscribersRef.current);
+        console.log(subscribers);
         setSubscribers([...subscribersRef.current]);
       });
 
@@ -172,15 +176,32 @@ const SnapShot = ({ sessionName, userName, media, mode }) => {
   };
 
   const deleteSubscriber = (stream) => {
+    console.log(stream);
+    console.log(subscribersRef.current);
+    console.log(subscribers);
     const userStream = subscribersRef.current.filter(
       (user) => user.getStreamManager().stream === stream
     )[0];
+
+    console.log(userStream);
+
+    console.log(subscribersRef.current);
+    console.log(subscribers);
     let index = subscribersRef.current.indexOf(userStream, 0);
+    console.log(index);
     if (index > -1) {
       subscribersRef.current.splice(index, 1);
+      console.log(subscribersRef.current);
+      console.log(subscribers);
       setSubscribers([...subscribersRef.current]);
     }
+    console.log(subscribersRef.current);
   };
+
+  useEffect(() => {
+    console.log(subscribersRef.current);
+    console.log(subscribers);
+  }, [subscribers]);
 
   const onbeforeunload = (e) => {
     leaveSession();
