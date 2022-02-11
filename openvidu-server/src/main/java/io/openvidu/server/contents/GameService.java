@@ -7,6 +7,7 @@ import io.openvidu.server.core.Participant;
 import io.openvidu.server.rpc.RpcNotificationService;
 import org.apache.commons.collections.IterableMap;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GameService {
 
+    /** 게임 비활성화 */
+    static final int NOGAME = -1;
     /** 게임 준비 */
     static final int PREPAREGAME = 0;
     /** 게임 선택 */
@@ -34,10 +37,14 @@ public class GameService {
 
     static RpcNotificationService rpcNotificationService;
 
-
+    /** 공통순서 */
+    protected ConcurrentHashMap<String, Map<Integer, String>> sOrderMap = new ConcurrentHashMap<>();
+    protected ConcurrentHashMap<String, String> sCounterClockWise = new ConcurrentHashMap<>(); // 방인원에따라 순서가 달라지기 때문
     /** 양세찬 게임은 sessionId:nickname */
-    protected ConcurrentHashMap<String, String> nicknameMap = new ConcurrentHashMap<>();
+    protected ConcurrentHashMap<String, Map<String, String>> sNicknameMap = new ConcurrentHashMap<>();
+//    protected Map<String, String> nicknameMap = new ConcurrentHashMap<>();
     /** 금지어 게임은 sessionId:word */
+    protected ConcurrentHashMap<String, Map<String, String>> sWordMap = new ConcurrentHashMap<>();
     protected ConcurrentHashMap<String, String> wordMap = new ConcurrentHashMap<>();
     /** 업다운 게임은 sessionId:number */
     protected ConcurrentHashMap<String,Integer> numberMap = new ConcurrentHashMap<>();
@@ -72,6 +79,9 @@ public class GameService {
         data.addProperty("gameStatus", Integer.toString(gameStatus));
 
         switch (gameStatus) {
+            case NOGAME: // 게임 비활성화
+                noGame(participant, message, participants, params, data);
+                break;
             case PREPAREGAME: // 게임 준비
                 prepareGame(participant, message, participants, params, data);
                 return;
@@ -92,14 +102,79 @@ public class GameService {
 
 
     /**
+     * 게임 비활성화
+     * gameStatus: -1
+     * */
+    private void noGame(Participant participant, JsonObject message, Set<Participant> participants,
+                        JsonObject params, JsonObject data) {
+        System.out.println("No Game ...");
+        params.add("data", data);
+        // 브로드 캐스팅
+        for (Participant p : participants) {
+            rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                    ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
+        }
+    }
+
+
+    /**
      * 게임 준비
-     * 게임이 실행되고 있지 않은 단계
+     * 게임 시작을 위한 초기화
      * gameStatus: 0
      * */
     private void prepareGame(Participant participant, JsonObject message, Set<Participant> participants,
                              JsonObject params, JsonObject data) {
         System.out.println("Prepare Game ...");
+
+
+        if(data.get("gameId").getAsInt() == YANGSECHAN) {
+            System.out.println("YangSeChan Game Prepare ...");
+            // 준비단계에서 미리 초기화 시켜두기
+            // nicknameMap에 streamId를 Key로 해서 모두 빈값으로 초기화시켜 놓는다.
+            Map<Integer, String> orderMap = new HashMap<>(); // 순서를 매핑시킴
+            Map<String, String> nicknameMap = new HashMap<>();
+            int index = 1;
+            for (Participant p : participants) {
+                nicknameMap.put(p.getPublisherStreamId(), "");
+                orderMap.put(index, p.getPublisherStreamId());
+                index++;
+            }
+
+            // 매핑된 순서 확인
+            System.out.println("mapping order check .....");
+            Iterator<Map.Entry<Integer, String>> entry = orderMap.entrySet().iterator();
+            while(entry.hasNext()) {
+                Map.Entry<Integer, String> e = entry.next();
+                System.out.printf("%d : %s\n", e.getKey(), e.getValue());
+            }
+
+            // sNicknameMap에 nicknameMap을 넣음
+            String sessionId = data.get("sessionId").getAsString();
+            sNicknameMap.put(sessionId, nicknameMap);
+            sOrderMap.put(sessionId, orderMap); // 1이 누구이고 2는 누구인지 매핑
+
+            // 방인원수에 따라 시계방향 순서가 달라지므로 방 세션마다 반시계방향 순서를 저장해놓는다
+            String counterClockWise = "";
+            int size = 4;
+            if (participants.size() < 4) size = participants.size();
+            for (int i = 1; i <= size; i++) {
+                counterClockWise += Integer.toString(i); // 1234
+            }
+            for (int i = participants.size(); i >= size+1; i--) {
+                counterClockWise += Integer.toString(i); // 8765
+            }
+            System.out.println("counterClockWise : " + counterClockWise);
+            sCounterClockWise.put(data.get("sessionId").getAsString(), counterClockWise);
+            Iterator<Map.Entry<String, String>> iter = sCounterClockWise.entrySet().iterator();
+            while(iter.hasNext()) {
+                Map.Entry<String, String> cur = iter.next();
+                System.out.printf("%s, %s\n", cur.getKey(), cur.getValue());
+            }
+        }
+
+        data.addProperty("gameStatus", 1);
         params.add("data", data);
+
         // 브로드 캐스팅
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
@@ -120,6 +195,18 @@ public class GameService {
         System.out.println("[ data ] " + data);
         // 게임 아이디를 받아 그에 해당하는 게임을 진행
         int gameId = data.get("gameId").getAsInt();
+        /** participatn id test */
+//        System.out.println("set size : "+participants.size());
+//        System.out.println("[ participant id ] ... ");
+//        Iterator<Participant> pid = participants.iterator();
+//        while(pid.hasNext()) {
+//            Participant partiwon = pid.next();
+//            System.out.printf("public id : %s, private id : %s\n", partiwon.getParticipantPublicId(),
+//                    partiwon.getParticipantPrivateId());
+//            System.out.println("Stream Id 비교...");
+//            System.out.printf("%s, %s\n", partiwon.getPublisherStreamId(), data.get("streamId").getAsString());
+//        }
+        /** End participatn id test */
 
         // 업다운 게임이 랜덤숫자를 생성해야 하기 때문에
         // 선택단계에서 미리 랜덤숫자 생성
@@ -133,19 +220,53 @@ public class GameService {
 
         } else if (gameId == YANGSECHAN) {
             System.out.println("Select YANGSECHAN ...");
-            // 나중에 정답맞출것을 대비해서 Map에 저장
-            System.out.printf("streamId : %s, gamename : %s\n", data.get("streamId").getAsString(),
-                    data.get("gamename").toString());
+            /** 시계방향으로 돌며 닉네임 정하는 단계 */
+            // 처음에 index = 1 로 온다.
+            int index = data.get("index").getAsInt();
+            int size = participants.size();
+            data.addProperty("gameStatus", 1);
+            if(index == participants.size()) {
+                // 이번이 마지막 사람일 경우 gameStatus=2로 다음 상태로 넘어가도록 함
+                data.addProperty("gameStatus", 2);
+            }
+            if(index > size) {
+                index -= size; // 만약 size=8이고, index=9일 시, 1로 돌려놓기 위해
+                // FE에서 index=8 응답 받았을 시 다음 gameStatus로 넘어가면 size를 넘어갈일이 없긴 하지만 혹시모르므로
+            }
+            String sessionId = data.get("sessionId").getAsString();
+            System.out.println("session Id : "+sessionId);
 
-            // TODO 저장하기 전에 이미 같은 gamename이 있는지 중복검사는 프론트에서 해야되네...?
-
-            nicknameMap.put(data.get("streamId").getAsString(), data.get("gamename").toString());
-            Iterator<Map.Entry<String, String>> iter = nicknameMap.entrySet().iterator();
+            // countWise 에서 현재 순서를 조회해옴
+            System.out.println("sCountClockWise size : " + sCounterClockWise.size());
+            Iterator<Map.Entry<String, String>> iter = sCounterClockWise.entrySet().iterator();
             while(iter.hasNext()) {
+                Map.Entry<String, String> cur = iter.next();
+                System.out.printf("%s, %s\n", cur.getKey(), cur.getValue());
+            }
+            String countClockWise = sCounterClockWise.get(sessionId); // 12348765
+            System.out.println("countClockWise : " + countClockWise);
+            // 현재 순서가 누구인지 조회
+            Map<Integer, String> orderMap = sOrderMap.get(sessionId);
+            System.out.println("order Map size : "+orderMap.size());
+            String curStreamId = orderMap.get(countClockWise.charAt(index-1)-'0');
+//            System.out.println("req first streamId : " + data.get("streamId").getAsString());
+            System.out.println("curStreamId : " + curStreamId);
+            data.addProperty("streamId", curStreamId);
+
+            data.addProperty("index", ++index);
+
+            Map<String, String> nicknameMap = sNicknameMap.get(sessionId); // 해당 방의 닉네임맵
+            nicknameMap.put(curStreamId, data.get("gamename").toString());
+            Iterator<Map.Entry<String, String>> iter2 = nicknameMap.entrySet().iterator();
+            while(iter2.hasNext()) {
                 System.out.println("open Map ...");
-                Map.Entry<String, String> map = iter.next();
+                Map.Entry<String, String> map = iter2.next();
                 System.out.printf("Key : %s, Value : %s\n", map.getKey(), map.getValue());
             }
+            // 다음 저장할 유저의 Stream ID를 클라이언트로 보냄
+            String nextStreamId = orderMap.get(countClockWise.charAt(index-1)-'0');
+            System.out.println("nextStreamId : " + nextStreamId);
+            data.addProperty("targetId", nextStreamId);
             // 그리고 클라이언트에서 보낸 data 그대로 브로드 캐스팅...
 
         } else if (gameId == FORBIDDEN) {
@@ -165,7 +286,7 @@ public class GameService {
 
         // 브로드캐스팅
         System.out.println("data : " + data);
-        params.addProperty("data", data.toString());
+        params.add("data", data);
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
@@ -190,6 +311,7 @@ public class GameService {
             case YANGSECHAN: // 양세찬 게임
                 // 자신의 닉네임(gamename)을 맞추기
                 // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
+                Map<String, String> nicknameMap = sNicknameMap.get(data.get("sessionId").toString());
                 String userAnswer = nicknameMap.get(streamId);
                 System.out.println("map size : " + nicknameMap.size());
                 System.out.println("userAnswer : " + userAnswer);
@@ -207,7 +329,7 @@ public class GameService {
                 // 한사람 걸리면 끝?
                 // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
                 String wordAnswer = wordMap.get(streamId);
-                System.out.println("map size : " + nicknameMap.size());
+                System.out.println("map size : " + wordMap.size());
                 System.out.println("userAnswer : " + wordAnswer);
                 if(wordMap.size()!=0 && wordAnswer.equals(data.get("word").toString())) {
                     System.out.printf("%s님 정답입니다!\n", streamId);
@@ -241,7 +363,7 @@ public class GameService {
 
         // 브로드캐스팅
         System.out.println("data : " + data);
-        params.addProperty("data", data.toString());
+        params.add("data", data);
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
