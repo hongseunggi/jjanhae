@@ -409,11 +409,13 @@ public class GameService {
             case YANGSECHAN: // 양세찬 게임
                 // 자신의 닉네임(gamename)을 맞추기
                 // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
-                Map<String, String> nicknameMap = sNicknameMap.get(message.get("sessionId").toString());
+                Map<String, String> nicknameMap = sNicknameMap.get(message.get("sessionId").getAsString());
                 String userAnswer = nicknameMap.get(streamId);
                 System.out.println("map size : " + nicknameMap.size());
                 System.out.println("userAnswer : " + userAnswer);
-                if(nicknameMap.size()!=0 && userAnswer.equals(data.get("gamename").toString())) { // 정답일 시 종료
+                System.out.println("userInput : " + data.get("gamename").getAsString());
+                System.out.println("result : " + userAnswer.equals(data.get("gamename").getAsString()));
+                if(nicknameMap.size()!=0 && userAnswer.equals(data.get("gamename").getAsString())) { // 정답일 시 종료
                     System.out.printf("%s님 정답입니다!\n", streamId);
                     data.addProperty("answerYn", "Y");
                 } else { // 정답 아닐 시 계속 진행
