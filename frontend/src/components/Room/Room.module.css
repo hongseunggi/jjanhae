@@ -1,12 +1,11 @@
 .container {
   color: #eee;
-  height: calc(100vh - 100px);
-  overflow: hidden;
+  height: calc(100vh - 56px);
+  /* overflow: hidden; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 0px 30px;
-  position: relative;
 }
 .innerContainer {
   display: flex;
@@ -35,30 +34,6 @@ video {
   margin: 20px;
   border: 1px solid #eee;
   /* margin-right: 10px; */
-}
-
-.playerIcon {
-  margin-right: 10px;
-}
-.playerIcon.playerStart {
-  animation: rotate_image 5s linear infinite;
-  transform-origin: 50% 50%;
-}
-
-.musicTitle {
-  width: 100%;
-  font-size: 18px;
-}
-.player {
-  border: 1px solid #eee;
-  padding: 10px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  height: 50px;
-  /* width: 30%; */
-  position: absolute;
-  bottom: 0;
 }
 
 .chatting {
@@ -121,7 +96,7 @@ video {
 
 @media screen and (min-width: 1800px) {
   .container {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 62px);
   }
   video {
     width: 300px;

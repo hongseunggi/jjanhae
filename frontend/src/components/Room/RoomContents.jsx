@@ -15,6 +15,7 @@ import SnapShotResult from "./snapshot/SnapShotResult";
 import html2canvas from "html2canvas";
 
 import ReactPlayer from "react-player";
+import MusicPlayer from "./music/MusicPlayer";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 // const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
@@ -23,10 +24,18 @@ const OPENVIDU_SERVER_SECRET = "jjanhae";
 let localUserInit = new UserModel();
 let OV = undefined;
 
-const RoomContents = ({ sessionName, userName, media, mode }) => {
-  //console.log(userName);
+const RoomContents = ({
+  sessionName,
+  userName,
+  media,
+  mode,
+  musicList,
+  music,
+}) => {
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
-  const {myName} = useContext(NameContext);
+  const { myName } = useContext(NameContext);
+  console.log(musicList);
+  console.log(music);
   //console.log(loginStatus, myName);
   console.log("room content render", loginStatus);
   const [mySessionId, setMySessionId] = useState(sessionName);
@@ -39,7 +48,7 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
 
-  console.log(targetSubscriber);
+  // console.log(targetSubscriber);
 
   const sessionRef = useRef(session);
   sessionRef.current = session;
@@ -65,7 +74,6 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   const targetSubscriberRef = useRef(targetSubscriber);
   targetSubscriberRef.current = targetSubscriber;
 
-  console.log(myUserName);
   const joinSession = () => {
     OV = new OpenVidu();
     setSession(OV.initSession());
@@ -73,11 +81,9 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
 
   useEffect(() => {
     setLoginStatus("3");
-    
-    window.addEventListener("beforeunload", onbeforeunload);
-    console.log("?????????????????");
-    joinSession();
 
+    window.addEventListener("beforeunload", onbeforeunload);
+    joinSession();
     return () => {
       window.removeEventListener("beforeunload", onbeforeunload);
       leaveSession();
@@ -86,6 +92,7 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
 
   useEffect(() => {
     if (sessionRef.current) {
+      console.log(sessionRef.current);
       // 상대방이 들어왔을 때 실행
       sessionRef.current.on("streamCreated", (event) => {
         let subscriber = sessionRef.current.subscribe(event.stream, undefined);
@@ -109,13 +116,10 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
 
       // 상대방이 상태를 변경했을 때 실행 (카메라 / 마이크 등)
       sessionRef.current.on("signal:userChanged", (event) => {
-        //console.log("1");
-        //console.log(subscribersRef.current);
+        console.log(sessionRef.current);
         subscribersRef.current.forEach((user) => {
           if (user.getConnectionId() === event.from.connectionId) {
             const data = JSON.parse(event.data);
-            //console.log(data);
-            //console.log("EVENTO REMOTE: ", event.data);
             if (data.isAudioActive !== undefined) {
               user.setAudioActive(data.isAudioActive);
             }
@@ -124,8 +128,6 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
             }
           }
         });
-        //console.log("2");
-        //console.log(subscribersRef.current);
         setSubscribers([...subscribersRef.current]);
       });
 
@@ -230,10 +232,10 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
 
   const onbeforeunload = (e) => {
     //console.log("tlfgodehla");
-    setTimeout(()=>{
+    setTimeout(() => {
       //console.log("dfsdfsdf");
       leaveSession();
-    },1500);
+    }, 1500);
   };
 
   const sendSignalUserChanged = (data) => {
@@ -248,13 +250,10 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   const camStatusChanged = () => {
     //console.log("캠 상태 변경!!!");
     localUserInit.setVideoActive(!localUserInit.isVideoActive());
-    //console.log(localUserInit);
     localUserInit
       .getStreamManager()
       .publishVideo(localUserInit.isVideoActive());
 
-    //console.log(localUser === localUserInit);
-    //console.log(typeof localUser);
     setLocalUser(localUserInit);
     sendSignalUserChanged({ isVideoActive: localUserInit.isVideoActive() });
   };
@@ -436,18 +435,8 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
           ) : (
             <Chat user={localUserRef.current} />
           )}
+          <MusicPlayer user={localUserRef.current} music={music} />
         </div>
-        //   <ReactPlayer
-        //   url={[
-        //     "https://www.youtube.com/watch?v=7C2z4GqqS5E",
-        //     "https://youtu.be/Bf_tncvBZ7Y",
-        //     "https://youtu.be/sqgxcCjD04s",
-        //   ]}
-        //   playing
-        //   controls
-        //   width="300px"
-        //   height="300px"
-        // />
       )}
     </div>
   );

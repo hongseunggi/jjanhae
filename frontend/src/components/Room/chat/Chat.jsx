@@ -11,6 +11,7 @@ const Chat = (props) => {
     setMessage(event.target.value);
   };
   console.log("chat render");
+  console.log(props.user);
   useEffect(() => {
     //console.log("here");
     props.user.getStreamManager().stream.session.on("signal:chat", (event) => {
