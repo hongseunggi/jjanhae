@@ -6,6 +6,8 @@ import React, {
   useState,
 } from "react";
 import styles from "./Room.module.css";
+import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
+import RoomApi from "../../api/RoomApi";
 
 import { ReactComponent as CameraIcon } from "../../assets/icons/camera.svg";
 import { ReactComponent as GameIcon } from "../../assets/icons/game.svg";
@@ -18,13 +20,16 @@ import NameContext from "../../contexts/NameContext";
 import VideoMicContext from "../../contexts/VideoMicContext";
 import RegistMusic from "../Modals/RegistMusic/RegistMusic";
 import GameList from "../Modals/Game/GameList";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RoomContents from "./RoomContents";
 import Youtube from "../../api/Youtube";
+import SessionIdContext from "../../contexts/SessionIdContext";
 
 const youtube = new Youtube(process.env.REACT_APP_YOUTUBE_API_KEY);
 
 const Room = () => {
+  const { sessionId } = useContext(SessionIdContext);
+  console.log(sessionId);
   const { setLoginStatus } = useContext(LoginStatusContext);
   const { myVMstate } = useContext(VideoMicContext);
   const { myName } = useContext(NameContext);
@@ -39,6 +44,10 @@ const Room = () => {
 
   const { title, roomseq } = useParams();
 
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { getRoomExitResult } = RoomApi;
+
   const musicListRef = useRef(musicList);
   musicListRef.current = musicList;
 
@@ -50,6 +59,18 @@ const Room = () => {
     setContentTitle(title);
     return () => setLoginStatus("2");
   }, []);
+
+  const onClickExit = async () => {
+    const body = {
+      roomSeq: roomseq * 1,
+    };
+    setLoading(true);
+    await getRoomExitResult(body);
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/conferences/list");
+    }, 1500);
+  };
 
   const handleHomeClick = () => {
     setContentTitle(title);
@@ -73,32 +94,33 @@ const Room = () => {
     setOnRegistMusic(true);
   };
 
-  // const handleFirstMusicRegist = (session) => {
-  //   const data = {
-  //     musicStatus: 4,
-  //     videoId: music,
-  //   };
-  //   session.signal({
-  //     type: "music",
-  //     data,
-  //   });
-  // };
-  const handleMusicSearch = useCallback(
-    (query) => {
-      console.log(query);
-      youtube.search(query).then((videos) => {
-        console.log(videos);
-        const videoId = videos[0].id.videoId;
-        const url = `https://www.youtube.com/embed/${videoId}`;
-        console.log(url);
-        setMusic(url);
+  const handleMusicSearch = (query) => {
+    console.log(query);
+    youtube.search(query).then((videos) => {
+      console.log(videos);
+      const videoId = videos[0].id.videoId;
+      const url = `https://www.youtube.com/embed/${videoId}`;
+      const data = {
+        musicStatus: 4,
+        videoId: url,
+      };
+      console.log(sessionId);
+      sessionId.signal({
+        type: "music",
+        data: JSON.stringify(data),
       });
-    },
-    [youtube]
-  );
+      // setMusic(url);
+    });
+  };
 
   return (
     <div className={styles.container}>
+      {loading ? <LoadingSpinner></LoadingSpinner> : null}
+      <div className={styles.nav}>
+        <button className={styles.link} onClick={onClickExit}>
+          EXIT
+        </button>
+      </div>
       <div className={styles.innerContainer}>
         <div className={styles.contents}>
           <div className={styles.title}>

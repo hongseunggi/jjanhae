@@ -3,7 +3,6 @@ import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-import YangGameComponent from "././game/YangGameComponent";
 
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
@@ -14,11 +13,10 @@ import NameContext from "../../contexts/NameContext";
 import SnapShotResult from "./snapshot/SnapShotResult";
 import html2canvas from "html2canvas";
 
-import ReactPlayer from "react-player";
 import MusicPlayer from "./music/MusicPlayer";
+import SessionIdContext from "../../contexts/SessionIdContext";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
-// const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
@@ -32,6 +30,7 @@ const RoomContents = ({
   musicList,
   music,
 }) => {
+  const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
   const { myName } = useContext(NameContext);
   console.log(musicList);
@@ -52,6 +51,7 @@ const RoomContents = ({
 
   const sessionRef = useRef(session);
   sessionRef.current = session;
+  setSessionId(sessionRef.current);
 
   const publisherRef = useRef(publisher);
   publisherRef.current = publisher;
@@ -243,6 +243,7 @@ const RoomContents = ({
       data: JSON.stringify(data),
       type: "userChanged",
     };
+    console.log(sessionRef.current);
     sessionRef.current.signal(signalOptions);
   };
 
