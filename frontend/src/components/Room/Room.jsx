@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import RoomContents from "./RoomContents";
+import RoomApi from "../../api/RoomApi";
 
 let posX = 0;
 let posY = 0;
@@ -35,13 +36,21 @@ const Room = () => {
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [onSetting, setOnSetting] = useState(false);
   const { title, roomseq } = useParams();
-
+  const {getRoomExitResult} = RoomApi;
   console.log(myName);
 
   useEffect(() => {
     setLoginStatus("3");
     console.log(myVMstate);
-    // return () => setLoginStatus("2");
+    return async () => {
+      console.log("tlfgod");
+      const body = {
+        roomSeq : roomseq * 1
+      }
+      const {data} = await getRoomExitResult(body);
+      setLoginStatus("2");
+      
+    }
   }, []);
 
   const handleMusicPlayer = () => {
