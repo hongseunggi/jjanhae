@@ -16,6 +16,7 @@ import { Dropdown } from "bootstrap";
 const CalendarPage = () => {
   //calendar
   const [calendar, setCalendar] = useState([]);
+  const days = ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."];
   //today
   const [value, setValue] = useState(moment());
   //set cliked date
@@ -76,7 +77,7 @@ const CalendarPage = () => {
     setEndMonth(value.clone().endOf("month"));
 
     const result = await getRoomDate(value.format("M")*1);
-
+    console.log(result);
     //받아온 party data state에 저장
     handleParyDataList(result.data.conferencesDateList);
   }, [value]);
@@ -85,6 +86,7 @@ const CalendarPage = () => {
     console.log(item.day);
     if(item.day!="") {
       const result = await getRoomList(item.day);
+      console.log(result);
       let roomList = [];
       roomList = result.data.roomList; 
       console.log(roomList)
@@ -161,7 +163,7 @@ const CalendarPage = () => {
       if (yoil === 6) return "saturday";
       if (yoil > 0 && yoil) return "weekday";
     } else {
-      return "none";
+      return "wkddisable";
     }
   }
 
@@ -173,9 +175,10 @@ const CalendarPage = () => {
     setUnvisible(event);
     const data = event.nativeEvent.path[2].outerText;
     const dataArr = data.split("\n");
+    // console.log(dataArr[0].substring(0,dataArr[0].length-1));
     setItem({
       month: value.format("M"),
-      day: dataArr[0],
+      day: dataArr[0].substring(0,dataArr[0].length-1),
     });
     //해당 날짜에 진행한 파티목록 가져오는 api호출
     // const result = await getRoomList(item.day);
@@ -204,7 +207,7 @@ const CalendarPage = () => {
   const calcYoil = (day) => {
     let yoil = dayStyles(day);
     let date = day.format("D").toString();
-    return <div className={styles[yoil]}>{date}</div>;
+    return <div className={styles[yoil]}>{date}일</div>;
   };
 
   //roomseq로 참석한 모든 인원 데이터 받아오기
@@ -290,7 +293,7 @@ const CalendarPage = () => {
 
   return (
     <>
-      <div className={styles.calendarFormBorder}>
+      <div className={styles.calendadrFormBorder}>
         <div className={styles.calendarForm}>
           <ConferenceList
             open={listModalOpen}
@@ -305,25 +308,114 @@ const CalendarPage = () => {
             time={time}
             userList={userList.userList}
           ></ConferenceDetail>
+          <div className={styles.calendarBodyBorder}>
           <div className={styles.calendarHeader}>
-            <div className={styles.calendarTitle}>술자리 기록</div>
+            {/* <div className={styles.calendarTitle}>술자리 기록</div> */}
             <div className={styles.calendarTop}>
               <div className={styles.month}>{currentMonth()}</div>
-              <CalendarIcon className={styles.icon} />
+              {/* <CalendarIcon className={styles.icon} /> */}
             </div>
+          </div>
           </div>
           <div className={styles.calendarBodyBorder}>
             <div className={styles.calendarBody}>
-              {calendar.map((week, index) => (
-                <div key={index} className={styles.week}>
-                  {week.map((day, index) => (
-                    <div key={index} className={styles.day}>
-                      {calcYoil(day)}
-                      {checkParty(day)}
-                    </div>
-                  ))}
-                </div>
-              ))}
+              {days.map((value, index)=>{
+                if(index === 0){
+                  return(
+                    <div key={index} className={styles.title}>{value}</div>
+                  )
+                }
+                else if(index === days.length-1){
+                  return(
+                    <div key={index} className={styles.titleLast}>{value}</div>
+                  )
+                }
+                else{
+                  return(
+                    <div key={index} className={styles.titleOther}>{value}</div>
+                  )
+                }
+              })}
+              {calendar.map((week, index) => {
+                if(index === 0){
+                  return (
+                  <div key={index} className={styles.week}>
+                    {week.map((day, index) => {
+                      if(index === 0){
+                        return (<div key={index} className={styles.day}>
+                          <p className={styles.dayreal}>{calcYoil(day)}</p>
+                          {checkParty(day)}
+                        </div>)
+                      }
+                      else if(index === week.length-1){
+                        return(<div key={index} className={styles.dayfirstRowEnd}>
+                          <p className={styles.dayreal}>{calcYoil(day)}</p>
+                          {checkParty(day)}
+                        </div>)
+                      }
+                      else{
+                        return(<div key={index} className={styles.dayfirstRow}>
+                          <p className={styles.dayreal}>{calcYoil(day)}</p>
+                          {checkParty(day)}
+                        </div>)
+                      }
+                    })}
+                  </div>)
+                }
+                else if(index === calendar.length-1){
+                  return (
+                    <div key={index} className={styles.week}>
+                      {week.map((day, index) => {
+                        if(index === 0){
+                          return (<div key={index} className={styles.dayLastRow}>
+                            <p className={styles.dayreal}>{calcYoil(day)}</p>
+                            {checkParty(day)}
+                          </div>)
+                        }
+                        else if(index === week.length-1){
+                          return(<div key={index} className={styles.dayLastRowEnd}>
+                            <p className={styles.dayreal}>{calcYoil(day)}</p>
+                            {checkParty(day)}
+                          </div>)
+                        }
+                        else{
+                          return(<div key={index} className={styles.dayLastRowother}>
+                            <p className={styles.dayreal}>{calcYoil(day)}</p>
+                            {checkParty(day)}
+                          </div>)
+                        }
+                      })}
+                    </div>)
+                }
+                else{
+                  return (
+                  <div key={index} className={styles.week}>
+                    {week.map((day, index) => {
+                      if(index === 0){
+                        return (<div key={index} className={styles.dayotherRowFirst}>
+                          <p className={styles.dayreal}>{calcYoil(day)}</p>
+                          {checkParty(day)}
+                        </div>)
+                      }
+                      else if(index === week.length-1){
+                        return(<div key={index} className={styles.dayotherRowEnd}>
+                          <p className={styles.dayreal}>{calcYoil(day)}</p>
+                          {checkParty(day)}
+                        </div>)
+                      }
+                      else{
+                        return (<div key={index} className={styles.dayotherRow}>
+                          <p className={styles.dayreal}>{calcYoil(day)}</p>
+                          {checkParty(day)}
+                        </div>)
+                      }
+                    })}
+                  </div>)
+                }
+                
+                
+                
+              })}
             </div>
           </div>
         </div>

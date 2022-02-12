@@ -181,7 +181,7 @@ public class RoomController {
             // List<SortRoomResponse> 에 담아준다.
             sortRoomResponse.setRoomSeq(rooms.get(i).getRoomSeq());
             sortRoomResponse.setType(rooms.get(i).getType());
-            sortRoomResponse.setPassword(rooms.get(i).getPassword());
+            // sortRoomResponse.setPassword(rooms.get(i).getPassword()); 비밀번호를 주면 안됨
             sortRoomResponse.setJoinUserNum(numberOfJoin);
             sortRoomResponse.setOwnerId(rooms.get(i).getOwner().getUserId()); // 방장 userId
             sortRoomResponse.setStartTime(rooms.get(i).getStartTime()); // 시작시간
@@ -216,7 +216,7 @@ public class RoomController {
             SearchRoomResponse searchRoomResponse = new SearchRoomResponse();
             searchRoomResponse.setRoomSeq(rooms.get(i).getRoomSeq());
             searchRoomResponse.setType(rooms.get(i).getType());
-            searchRoomResponse.setPassword(rooms.get(i).getPassword());
+            // searchRoomResponse.setPassword(rooms.get(i).getPassword());
             searchRoomResponse.setJoinUserNum(numberOfJoin);
             searchRoomResponse.setOwnerId(rooms.get(i).getOwner().getUserId());
             searchRoomResponse.setStartTime(rooms.get(i).getStartTime());
@@ -228,6 +228,40 @@ public class RoomController {
         }
 
         return ResponseEntity.status(200).body(SearchRoomListResponse.of(searchRoomList));
+    }
+
+    @GetMapping(value = "/pwd", params = {"roomSeq", "password"})
+    @ApiOperation(value = "방 비밀번호", notes = "방 입장시 비밀번호 검사")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 204, message = "비밀번호 불일치"),
+            @ApiResponse(code = 403, message = "로그인 안함")
+    })
+    public ResponseEntity<? extends BaseResponseBody> checkRoomPwd(@ApiIgnore Authentication authentication,
+                                                                   @RequestParam Long roomSeq,@RequestParam String password) throws Exception {
+        /**
+         * 방 비밀번호를 체크한다.
+         * 권한 : 해당 유저
+         * */
+        System.out.println("enterRoom Start ...");
+
+        // 로그인 상태 검사
+        if(authentication == null) {
+            System.out.println("로그인 상태가 아닙니다.");
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+        }
+        System.out.println("checkRoomPwd");
+        System.out.println("입력한 비밀번호 : "+ password);
+        Room room = roomService.findRoomByRoomSeq(roomSeq);
+
+        // 비공개방 패스워드 일치여부 확인
+        System.out.println("비공개방이므로 패스워드 일치여부 확인...");
+        if(!password.equals(room.getPassword())) {
+            System.out.println("비밀번호 불일치");
+            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "비밀번호가 일치하지 않습니다."));
+        }
+        System.out.println("비밀번호 딩동댕");
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
 
@@ -283,16 +317,16 @@ public class RoomController {
         }
 
         // 비공개방일 시 패스워드 일치여부 확인
-        System.out.println("room type "+room.getType());
-        if(room.getType() == 0) {
-            System.out.println("비공개방이므로 패스워드 일치여부 확인...");
-            String password = enterRoomRequest.getPassword();
-            System.out.println("password "+password);
-            if(!password.equals(room.getPassword())) {
-                System.out.println("비밀번호 불일치");
-                return ResponseEntity.status(200).body(BaseResponseBody.of(204, "비밀번호가 일치하지 않습니다."));
-            }
-        }
+//        System.out.println("room type "+room.getType());
+//        if(room.getType() == 0) {
+//            System.out.println("비공개방이므로 패스워드 일치여부 확인...");
+//            String password = enterRoomRequest.getPassword();
+//            System.out.println("password "+password);
+//            if(!password.equals(room.getPassword())) {
+//                System.out.println("비밀번호 불일치");
+//                return ResponseEntity.status(200).body(BaseResponseBody.of(204, "비밀번호가 일치하지 않습니다."));
+//            }
+//        }
 
         // 나갔다 들어온 유저인지 확인
         RoomHistory roomHistoryInTheRoom = roomHistoryService.findOneHistoryInRoom(user.getUserSeq(), room.getRoomSeq());

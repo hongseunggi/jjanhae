@@ -14,7 +14,8 @@ let localUserInit = new UserModel();
 let OV = undefined;
 
 const RoomContents = ({ sessionName, userName, media }) => {
-  console.log(media);
+  console.log(userName);
+
   const [mySessionId, setMySessionId] = useState(sessionName);
   const [myUserName, setMyUserName] = useState(userName);
   const [session, setSession] = useState(undefined);
@@ -34,6 +35,7 @@ const RoomContents = ({ sessionName, userName, media }) => {
   const localUserRef = useRef(localUser);
   localUserRef.current = localUser;
 
+  console.log(myUserName);
   const joinSession = () => {
     OV = new OpenVidu();
     setSession(OV.initSession());

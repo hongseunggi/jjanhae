@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import io.openvidu.server.contents.GameService;
 import org.kurento.client.GenericMediaEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +45,8 @@ import io.openvidu.server.recording.Recording;
 import io.openvidu.server.rpc.RpcNotificationService;
 
 import io.openvidu.server.contents.MusicService;
+import io.openvidu.server.contents.GameService;
+import io.openvidu.server.contents.PhotoService;
 
 
 public class SessionEventsHandler {
@@ -60,6 +61,9 @@ public class SessionEventsHandler {
 	
 	@Autowired
 	protected GameService gameService;
+
+	@Autowired
+	protected PhotoService photoService;
 
 	@Autowired
 	protected CallDetailRecord CDR;
@@ -431,12 +435,16 @@ public class SessionEventsHandler {
 
 		// ********* 여기서부터 type에 맞춰서 우리 서비스 실행하면 됨
 		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
-			System.out.println("음악 관련 요청이 들어왔습니다.");
+			System.out.println("[Music] 음악 관련 요청이 들어왔습니다.");
 			musicService.controlMusic(participant, message, participants, rpcNotificationService);
 		} else if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
 			System.out.println("Request Game ...");
 			gameService.controlGame(participant, message, participants, rpcNotificationService);
+		} else if (message.has("type") && message.get("type").getAsString().equals("signal:photo")) {
+			System.out.println("[Photo] 사진 관련 요청이 들어왔습니다.");
+			photoService.controlPhoto(participant, message, participants, rpcNotificationService);
 		}
+		// ******** 이외에는 채팅!
 		else {
 			// 여기가 채팅일 때 실행되도록 type:chat
 			if (message.has("to")) {

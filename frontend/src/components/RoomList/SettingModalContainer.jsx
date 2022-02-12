@@ -3,6 +3,9 @@ import IntoRoom from "../Modals/RoomEnter/IntoRoom";
 import style from "./RoomList.module.css";
 import { ReactComponent as Clock } from "../../assets/icons/clock.svg";
 import { ReactComponent as Lock } from "../../assets/icons/lock.svg";
+import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import IconButton from "@material-ui/core/IconButton";
 
 function SettingModalContainer(props) {
   const { info } = props;
@@ -51,21 +54,18 @@ function SettingModalContainer(props) {
   const renderLock = (value) => {
     if (value === 0) {
       return (
-        <Lock
-          className={style.lock}
-          width="20"
-          height="20"
+        <LockOutlinedIcon className={style.lock}
           filter="invert(34%) sepia(54%) saturate(4911%) hue-rotate(327deg) brightness(100%) contrast(103%)"
-        ></Lock>
+          fontSize="large"
+        ></LockOutlinedIcon>
+
       );
     }
     return (
-      <Lock
-        className={style.lock}
-        width="20"
-        height="20"
-        filter="invert(82%) sepia(33%) saturate(6059%) hue-rotate(128deg) brightness(98%) contrast(94%)"
-      ></Lock>
+        <LockOpenOutlinedIcon className={style.lock}
+          filter="invert(82%) sepia(33%) saturate(6059%) hue-rotate(128deg) brightness(98%) contrast(94%)"
+          fontSize="large"
+        ></LockOpenOutlinedIcon>
     );
   };
 
