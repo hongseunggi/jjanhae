@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./YangGameComponent.module.css";
 import Keyword from "../../Modals/Game/Keyword";
 
+
 function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
 
   const color = [
@@ -76,19 +77,6 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
   };
 
   
-  //양게임 시작하면 바로 보내는 요청
-  useEffect(() => {
-    const initalData = {
-      gameStatus: gameStatus,
-      gameId: 1,
-    };
-
-    user.getStreamManager().stream.session.signal({
-      data: JSON.stringify(initalData),
-      type: "game",
-    });
-  }, [])
-
   const submitSubscriberKeyword = () => {
     // console.log(subscriberkeyword);
     // if (subscriberkeyword !== "" && subscriberkeyword !== " ") {
@@ -106,16 +94,19 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     // }
   };
 
-  const giveGamename = () => {
-    const data = {
-      streamId: user.connectionId,
+  const giveGamename = (data) => {
+    console.log(streamId);
+    console.log(targetId);
+    console.log(data);
+    const senddata = {
+      streamId: streamId,
       gameStatus: 1,
       gameId: 1,
-      gamename : "테스트",
-      index : 1,
+      gamename : targetGameName,
+      index : index,
     }
     user.getStreamManager().stream.session.signal({
-      data: JSON.stringify(data),
+      data: JSON.stringify(senddata),
       type: "game",
     });
   }
@@ -132,6 +123,17 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     //   type: "game",
     // });
   }
+
+  useEffect(()=> {
+    const data={
+      gameStatus : 0,
+      gameId : 1,
+    }
+    user.getStreamManager().stream.session.signal({
+      type : "game",
+      data : JSON.stringify(data), 
+    });
+  }, []);
 
   // useEffect(() => {
   //   if(gameStatus===1) {
@@ -172,6 +174,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     user.getStreamManager().stream.session.on("signal:game", (event) => {
       const data = event.data;
       console.log(data.streamId);
+      console.log(data.targetId);
       console.log(user);
       console.log(user.getStreamManager().stream.streamId);
       //초기요청 응답
@@ -180,10 +183,20 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
         //내가 키워드를 정해줄 차례라면
         if(data.streamId===user.getStreamManager().stream.streamId) {
           console.log("my turn");
+          //상대방 키워드 입력해줄 모달 띄우기
+          setStreamId(data.streamId);
           setTargetId(data.targetId);
-          giveGamename();
+          setIndex(data.index);
+          setModalMode("assign");
+          openKeywordInputModal();
+          //내가 정해줄 차례가 아니라면
+        } else {
+          console.log("not my turn");
+          setModalMode("wait");
+          openKeywordInputModal();
         }
       }else if(data.gameStatus===2) {
+        setModalMode("answer");
         console.log("키워드 설정 완료");
       }
 
@@ -203,6 +216,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
 
   const openKeywordInputModal = () => {
     setKeywordInputModal(true);
+    giveGamename();
   }
   const closeKeywordInputModal = () => {
     setKeywordInputModal(false);
@@ -216,6 +230,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
   const confirmTargetGameName = (data) => {
     closeKeywordInputModal();
     setTargetGameName(data);
+    giveGamename(data);
     //target gamename 지정해주는 api호출
   }
 

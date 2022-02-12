@@ -29,7 +29,6 @@ const youtube = new Youtube(process.env.REACT_APP_YOUTUBE_API_KEY);
 
 const Room = () => {
   const { sessionId } = useContext(SessionIdContext);
-  console.log(sessionId);
   const { setLoginStatus } = useContext(LoginStatusContext);
   const { myVMstate } = useContext(VideoMicContext);
   const { myName } = useContext(NameContext);
@@ -59,6 +58,23 @@ const Room = () => {
     setContentTitle(title);
     return () => setLoginStatus("2");
   }, []);
+
+  useEffect(() => {
+    if(sessionId!==""&&sessionId!==undefined) {
+      console.log(sessionId);
+      sessionId.on("signal:game", (event) => {
+        const data = event.data;
+        console.log(data);
+        console.log(data.gameId);
+        if(data.gameId===1) setContentTitle("양세찬 게임");
+        setMode("game1");
+      });
+    }
+  }, [sessionId]);
+
+  useEffect(()=> {
+    console.log(mode);
+  },[mode])
 
   const onClickExit = async () => {
     const body = {
@@ -114,10 +130,19 @@ const Room = () => {
   };
 
   const changeMode = () => {
-    setMode("game1")
+    console.log("game1 change");
+    const data={
+      gameStatus : 0,
+      gameId : 1,
+    }
+    sessionId.signal({
+      type : "game",
+      data : JSON.stringify(data), 
+    });
   };
+
   const changeMain = () => {
-    setMode("")
+    setMode("basic");
   };
 
   return (

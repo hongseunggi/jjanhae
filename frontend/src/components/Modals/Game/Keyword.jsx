@@ -3,6 +3,8 @@ import styles from "./Keyword.module.css";
 import { ReactComponent as GameIcon } from "../../../assets/icons/game.svg";
 import { ReactComponent as CelebrateIcon } from "../../../assets/icons/celebrate.svg";
 import { ReactComponent as QuestionIcon } from "../../../assets/icons/question.svg";
+import { ReactComponent as Sendclock } from "../../../assets/icons/sendclock.svg";
+
 
 
 const Keyword = (props) => {
@@ -44,7 +46,7 @@ const Keyword = (props) => {
                     <GameIcon className={styles.icon}/>
                 </div>
                 <div className={styles.informBorder}>
-                    <div className={styles.informText}>
+                    <div className={styles.infoText}>
                         <p className={styles.text}>당신의 키워드를 맞춰보세요!</p>
                     </div>
                     <form>
@@ -91,7 +93,7 @@ const Keyword = (props) => {
                     <QuestionIcon className={styles.icon}/>
                 </div>
                 <div className={styles.informBorder}>
-                    <div className={styles.informText}>
+                    <div className={styles.infoText}>
                         <p className={styles.text}>{}님의 키워드를 정해주세요!</p>
                     </div>
                     <form>
@@ -107,7 +109,27 @@ const Keyword = (props) => {
                 </button>
                 </main>
           </section>
+        ) : mode === "wait" ? (
+          <section className={styles.modalForm}>
+            <header>
 
+            </header>
+                <main className={styles.main}>
+                <div className={styles.icon}>
+                    <QuestionIcon className={styles.icon}/>
+                </div>
+                <div className={styles.informBorder}>
+                    <div className={styles.infoText}>
+                        <p className={styles.text}>모든 참가자들이 키워드를 입력할때까지 잠시 기다려주세요...
+                        </p>
+                    </div>
+                </div>
+                <button className={styles.confirmBtn} onClick={confirmTarget}>
+                    {" "}
+                    입력{" "}
+                </button>
+                </main>
+          </section>
         )
          : null}
          </>
