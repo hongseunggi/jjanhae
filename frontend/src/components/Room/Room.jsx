@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import RoomContents from "./RoomContents";
 import SnapShot from "./snapshot/SnapShot";
+import RoomApi from "../../api/RoomApi";
 
 let posX = 0;
 let posY = 0;
@@ -41,14 +42,23 @@ const Room = () => {
   const { title, roomseq } = useParams();
   
   //console.log(myName);
-
+  const {getRoomExitResult} = RoomApi;
+  console.log(myName);
   useEffect(() => {
     console.log("room render");
     // setLoginStatus("3");
     //console.log(myVMstate);
     setContentTitle(title);
     console.log("?????????????");
-    return () => setLoginStatus("2");
+    return async () => {
+      console.log("tlfgod");
+      const body = {
+        roomSeq : roomseq * 1
+      }
+      const {data} = await getRoomExitResult(body);
+      setLoginStatus("2");
+      
+    }
   }, []);
 
   const handleCameraClick = () => {
