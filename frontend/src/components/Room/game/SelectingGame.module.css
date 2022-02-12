@@ -1,24 +1,28 @@
-.selectingGame {
+.onSelectingGame, .onInfoGame {
     position : absolute;
-    z-index : 999;
+    z-index : 9999999;
     width : 100%;
     height : 100%;
-    background-color: rgba(255, 255, 255, 0.616);
+    background-color: rgb(172, 172, 172);
     display: flex;
     align-content: center;
     border-radius: 10px;
     align-items: center;
 }
 
+.selectingGame, .infoGame{
+}
+
+
 .infoText {
     position: relative;
     width: 50%;
-    height: 20%;
+    height: 20%;    
     color: #eeee;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: rgb(255, 99, 71);
+    background-color: rgba(255, 99, 71, 0.938);
     text-align: center;
     align-items: center;
     border-radius: 15px;
@@ -26,7 +30,7 @@
     left : 25%;
 }
 
-.icon {
+.sendClockIcon {
     width : 6%;
     height : 30%;
 }
@@ -72,7 +76,7 @@
     }
 
 
-    .icon {
+    .sendClockIcon {
         -moz-animation: rotate-loading 1.5s linear 0s infinite normal;
         -moz-transform-origin: 50% 50%;
         -o-animation: rotate-loading 1.5s linear 0s infinite normal;
@@ -83,7 +87,7 @@
         transform-origin: 50% 50%;
     }
 
-    .infoText .icon {
+    .infoText .sendClockIcon {
         -webkit-transition: all 0.5s ease-in-out;
         -moz-transition: all 0.5s ease-in-out;
         -ms-transition: all 0.5s ease-in-out;
@@ -91,4 +95,15 @@
         transition: all 0.5s ease-in-out;
     }
 
+    .goBtn {
+        background-color: transparent;
+        border: none;
+        width : 50%;
+        height : 50%;
+    }
+
+    .goIcon {
+        width: 100%;
+        height: 100%;
+    }
         

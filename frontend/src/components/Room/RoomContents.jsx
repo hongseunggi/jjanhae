@@ -18,7 +18,6 @@ import html2canvas from "html2canvas";
 import ReactPlayer from "react-player";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
-// const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
@@ -39,7 +38,10 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
-  const [isSelecting, setIsSelecting] = useState(true)
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [allSet, setAllSet] = useState(false);
+  const [index, setIndex] = useState("1");
+  const [startPage, setStartPage] = useState(true);
 
   console.log(targetSubscriber);
 
@@ -396,9 +398,16 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   const closeSelectingPage = () => {
     setIsSelecting(false);
   }
+  const closeStartPage = () => {
+    console.log("close here");
+    setStartPage(false);
+  }
+  const openStartPage = () => {
+    setStartPage(true);
+  }
   return (
     <div className={styles["contents-container"]}>
-      <SelectingGame open={isSelecting} close={closeSelectingPage} />
+      <SelectingGame open={isSelecting} close={closeSelectingPage} startPage={startPage} closeStartPage={closeStartPage}/>
       {mode === "snapshot" ? (
         <div className={styles.countContainer}>
           <p className={styles.count}>{count}</p>
@@ -425,6 +434,7 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
               targetSubscriber={targetSubscriber}
               subscribers={subscribers}
               mode={mode}
+              isSelecting = {isSelecting}
             />
           );
         })}
