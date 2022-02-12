@@ -91,47 +91,47 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
   }, [])
 
   const submitSubscriberKeyword = () => {
-    console.log(subscriberkeyword);
-    if (subscriberkeyword !== "" && subscriberkeyword !== " ") {
-      const data = {
-        streamId: user.connectionId,
-        sessionId: sessionId,
-        gameStatus: 1,
-        gameId: 1,
-        gamename: subscriberkeyword,
-      };
-      user.getStreamManager().stream.session.signal({
-        data: JSON.stringify(data),
-        type: "game",
-      });
-    }
+    // console.log(subscriberkeyword);
+    // if (subscriberkeyword !== "" && subscriberkeyword !== " ") {
+    //   const data = {
+    //     streamId: user.connectionId,
+    //     sessionId: sessionId,
+    //     gameStatus: 1,
+    //     gameId: 1,
+    //     gamename: subscriberkeyword,
+    //   };
+    //   user.getStreamManager().stream.session.signal({
+    //     data: JSON.stringify(data),
+    //     type: "game",
+    //   });
+    // }
   };
 
   const giveGamename = (responseData) => {
-    const data = {
-      streamId: user.connectionId,
-      gameStatus: 1,
-      gameId: 1,
-      gamename : "테스트",
-      index : 1,
-    }
-    user.getStreamManager().stream.session.signal({
-      data: JSON.stringify(data),
-      type: "game",
-    });
+    // const data = {
+    //   streamId: user.connectionId,
+    //   gameStatus: 1,
+    //   gameId: 1,
+    //   gamename : "테스트",
+    //   index : 1,
+    // }
+    // user.getStreamManager().stream.session.signal({
+    //   data: JSON.stringify(data),
+    //   type: "game",
+    // });
   }
 
   const checkMyAnswer = () => {
-    const data = {
-      streamId: user.connectionId,
-      gameStatus: 2,
-      gameId: 1,
-      gamename : "테스트",
-    }
-    user.getStreamManager().stream.session.signal({
-      data: JSON.stringify(data),
-      type: "game",
-    });
+    // const data = {
+    //   streamId: user.connectionId,
+    //   gameStatus: 2,
+    //   gameId: 1,
+    //   gamename : "테스트",
+    // }
+    // user.getStreamManager().stream.session.signal({
+    //   data: JSON.stringify(data),
+    //   type: "game",
+    // });
   }
 
   // useEffect(() => {
@@ -177,7 +177,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
 
       if(data.gameStatus===1) {
         //내가 키워드를 정해줄 차례라면
-        if(data.streamId===user.sessionId) {
+        if(data.streamId===user.connectionId) {
           console.log("my turn");
           setTargetId(data.targetId);
           giveGamename(data);
