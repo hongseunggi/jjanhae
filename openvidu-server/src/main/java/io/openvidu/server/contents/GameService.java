@@ -283,10 +283,7 @@ public class GameService {
                 // 이번이 마지막 사람일 경우 gameStatus=2로 다음 상태로 넘어가도록 함
                 data.addProperty("gameStatus", 2);
             }
-            if(index > size) {
-                index -= size; // 만약 size=8이고, index=9일 시, 1로 돌려놓기 위해
-                // FE에서 index=8 응답 받았을 시 다음 gameStatus로 넘어가면 size를 넘어갈일이 없긴 하지만 혹시모르므로
-            }
+
             String sessionId = message.get("sessionId").getAsString();
             System.out.println("session Id : "+sessionId);
 
@@ -308,6 +305,12 @@ public class GameService {
             data.addProperty("streamId", curStreamId);
 
             data.addProperty("index", ++index);
+            System.out.println("increased index : "+index);
+            if(index > size) {
+                index -= size; // 만약 size=8이고, index=9일 시, 1로 돌려놓기 위해
+                // FE에서 index=8 응답 받았을 시 다음 gameStatus로 넘어가면 size를 넘어갈일이 없긴 하지만 혹시모르므로
+            }
+            System.out.println("decreased index : "+index);
 
             Map<String, String> nicknameMap = sNicknameMap.get(sessionId); // 해당 방의 닉네임맵
             nicknameMap.put(curStreamId, data.get("gamename").getAsString());
