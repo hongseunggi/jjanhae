@@ -113,18 +113,13 @@ const SnapShotResult = ({ images, status, onStart, onRetry, onSave }) => {
             <div>
               <button className={styles.retryBtn} onClick={handleRetryClick}>
                 <RetryIcon width="50" height="50" />
-                {/* <p>다시 촬영하기</p> */}
               </button>
             </div>
             <div>
               <button className={styles.saveBtn} onClick={handleSaveClick}>
                 <SaveIcon width="50" height="50" />
-                {/* <p>저장</p> */}
               </button>
             </div>
-          </div>
-          <div>
-            <button className={styles.checkResultBtn}>결과물 확인하기</button>
           </div>
         </div>
       ) : null}
