@@ -5,24 +5,22 @@ import com.google.gson.JsonParser;
 import io.openvidu.client.internal.ProtocolElements;
 import io.openvidu.server.core.Participant;
 import io.openvidu.server.rpc.RpcNotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MusicService {
 
-    /** 음악 재생 */
+    /** 음악 재생 **/
     static final int PLAYMUSIC = 1;
-    /** 음악 일시정지 */
+    /** 음악 일시정지 **/
     static final int PAUSEMUSIC = 2;
-    /** 음악 중지 */
+    /** 음악 중지 **/
     static final int STOPMUSIC = 3;
-    /** 음악 추가 */
+    /** 음악 추가 **/
     static final int ADDMUSIC = 4;
-    /** 음악 삭제 */
+    /** 음악 삭제 **/
     static final int DELETEMUSIC = 5;
 
     static RpcNotificationService rpcNotificationService;
@@ -32,6 +30,12 @@ public class MusicService {
 
     public void controlMusic(Participant participant, JsonObject message, Set<Participant> participants,
                              RpcNotificationService rnfs) {
+
+        // System.out.println("참가자 오브젝트 "+ participant);
+        // System.out.println("메세지 오브젝트 "+ message);
+        // System.out.println("참가자들 오브젝트 "+ participants);
+        // System.out.println("rnfs "+ rnfs);
+
         // 초기화 과정
         rpcNotificationService = rnfs;
         JsonObject params = new JsonObject();
@@ -95,7 +99,7 @@ public class MusicService {
      * */
     private void addMusic(Participant participant, JsonObject message, Set<Participant> participants,
                             JsonObject params, JsonObject data) {
-        String sessionId = data.get("sessionId").getAsString();
+        String sessionId = message.get("sessionId").getAsString();
         String videoId = data.get("videoId").getAsString();
         System.out.println("[Music] 추가하고 싶은 노래(비디오아이디) : " + videoId);
         // 해당 세션에 아이디 추가
@@ -125,24 +129,15 @@ public class MusicService {
      * */
     private void delMusic(Participant participant, JsonObject message, Set<Participant> participants,
                             JsonObject params, JsonObject data) {
-        String sessionId = data.get("sessionId").getAsString();
+        String sessionId = message.get("sessionId").getAsString();
         String videoId = data.get("videoId").getAsString();
         System.out.println("[Music] 삭제하고 싶은 노래(비디오아이디) : " + videoId);
 
         ArrayList<String> songList = requestSongsMap.get(sessionId);
-        Integer removeIdx = songList.indexOf(videoId);
+//        Integer removeIdx = songList.indexOf(videoId);
         System.out.println("지금 노래 리스트" + songList);
-        if (removeIdx == -1) {
-            System.out.println("[Music] 삭제하려는 노래가 없습니다.");
-            return;
-        }
-        songList.remove(removeIdx);
+        songList.remove(videoId);
         System.out.println("바뀐 노래 리스트" + songList);
-        System.out.println("현재 requestSongMap" + requestSongsMap);
-        requestSongsMap.remove(sessionId);
-        System.out.println("노래 삭제한 requestSongMap" + requestSongsMap);
-        requestSongsMap.put(sessionId, songList);
-        System.out.println("바뀐 requestSongMap" + requestSongsMap);
         data.addProperty("songList", requestSongsMap.get(sessionId).toString());
 
         params.add("data", data);
