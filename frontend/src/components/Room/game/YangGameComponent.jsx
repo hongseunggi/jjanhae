@@ -79,9 +79,8 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
   //양게임 시작하면 바로 보내는 요청
   useEffect(() => {
     const initalData = {
-      gameStatus: gameStatus ,
+      gameStatus: gameStatus,
       gameId: 1,
-      sessionId: sessionId,
     };
 
     user.getStreamManager().stream.session.signal({
@@ -107,18 +106,18 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     // }
   };
 
-  const giveGamename = (responseData) => {
-    // const data = {
-    //   streamId: user.connectionId,
-    //   gameStatus: 1,
-    //   gameId: 1,
-    //   gamename : "테스트",
-    //   index : 1,
-    // }
-    // user.getStreamManager().stream.session.signal({
-    //   data: JSON.stringify(data),
-    //   type: "game",
-    // });
+  const giveGamename = () => {
+    const data = {
+      streamId: user.connectionId,
+      gameStatus: 1,
+      gameId: 1,
+      gamename : "테스트",
+      index : 1,
+    }
+    user.getStreamManager().stream.session.signal({
+      data: JSON.stringify(data),
+      type: "game",
+    });
   }
 
   const checkMyAnswer = () => {
@@ -172,30 +171,33 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     //back으로 부터 받는 data처리
     user.getStreamManager().stream.session.on("signal:game", (event) => {
       const data = event.data;
-      console.log(data);
+      console.log(data.streamId);
+      console.log(user);
+      console.log(user.getStreamManager().stream.streamId);
       //초기요청 응답
 
       if(data.gameStatus===1) {
         //내가 키워드를 정해줄 차례라면
-        if(data.streamId===user.connectionId) {
+        if(data.streamId===user.getStreamManager().stream.streamId) {
           console.log("my turn");
           setTargetId(data.targetId);
-          giveGamename(data);
+          giveGamename();
         }
-        setGameStatus(1);
+      }else if(data.gameStatus===2) {
+        console.log("키워드 설정 완료");
       }
 
-      if (data.connectionId === user.connectionId) {
-        //키워드 설정해줬을 시
-      } else {
-        let nicknameList = [];
-        nicknameList = nickname;
-        nicknameList.push({
-          connectionId: data.streamId,
-          keyword: data.gamename,
-        });
-        setNickname([...nicknameList]);
-      }
+      // if (data.connectionId === user.connectionId) {
+      //   //키워드 설정해줬을 시
+      // } else {
+      //   let nicknameList = [];
+      //   nicknameList = nickname;
+      //   nicknameList.push({
+      //     connectionId: data.streamId,
+      //     keyword: data.gamename,
+      //   });
+      //   setNickname([...nicknameList]);
+      // }
     });
   }, []);
 

@@ -33,7 +33,7 @@ const Room = () => {
   const { myName } = useContext(NameContext);
   const [onPlayerClick, setOnPlayerClick] = useState(false);
   const [isPlayMusic, setIsPlayMusic] = useState(false);
-  const [mode, setMode] = useState("game1");
+  const [mode, setMode] = useState("");
   const [contentTitle, setContentTitle] = useState("");
   // const [onCamera, setOnCamera] = useState(false);
   const [onGameList, setOnGameList] = useState(false);
@@ -112,11 +112,20 @@ const Room = () => {
     e.target.style.top = `${e.target.offsetTop + e.clientY - posY}px`;
   };
 
+  const changeMode = () => {
+    setMode("game1")
+  };
+  const changeMain = () => {
+    setMode("")
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.innerContainer}>
         <div className={styles.contents}>
           <div className={styles.title}>
+        <button onClick={changeMode}>양세찬게임</button>
+        <button onClick={changeMain}>메인</button>
             <h1>{contentTitle}</h1>
           </div>
           <div className={styles["main-contents"]}>
