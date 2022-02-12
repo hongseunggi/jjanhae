@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class SortRoomResponse {
     Long roomSeq; // roomSeq
     int type; // 0:비공개, 1:공개
-    String password; // 공개방일 시 ""
+    //String password; 비밀번호 반환 안함
     int joinUserNum; // 참여인원수
     String ownerId; // 방장 ID
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

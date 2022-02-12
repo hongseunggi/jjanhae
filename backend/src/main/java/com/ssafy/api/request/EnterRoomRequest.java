@@ -9,7 +9,7 @@ import lombok.Setter;
 @ApiModel("EnterRoomRequest")
 public class EnterRoomRequest {
     Long roomSeq;
-    String password;
-    String ismute;
-    String isOn;
+    // String password;
+    // String ismute;
+    // String isOn;
 }
