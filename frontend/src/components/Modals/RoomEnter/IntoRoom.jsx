@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
-
+import RoomApi from "../../../api/RoomApi";
 
 const VIDEO = { video: true, audio : false };
 let localstream;
@@ -23,7 +23,11 @@ function IntoRoom({ onClose, room }) {
   const [isMic, setMic] = useState(true);
   const [isVideo, setVideo] = useState(true);
   const navigate = useNavigate();
-  const [pwd, setPwd] = useState(""); 
+  const [pwd, setPwd] = useState("");
+  
+  const {getRoomEnterResult, getRoomEnterPrivateCheckResult} = RoomApi;
+
+
   const startVideo = async () => {
     const stream = await navigator.mediaDevices.getUserMedia(VIDEO);
     
@@ -48,14 +52,29 @@ function IntoRoom({ onClose, room }) {
     e.stopPropagation();
   };
 
-  const handleCheckPwd = () => {
-    if(pwd === room.password){
+  const handleCheckPwd = async () => {
+    const params = {
+      roomSeq : room.roomSeq,
+      password : pwd
+    }
+    const {data} = await getRoomEnterPrivateCheckResult(params);
+    if(data.statusCode === 200){
       startVideo();
       setType(1);
     }
-    else{
+    else if(data.statusCode === 204){
       setErrorPwd("올바르지 않은 비밀번호 입니다.");
     }
+    else{
+      alert("로그인 필요");
+    }
+    // if(pwd === room.password){
+    //   startVideo();
+    //   setType(1);
+    // }
+    // else{
+    //   setErrorPwd("올바르지 않은 비밀번호 입니다.");
+    // }
   }
   const handleInputPwd = (e) => {
     e.preventDefault();
@@ -83,11 +102,22 @@ function IntoRoom({ onClose, room }) {
     //console.log("마이크 : ", isMic, "비디오 : ", isVideo);
   }, [isMic, isVideo]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // axios ???????????
-    setMyVMstate({ video: isVideo, audio: isMic });
-    navigate(`/conferences/detail/${room.title}/${room.roomSeq}/`);
-    onClose();
+    const body = {
+      roomSeq : room.roomSeq
+    }
+    const {data} = await getRoomEnterResult(body);
+    if(data.statusCode === 204){
+      alert("이미 다른 방에 입장 중 이거나 종료된 방입니다.")
+      onClose();
+    }
+    else{
+      setMyVMstate({ video: isVideo, audio: isMic });
+      navigate(`/conferences/detail/${room.title}/${room.roomSeq}/`);
+      onClose();
+    }
+    
   };
 
   return (

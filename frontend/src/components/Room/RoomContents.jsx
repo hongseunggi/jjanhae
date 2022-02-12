@@ -232,10 +232,9 @@ const RoomContents = ({
 
   const onbeforeunload = (e) => {
     //console.log("tlfgodehla");
-    setTimeout(() => {
-      //console.log("dfsdfsdf");
-      leaveSession();
-    }, 1500);
+
+    //console.log("dfsdfsdf");
+    leaveSession();
   };
 
   const sendSignalUserChanged = (data) => {
