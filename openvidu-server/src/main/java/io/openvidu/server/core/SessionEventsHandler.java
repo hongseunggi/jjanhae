@@ -431,7 +431,7 @@ public class SessionEventsHandler {
 
 		// ********* 여기서부터 type에 맞춰서 우리 서비스 실행하면 됨
 		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
-			System.out.println("음악 관련 요청이 들어왔습니다.");
+			System.out.println("[Music] 음악 관련 요청이 들어왔습니다.");
 			musicService.controlMusic(participant, message, participants, rpcNotificationService);
 		} else if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
 			System.out.println("Request Game ...");
