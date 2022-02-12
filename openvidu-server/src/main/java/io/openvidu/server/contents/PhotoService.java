@@ -26,8 +26,8 @@ public class PhotoService {
         JsonObject data = (JsonObject) JsonParser.parseString(dataString);
 
         // 입력받은 값들 출력
-        System.out.println("[Music] 받은 음악 data : " + data); //{"videoId":"5uk6cFPL19w","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
-        System.out.println("[Music] 받은 음악 params : " + params); // {"from":"con_AG3mOjqFdT","type":"signal:music"}
+        System.out.println("[Photo] 받은 사진 data : " + data); //{"videoId":"5uk6cFPL19w","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
+        System.out.println("[Photo] 받은 사진 params : " + params); // {"from":"con_AG3mOjqFdT","type":"signal:music"}
 
         // 원하는 상태에 따른 수행 방식 변경
         int photoStatus = data.get("photoStatus").getAsInt();
