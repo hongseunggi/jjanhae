@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
+
 import io.openvidu.server.core.TokenRegister;
 import org.bouncycastle.util.Arrays;
 import org.kurento.jsonrpc.internal.server.config.JsonRpcConfiguration;
@@ -87,6 +88,7 @@ import io.openvidu.server.webhook.CDRLoggerWebhook;
 
 import io.openvidu.server.contents.MusicService;
 import io.openvidu.server.contents.GameService;
+import io.openvidu.server.contents.PhotoService;
 
 /**
  * OpenVidu Server application
@@ -125,6 +127,8 @@ public class OpenViduServer implements JsonRpcConfigurer {
 		}
 		return new CallDetailRecord(loggers);
 	}
+
+	// JJANHAE 짠해 서비스 추가 부분
 	@Bean
 	@ConditionalOnMissingBean
 	public MusicService musicService() {
@@ -136,6 +140,14 @@ public class OpenViduServer implements JsonRpcConfigurer {
 	public GameService gameService() {
 		return new GameService();
 	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public PhotoService photoService() {
+		return new PhotoService();
+	}
+
+	// JJANHAE
 
 	@Bean
 	@ConditionalOnMissingBean
