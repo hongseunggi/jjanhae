@@ -435,7 +435,7 @@ public class RpcHandler extends DefaultJsonRpcHandler<JsonObject> {
 		}
 
 		String message = getStringParam(request, ProtocolElements.SENDMESSAGE_MESSAGE_PARAM);
-		sessionManager.sendMessage(participant, message, request.getId());
+		sessionManager.sendMessage(participant, message, request.getId(), rpcConnection.getSessionId());
 	}
 
 	private void unpublishVideo(RpcConnection rpcConnection, Request<JsonObject> request) {

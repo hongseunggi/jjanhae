@@ -149,7 +149,7 @@ public class GameService {
             }
 
             // sNicknameMap에 nicknameMap을 넣음
-            String sessionId = data.get("sessionId").getAsString();
+            String sessionId = message.get("sessionId").getAsString();
             sNicknameMap.put(sessionId, nicknameMap);
             sOrderMap.put(sessionId, orderMap); // 1이 누구이고 2는 누구인지 매핑
 
@@ -164,12 +164,16 @@ public class GameService {
                 counterClockWise += Integer.toString(i); // 8765
             }
             System.out.println("counterClockWise : " + counterClockWise);
-            sCounterClockWise.put(data.get("sessionId").getAsString(), counterClockWise);
+            sCounterClockWise.put(message.get("sessionId").getAsString(), counterClockWise);
             Iterator<Map.Entry<String, String>> iter = sCounterClockWise.entrySet().iterator();
             while(iter.hasNext()) {
                 Map.Entry<String, String> cur = iter.next();
                 System.out.printf("%s, %s\n", cur.getKey(), cur.getValue());
             }
+
+            data.addProperty("targetId", orderMap.get(counterClockWise.charAt(0)-'0')); // 저장해야할 아이디
+            data.addProperty("streamId", orderMap.get(counterClockWise
+                    .charAt(counterClockWise.length()-1)-'0')); // targetId를 바꿔주는 Id
         }
 
         data.addProperty("gameStatus", 1);
@@ -214,8 +218,8 @@ public class GameService {
             System.out.println("Select UPDOWN ...");
             // 각 세션ID에 랜덤숫자 생성해서 넣기, 세션ID는 각 방 번호를 뜻함.
             int number = (int) (Math.random() * 100) + 1;
-            System.out.printf("sessionId : %s, number : %d\n", data.get("sessionId").getAsString(), number);
-            numberMap.put(data.get("sessionId").getAsString(), number);
+            System.out.printf("sessionId : %s, number : %d\n", message.get("sessionId").getAsString(), number);
+            numberMap.put(message.get("sessionId").getAsString(), number);
             // 생성해서 맵에 저장하고 있다가 후에 startGame에서 정답맞출때에 쓰임
 
         } else if (gameId == YANGSECHAN) {
@@ -233,7 +237,7 @@ public class GameService {
                 index -= size; // 만약 size=8이고, index=9일 시, 1로 돌려놓기 위해
                 // FE에서 index=8 응답 받았을 시 다음 gameStatus로 넘어가면 size를 넘어갈일이 없긴 하지만 혹시모르므로
             }
-            String sessionId = data.get("sessionId").getAsString();
+            String sessionId = message.get("sessionId").getAsString();
             System.out.println("session Id : "+sessionId);
 
             // countWise 에서 현재 순서를 조회해옴
@@ -311,7 +315,7 @@ public class GameService {
             case YANGSECHAN: // 양세찬 게임
                 // 자신의 닉네임(gamename)을 맞추기
                 // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
-                Map<String, String> nicknameMap = sNicknameMap.get(data.get("sessionId").toString());
+                Map<String, String> nicknameMap = sNicknameMap.get(message.get("sessionId").toString());
                 String userAnswer = nicknameMap.get(streamId);
                 System.out.println("map size : " + nicknameMap.size());
                 System.out.println("userAnswer : " + userAnswer);
@@ -344,7 +348,7 @@ public class GameService {
                 // streamId와 해당사용자가 입력한 숫자가 넘어오면,
                 // 답과 숫자가 맞는지 판별
                 // 정답이 나오면 종료
-                String sessionId = data.get("sessionId").getAsString();
+                String sessionId = message.get("sessionId").getAsString();
                 if(numberMap.get(sessionId) == data.get("number").getAsInt()) { // 정답일 시 updown = "same"
                     System.out.printf("%d 정답 입니다!!\n", data.get("number").getAsInt());
                     data.addProperty("updown", "same");

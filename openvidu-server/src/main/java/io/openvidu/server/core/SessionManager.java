@@ -144,6 +144,19 @@ public abstract class SessionManager {
 					"Provided signal object '" + message + "' has not a valid JSON format");
 		}
 	}
+	//오버로딩
+	public void sendMessage(Participant participant, String message, Integer transactionId, String sessionId) {
+		try {
+			JsonObject messageJson = JsonParser.parseString(message).getAsJsonObject();
+			// 여기!!!! message에 JSON 추가
+			messageJson.add("sessionId", JsonParser.parseString(sessionId));
+			sessionEventsHandler.onSendMessage(participant, messageJson, getParticipants(participant.getSessionId()),
+					participant.getSessionId(), participant.getUniqueSessionId(), transactionId, null);
+		} catch (JsonSyntaxException | IllegalStateException e) {
+			throw new OpenViduException(Code.SIGNAL_FORMAT_INVALID_ERROR_CODE,
+					"Provided signal object '" + message + "' has not a valid JSON format");
+		}
+	}
 
 	public abstract void streamPropertyChanged(Participant participant, Integer transactionId, String streamId,
 			String property, JsonElement newValue, String changeReason);
