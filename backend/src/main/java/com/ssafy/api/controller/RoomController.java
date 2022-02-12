@@ -69,9 +69,11 @@ public class RoomController {
         // 해당 유저가 방에 접속해있는지
         Long userSeq = user.getUserSeq();
         System.out.println("login userSeq : " + userSeq+", userId : "+user.getUserId());
-        RoomHistory roomHistory = roomHistoryService.findOneHistoryAll(userSeq);
-        if(roomHistory != null && "JOIN".equals(roomHistory.getAction().toUpperCase())) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "현재 참여중인 방이 있습니다."));
+        List<RoomHistory> roomHistory = roomHistoryService.findOneHistoryAll(userSeq);
+        for (int i = 0; i < roomHistory.size(); i++) {
+            if("JOIN".equals(roomHistory.get(i).getAction().toUpperCase())) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(204, "현재 참여중인 방이 있습니다."));
+            }
         }
 
         // Room 테이블에 userSeq 포함하여 저장.
@@ -273,9 +275,11 @@ public class RoomController {
         }
 
         // 방 중복입장 불가
-        RoomHistory roomHistory = roomHistoryService.findOneHistoryAll(user.getUserSeq());
-        if(roomHistory != null && "JOIN".equals(roomHistory.getAction().toUpperCase())) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "현재 참여중인 방이 있습니다."));
+        List<RoomHistory> roomHistory = roomHistoryService.findOneHistoryAll(user.getUserSeq());
+        for (int i = 0 ; i < roomHistory.size(); i++) {
+            if("JOIN".equals(roomHistory.get(i).getAction().toUpperCase())) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(204, "현재 참여중인 방이 있습니다."));
+            }
         }
 
         // 비공개방일 시 패스워드 일치여부 확인
