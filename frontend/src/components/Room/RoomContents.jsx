@@ -230,10 +230,10 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
 
   const onbeforeunload = (e) => {
     //console.log("tlfgodehla");
-    setTimeout(()=>{
+
       //console.log("dfsdfsdf");
       leaveSession();
-    },1500);
+
   };
 
   const sendSignalUserChanged = (data) => {

@@ -124,7 +124,8 @@ public class RoomController {
 
         // 나가려는 유저가 방장이면 방 exit update처리
         // 방을 나갔다는건 무조건 그 방 정보가 있단 뜻이므로 null체크 별도로 해주지 않음
-        if(room.getOwner().getUserSeq() == user.getUserSeq()) {
+        System.out.println(room.getOwner().getUserSeq()+" "+user.getUserSeq()+" "+(room.getOwner().getUserSeq().equals(user.getUserSeq())));
+        if(room.getOwner().getUserSeq().equals(user.getUserSeq())) {
             // 방장이 방나가면 방폭파가 되므로 방에 있는 모든 유저를 나가도록 하는 로직 필요
             // TO DO ...
             // room기준으로 action이 join인 user들을 찾아서 roomHistory 여러개를 가져옴

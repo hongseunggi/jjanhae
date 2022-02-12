@@ -10,7 +10,7 @@ import { ReactComponent as SettingIcon } from "../../assets/icons/setting.svg";
 import { ReactComponent as RetryIcon } from "../../assets/icons/retry.svg";
 import { ReactComponent as SaveIcon } from "../../assets/icons/save.svg";
 import Marquee from "react-fast-marquee";
-
+import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
 import VideoMicContext from "../../contexts/VideoMicContext";
@@ -23,11 +23,13 @@ import { useParams } from "react-router-dom";
 import RoomContents from "./RoomContents";
 import SnapShot from "./snapshot/SnapShot";
 import RoomApi from "../../api/RoomApi";
+import { useNavigate } from "react-router-dom";
 
 let posX = 0;
 let posY = 0;
 
 const Room = () => {
+  const navigate = useNavigate();
   const { setLoginStatus } = useContext(LoginStatusContext);
   const { myVMstate } = useContext(VideoMicContext);
   const { myName } = useContext(NameContext);
@@ -40,6 +42,7 @@ const Room = () => {
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [onSetting, setOnSetting] = useState(false);
   const { title, roomseq } = useParams();
+  const [loading, setLoading] = useState(false);
   
   //console.log(myName);
   const {getRoomExitResult} = RoomApi;
@@ -50,13 +53,14 @@ const Room = () => {
     //console.log(myVMstate);
     setContentTitle(title);
     console.log("?????????????");
-    return async () => {
-      console.log("tlfgod");
-      const body = {
-        roomSeq : roomseq * 1
-      }
-      const {data} = await getRoomExitResult(body);
+    return () => {
+      // console.log("tlfgod");
       setLoginStatus("2");
+      // const body = {
+      //   roomSeq : roomseq * 1
+      // }
+      // const {data} = await getRoomExitResult(body);
+      
       
     }
   }, []);
@@ -112,8 +116,29 @@ const Room = () => {
     e.target.style.top = `${e.target.offsetTop + e.clientY - posY}px`;
   };
 
+  const onClickExit = async () =>{
+    const body = {
+      roomSeq : roomseq * 1
+    }
+    setLoading(true);
+    await getRoomExitResult(body);
+    setTimeout(()=>{
+      setLoading(false);
+      navigate("/conferences/list");
+    }, 1500);
+    
+  }
+
+
+
   return (
     <div className={styles.container}>
+      {loading ? <LoadingSpinner></LoadingSpinner> : null}
+      <div className={styles.nav}>
+        <button className={styles.link} onClick={onClickExit}>
+          EXIT
+        </button>
+      </div>
       <div className={styles.innerContainer}>
         <div className={styles.contents}>
           <div className={styles.title}>
