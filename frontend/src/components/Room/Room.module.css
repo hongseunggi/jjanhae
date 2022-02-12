@@ -99,6 +99,7 @@ video {
 
 .dockBar {
   height: 90px;
+  display: flex;
 }
 .dock {
   width: 500px;
@@ -117,6 +118,25 @@ video {
   transition: all ease 1s 0s;
   bottom: 0px;
 }
+
+/* .snapshotBtn {
+  display: flex;
+  width: 300px;
+  justify-content: space-around;
+}
+
+.retryBtn,
+.saveBtn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+}
+
+.retryBtn p,
+.saveBtn p {
+  margin: 0;
+} */
 
 .icon {
   cursor: pointer;

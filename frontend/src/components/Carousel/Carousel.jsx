@@ -60,9 +60,9 @@ function Carousel() {
 
     const { length } = slide;
     const pSlide = activeSlideRef.current;
-    // console.log(pSlide);
+    // //console.log(pSlide);
     let actSlide = pSlide + change;
-    // console.log(actSlide);
+    // //console.log(actSlide);
     if (actSlide < 0) {
       actSlide = length - 1;
       //    setActiveSlide(actSlide);

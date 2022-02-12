@@ -77,19 +77,19 @@ const CalendarPage = () => {
     setEndMonth(value.clone().endOf("month"));
 
     const result = await getRoomDate(value.format("M")*1);
-    console.log(result);
+    //console.log(result);
     //받아온 party data state에 저장
     handleParyDataList(result.data.conferencesDateList);
   }, [value]);
 
   useEffect(async () => {
-    console.log(item.day);
+    //console.log(item.day);
     if(item.day!="") {
       const result = await getRoomList(item.day);
-      console.log(result);
+      //console.log(result);
       let roomList = [];
       roomList = result.data.roomList; 
-      console.log(roomList)
+      //console.log(roomList)
       setRoomList({roomList});
     }
   }, [item.day])
@@ -122,20 +122,20 @@ const CalendarPage = () => {
   };
 
   useEffect(() => {
-    // console.log(item);
+    // //console.log(item);
   }, [item]);
 
   useEffect(() => {
-    // console.log(party)
+    // //console.log(party)
   }, [party]);
 
   useEffect(() => {
-    // console.log(roomList);
+    // //console.log(roomList);
     makeList();
   }, [roomList]);
 
   useEffect(() => {
-    console.log(room);
+    //console.log(room);
     setTime({
       startTime : room.startTime,
       endTime : room.endTime
@@ -175,14 +175,14 @@ const CalendarPage = () => {
     setUnvisible(event);
     const data = event.nativeEvent.path[2].outerText;
     const dataArr = data.split("\n");
-    // console.log(dataArr[0].substring(0,dataArr[0].length-1));
+    // //console.log(dataArr[0].substring(0,dataArr[0].length-1));
     setItem({
       month: value.format("M"),
       day: dataArr[0].substring(0,dataArr[0].length-1),
     });
     //해당 날짜에 진행한 파티목록 가져오는 api호출
     // const result = await getRoomList(item.day);
-    // console.log(result);
+    // //console.log(result);
   };
 
   function showList(target) {
@@ -217,7 +217,7 @@ const CalendarPage = () => {
     let userList = data.userList;
     setUserList({ userList });
     setRoom(data.room);
-    console.log(room);
+    //console.log(room);
 
     openDetailModal();
   };

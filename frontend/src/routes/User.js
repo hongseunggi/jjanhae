@@ -7,6 +7,7 @@ import FindAccount from "../components/FindId/FindAccount";
 import FindPassword from "../components/FindPwd/FindPassword";
 import ResetPassword from "../components/FindPwd/ResetPassword";
 import RegisterTemplate from "../components/Regist/RegisterTemplate";
+import Register from "../components/Regist/olderVersion/Register";
 
 const User = () => {
   return (

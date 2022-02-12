@@ -1,45 +1,39 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import axios1 from "../../api/WebRtcApi";
+import axios1 from "../../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
-import StreamComponent from "./stream/StreamComponent";
-import YangGameComponent from "././game/YangGameComponent";
-
-import styles from "./RoomContents.module.css";
-import Chat from "./chat/Chat";
-import UserModel from "../models/user-model";
-import LoginStatusContext from "../../contexts/LoginStatusContext";
-import NameContext from "../../contexts/NameContext";
-
-import SnapShotResult from "./snapshot/SnapShotResult";
+import StreamComponent from "../stream/StreamComponent";
+import styles from "./SnapShot.module.css";
+import Chat from "../chat/Chat";
+import UserModel from "../../models/user-model";
 import html2canvas from "html2canvas";
-
-import ReactPlayer from "react-player";
+import SnapShotResult from "./SnapShotResult";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
-// const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
 let OV = undefined;
 
-const RoomContents = ({ sessionName, userName, media, mode }) => {
-  //console.log(userName);
-  const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
-  const {myName} = useContext(NameContext);
-  //console.log(loginStatus, myName);
-  console.log("room content render", loginStatus);
+const SnapShot = ({ sessionName, userName, media }) => {
   const [mySessionId, setMySessionId] = useState(sessionName);
   const [myUserName, setMyUserName] = useState(userName);
   const [session, setSession] = useState(undefined);
   const [localUser, setLocalUser] = useState(undefined);
   const [subscribers, setSubscribers] = useState([]);
   const [publisher, setPublisher] = useState(undefined);
+  const [snapshot, setSnapshot] = useState("");
+  const [count, setCount] = useState(5);
+  const [images, setImages] = useState([]);
+
+  const imagesRef = useRef(images);
+  imagesRef.current = images;
+
+  const countRef = useRef(count);
+  countRef.current = count;
+
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
-  const [targetSubscriber, setTargetSubscriber] = useState({});
-
-  console.log(targetSubscriber);
 
   const sessionRef = useRef(session);
   sessionRef.current = session;
@@ -50,32 +44,13 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   const localUserRef = useRef(localUser);
   localUserRef.current = localUser;
 
-  // 인생네컷
-  const [count, setCount] = useState(5);
-  const [images, setImages] = useState([]);
-  const [status, setStatus] = useState(0); // 0 : ready 1 : start 2 : complete
-  // const [ready, setReady] = useState(true);
-
-  const countRef = useRef(count);
-  countRef.current = count;
-
-  const imagesRef = useRef(images);
-  imagesRef.current = images;
-
-  const targetSubscriberRef = useRef(targetSubscriber);
-  targetSubscriberRef.current = targetSubscriber;
-
-  console.log(myUserName);
   const joinSession = () => {
     OV = new OpenVidu();
     setSession(OV.initSession());
   };
 
   useEffect(() => {
-    setLoginStatus("3");
-    
     window.addEventListener("beforeunload", onbeforeunload);
-    console.log("?????????????????");
     joinSession();
 
     return () => {
@@ -89,7 +64,7 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
       // 상대방이 들어왔을 때 실행
       sessionRef.current.on("streamCreated", (event) => {
         let subscriber = sessionRef.current.subscribe(event.stream, undefined);
-        //console.log(event);
+        console.log(event);
         const newUser = new UserModel();
         newUser.setStreamManager(subscriber);
         newUser.setConnectionId(event.stream.connection.connectionId);
@@ -98,24 +73,21 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
         newUser.setType("remote");
 
         const nickname = event.stream.connection.data.split("%")[0];
-        //console.log(nickname);
+        console.log(nickname);
         newUser.setNickname(JSON.parse(nickname).clientData);
 
-        console.log(newUser);
-        console.log(subscribersRef.current);
-        console.log(subscribers);
         setSubscribers([...subscribersRef.current, newUser]);
       });
 
       // 상대방이 상태를 변경했을 때 실행 (카메라 / 마이크 등)
       sessionRef.current.on("signal:userChanged", (event) => {
-        //console.log("1");
-        //console.log(subscribersRef.current);
+        console.log("1");
+        console.log(subscribersRef.current);
         subscribersRef.current.forEach((user) => {
           if (user.getConnectionId() === event.from.connectionId) {
             const data = JSON.parse(event.data);
-            //console.log(data);
-            //console.log("EVENTO REMOTE: ", event.data);
+            console.log(data);
+            console.log("EVENTO REMOTE: ", event.data);
             if (data.isAudioActive !== undefined) {
               user.setAudioActive(data.isAudioActive);
             }
@@ -124,8 +96,8 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
             }
           }
         });
-        //console.log("2");
-        //console.log(subscribersRef.current);
+        console.log("2");
+        console.log(subscribersRef.current);
         setSubscribers([...subscribersRef.current]);
       });
 
@@ -179,16 +151,11 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
     }
   }, [session]);
 
-  useEffect(() => {
-    console.log(subscribers);
-    setTargetSubscriber(subscribers[0]);
-  }, [subscribers]);
-
   const leaveSession = () => {
     const mySession = sessionRef.current;
-    //console.log(mySession);
+    console.log(mySession);
     if (mySession) {
-      //console.log("leave");
+      console.log("leave");
       mySession.disconnect();
     }
     OV = null;
@@ -201,43 +168,22 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   };
 
   const deleteSubscriber = (stream) => {
-    console.log(stream);
-    console.log(subscribersRef.current);
-    console.log(subscribers);
     const userStream = subscribersRef.current.filter(
       (user) => user.getStreamManager().stream === stream
     )[0];
-
-    console.log(userStream);
-
-    console.log(subscribersRef.current);
-    console.log(subscribers);
     let index = subscribersRef.current.indexOf(userStream, 0);
-    console.log(index);
     if (index > -1) {
       subscribersRef.current.splice(index, 1);
-      console.log(subscribersRef.current);
-      console.log(subscribers);
       setSubscribers([...subscribersRef.current]);
     }
-    console.log(subscribersRef.current);
   };
 
-  useEffect(() => {
-    console.log(subscribersRef.current);
-    console.log(subscribers);
-  }, [subscribers]);
-
   const onbeforeunload = (e) => {
-    //console.log("tlfgodehla");
-
-      //console.log("dfsdfsdf");
-      leaveSession();
-
+    leaveSession();
   };
 
   const sendSignalUserChanged = (data) => {
-    //console.log("시그널 보내 시그널 보내");
+    console.log("시그널 보내 시그널 보내");
     const signalOptions = {
       data: JSON.stringify(data),
       type: "userChanged",
@@ -246,21 +192,21 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
   };
 
   const camStatusChanged = () => {
-    //console.log("캠 상태 변경!!!");
+    console.log("캠 상태 변경!!!");
     localUserInit.setVideoActive(!localUserInit.isVideoActive());
-    //console.log(localUserInit);
+    console.log(localUserInit);
     localUserInit
       .getStreamManager()
       .publishVideo(localUserInit.isVideoActive());
 
-    //console.log(localUser === localUserInit);
-    //console.log(typeof localUser);
+    console.log(localUser === localUserInit);
+    console.log(typeof localUser);
     setLocalUser(localUserInit);
     sendSignalUserChanged({ isVideoActive: localUserInit.isVideoActive() });
   };
 
   const micStatusChanged = () => {
-    //console.log("마이크 상태 변경!!!");
+    console.log("마이크 상태 변경!!!");
     localUserInit.setAudioActive(!localUserInit.isAudioActive());
     localUserInit
       .getStreamManager()
@@ -287,7 +233,7 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
           },
         })
         .then((response) => {
-          //console.log("CREATE SESION", response);
+          console.log("CREATE SESION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
@@ -295,7 +241,7 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
           if (error.response && error.response.status === 409) {
             resolve(sessionId);
           } else {
-            ////console.log(error);
+            console.log(error);
             console.warn(
               "No connection to OpenVidu Server. This may be a certificate error at " +
                 OPENVIDU_SERVER_URL
@@ -338,34 +284,40 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
           }
         )
         .then((response) => {
-          ////console.log("TOKEN", response);
+          console.log("TOKEN", response);
           resolve(response.data.token);
         })
         .catch((error) => reject(error));
     });
   };
 
+  function sleep(ms) {
+    console.log("들어옴?");
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {}
+  }
+
   const onCapture = () => {
     let flag = 0;
-    setStatus(1);
     const loop = setInterval(() => {
+      // clearTimeout(loop);
       setCount((prev) => prev - 1);
       if (countRef.current === 0) {
-        let cameraSound = new Audio(require("../../assets/sounds/camera.mp3"));
+        let cameraSound = new Audio(
+          require("../../../assets/sounds/camera.mp3")
+        );
         cameraSound.volume = 0.1;
         cameraSound.play();
 
         setCount(5);
-        console.log(flag);
 
         html2canvas(document.getElementById("user-video")).then((canvas) => {
+          setSnapshot({ index: flag, image: canvas.toDataURL() });
           setImages([...imagesRef.current, canvas.toDataURL()]);
           flag++;
-
           // onSaveAs(canvas.toDataURL("image/png"), "image-download.png");
         });
         if (flag === 3) {
-          setStatus(2);
           clearInterval(loop);
         }
         // sleep(1500);
@@ -373,17 +325,8 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
     }, 1500);
   };
 
-  const onRetry = () => {
-    setImages([]);
-    onCapture();
-  };
-
-  const onSave = () => {
-    html2canvas(document.getElementById("image-container")).then((canvas) => {
-      saveImg(canvas.toDataURL("image/png"), "오늘의 추억.png");
-    });
-  };
-  const saveImg = (uri, filename) => {
+  const onSaveAs = (uri, filename) => {
+    console.log("save");
     let link = document.createElement("a");
     document.body.appendChild(link);
     link.href = uri;
@@ -391,13 +334,12 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
     link.click();
     document.body.removeChild(link);
   };
+
   return (
     <div className={styles["contents-container"]}>
-      {mode === "snapshot" ? (
-        <div className={styles.countContainer}>
-          <p className={styles.count}>{count}</p>
-        </div>
-      ) : null}
+      <div className={styles.countContainer}>
+        <p className={styles.count}>{count}</p>
+      </div>
       <div id="user-video" className={styles["video-container"]}>
         {localUserRef.current !== undefined &&
           localUserRef.current.getStreamManager() !== undefined && (
@@ -406,51 +348,32 @@ const RoomContents = ({ sessionName, userName, media, mode }) => {
               sessionId={mySessionId}
               camStatusChanged={camStatusChanged}
               micStatusChanged={micStatusChanged}
-              mode={mode}
             />
           )}
         {subscribersRef.current.map((sub, i) => {
-          ////console.log(sub);
+          console.log(sub);
           return (
-            //양세찬 게임 키워드 props로 같이 보내줘야할듯
-            <StreamComponent
-              key={i}
-              user={sub}
-              targetSubscriber={targetSubscriber}
-              subscribers={subscribers}
-              mode={mode}
-            />
+            <StreamComponent key={i} user={sub} />
+            // <UserVideoComponent user={sub} />
           );
         })}
+        <button onClick={onCapture}>촬영</button>
       </div>
       {localUser !== undefined && localUser.getStreamManager() !== undefined && (
+        // <div className={styles["chat-container"]}>
+        //   <Chat user={localUserRef.current} />
+        //   <button onClick={onCapture}>촬영</button>
+        // </div>
         <div className={styles["chat-container"]}>
-          {mode === "snapshot" ? (
-            <SnapShotResult
-              images={images}
-              status={status}
-              onStart={onCapture}
-              onRetry={onRetry}
-              onSave={onSave}
-            />
-          ) : (
-            <Chat user={localUserRef.current} />
-          )}
+          <SnapShotResult
+            user={localUserRef.current}
+            snapshot={snapshot}
+            images={images}
+          />
         </div>
-        //   <ReactPlayer
-        //   url={[
-        //     "https://www.youtube.com/watch?v=7C2z4GqqS5E",
-        //     "https://youtu.be/Bf_tncvBZ7Y",
-        //     "https://youtu.be/sqgxcCjD04s",
-        //   ]}
-        //   playing
-        //   controls
-        //   width="300px"
-        //   height="300px"
-        // />
       )}
     </div>
   );
 };
 
-export default RoomContents;
+export default SnapShot;

@@ -40,7 +40,7 @@ const Profile = () => {
 
   const handleEditMode = async (e) => {
     e.preventDefault();
-    console.log(name);
+    //console.log(name);
     setIsEdit((prev) => !prev);
     if (isEdit) {
       setLoading(true);
@@ -80,7 +80,7 @@ const Profile = () => {
     formData.append("file", e.target.files[0]);
 
     const { data } = await getImgUploadResult(formData);
-    console.log(data);
+    //console.log(data);
     setMyImg(data.url);
     const body = {
       imageUrl: data.url,
@@ -89,7 +89,7 @@ const Profile = () => {
     setTimeout(() => {
       setLoading(false);
     }, 1500);
-    console.log(result);
+    //console.log(result);
   };
 
   const nameHandler = (e) => {
@@ -132,7 +132,7 @@ const Profile = () => {
     setTimeout(() => {
       setLoading(false);
     }, 700);
-    console.log(data);
+    //console.log(data);
     setName(data.name);
     setEmail(data.email);
     let year = data.birthday.year;

@@ -10,7 +10,7 @@ const GoogleLoginBtn = ({ onGoogleLogin }) => {
   const navigate = useNavigate();
 
   const onSuccess = async (response) => {
-    console.log(response);
+    //console.log(response);
     const {
       googleId,
       profileObj: { email, name },
@@ -23,7 +23,7 @@ const GoogleLoginBtn = ({ onGoogleLogin }) => {
   };
 
   const onFailure = (error) => {
-    console.log(error);
+    //console.log(error);
   };
   return (
     <div>

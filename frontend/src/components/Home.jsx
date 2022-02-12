@@ -8,8 +8,8 @@ import Carousel from "./Carousel/Carousel";
 
 function Home() {
   const { loginStatus } = useContext(LoginStatusContext);
-  console.log(loginStatus);
-
+  //console.log(loginStatus);
+  console.log("Home render");
   // 방 생성 모달
   const [modalOpen, setModalOpen] = useState(false);
 
