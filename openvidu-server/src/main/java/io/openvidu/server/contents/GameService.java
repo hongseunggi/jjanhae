@@ -71,6 +71,7 @@ public class GameService {
         JsonObject data = (JsonObject) JsonParser.parseString(dataString);
         System.out.println("[ data ] : " + data);
         System.out.println("[ params ] : " + params);
+        System.out.println("[ message ] : " + message);
 
         // 게임 상태에 따라 분기
         int gameStatus = data.get("gameStatus").getAsInt();
@@ -128,7 +129,7 @@ public class GameService {
 
 
         if(data.get("gameId").getAsInt() == YANGSECHAN) {
-            System.out.println("YangSeChan Game Prepare ...");
+            System.out.println("YangSeChan Game Prepare To Initial ...");
             // 준비단계에서 미리 초기화 시켜두기
             // nicknameMap에 streamId를 Key로 해서 모두 빈값으로 초기화시켜 놓는다.
             Map<Integer, String> orderMap = new HashMap<>(); // 순서를 매핑시킴
@@ -151,6 +152,54 @@ public class GameService {
             // sNicknameMap에 nicknameMap을 넣음
             String sessionId = message.get("sessionId").getAsString();
             sNicknameMap.put(sessionId, nicknameMap);
+            sOrderMap.put(sessionId, orderMap); // 1이 누구이고 2는 누구인지 매핑
+
+            // 방인원수에 따라 시계방향 순서가 달라지므로 방 세션마다 반시계방향 순서를 저장해놓는다
+            String counterClockWise = "";
+            int size = 4;
+            if (participants.size() < 4) size = participants.size();
+            for (int i = 1; i <= size; i++) {
+                counterClockWise += Integer.toString(i); // 1234
+            }
+            for (int i = participants.size(); i >= size+1; i--) {
+                counterClockWise += Integer.toString(i); // 8765
+            }
+            System.out.println("counterClockWise : " + counterClockWise);
+            sCounterClockWise.put(message.get("sessionId").getAsString(), counterClockWise);
+            Iterator<Map.Entry<String, String>> iter = sCounterClockWise.entrySet().iterator();
+            while(iter.hasNext()) {
+                Map.Entry<String, String> cur = iter.next();
+                System.out.printf("%s, %s\n", cur.getKey(), cur.getValue());
+            }
+
+            data.addProperty("targetId", orderMap.get(counterClockWise.charAt(0)-'0')); // 저장해야할 아이디
+            data.addProperty("streamId", orderMap.get(counterClockWise
+                    .charAt(counterClockWise.length()-1)-'0')); // targetId를 바꿔주는 Id
+
+        } else if (data.get("gameId").getAsInt() == FORBIDDEN) {
+            System.out.println("Forbidden Game Prepare To Initial ...");
+            // 준비단계에서 미리 초기화 시켜두기
+            // nicknameMap에 streamId를 Key로 해서 모두 빈값으로 초기화시켜 놓는다.
+            Map<Integer, String> orderMap = new HashMap<>(); // 순서를 매핑시킴
+            Map<String, String> wordMap = new HashMap<>();
+            int index = 1;
+            for (Participant p : participants) {
+                wordMap.put(p.getPublisherStreamId(), "");
+                orderMap.put(index, p.getPublisherStreamId());
+                index++;
+            }
+
+            // 매핑된 순서 확인
+            System.out.println("mapping order check .....");
+            Iterator<Map.Entry<Integer, String>> entry = orderMap.entrySet().iterator();
+            while(entry.hasNext()) {
+                Map.Entry<Integer, String> e = entry.next();
+                System.out.printf("%d : %s\n", e.getKey(), e.getValue());
+            }
+
+            // sNicknameMap에 nicknameMap을 넣음
+            String sessionId = message.get("sessionId").getAsString();
+            sWordMap.put(sessionId, wordMap);
             sOrderMap.put(sessionId, orderMap); // 1이 누구이고 2는 누구인지 매핑
 
             // 방인원수에 따라 시계방향 순서가 달라지므로 방 세션마다 반시계방향 순서를 저장해놓는다
@@ -224,6 +273,7 @@ public class GameService {
 
         } else if (gameId == YANGSECHAN) {
             System.out.println("Select YANGSECHAN ...");
+            System.out.println("This is to Save Gamename ...");
             /** 시계방향으로 돌며 닉네임 정하는 단계 */
             // 처음에 index = 1 로 온다.
             int index = data.get("index").getAsInt();
@@ -260,7 +310,7 @@ public class GameService {
             data.addProperty("index", ++index);
 
             Map<String, String> nicknameMap = sNicknameMap.get(sessionId); // 해당 방의 닉네임맵
-            nicknameMap.put(curStreamId, data.get("gamename").toString());
+            nicknameMap.put(curStreamId, data.get("gamename").getAsString());
             Iterator<Map.Entry<String, String>> iter2 = nicknameMap.entrySet().iterator();
             while(iter2.hasNext()) {
                 System.out.println("open Map ...");
@@ -275,16 +325,57 @@ public class GameService {
 
         } else if (gameId == FORBIDDEN) {
             System.out.println("Select FORBIDDEN ...");
-            // 나중에 정답맞출것을 대비해서 Map에 저장
-            System.out.printf("streamId : %s, word : %s\n", data.get("streamId").getAsString(),
-                    data.get("word").toString());
-            wordMap.put(data.get("streamId").getAsString(), String.valueOf(data.get("word")));
-            Iterator<Map.Entry<String, String>> iter = wordMap.entrySet().iterator();
+            System.out.println("This is to Save Gamename ...");
+            /** 시계방향으로 돌며 닉네임 정하는 단계 */
+            // 처음에 index = 1 로 온다.
+            int index = data.get("index").getAsInt();
+            int size = participants.size();
+            data.addProperty("gameStatus", 1);
+            if(index == participants.size()) {
+                // 이번이 마지막 사람일 경우 gameStatus=2로 다음 상태로 넘어가도록 함
+                data.addProperty("gameStatus", 2);
+            }
+
+            String sessionId = message.get("sessionId").getAsString();
+            System.out.println("session Id : "+sessionId);
+
+            // countWise 에서 현재 순서를 조회해옴
+            System.out.println("sCountClockWise size : " + sCounterClockWise.size());
+            Iterator<Map.Entry<String, String>> iter = sCounterClockWise.entrySet().iterator();
             while(iter.hasNext()) {
+                Map.Entry<String, String> cur = iter.next();
+                System.out.printf("%s, %s\n", cur.getKey(), cur.getValue());
+            }
+            String countClockWise = sCounterClockWise.get(sessionId); // 12348765
+            System.out.println("countClockWise : " + countClockWise);
+            // 현재 순서가 누구인지 조회
+            Map<Integer, String> orderMap = sOrderMap.get(sessionId);
+            System.out.println("order Map size : "+orderMap.size());
+            String curStreamId = orderMap.get(countClockWise.charAt(index-1)-'0');
+//            System.out.println("req first streamId : " + data.get("streamId").getAsString());
+            System.out.println("curStreamId : " + curStreamId);
+            data.addProperty("streamId", curStreamId);
+
+            data.addProperty("index", ++index);
+            System.out.println("increased index : "+index);
+            if(index > size) {
+                index -= size; // 만약 size=8이고, index=9일 시, 1로 돌려놓기 위해
+                // FE에서 index=8 응답 받았을 시 다음 gameStatus로 넘어가면 size를 넘어갈일이 없긴 하지만 혹시모르므로
+            }
+            System.out.println("decreased index : " + index);
+
+            Map<String, String> wordMap = sWordMap.get(sessionId); // 해당 방의 닉네임맵
+            wordMap.put(curStreamId, data.get("word").getAsString());
+            Iterator<Map.Entry<String, String>> iter2 = wordMap.entrySet().iterator();
+            while(iter2.hasNext()) {
                 System.out.println("open Map ...");
-                Map.Entry<String, String> map = iter.next();
+                Map.Entry<String, String> map = iter2.next();
                 System.out.printf("Key : %s, Value : %s\n", map.getKey(), map.getValue());
             }
+            // 다음 저장할 유저의 Stream ID를 클라이언트로 보냄
+            String nextStreamId = orderMap.get(countClockWise.charAt(index-1)-'0');
+            System.out.println("nextStreamId : " + nextStreamId);
+            data.addProperty("targetId", nextStreamId);
             // 그리고 클라이언트에서 보낸 data 그대로 브로드 캐스팅...
         }
 
@@ -330,12 +421,11 @@ public class GameService {
                 break;
             case FORBIDDEN: // 금지어 게임
                 // 사용자가 경고버튼 누르면 어차피 siren = 1로 오므로 브로드캐스트만 하면됨
-                // 한사람 걸리면 끝?
                 // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
                 String wordAnswer = wordMap.get(streamId);
                 System.out.println("map size : " + wordMap.size());
                 System.out.println("userAnswer : " + wordAnswer);
-                if(wordMap.size()!=0 && wordAnswer.equals(data.get("word").toString())) {
+                if(wordMap.size()!=0 && wordAnswer.equals(data.get("word").getAsString())) {
                     System.out.printf("%s님 정답입니다!\n", streamId);
                     data.addProperty("answerYn", "Y");
                 } else { // 정답 아닐 시 계속 진행
