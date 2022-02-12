@@ -44,11 +44,12 @@ const Room = () => {
     console.log(myVMstate);
     return async () => {
       console.log("tlfgod");
+      setLoginStatus("2");
       const body = {
         roomSeq : roomseq * 1
       }
       const {data} = await getRoomExitResult(body);
-      setLoginStatus("2");
+      
       
     }
   }, []);
@@ -102,6 +103,11 @@ const Room = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.nav}>
+        <button className={styles.link}>
+          EXIT
+        </button>
+      </div>
       <div className={styles.innerContainer}>
         <div className={styles.contents}>
           <div className={styles.title}>

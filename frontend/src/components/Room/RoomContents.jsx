@@ -171,7 +171,11 @@ const RoomContents = ({ sessionName, userName, media }) => {
   };
 
   const onbeforeunload = (e) => {
-    leaveSession();
+    //console.log("tlfgodehla");
+
+      //console.log("dfsdfsdf");
+      leaveSession();
+
   };
 
   const sendSignalUserChanged = (data) => {
