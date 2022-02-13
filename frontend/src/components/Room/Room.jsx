@@ -24,6 +24,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import RoomContents from "./RoomContents";
 import Youtube from "../../api/Youtube";
 import SessionIdContext from "../../contexts/SessionIdContext";
+import BangZzangContext from "../../contexts/BangZzangContext";
 
 const youtube = new Youtube(process.env.REACT_APP_YOUTUBE_API_KEY);
 
@@ -32,7 +33,6 @@ const Room = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
   const { myVMstate } = useContext(VideoMicContext);
   const { myName } = useContext(NameContext);
-
   const [mode, setMode] = useState("basic");
   const [contentTitle, setContentTitle] = useState("");
   // const [onCamera, setOnCamera] = useState(false);
@@ -40,6 +40,8 @@ const Room = () => {
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [musicList, setMusicList] = useState([]);
   const [music, setMusic] = useState("");
+  
+  const {setbangZzang} = useContext(BangZzangContext);
 
   const { title, roomseq } = useParams();
 
@@ -67,6 +69,7 @@ const Room = () => {
         console.log(data);
         console.log(data.gameId);
         if(data.gameId===1) setContentTitle("양세찬 게임");
+        setbangZzang(data.streamId);
         setMode("game1");
       });
     }

@@ -137,7 +137,6 @@ const Keyword = (props) => {
         ) : mode === "start" ? (
           <section className={styles.modalForm}>
             <header>
-
             </header>
                 <main className={styles.main}>
                 <div className={styles.icon}>

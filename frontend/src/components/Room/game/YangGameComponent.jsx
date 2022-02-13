@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef , useContext,} from "react";
 import styles from "./YangGameComponent.module.css";
 import Keyword from "../../Modals/Game/Keyword";
+import BangZzangContext from "../../../contexts/BangZzangContext";
 
 
-function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
+function YangGameComponent({ sessionId, user, targetSubscriber}) {
 
   const color = [
     "#adeac9",
@@ -42,10 +43,13 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
   const [index, setIndex] = useState("1");
   const [keywordInputModal,setKeywordInputModal] = useState(false);
   const [answer, setAnswer] = useState("");
-  const [modalMode, setModalMode]= useState("assign");
+  const [modalMode, setModalMode]= useState("start");
+  const {bangZzang} = useContext(BangZzangContext);
+
 
   const indexRef = useRef(index);
   indexRef.current = index;
+
 
   useEffect(() => {
     for (let i = 0; i < nickname.length; i++) {
@@ -128,18 +132,25 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     });
   }
 
+  //참가자중에서 방장 한명만 보내야 하는데
   useEffect(()=> {
-    if(sessionId!==undefined) {
-      const data={
-        gameStatus : 0,
-        gameId : 1,
+    openKeywordInputModal();
+    setTimeout(()=> {
+      console.log(bangZzang);
+      if(sessionId!==undefined) {
+        if(user.getStreamManager().stream.streamId===bangZzang){
+          console.log(user.getStreamManager().stream.streamId);
+        const data={
+          gameStatus : 0,
+          gameId : 1,
+        }
+        user.getStreamManager().stream.session.signal({
+          type : "game",
+          data : JSON.stringify(data), 
+        });
       }
-      user.getStreamManager().stream.session.signal({
-        type : "game",
-        data : JSON.stringify(data), 
-      });
     }
-    
+    }, 5000);
   }, []);
 
 
@@ -163,18 +174,18 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     //back으로 부터 받는 data처리
     user.getStreamManager().stream.session.on("signal:game", (event) => {
       closeKeywordInputModal();
-      const data = event.data;
-      console.log(data.streamId);
-      console.log(data.targetId);
-      console.log(data.index);
-      console.log(user.getStreamManager().stream.streamId);
       //초기요청 응답
-
+      
       //내가 키워드를 정해줄 차례라면
       if(sessionId!==undefined) {
+        const data = event.data;
+        console.log(data.streamId);
+        console.log(data.targetId);
+        console.log(data.index);
+        console.log(user.getStreamManager().stream.streamId);
       console.log(sessionId);
+      
       if(data.gameStatus===1) {
-
         if(data.streamId===user.getStreamManager().stream.streamId) {
           console.log("my turn");
           //상대방 키워드 입력해줄 모달 띄우기
@@ -208,6 +219,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
   }, []);
 
   const openKeywordInputModal = () => {
+    console.log("open!!!!!");
     setKeywordInputModal(true);
   }
   const closeKeywordInputModal = () => {

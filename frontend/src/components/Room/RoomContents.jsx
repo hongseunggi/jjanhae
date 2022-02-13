@@ -31,6 +31,7 @@ const RoomContents = ({
   mode,
   musicList,
   music,
+  bangzzang,
 }) => {
   const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
@@ -423,6 +424,7 @@ const RoomContents = ({
               camStatusChanged={camStatusChanged}
               micStatusChanged={micStatusChanged}
               mode={mode}
+              bangzzang={bangzzang}
             />
           )}
         {subscribersRef.current.map((sub, i) => {
