@@ -10,6 +10,8 @@ import java.util.Set;
 
 public class PhotoService {
     /** 사진 찍기 **/
+    static final int READYPHOTO = 0;
+    /** 사진 찍기 **/
     static final int TAKEPHOTO = 1;
 
     static RpcNotificationService rpcNotificationService;
@@ -33,8 +35,9 @@ public class PhotoService {
         int photoStatus = data.get("photoStatus").getAsInt();
 
         switch (photoStatus) {
-            case TAKEPHOTO: // 음악 재생
-                sendStatus(photoStatus,participants, params, data);
+            case READYPHOTO: // 사진 찍을 준비
+            case TAKEPHOTO: // 사진 찍자
+                sendStatus(photoStatus, participants, params, data);
                 return;
         }
 
@@ -42,7 +45,7 @@ public class PhotoService {
 
     /**
      * 사진 찍자
-     * photoStatus: 1
+     * photoStatus: 0, 1
      * */
     private void sendStatus(int photoStatus, Set<Participant> participants,
                             JsonObject params, JsonObject data) {
