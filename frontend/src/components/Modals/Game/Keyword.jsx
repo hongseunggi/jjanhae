@@ -96,7 +96,8 @@ const Keyword = (props) => {
                 <div className={styles.informBorder}>
                     <QuestionIcon className={styles.icon}/>
                     <div className={styles.infoText}>
-                        <p className={styles.text}>{targetNickName}님의</p>
+                        <span className={styles.targetText}>{targetNickName}</span>
+                        <span className={styles.text}>   님의</span>
                         <p className={styles.text}>키워드를 정해주세요!</p>
                     </div>
                 </div>

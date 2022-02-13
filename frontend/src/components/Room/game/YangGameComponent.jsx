@@ -55,16 +55,25 @@ function YangGameComponent({ sessionId, user, subscribers}) {
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
 
-  console.log(subscribersRef);
-  console.log(subscribers);
+  const myNicknameRef = useRef(myNickname);
+  myNicknameRef.current = myNickname;
 
   useEffect(() => {
     for (let i = 0; i < nickname.length; i++) {
-      if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
-        setMyNickname(nickname[i].keyword);
+      if(sessionId===""&&sessionId===undefined) {
+        console.log(user);
+        
+        if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
+          console.log(nickname[i].keyword);
+          setMyNickname(nickname[i].keyword);
+        }
       }
     }
   }, [nickname]);
+
+  useEffect(()=> {
+    console.log(myNickname);
+  },[myNickname])
 
   const giveGamename = (data) => {
     console.log(streamId);
@@ -96,7 +105,6 @@ function YangGameComponent({ sessionId, user, subscribers}) {
       type: "game",
     });
   }
-
 
   const findName = (id) => {
     const nickname = subscribers.map((data)=>{if(id===data.getStreamManager().stream.streamId) {
@@ -240,13 +248,12 @@ function YangGameComponent({ sessionId, user, subscribers}) {
         </div>
       ) : (
         <div
-              className={styles.postit}
-              style={{ backgroundColor: `${bgcolor}` }}
-            >
-              {myNickname}
-            </div>
-
-          )};
+          className={styles.postit}
+          style={{ backgroundColor: `${bgcolor}` }}
+        >
+          {myNicknameRef.current}
+        </div>
+          )}
     </div>
   );
 }

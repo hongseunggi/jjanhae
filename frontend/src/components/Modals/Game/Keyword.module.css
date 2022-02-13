@@ -35,7 +35,7 @@
     height: 550px;
     /* margin: 0 auto; */
     border-radius: 50px;
-    background-color: rgba(129, 127, 127, 0.945);
+    background-color: rgb(129, 127, 127);
     /* 팝업이 열릴때 스르륵 열리는 효과 */
     animation: modal-show 0.3s;
     overflow: hidden;
@@ -136,6 +136,15 @@
     text-align: center;
     font-size: 20px;
     font-weight: bolder;
+  }
+  .targetText {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bolder;
+    color: #ddda29;
+  }
+  .infoText {
+    text-align: center;
   }
 
   @keyframes modal-show {
