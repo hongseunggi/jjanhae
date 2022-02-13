@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./YangGameComponent.module.css";
 import Keyword from "../../Modals/Game/Keyword";
 
@@ -43,6 +43,9 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
   const [keywordInputModal,setKeywordInputModal] = useState(false);
   const [answer, setAnswer] = useState("");
   const [modalMode, setModalMode]= useState("assign");
+
+  const indexRef = useRef(index);
+  indexRef.current = index;
 
   useEffect(() => {
     for (let i = 0; i < nickname.length; i++) {
@@ -98,12 +101,13 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     console.log(streamId);
     console.log(targetId);
     console.log(data);
+    console.log(index);
     const senddata = {
       streamId: streamId,
       gameStatus: 1,
       gameId: 1,
-      gamename : targetGameName,
-      index : index,
+      gamename : data,
+      index:index,
     }
     user.getStreamManager().stream.session.signal({
       data: JSON.stringify(senddata),
@@ -111,47 +115,33 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     });
   }
 
-  const checkMyAnswer = () => {
-    // const data = {
-    //   streamId: user.connectionId,
-    //   gameStatus: 2,
-    //   gameId: 1,
-    //   gamename : "테스트",
-    // }
-    // user.getStreamManager().stream.session.signal({
-    //   data: JSON.stringify(data),
-    //   type: "game",
-    // });
+  const checkMyAnswer = (data) => {
+    const senddata = {
+      streamId: streamId,
+      gameStatus: 2,
+      gameId: 1,
+      gamename : data,
+    }
+    user.getStreamManager().stream.session.signal({
+      data: JSON.stringify(senddata),
+      type: "game",
+    });
   }
 
   useEffect(()=> {
-    const data={
-      gameStatus : 0,
-      gameId : 1,
+    if(sessionId!==undefined) {
+      const data={
+        gameStatus : 0,
+        gameId : 1,
+      }
+      user.getStreamManager().stream.session.signal({
+        type : "game",
+        data : JSON.stringify(data), 
+      });
     }
-    user.getStreamManager().stream.session.signal({
-      type : "game",
-      data : JSON.stringify(data), 
-    });
+    
   }, []);
 
-  // useEffect(() => {
-  //   if(gameStatus===1) {
-  //     const data = {
-  //       streamId: user.sessionId,
-  //       sessionId: sessionId,
-  //       gameStatus: gameStatus ,
-  //       gameId: 1,
-  //       gamename:"테스트",
-  //       index:1,
-  //     };
-      
-  //     user.getStreamManager().stream.session.signal({
-  //       data: JSON.stringify(data),
-  //       type:"game"
-  //    });
-  //   }
-  // }, [gameStatus]);
 
   useEffect(() => {
     let index = Math.floor(Math.random() * 21);
@@ -172,23 +162,29 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
   useEffect(() => {
     //back으로 부터 받는 data처리
     user.getStreamManager().stream.session.on("signal:game", (event) => {
+      closeKeywordInputModal();
       const data = event.data;
       console.log(data.streamId);
       console.log(data.targetId);
-      console.log(user);
+      console.log(data.index);
       console.log(user.getStreamManager().stream.streamId);
       //초기요청 응답
 
+      //내가 키워드를 정해줄 차례라면
+      if(sessionId!==undefined) {
+      console.log(sessionId);
       if(data.gameStatus===1) {
-        //내가 키워드를 정해줄 차례라면
+
         if(data.streamId===user.getStreamManager().stream.streamId) {
           console.log("my turn");
           //상대방 키워드 입력해줄 모달 띄우기
           setStreamId(data.streamId);
           setTargetId(data.targetId);
-          setIndex(data.index);
           setModalMode("assign");
           openKeywordInputModal();
+          if(data.index!==undefined&&data.index!=="") {
+            setIndex(data.index);
+          }
           //내가 정해줄 차례가 아니라면
         } else {
           console.log("not my turn");
@@ -196,27 +192,23 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
           openKeywordInputModal();
         }
       }else if(data.gameStatus===2) {
-        setModalMode("answer");
-        console.log("키워드 설정 완료");
+        if(data.answerYn!==undefined&&data.answerYn.index!=="") {
+          if(data.answerYn==="Y") {
+            setModalMode("correct");
+            openKeywordInputModal();
+          }
+        }else {
+          setModalMode("answer");
+          closeKeywordInputModal();
+          console.log("키워드 설정 완료");
+        }
       }
-
-      // if (data.connectionId === user.connectionId) {
-      //   //키워드 설정해줬을 시
-      // } else {
-      //   let nicknameList = [];
-      //   nicknameList = nickname;
-      //   nicknameList.push({
-      //     connectionId: data.streamId,
-      //     keyword: data.gamename,
-      //   });
-      //   setNickname([...nicknameList]);
-      // }
+    }
     });
   }, []);
 
   const openKeywordInputModal = () => {
     setKeywordInputModal(true);
-    giveGamename();
   }
   const closeKeywordInputModal = () => {
     setKeywordInputModal(false);
@@ -225,7 +217,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
     closeKeywordInputModal();
     setAnswer(data);
     //게임 정답 맞추는 api호출
-    checkMyAnswer();
+    checkMyAnswer(data);
   }
   const confirmTargetGameName = (data) => {
     closeKeywordInputModal();
@@ -249,36 +241,21 @@ function YangGameComponent({ sessionId, user, targetSubscriber, isSelecting }) {
           <div 
             className={styles.keyword} 
             onClick = {openKeywordInputModal}>당신의 키워드는?</div>
-{/*           
-          <input
-            className={styles.keyword}
-            value={keyword}
-            placeholder={"당신의 키워드는?"}
-            onClick = {openKeywordInputModal}
-          ></input> */}
         </div>
       ) : (
         <div
           className={styles.postitInput}
           style={{ backgroundColor: `${bgcolor}` }}
         >
-          {targetId === userId ? (
             <input
               className={styles.subKeyword}
               placeholder={"키워드 정해주세요"}
               onChange={handleSubscriberChange}
               onKeyPress={submitSubscriberKeyword}
+              name={user.nickname}
             ></input>
-          ) : (
-            <div
-              className={styles.postit}
-              style={{ backgroundColor: `${bgcolor}` }}
-            >
-              {myNickname}
-            </div>
-          )}
         </div>
-      )}
+          )};
     </div>
   );
 }

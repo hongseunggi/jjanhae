@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Keyword.module.css";
 import { ReactComponent as GameIcon } from "../../../assets/icons/game.svg";
 import { ReactComponent as CelebrateIcon } from "../../../assets/icons/celebrate.svg";
 import { ReactComponent as QuestionIcon } from "../../../assets/icons/question.svg";
 import { ReactComponent as Sendclock } from "../../../assets/icons/sendclock.svg";
+import UserApi from "../../../api/UserApi";
 
 
 
 const Keyword = (props) => {
-    const {open, close, confirmMyAnswer, confirmTargetGameName, mode} = props;
+    const {open, close, confirmMyAnswer, confirmTargetGameName, mode, name} = props;
     const [answer, setAnswer] = useState("");
     const [targetGameName, setTargetGameName] = useState("");
 
@@ -26,8 +27,10 @@ const Keyword = (props) => {
     }
 
     const confirmTarget = () => {
-      confirmTargetGameName(targetGameName);
-      setTargetGameName("");
+      if(targetGameName!==""&&targetGameName!==" ") {
+        confirmTargetGameName(targetGameName);
+        setTargetGameName("");
+      }
     }
 
     return (
@@ -89,13 +92,14 @@ const Keyword = (props) => {
 
             </header>
                 <main className={styles.main}>
-                <div className={styles.icon}>
+                <div className={styles.informBorder}>
                     <QuestionIcon className={styles.icon}/>
+                    <div className={styles.infoText}>
+                        <p className={styles.text}>{name}님의</p>
+                        <p className={styles.text}>키워드를 정해주세요!</p>
+                    </div>
                 </div>
                 <div className={styles.informBorder}>
-                    <div className={styles.infoText}>
-                        <p className={styles.text}>{}님의 키워드를 정해주세요!</p>
-                    </div>
                     <form>
                         <input className={styles.inputKeyword}
                                 placeholder="입력하기"
@@ -105,7 +109,7 @@ const Keyword = (props) => {
                 </div>
                 <button className={styles.confirmBtn} onClick={confirmTarget}>
                     {" "}
-                    입력{" "}
+                    키워드 등록{" "}
                 </button>
                 </main>
           </section>
@@ -124,10 +128,27 @@ const Keyword = (props) => {
                         </p>
                     </div>
                 </div>
-                <button className={styles.confirmBtn} onClick={confirmTarget}>
+                <button className={styles.confirmBtn} onClick={close}>
                     {" "}
                     입력{" "}
                 </button>
+                </main>
+          </section>
+        ) : mode === "start" ? (
+          <section className={styles.modalForm}>
+            <header>
+
+            </header>
+                <main className={styles.main}>
+                <div className={styles.icon}>
+                    <QuestionIcon className={styles.icon}/>
+                </div>
+                <div className={styles.informBorder}>
+                    <div className={styles.infoText}>
+                        <p className={styles.text}>양세찬 게임을 시작합니다~!~~!~!~
+                        </p>
+                    </div>
+                </div>
                 </main>
           </section>
         )
