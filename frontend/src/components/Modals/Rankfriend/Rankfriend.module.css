@@ -46,10 +46,10 @@
 .ranklist{
     /* margin-top: 10px; */
     /* display: flex; */
-    width: 21vw;
+    width: 100%;
     height: 35vh;
     border-radius: 0 0 10px 10px ;
-    margin: 0 auto;
+    margin: -1% auto;
     /* margin-bottom: 7px; */
     background-color: rgba(255,237, 115, 0.5);
     /* border-style: solid solid solid solid; */
@@ -58,7 +58,7 @@
 .imgbox{
     /* margin: 15px auto; */
     text-align: center;
-    margin-bottom: 1vw;
+    margin-bottom: 1%;
 }
 .ranklist img{
     /* display: inline-block; */
@@ -72,10 +72,11 @@
 .rankname {
     /* width: 100vw; */
     text-align: center;
-    font-size: 1.5rem;
-    display: inline;
+    font-size: 1rem;
+    display: block;
     font-weight: bold;
-    margin: 0 5% 0 33%;
+    /* margin-left: 10%; */
+    /* margin: 0 5% 0 33%; */
 }
 .rankname div {
     display: inline;
@@ -86,21 +87,22 @@
     font-weight: bold;
 }
 .numberOf{
-    display: inline;
+    /* display: inline; */
     margin-top: 0.7vw;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     text-align: center;
-    /* margin-left: 100px; */
+    /* margin-left: 41%; */
 }
 .tabs{
     /* margin: 0 auto; */
     /* margin-left: 15px; */
     /* background-color: black; */
-    
+    /* width: 21vw; */
     text-align: center;
     padding: 0;
-    height: 5.3vh;
+    margin-top: 5%;
+    /* height: 8vh; */
     margin-bottom: 0;
     /* display: table-cell; */
     /* display: flex; */
@@ -108,10 +110,14 @@
 .tabs li{
     display: inline-block;
     /* margin: 0 auto; */
-    margin-top: 1.6vw;
-    margin-left: 0.25vw;
-    margin-right: 0.25vw;
-    width: 3.8vw;
+    /* font-size: ; */
+    font-size: 0.76em;
+    /* margin-top: 10%; */
+    margin-left: 2%;
+    margin-right: 2%;
+    /* margin: 0 auto; */
+    width: 16%;
+    height: 30%;
     border-radius: 5px 5px 0 0;
     background-color: rgba(255,237, 115, 1);
     cursor: pointer;
