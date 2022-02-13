@@ -423,6 +423,7 @@ const RoomContents = ({
               sessionId={mySessionId}
               camStatusChanged={camStatusChanged}
               micStatusChanged={micStatusChanged}
+              subscribers={subscribers}
               mode={mode}
               bangzzang={bangzzang}
             />

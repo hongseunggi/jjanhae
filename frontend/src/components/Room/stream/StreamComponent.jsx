@@ -52,7 +52,6 @@ function StreamComponent({
                 <YangGameComponent
                   sessionId={sessionId}
                   user={user}
-                  targetSubscriber={targetSubscriber}
                   subscribers={subscribers}
                 />
               </div>

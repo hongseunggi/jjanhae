@@ -9,9 +9,10 @@ import UserApi from "../../../api/UserApi";
 
 
 const Keyword = (props) => {
-    const {open, close, confirmMyAnswer, confirmTargetGameName, mode, name} = props;
+    const {open, close, confirmMyAnswer, confirmTargetGameName, mode, name, targetNickName} = props;
     const [answer, setAnswer] = useState("");
     const [targetGameName, setTargetGameName] = useState("");
+    console.log(targetNickName);
 
     const handleGameNameInput = (event) => {
       setAnswer(event.target.value);
@@ -95,7 +96,7 @@ const Keyword = (props) => {
                 <div className={styles.informBorder}>
                     <QuestionIcon className={styles.icon}/>
                     <div className={styles.infoText}>
-                        <p className={styles.text}>{name}님의</p>
+                        <p className={styles.text}>{targetNickName}님의</p>
                         <p className={styles.text}>키워드를 정해주세요!</p>
                     </div>
                 </div>
@@ -128,10 +129,6 @@ const Keyword = (props) => {
                         </p>
                     </div>
                 </div>
-                <button className={styles.confirmBtn} onClick={close}>
-                    {" "}
-                    입력{" "}
-                </button>
                 </main>
           </section>
         ) : mode === "start" ? (

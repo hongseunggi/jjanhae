@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef , useContext,} from "react";
+import React, { useEffect, useState, useRef , useContext, useCallback } from "react";
 import styles from "./YangGameComponent.module.css";
 import Keyword from "../../Modals/Game/Keyword";
 import BangZzangContext from "../../../contexts/BangZzangContext";
 
 
-function YangGameComponent({ sessionId, user, targetSubscriber}) {
+function YangGameComponent({ sessionId, user, subscribers}) {
 
   const color = [
     "#adeac9",
@@ -44,62 +44,27 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
   const [keywordInputModal,setKeywordInputModal] = useState(false);
   const [answer, setAnswer] = useState("");
   const [modalMode, setModalMode]= useState("start");
+  const [participants, setParticipants] = useState([]);
+  const [targetNickName, setTargetNickName] = useState("");
+  
   const {bangZzang} = useContext(BangZzangContext);
-
 
   const indexRef = useRef(index);
   indexRef.current = index;
 
+  const subscribersRef = useRef(subscribers);
+  subscribersRef.current = subscribers;
+
+  console.log(subscribersRef);
+  console.log(subscribers);
 
   useEffect(() => {
     for (let i = 0; i < nickname.length; i++) {
-      if (user.connectionId === nickname[i].connectionId) {
+      if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
         setMyNickname(nickname[i].keyword);
       }
     }
   }, [nickname]);
-
-  const handleChange = (event) => {
-    setKeyword(event.target.value);
-  };
-
-  const handleSubscriberChange = (event) => {
-    setSubscriberKeyword(event.target.value);
-  };
-
-  const submitKeyword = () => {
-    if (keyword !== "" && keyword !== " ") {
-      const data = {
-        streamId: user.connectionId,
-        sessionId: sessionId,
-        gameStatus: 2,
-        gameId: 1,
-        gamename: keyword,
-      };
-      user.getStreamManager().stream.session.signal({
-        data: JSON.stringify(data),
-        type: "game",
-      });
-    }
-  };
-
-  
-  const submitSubscriberKeyword = () => {
-    // console.log(subscriberkeyword);
-    // if (subscriberkeyword !== "" && subscriberkeyword !== " ") {
-    //   const data = {
-    //     streamId: user.connectionId,
-    //     sessionId: sessionId,
-    //     gameStatus: 1,
-    //     gameId: 1,
-    //     gamename: subscriberkeyword,
-    //   };
-    //   user.getStreamManager().stream.session.signal({
-    //     data: JSON.stringify(data),
-    //     type: "game",
-    //   });
-    // }
-  };
 
   const giveGamename = (data) => {
     console.log(streamId);
@@ -132,11 +97,20 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
     });
   }
 
+
+  const findName = (id) => {
+    const nickname = subscribers.map((data)=>{if(id===data.getStreamManager().stream.streamId) {
+      return data.nickname;
+    }})
+    setTargetNickName(nickname);
+  }
+  
+
   //참가자중에서 방장 한명만 보내야 하는데
   useEffect(()=> {
+    setNickname([]);
     openKeywordInputModal();
     setTimeout(()=> {
-      console.log(bangZzang);
       if(sessionId!==undefined) {
         if(user.getStreamManager().stream.streamId===bangZzang){
           console.log(user.getStreamManager().stream.streamId);
@@ -159,18 +133,16 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
     setBgcolor(color[index]);
   }, []);
 
-  useEffect(() => {
-    if (targetSubscriber !== undefined) {
-      // console.log(targetSubscriber);
-      setTargetId(targetSubscriber.connectionId);
-    }
-  }, [targetSubscriber]);
+  useEffect(()=> {
+    console.log(subscribers);
+  },[subscribers]);
 
   useEffect(() => {
     setUserId(user.connectionId);
   }, [user]);
 
   useEffect(() => {
+    setNickname([]);
     //back으로 부터 받는 data처리
     user.getStreamManager().stream.session.on("signal:game", (event) => {
       closeKeywordInputModal();
@@ -179,11 +151,17 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
       //내가 키워드를 정해줄 차례라면
       if(sessionId!==undefined) {
         const data = event.data;
-        console.log(data.streamId);
-        console.log(data.targetId);
-        console.log(data.index);
-        console.log(user.getStreamManager().stream.streamId);
-      console.log(sessionId);
+        if(data.gamename!==""&&data.gamename!==undefined) {
+          let nicknameList = [];
+          nicknameList = nickname;
+          nicknameList.push({
+              connectionId : data.streamId,
+              keyword : data.gamename,
+          })
+          setNickname([...nicknameList]);
+          console.log(nicknameList);
+        }
+
       
       if(data.gameStatus===1) {
         if(data.streamId===user.getStreamManager().stream.streamId) {
@@ -191,6 +169,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
           //상대방 키워드 입력해줄 모달 띄우기
           setStreamId(data.streamId);
           setTargetId(data.targetId);
+          findName(data.targetId);
           setModalMode("assign");
           openKeywordInputModal();
           if(data.index!==undefined&&data.index!=="") {
@@ -251,6 +230,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
     confirmMyAnswer = {confirmMyAnswer}
     confirmTargetGameName = {confirmTargetGameName}
     mode = {modalMode}
+    targetNickName = {targetNickName}
     />
       {sessionId ? (
         <div className={styles.postitInput}>
@@ -260,18 +240,12 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
         </div>
       ) : (
         <div
-          className={styles.postitInput}
-          style={{ backgroundColor: `${bgcolor}` }}
-        >
-            <input
-              className={styles.subKeyword}
-              placeholder={"키워드 정해주세요"}
-              onChange={handleSubscriberChange}
-              onKeyPress={submitSubscriberKeyword}
-              name={user.nickname}
-              disabled = {true}
-            ></input>
-        </div>
+              className={styles.postit}
+              style={{ backgroundColor: `${bgcolor}` }}
+            >
+              {myNickname}
+            </div>
+
           )};
     </div>
   );
