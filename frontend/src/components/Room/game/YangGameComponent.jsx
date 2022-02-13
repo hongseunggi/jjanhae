@@ -209,8 +209,12 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
             openKeywordInputModal();
           }
         }else {
-          setModalMode("answer");
-          closeKeywordInputModal();
+          setModalMode("letsplay");
+          openKeywordInputModal();
+          setTimeout(()=> {
+            setModalMode("answer");
+            closeKeywordInputModal();
+          },5000)
           console.log("키워드 설정 완료");
         }
       }
@@ -265,6 +269,7 @@ function YangGameComponent({ sessionId, user, targetSubscriber}) {
               onChange={handleSubscriberChange}
               onKeyPress={submitSubscriberKeyword}
               name={user.nickname}
+              disabled = {true}
             ></input>
         </div>
           )};

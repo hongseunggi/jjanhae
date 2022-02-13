@@ -150,6 +150,22 @@ const Keyword = (props) => {
                 </div>
                 </main>
           </section>
+        ) : mode === "letsplay" ? (
+          <section className={styles.modalForm}>
+            <header>
+            </header>
+                <main className={styles.main}>
+                <div className={styles.icon}>
+                    <QuestionIcon className={styles.icon}/>
+                </div>
+                <div className={styles.informBorder}>
+                    <div className={styles.infoText}>
+                        <p className={styles.text}>당신의 키워드는 뭘까요??? 화면 안 포스트잇을 클릭해 맞춰보세요~
+                        </p>
+                    </div>
+                </div>
+                </main>
+          </section>
         )
          : null}
          </>
