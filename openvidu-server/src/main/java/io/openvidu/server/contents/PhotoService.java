@@ -26,33 +26,33 @@ public class PhotoService {
         JsonObject data = (JsonObject) JsonParser.parseString(dataString);
 
         // 입력받은 값들 출력
-        System.out.println("[Photo] 받은 사진 data : " + data); //{"videoId":"5uk6cFPL19w","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
-        System.out.println("[Photo] 받은 사진 params : " + params); // {"from":"con_AG3mOjqFdT","type":"signal:music"}
+        System.out.println("[Photo] server get data : " + data); //{"videoId":"5uk6cFPL19w","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
+        System.out.println("[Photo] server get params : " + params); // {"from":"con_AG3mOjqFdT","type":"signal:music"}
 
         // 원하는 상태에 따른 수행 방식 변경
         int photoStatus = data.get("photoStatus").getAsInt();
 
         switch (photoStatus) {
             case TAKEPHOTO: // 음악 재생
-                sendStatus(photoStatus, participant, message, participants, params, data);
+                sendStatus(photoStatus,participants, params, data);
                 return;
         }
 
     }
 
     /**
-     * 음악 상태 그대로 돌려줌
-     * musicStatus: 1, 2, 3
+     * 사진 찍자
+     * photoStatus: 1
      * */
-    private void sendStatus(int photoStatus, Participant participant, JsonObject message, Set<Participant> participants,
+    private void sendStatus(int photoStatus, Set<Participant> participants,
                             JsonObject params, JsonObject data) {
-        System.out.println("[Photo] 바꿔줬으면 하는 노래 진행 상태 : " + photoStatus);
+        System.out.println("[Photo] TAKE PHOTO!!! : " + photoStatus);
         params.add("data", data);
         // 브로드 캐스팅
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
         }
-        System.out.println("[Photo] 노래상태 반환 " + params);
+        System.out.println("[Photo] return params : " + params);
     }
 }
