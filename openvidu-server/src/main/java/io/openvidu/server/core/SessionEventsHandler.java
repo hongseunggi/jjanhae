@@ -435,13 +435,13 @@ public class SessionEventsHandler {
 
 		// ********* 여기서부터 type에 맞춰서 우리 서비스 실행하면 됨
 		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
-			System.out.println("[Music] 음악 관련 요청이 들어왔습니다.");
+			System.out.println("[Music] Request");
 			musicService.controlMusic(participant, message, participants, rpcNotificationService);
 		} else if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
 			System.out.println("Request Game ...");
 			gameService.controlGame(participant, message, participants, rpcNotificationService);
 		} else if (message.has("type") && message.get("type").getAsString().equals("signal:photo")) {
-			System.out.println("[Photo] 사진 관련 요청이 들어왔습니다.");
+			System.out.println("[Photo] Request");
 			photoService.controlPhoto(participant, message, participants, rpcNotificationService);
 		}
 		// ******** 이외에는 채팅!
@@ -465,7 +465,6 @@ public class SessionEventsHandler {
 					toSet.add(p.getParticipantPublicId());
 					rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
 							ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-					System.out.println("onSendMessage의 반환 : " + params);
 				}
 			} else {
 				Set<String> participantPublicIds = participants.stream().map(Participant::getParticipantPublicId)
