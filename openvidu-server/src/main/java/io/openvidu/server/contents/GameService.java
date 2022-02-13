@@ -77,7 +77,7 @@ public class GameService {
         int gameStatus = data.get("gameStatus").getAsInt();
 
         // 게임상태 추가, 벌칙완료 상태일 때만 4->0 으로
-        data.addProperty("gameStatus", Integer.toString(gameStatus));
+        data.addProperty("gameStatus", gameStatus);
 
         switch (gameStatus) {
             case NOGAME: // 게임 비활성화
