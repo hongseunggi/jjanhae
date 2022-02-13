@@ -269,6 +269,7 @@ public class GameService {
             int number = (int) (Math.random() * 100) + 1;
             System.out.printf("sessionId : %s, number : %d\n", message.get("sessionId").getAsString(), number);
             numberMap.put(message.get("sessionId").getAsString(), number);
+            data.addProperty("gameStatus", 2);
             // 생성해서 맵에 저장하고 있다가 후에 startGame에서 정답맞출때에 쓰임
 
         } else if (gameId == YANGSECHAN) {
@@ -416,10 +417,10 @@ public class GameService {
                 System.out.println("userInput : " + data.get("gamename").getAsString());
                 System.out.println("result : " + userAnswer.equals(data.get("gamename").getAsString()));
                 if(nicknameMap.size()!=0 && userAnswer.equals(data.get("gamename").getAsString())) { // 정답일 시 종료
-                    System.out.printf("%s님 정답입니다!\n", streamId);
+                    System.out.printf("%s!! It's Answer!!!\n", streamId);
                     data.addProperty("answerYn", "Y");
                 } else { // 정답 아닐 시 계속 진행
-                    System.out.printf("%s님 아쉬워요.. 정답이 아닙니다ㅠ,ㅜ\n", streamId);
+                    System.out.printf("%s... No Answer.. ;(\n", streamId);
                     data.addProperty("answerYn", "N");
                 }
 
@@ -431,10 +432,10 @@ public class GameService {
                 System.out.println("map size : " + wordMap.size());
                 System.out.println("userAnswer : " + wordAnswer);
                 if(wordMap.size()!=0 && wordAnswer.equals(data.get("word").getAsString())) {
-                    System.out.printf("%s님 정답입니다!\n", streamId);
+                    System.out.printf("%s!! It's Answer!!!\n", streamId);
                     data.addProperty("answerYn", "Y");
                 } else { // 정답 아닐 시 계속 진행
-                    System.out.printf("%s님 아쉬워요.. 정답이 아닙니다ㅠ,ㅜ\n", streamId);
+                    System.out.printf("%s... No Answer.. ;(\n", streamId);
                     data.addProperty("answerYn", "N");
                 }
 
@@ -445,15 +446,15 @@ public class GameService {
                 // 정답이 나오면 종료
                 String sessionId = message.get("sessionId").getAsString();
                 if(numberMap.get(sessionId) == data.get("number").getAsInt()) { // 정답일 시 updown = "same"
-                    System.out.printf("%d 정답 입니다!!\n", data.get("number").getAsInt());
+                    System.out.printf("%d is Answer!!\n", data.get("number").getAsInt());
                     data.addProperty("updown", "same");
                     data.addProperty("gameStatus", 3); // 정답일 시 게임종료
                 } else if (numberMap.get(sessionId) > data.get("number").getAsInt()) { // 정답보다 작을 시 updown = "up"
-                    System.out.printf("정답 : %d, 사용자입력숫자 : %d => up!!\n", numberMap.get(sessionId),
+                    System.out.printf("Answer : %d, User Input : %d => up!!\n", numberMap.get(sessionId),
                             data.get("number").getAsInt());
                     data.addProperty("updown", "up");
                 } else { // 정답보다 클 시 updown = "down"
-                    System.out.printf("정답 : %d, 사용자입력숫자 : %d => down!!\n", numberMap.get(sessionId),
+                    System.out.printf("Answer : %d, User Input : %d => down!!\n", numberMap.get(sessionId),
                             data.get("number").getAsInt());
                     data.addProperty("updown", "down");
                 }
@@ -480,6 +481,21 @@ public class GameService {
         System.out.println("Finish Game ...");
         data.addProperty("gameStatus", 3);
         params.add("data", data);
+
+        // 각 게임에 따라 종료 후 처리 다르게
+        int gameId = data.get("gameId").getAsInt();
+        String sessionId = message.get("sessionId").getAsString();
+        if(gameId == YANGSECHAN) {
+            sNicknameMap.remove(sessionId);
+            System.out.println("yangsechan game... "+sessionId+" delete success");
+        } else if (gameId == FORBIDDEN) {
+            sWordMap.remove(sessionId);
+            System.out.println("forbidden game... "+sessionId+" delete success");
+        } else if (gameId == UPDOWN) {
+            numberMap.remove(sessionId);
+            System.out.println("updown game... "+sessionId+" delete success");
+        }
+
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
