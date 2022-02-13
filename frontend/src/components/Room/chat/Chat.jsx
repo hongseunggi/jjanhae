@@ -10,11 +10,13 @@ const Chat = (props) => {
   const handleChange = (event) => {
     setMessage(event.target.value);
   };
+  console.log("chat render");
+  console.log(props.user);
   useEffect(() => {
-    console.log("here");
+    //console.log("here");
     props.user.getStreamManager().stream.session.on("signal:chat", (event) => {
       const data = JSON.parse(event.data);
-      console.log(event);
+      //console.log(event);
       let messageListData = messageList;
       messageListData.push({
         connectionId: event.from.connectionId,
@@ -22,13 +24,13 @@ const Chat = (props) => {
         message: data.message,
       });
       setMessageList([...messageListData]);
-      console.log(messageList);
+      //console.log(messageList);
       scrollToBottom();
     });
   }, []);
 
   useEffect(() => {
-    // console.log(messageList);
+    // //console.log(messageList);
   }, [messageList]);
 
   const handlePressKey = (event) => {
@@ -38,7 +40,7 @@ const Chat = (props) => {
   };
 
   const sendMessage = () => {
-    console.log("chat" + message);
+    //console.log("chat" + message);
     if (props.user && message) {
       let messageData = message.replace(/ +(?= )/g, "");
       if (messageData !== "" && messageData !== " ") {
@@ -47,7 +49,7 @@ const Chat = (props) => {
           nickname: props.user.getNickname(),
           streamId: props.user.getStreamManager().stream.streamId,
         };
-        console.log("chat" + data);
+        //console.log("chat" + data);
         props.user.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),
           type: "chat",
@@ -62,7 +64,7 @@ const Chat = (props) => {
       try {
         chatScroll.current.scrollTop = chatScroll.current.scrollHeight;
       } catch (error) {
-        console.log(error);
+        //console.log(error);
       }
     }, 20);
   };
@@ -97,7 +99,7 @@ const Chat = (props) => {
               />
               <div className={styles["msg-detail"]}>
                 <div className={styles["msg-info"]}>
-                  <p class={styles.nickname}>{data.nickname}</p>
+                  <p className={styles.nickname}>{data.nickname}</p>
                 </div>
                 <div className={styles["msg-content"]}>
                   <p className={styles.text}>{data.message}</p>

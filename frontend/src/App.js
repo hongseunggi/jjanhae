@@ -17,33 +17,31 @@ function App() {
   // 1 : 비로그인 상태 2 : 로그인 상태 3 : 파티룸 입장 상태
   const [loginStatus, setLoginStatus] = useState("1");
   const [myName, setMyName] = useState("");
-  const [myVMstate, setMyVMstate] = useState({video : true, audio : true});
+  const [myVMstate, setMyVMstate] = useState({ video: true, audio: true });
   // 추후 refreshtoken을 사용하여 엑세스 토큰 업데이트하는 코드로 변경~~!@~!~!
-  useEffect(() => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    if (accessToken) {
-      setLoginStatus("2");
-    }
-  }, []);
+  const accessToken = sessionStorage.getItem("accessToken");
+  if (accessToken && loginStatus === "1") {
+    setLoginStatus("2");
+  }
   return (
-    <VideoMicContext.Provider value={{myVMstate, setMyVMstate}}>
-    <NameContext.Provider value={{myName, setMyName}}>
-    <LoginStatusContext.Provider value={{ loginStatus, setLoginStatus }}>
-      <div className="App">
-        <Router basename={process.env.PUBLIC_URL}>
-          <Routes>
-            <Route path="/" element={<Main />}>
-              <Route index element={<Home />} />
-              <Route path="user/*" element={<User />} />
-              <Route path="conferences/*" element={<Conferences />} />
-            </Route>
-            {/* <Route path="conference" element={<Room />} /> */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
-      </div>
-    </LoginStatusContext.Provider>
-    </NameContext.Provider>
+    <VideoMicContext.Provider value={{ myVMstate, setMyVMstate }}>
+      <NameContext.Provider value={{ myName, setMyName }}>
+        <LoginStatusContext.Provider value={{ loginStatus, setLoginStatus }}>
+          <div className="App">
+            <Router basename={process.env.PUBLIC_URL}>
+              <Routes>
+                <Route path="/" element={<Main />}>
+                  <Route index element={<Home />} />
+                  <Route path="user/*" element={<User />} />
+                  <Route path="conferences/*" element={<Conferences />} />
+                </Route>
+                {/* <Route path="conference" element={<Room />} /> */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Router>
+          </div>
+        </LoginStatusContext.Provider>
+      </NameContext.Provider>
     </VideoMicContext.Provider>
   );
 }

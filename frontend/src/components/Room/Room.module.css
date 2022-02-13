@@ -1,17 +1,49 @@
+.nav {
+  width: 100%;
+  height: 64px;
+  display: inline-block;
+}
+.link {
+  z-index: 1;
+  position: relative;
+  float: right;
+  margin-top: 32px;
+  margin-right: 5%;
+  font-weight: bold;
+  letter-spacing: 2.5px;
+  border: none;
+  width: 80px;
+  background-color: rgba(0, 0, 0, 0);
+  color: #eaeaea;
+  font-size: 20px;
+  text-decoration: none;
+  text-shadow: 0rem 1rem 0.5rem rgba(234, 234, 234, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+.link:hover {
+  text-shadow: 0rem 1.5rem 2rem rgba(234, 234, 234, 0.5);
+  color: #eaeaea;
+  transform: translateY(-7px);
+}
 .container {
   color: #eee;
-  height: calc(100vh - 100px);
+  height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 0px 30px;
   position: relative;
+  width: 100%;
+  /* margin : 0px 0px 0px 0px; */
 }
 .innerContainer {
   display: flex;
   width: 100%;
   height: 90%;
+  margin: 5px 15px 0px;
 }
 
 .contents {
@@ -37,30 +69,6 @@ video {
   /* margin-right: 10px; */
 }
 
-.playerIcon {
-  margin-right: 10px;
-}
-.playerIcon.playerStart {
-  animation: rotate_image 5s linear infinite;
-  transform-origin: 50% 50%;
-}
-
-.musicTitle {
-  width: 100%;
-  font-size: 18px;
-}
-.player {
-  border: 1px solid #eee;
-  padding: 10px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  height: 50px;
-  /* width: 30%; */
-  position: absolute;
-  bottom: 0;
-}
-
 .chatting {
   min-width: 300px;
   /* height: 700px; */
@@ -70,6 +78,7 @@ video {
 
 .dockBar {
   height: 90px;
+  display: flex;
 }
 .dock {
   width: 500px;
@@ -89,6 +98,25 @@ video {
   bottom: 0px;
 }
 
+/* .snapshotBtn {
+  display: flex;
+  width: 300px;
+  justify-content: space-around;
+}
+
+.retryBtn,
+.saveBtn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+}
+
+.retryBtn p,
+.saveBtn p {
+  margin: 0;
+} */
+
 .icon {
   cursor: pointer;
 }
@@ -100,9 +128,9 @@ video {
 }
 
 @media screen and (min-width: 1800px) {
-  .container {
+  /* .container {
     height: calc(100vh - 120px);
-  }
+  } */
   video {
     width: 300px;
     height: 300px;

@@ -1,0 +1,24 @@
+.player {
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  /* width: 30%; */
+  position: absolute;
+  bottom: 0;
+}
+
+.playerIcon {
+  margin-right: 10px;
+}
+.playerIcon.playerStart {
+  animation: rotate_image 5s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.musicTitle {
+  width: 100%;
+  font-size: 18px;
+}

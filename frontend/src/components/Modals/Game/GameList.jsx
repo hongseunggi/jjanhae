@@ -11,7 +11,7 @@ const Keyword = (props) => {
   };
 
   const confirm = () => {
-    console.log(game);
+    //console.log(game);
     onClose();
   };
 

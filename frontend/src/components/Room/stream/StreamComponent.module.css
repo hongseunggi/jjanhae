@@ -40,7 +40,7 @@ video {
   right: 0;
   width: 80px;
   height: 40px;
-  z-index: 9999;
+  z-index: 999;
   position: absolute;
   color: #ffffff;
 }
@@ -60,11 +60,16 @@ video {
 /* Contains the video element, used to fix video letter-boxing */
 .video-innerContainer {
   border-radius: 15px;
-  width: 250px;
+  width: 400px;
   height: 250px;
   position: relative;
   overflow: hidden;
   margin-right: 20px;
+}
+
+.video-innerContainer.snapshotMode {
+  margin: 0;
+  border-radius: 0;
 }
 .controlbox {
   width: 100px;
@@ -78,3 +83,12 @@ video {
   top: 0%;
   transition: all ease 1s 0s;
 }
+
+.yangGame {
+  position: absolute;
+  width: 250px;
+  height : 20%;
+  left : 50px;
+  bottom : 0;
+}
+

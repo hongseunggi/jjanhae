@@ -59,24 +59,27 @@ function Navigator() {
         </Container>
       );
     case "3":
-      return (
-        <Container fluid>
-          <Row className="nav">
-            <Col>
-              <Link to="/" className={styles.logo}>
-                <img src={Logo} className={styles.logo} alt="logo"></img>
-              </Link>
-            </Col>
-            <Col>
-              <Link to="/conferences/list" className={styles.link}>
-                EXIT
-              </Link>
-            </Col>
-          </Row>
-        </Container>
+      return (<></>
+        // <Container fluid>
+        //   <Row className="nav">
+        //     <Col>
+        //       {/* <Link to="/" className={styles.logo}>
+        //         <img src={Logo} className={styles.logo} alt="logo"></img>
+        //       </Link> */}
+        //     </Col>
+        //     <Col>
+        //       <button>
+                
+        //       </button> 
+        //       <Link to="/conferences/list" className={styles.link}>
+        //         EXIT
+        //       </Link>
+        //     </Col>
+        //   </Row>
+        // </Container>
       );
     default:
-      return console.log("error");
+      return; //console.log("error");
   }
 }
 

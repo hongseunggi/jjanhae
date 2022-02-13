@@ -5,7 +5,7 @@
     height: inherit;
     border-radius: inherit;
     border-style: none;
-    z-index: 1;
+    z-index: 9999999;
     background-color:rgba(255,255,255, 0);
     /* opacity: 0.5; */
     backdrop-filter: blur(10px);

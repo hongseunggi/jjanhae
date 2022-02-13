@@ -7,7 +7,7 @@ import VideocamOff from "@material-ui/icons/VideocamOff";
 
 function ToolbarComponent({ user, camStatusChanged, micStatusChanged }) {
   const localUser = user;
-
+  console.log("tool render");
   return (
     <div className={styles.toolbar}>
       <div className={styles.buttonClass}>

@@ -2,7 +2,7 @@ import React, { createRef, useState } from "react";
 import { ReactComponent as CancelIcon } from "../../../assets/icons/cancel.svg";
 import styles from "./RegistMusic.module.css";
 
-const RegistMusic = ({ open, onClose }) => {
+const RegistMusic = ({ open, onClose, onSubmit }) => {
   const [singer, setSinger] = useState("");
   const [song, setSong] = useState("");
   const singerRef = createRef();
@@ -15,8 +15,9 @@ const RegistMusic = ({ open, onClose }) => {
   };
 
   const handleClick = () => {
-    console.log(singer);
-    console.log(song);
+    const music = `${singer}${song}`;
+    console.log(music);
+    onSubmit(music);
   };
   return (
     <div
