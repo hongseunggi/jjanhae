@@ -7,8 +7,9 @@ import MicOff from "@material-ui/icons/MicOff";
 import Mic from "@material-ui/icons/Mic";
 import Videocam from "@material-ui/icons/Videocam";
 import VideocamOff from "@material-ui/icons/VideocamOff";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ToolbarComponent from "../toolbar/ToolbarComponent.jsx";
+
 
 function StreamComponent({
   user,
@@ -18,15 +19,55 @@ function StreamComponent({
   mode,
   targetSubscriber,
   subscribers,
+  openKeywordInputModal,
+  nickname,
 }) {
   console.log(user);
   const [mutedSound, setMuted] = useState(false);
   const [controlBox, setControl] = useState(false);
+  const [bgcolor, setBgcolor] = useState("");
+  const [myNickname, setMyNickname] = useState("");
+
+    
+  const color = [
+    "#adeac9",
+    "#ff98ad",
+    "#abece7",
+    "#ffff7f",
+    "#FFC0CB",
+    "#FFEB46",
+    "#EE82EE",
+    "#B2FA5C",
+    "#a3c9f0",
+    "#e3ae64",
+    "#a1e884",
+    "#84e8c5",
+    "#ceb1e3",
+    "#e3b1d2",
+    "#e3b1b1",
+    "#d4ff8f",
+    "#98ff8f",
+    "#b6f0db",
+    "#b6e3f0",
+    "#f288e9",
+  ];
+
   console.log("stream render");
   const handleChangeControlBox = (e) => {
     setControl(!controlBox);
     e.preventDefault();
   };
+
+  useEffect(() => {
+    if(nickname!==""&&nickname!==undefined) {
+    for (let i = 0; i < nickname.length; i++) {
+        console.log(nickname);
+        if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
+          setMyNickname(nickname[i].keyword);
+        }
+      }
+    }
+  }, [nickname]);
 
   return (
     <div
@@ -48,12 +89,22 @@ function StreamComponent({
           <OvVideoComponent user={user} mutedSound={mutedSound} />
           {mode === "snapshot" ? null : mode === "game1" ? (
             <>
-              <div className={styles.yangGame}>
-                <YangGameComponent
-                  sessionId={sessionId}
-                  user={user}
-                  subscribers={subscribers}
-                />
+            <div className={styles.yangGame}>
+                {sessionId ? (
+                  <div className={styles.postitInput}>
+                    <div 
+                      className={styles.keyword} 
+                      onClick = {openKeywordInputModal}>당신의 키워드는?
+                      </div>
+                  </div>
+                ) : (
+                  <div
+                    className={styles.postit}
+                    style={{ backgroundColor: `${bgcolor}` }}
+                  >
+                  {myNickname}
+                  </div>
+                    )}
               </div>
               <div className={styles.controlbox}>
                 {sessionId ? (

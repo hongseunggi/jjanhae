@@ -62,7 +62,7 @@ function YangGameComponent({ sessionId, user, subscribers}) {
     for (let i = 0; i < nickname.length; i++) {
       if(sessionId===""&&sessionId===undefined) {
         console.log(user);
-        
+        console.log(nickname);
         if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
           console.log(nickname[i].keyword);
           setMyNickname(nickname[i].keyword);
@@ -150,7 +150,6 @@ function YangGameComponent({ sessionId, user, subscribers}) {
   }, [user]);
 
   useEffect(() => {
-    setNickname([]);
     //back으로 부터 받는 data처리
     user.getStreamManager().stream.session.on("signal:game", (event) => {
       closeKeywordInputModal();

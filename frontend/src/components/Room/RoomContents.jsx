@@ -17,6 +17,8 @@ import html2canvas from "html2canvas";
 
 import MusicPlayer from "./music/MusicPlayer";
 import SessionIdContext from "../../contexts/SessionIdContext";
+import Keyword from "../Modals/Game/Keyword";
+
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -51,8 +53,24 @@ const RoomContents = ({
   const [targetSubscriber, setTargetSubscriber] = useState({});
   const [isSelecting, setIsSelecting] = useState(false);
   const [allSet, setAllSet] = useState(false);
-  const [index, setIndex] = useState("1");
   const [startPage, setStartPage] = useState(true);
+  const [keyword, setKeyword] = useState("");
+  const [subscriberkeyword, setSubscriberKeyword] = useState("");
+  const [userId, setUserId] = useState("");
+  const [nickname, setNickname] = useState([]);
+  const [myNickname, setMyNickname] = useState("");
+  const [gameStatus, setGameStatus] = useState("0");
+  const [streamId, setStreamId] = useState("")
+  const [targetId, setTargetId] = useState("");
+  const [targetGameName, setTargetGameName] = useState("");
+  const [index, setIndex] = useState("1");
+  const [keywordInputModal,setKeywordInputModal] = useState(false);
+  const [answer, setAnswer] = useState("");
+  const [modalMode, setModalMode]= useState("start");
+  const [participants, setParticipants] = useState([]);
+  const [targetNickName, setTargetNickName] = useState("");
+
+
 
   // console.log(targetSubscriber);
 
@@ -185,8 +203,64 @@ const RoomContents = ({
             );
           });
       });
+
+       //back으로 부터 받는 data처리
+      sessionRef.current.on("signal:game", (event) => {
+      closeKeywordInputModal();
+      //초기요청 응답
+      
+      const data = event.data;
+      if(data.gamename!==""&&data.gamename!==undefined) {
+        let nicknameList = [];
+        nicknameList = nickname;
+        nicknameList.push({
+          connectionId : data.streamId,
+          keyword : data.gamename,
+        })
+        setNickname([...nicknameList]);
+        console.log(nicknameList);
+      }
+      
+      
+      //내가 키워드를 정해줄 차례라면
+      if(data.gameStatus===1) {
+        if(data.streamId===localUserRef.current.getStreamManager().stream.streamId) {
+          console.log("my turn");
+          //상대방 키워드 입력해줄 모달 띄우기
+          setStreamId(data.streamId);
+          setTargetId(data.targetId);
+          // findName(data.targetId);
+          setModalMode("assign");
+          openKeywordInputModal();
+          if(data.index!==undefined&&data.index!=="") {
+            setIndex(data.index);
+          }
+          //내가 정해줄 차례가 아니라면
+        } else {
+          console.log("not my turn");
+          setModalMode("wait");
+          openKeywordInputModal();
+        }
+      }else if(data.gameStatus===2) {
+        if(data.answerYn!==undefined&&data.answerYn.index!=="") {
+          if(data.answerYn==="Y") {
+            setModalMode("correct");
+            openKeywordInputModal();
+          }
+        }else {
+          setModalMode("letsplay");
+          openKeywordInputModal();
+          setTimeout(()=> {
+            setModalMode("answer");
+            closeKeywordInputModal();
+          },5000)
+          console.log("키워드 설정 완료");
+        }
+      }
+    });
     }
   }, [session]);
+
 
   useEffect(() => {
     console.log(subscribers);
@@ -236,6 +310,8 @@ const RoomContents = ({
     console.log(subscribersRef.current);
     console.log(subscribers);
   }, [subscribers]);
+
+  
 
   const onbeforeunload = (e) => {
     //console.log("tlfgodehla");
@@ -407,6 +483,62 @@ const RoomContents = ({
   const openStartPage = () => {
     setStartPage(true);
   }
+  const giveGamename = (data) => {
+    console.log(streamId);
+    console.log(targetId);
+    console.log(data);
+    console.log(index);
+    const senddata = {
+      streamId: streamId,
+      gameStatus: 1,
+      gameId: 1,
+      gamename : data,
+      index:index,
+    }
+    localUserRef.current.getStreamManager().stream.session.signal({
+      data: JSON.stringify(senddata),
+      type: "game",
+    });
+  }
+  const checkMyAnswer = (data) => {
+    const senddata = {
+      streamId: streamId,
+      gameStatus: 2,
+      gameId: 1,
+      gamename : data,
+    }
+    localUserRef.current.getStreamManager().stream.session.signal({
+      data: JSON.stringify(senddata),
+      type: "game",
+    });
+  }
+
+  const findName = (id) => {
+    const nickname = subscribers.map((data)=>{if(id===data.getStreamManager().stream.streamId) {
+      return data.nickname;
+    }})
+    setTargetNickName(nickname);
+  }
+  
+  const openKeywordInputModal = () => {
+    console.log("open!!!!!");
+    setKeywordInputModal(true);
+  }
+  const closeKeywordInputModal = () => {
+    setKeywordInputModal(false);
+  }
+  const confirmMyAnswer = (data) => {
+    closeKeywordInputModal();
+    setAnswer(data);
+    //게임 정답 맞추는 api호출
+    checkMyAnswer(data);
+  }
+  const confirmTargetGameName = (data) => {
+    closeKeywordInputModal();
+    setTargetGameName(data);
+    giveGamename(data);
+    //target gamename 지정해주는 api호출
+  }
   return (
     <div className={styles["contents-container"]}>
       <SelectingGame open={isSelecting} close={closeSelectingPage} startPage={startPage} closeStartPage={closeStartPage}/>
@@ -414,7 +546,16 @@ const RoomContents = ({
         <div className={styles.countContainer}>
           <p className={styles.count}>{count}</p>
         </div>
-      ) : null}
+      ) : mode==="game1" ? (
+        <Keyword
+              open = {keywordInputModal}
+              close = {closeKeywordInputModal}
+              confirmMyAnswer = {confirmMyAnswer}
+              confirmTargetGameName = {confirmTargetGameName}
+              mode = {modalMode}
+              targetNickName = {targetNickName}
+              />
+      ) :null}
       <div id="user-video" className={styles["video-container"]}>
         {localUserRef.current !== undefined &&
           localUserRef.current.getStreamManager() !== undefined && (
@@ -426,10 +567,10 @@ const RoomContents = ({
               subscribers={subscribers}
               mode={mode}
               bangzzang={bangzzang}
+              openKeywordInputModal = {openKeywordInputModal}
             />
           )}
         {subscribersRef.current.map((sub, i) => {
-          ////console.log(sub);
           return (
             //양세찬 게임 키워드 props로 같이 보내줘야할듯
             <StreamComponent
@@ -438,7 +579,7 @@ const RoomContents = ({
               targetSubscriber={targetSubscriber}
               subscribers={subscribers}
               mode={mode}
-              isSelecting = {isSelecting}
+              nickname={nickname}
             />
           );
         })}
