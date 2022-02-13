@@ -42,7 +42,7 @@ function App() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
-            <ToastContainer autoClose={5000} style={{width : "450px", display : "inline"}} theme="colored"></ToastContainer>
+            <ToastContainer autoClose={1500} style={{width : "450px", display : "inline"}} theme="colored"></ToastContainer>
           </div>
         </LoginStatusContext.Provider>
       </NameContext.Provider>
