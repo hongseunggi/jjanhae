@@ -62,8 +62,8 @@
 }
 .ranklist img{
     /* display: inline-block; */
-    width: 12vw;
-    height: 11vw;
+    width: 14vw;
+    height: 13vw;
     margin: 15px auto;
     border-radius: 15px;
     /* margin-bottom: 15px; */
@@ -72,7 +72,7 @@
 .rankname {
     /* width: 100vw; */
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     display: block;
     font-weight: bold;
     /* margin-left: 10%; */
@@ -89,7 +89,7 @@
 .numberOf{
     /* display: inline; */
     margin-top: 0.7vw;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     text-align: center;
     /* margin-left: 41%; */
@@ -111,7 +111,7 @@
     display: inline-block;
     /* margin: 0 auto; */
     /* font-size: ; */
-    /* font-size: 0.76em; */
+    font-size: 1.2em;
     /* margin-top: 10%; */
     margin-left: 2%;
     margin-right: 2%;
