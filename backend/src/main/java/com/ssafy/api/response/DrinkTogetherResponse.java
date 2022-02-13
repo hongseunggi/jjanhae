@@ -9,5 +9,6 @@ import lombok.Setter;
 @ApiModel("CreateRoomResponse")
 public class DrinkTogetherResponse {
     String name;
+    String imgurl;
     int numberOf;
 }

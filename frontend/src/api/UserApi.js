@@ -1,6 +1,6 @@
 import axios from "axios";
-// const BASE_URL = "http://localhost:8081/api/v1/user";
-const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
+const BASE_URL = "http://localhost:8081/api/v1/user";
+// const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
 axios.interceptors.request.use(
   function (config) {
@@ -102,6 +102,7 @@ const getUserList = async (roomSeq) => {
 const getUserProfile = async () => {
   console.log(axios.defaults.headers.Authorization);
   const result = await axios.get(`${BASE_URL}/profile`);
+  console.log(result);
   return result;
 };
 

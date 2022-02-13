@@ -1,0 +1,154 @@
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.buttonicon{
+    float: left;
+}
+.modalForm {
+    position: relative;
+    width: 780px;
+    height: 580px;
+    /* margin: 0 auto; */
+    border-radius: 50px;
+    background-color: #eee;
+    text-align: center;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-show 0.3s;
+    overflow: hidden;
+    padding: 30px 40px;
+}
+.chartmodalForm {
+    position: relative;
+    width: 500px;
+    height: 700px;
+    /* margin: 0 auto; */
+    border-radius: 50px;
+    background-color: #eee;
+    text-align: left;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-show 0.3s;
+    overflow: hidden;
+    padding: 30px 40px;
+}
+.chartbox{
+    /* float: right; */
+    display: block;
+    height: fit-content;
+    /* text-align: center; */
+}
+.ranklist{
+    /* margin-top: 10px; */
+    /* display: flex; */
+    width: 390px;
+    height: 330px;
+    border-radius: 0 0 10px 10px ;
+    margin: 0 auto;
+    /* margin-bottom: 7px; */
+    background-color: rgba(255,237, 115, 0.5);
+    /* border-style: solid solid solid solid; */
+    border-width: 0.1rem;
+}
+.imgbox{
+    /* margin: 15px auto; */
+    text-align: center;
+    margin-bottom: 15px;
+}
+.ranklist img{
+    /* display: inline-block; */
+    width: 200px;
+    height: 200px;
+    margin: 15px auto;
+    border-radius: 15px;
+    /* margin-bottom: 15px; */
+
+}
+.rankname {
+    /* width: 100vw; */
+    text-align: center;
+    font-size: 1.5rem;
+    display: inline;
+    font-weight: bold;
+    margin: 0 5% 0 33%;
+}
+.rankname div {
+    display: inline;
+}
+.ranknull {
+    padding-top: 140px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.numberOf{
+    display: inline;
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    /* margin-left: 100px; */
+}
+.tabs{
+    /* margin: 0 auto; */
+    /* margin-left: 15px; */
+    /* background-color: black; */
+    
+    text-align: center;
+    padding: 0;
+    height: 50px;
+    margin-bottom: 0;
+    /* display: table-cell; */
+    /* display: flex; */
+}
+.tabs li{
+    display: inline-block;
+    /* margin: 0 auto; */
+    margin-top: 26.1px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 70px;
+    border-radius: 5px 5px 0 0;
+    background-color: rgba(255,237, 115, 1);
+    cursor: pointer;
+}
+.tabs li.active{
+    background-color: rgba(255,237, 115, 0.5);
+}
+.close{
+    position: absolute;
+    width: 35px;
+    right : 40px;
+    background-color: #ff5722;
+    color : #fff;
+    border-radius: 10px;
+}
+.modal.openModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-bg-show 0.3s;
+}
+@keyframes modal-show {
+    from {
+        opacity: 0;
+        margin-top: -50px;
+    }
+    to {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+@keyframes modal-bg-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

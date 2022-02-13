@@ -327,9 +327,11 @@ public class UserController {
 			System.out.println("frined user seq "+friends.get(i).getUserSeq()+", numberOf "+friends.get(i).getNumberOf());
 			User friend = userService.findOneUserByUserSeq(friends.get(i).getUserSeq()); // username포함
 			// username 담아주기
+
 			DrinkTogetherResponse drinkTogetherResponse = new DrinkTogetherResponse();
 			drinkTogetherResponse.setName(friend.getName());
 			drinkTogetherResponse.setNumberOf(friends.get(i).getNumberOf());
+			drinkTogetherResponse.setImgurl(friend.getImageUrl());
 			res.add(drinkTogetherResponse);
 		}
 
