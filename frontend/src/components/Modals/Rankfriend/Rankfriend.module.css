@@ -72,7 +72,7 @@
 .rankname {
     /* width: 100vw; */
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.2rem;
     display: block;
     font-weight: bold;
     /* margin-left: 10%; */
@@ -111,7 +111,7 @@
     display: inline-block;
     /* margin: 0 auto; */
     /* font-size: ; */
-    font-size: 0.76em;
+    /* font-size: 0.76em; */
     /* margin-top: 10%; */
     margin-left: 2%;
     margin-right: 2%;
