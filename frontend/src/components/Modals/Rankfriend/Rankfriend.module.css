@@ -46,8 +46,8 @@
 .ranklist{
     /* margin-top: 10px; */
     /* display: flex; */
-    width: 390px;
-    height: 330px;
+    width: 21vw;
+    height: 35vh;
     border-radius: 0 0 10px 10px ;
     margin: 0 auto;
     /* margin-bottom: 7px; */
@@ -58,12 +58,12 @@
 .imgbox{
     /* margin: 15px auto; */
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 1vw;
 }
 .ranklist img{
     /* display: inline-block; */
-    width: 200px;
-    height: 200px;
+    width: 12vw;
+    height: 11vw;
     margin: 15px auto;
     border-radius: 15px;
     /* margin-bottom: 15px; */
@@ -81,13 +81,13 @@
     display: inline;
 }
 .ranknull {
-    padding-top: 140px;
+    padding-top: 9vw;
     font-size: 1.5rem;
     font-weight: bold;
 }
 .numberOf{
     display: inline;
-    margin-top: 10px;
+    margin-top: 0.7vw;
     font-size: 1.2rem;
     font-weight: bold;
     text-align: center;
@@ -100,7 +100,7 @@
     
     text-align: center;
     padding: 0;
-    height: 50px;
+    height: 5.3vh;
     margin-bottom: 0;
     /* display: table-cell; */
     /* display: flex; */
@@ -108,10 +108,10 @@
 .tabs li{
     display: inline-block;
     /* margin: 0 auto; */
-    margin-top: 26.1px;
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 70px;
+    margin-top: 1.4vw;
+    margin-left: 0.25vw;
+    margin-right: 0.25vw;
+    width: 3.8vw;
     border-radius: 5px 5px 0 0;
     background-color: rgba(255,237, 115, 1);
     cursor: pointer;
