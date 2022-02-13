@@ -6,7 +6,6 @@ import io.openvidu.client.internal.ProtocolElements;
 import io.openvidu.server.core.Participant;
 import io.openvidu.server.rpc.RpcNotificationService;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,8 +18,6 @@ public class MusicService {
     static final int PAUSEMUSIC = 2;
     /** 다음곡 재생 **/
     static final int NEXTMUSIC = 3;
-    /** 음악 처음 추가 **/
-    // static final int ADDFRISTMUSIC = 4;
     /** 음악 추가 **/
     static final int ADDMUSIC = 4;
     /** 음악 삭제 **/
@@ -28,7 +25,7 @@ public class MusicService {
 
     static RpcNotificationService rpcNotificationService;
 
-     // < sessionId, 노래목록 = [[비디오아이디, 가수, 노래], [비디오아이디, 가수, 노래], [비디오아이디, 가수, 노래]] >
+     // < sessionId, 노래목록 = [[비디오아이디, 가수, 노래, 주소], [비디오아이디, 가수, 노래, 주소], [비디오아이디, 가수, 노래, 주소]] >
     protected ConcurrentHashMap<String, ArrayList<ArrayList<String>>> requestSongsMap = new ConcurrentHashMap<>();
 
     public void controlMusic(Participant participant, JsonObject message, Set<Participant> participants,
@@ -137,14 +134,17 @@ public class MusicService {
         System.out.println("[Music] 삭제 후 제일 처음 노래 : " + music);
 
         String strMusicList = "";
-        String firstMusic = music.get(0) + "," + music.get(1) + "," + music.get(2);
+        String firstMusic = music.get(0) + "^" + music.get(1) + "^" + music.get(2);
         for(int i=0; i < musicList.size()-1; i++) {
-            String strMusic = musicList.get(i).get(0) + ',' + musicList.get(i).get(1) + ',' + musicList.get(i).get(2);
-            strMusicList = strMusicList.concat(strMusic).concat("/");
+            // strMusic = 가수^노래제목^키값^썸네일주소
+            String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^'
+                    + musicList.get(i).get(2) + '^' + musicList.get(i).get(3);
+            // strMusicList = 노래|노래|노래
+            strMusicList = strMusicList.concat(strMusic).concat("|");
         }
         // 마지막 노래 다음에는 / 붙이지 않도록
         ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
-        strMusicList = strMusicList.concat(finalMusic.get(0) + ',' + finalMusic.get(1) + ',' + finalMusic.get(2));
+        strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2) + '^' + finalMusic.get(3));
 
         JsonObject result = new JsonObject();
         result.addProperty("musicStatus", musicStatus);
@@ -160,38 +160,6 @@ public class MusicService {
         System.out.println("[Music] 다음곡 재생 응답 완료 : " + params);
     }
 
-
-    /**
-     * 음악 처음 추가
-     * musicStatus: X
-     * */
-//    private void addFistMusic(String sessionId, JsonObject message, Set<Participant> participants,
-//                            JsonObject params, JsonObject data) {
-//
-//        String singer = data.get("singer").getAsString();
-//        String song = data.get("song").getAsString();
-//        String videoId = data.get("videoId").getAsString();
-//        System.out.println("[Music] 처음 추가하고 싶은 노래(비디오아이디) : " + singer + ", " + song);
-//
-//        ArrayList<String> music = new ArrayList<>();
-//        music.add(singer);
-//        music.add(song);
-//        music.add(videoId);
-//        ArrayList<ArrayList<String>> musicList = new ArrayList<>();
-//        musicList.add(music);
-//        requestSongsMap.put(sessionId, musicList);
-//        String strMusic = videoId + ',' + singer + ',' + song;
-//        data.addProperty("music", strMusic);
-//
-//
-//        params.add("data", data);
-//        for (Participant p : participants) {
-//            rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-//                    ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-//            System.out.println("[Music] 처음 음악 추가 반환 내용 : " + params);
-//        }
-//    }
-
     /**
      * 음악 추가
      * musicStatus: 4
@@ -201,6 +169,7 @@ public class MusicService {
         String singer = data.get("singer").getAsString();
         String song = data.get("song").getAsString();
         String videoId = data.get("videoId").getAsString();
+        String thumUrl = data.get("thumUrl").getAsString();
         System.out.println("[Music] 추가하고 싶은 노래 : " + singer + ", " + song);
         // 해당 세션에 아이디 추가
 
@@ -209,6 +178,7 @@ public class MusicService {
         music.add(singer);
         music.add(song);
         music.add(videoId);
+        music.add(thumUrl);
 
         ArrayList<ArrayList<String>> musicList = new ArrayList<>();
         if (requestSongsMap.get(sessionId) == null) {
@@ -223,12 +193,14 @@ public class MusicService {
 
         String strMusicList = "";
         for(int i=0; i < musicList.size()-1; i++) {
-            String strMusic = musicList.get(i).get(0) + ',' + musicList.get(i).get(1) + ',' + musicList.get(i).get(2);
-            strMusicList = strMusicList.concat(strMusic).concat("/");
+            // strMusic = 가수^노래제목^키값^썸네일주소
+            String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^'
+                    + musicList.get(i).get(2) + '^' + musicList.get(i).get(3);
+            strMusicList = strMusicList.concat(strMusic).concat("|");
         }
         // 마지막 노래 다음에는 / 붙이지 않도록
         ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
-        strMusicList = strMusicList.concat(finalMusic.get(0) + ',' + finalMusic.get(1) + ',' + finalMusic.get(2));
+        strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2) + '^' + finalMusic.get(3));
 
         JsonObject result = new JsonObject();
         result.addProperty("musicStatus", musicStatus);
@@ -269,12 +241,14 @@ public class MusicService {
         // 음악 목록 string으로 감싸서 반환
         String strMusicList = "";
         for(int i=0; i < musicList.size()-1; i++) {
-            String strMusic = musicList.get(i).get(0) + ',' + musicList.get(i).get(1) + ',' + musicList.get(i).get(2);
-            strMusicList = strMusicList.concat(strMusic).concat("/");
+            // strMusic = 가수^노래제목^키값^썸네일주소
+            String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^'
+                    + musicList.get(i).get(2) + '^' + musicList.get(i).get(3);
+            strMusicList = strMusicList.concat(strMusic).concat("|");
         }
         // 마지막 노래 다음에는 / 붙이지 않도록
         ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
-        strMusicList = strMusicList.concat(finalMusic.get(0) + ',' + finalMusic.get(1) + ',' + finalMusic.get(2));
+        strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2) + '^' + finalMusic.get(3));
 
         JsonObject result = new JsonObject();
         result.addProperty("musicStatus", musicStatus);
