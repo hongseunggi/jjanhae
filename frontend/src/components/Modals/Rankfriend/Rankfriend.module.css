@@ -26,8 +26,8 @@
 }
 .chartmodalForm {
     position: relative;
-    width: 500px;
-    height: 700px;
+    width: 26vw;
+    height: 75vh;
     /* margin: 0 auto; */
     border-radius: 50px;
     background-color: #eee;
