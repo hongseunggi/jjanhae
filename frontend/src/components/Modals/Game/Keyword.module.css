@@ -63,7 +63,7 @@
     background-color: #08d9d6;
     margin-right: 20px;
 }
-.confirmBtn,.retryBtn {
+.confirmBtn ,.retryBtn   {
     background-color: #08d9d6;
     width: 80px;
     height: 40px;
@@ -74,6 +74,9 @@
     padding: 13px;
     text-align: center;
     margin : 45px;
+  }
+  .retryBtn  {
+    margin : 25px;
   }
   .modal.openModal {
     display: flex;
@@ -135,7 +138,7 @@
   .forbiddeninformBorder {
     align-items: center;
     display: flex;
-    margin:  95px 0px 20px 0px;
+    margin:  65px 0px 20px 0px;
     flex-direction: column;
   }
   .failBorder {
@@ -149,6 +152,14 @@
   font-size: 18px;
   width : fit-content;
 }
+.forbiddenicon {
+  height: 148px;
+  width: 150px;
+  margin: -25px 0px 10px 0px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .yangconfirmBtn {
   background-color: #08d9d6;
     width: 100px;
@@ -168,7 +179,6 @@
   display: flex;
   justify-content: space-evenly;
 }
-.failicon
 
   .informText{
       font-weight: bolder;
@@ -210,6 +220,10 @@
   .gameText {
     text-align: center;
     color: #2959dd;
+  }
+  .yellowText {
+    text-align: center;
+    color : #fff226;
   }
 
   @keyframes modal-show {
@@ -260,10 +274,13 @@
     font-weight: bolder;
     font-size: 20px;
     width: 100%;
+    text-align: center;
   }
   .correctText {
     width : 100%;
     color : #252525;
+    font-size: 23px;
+    margin-bottom: 0px;
   }
   
   .informText {
@@ -347,23 +364,39 @@
       height: 25px;
     }
 
-    .warnText {
+    .warnText , .saywarnText {
       color :rgba(255, 99, 71, 0.938);
       font-weight: bolder;
       font-size: 20px;
     }
-
-    
+    .saywarnText {
+      font-size: 25px;
+    }
     .celText {
       color :rgba(71, 120, 255, 0.938);
       font-weight: bolder;
       font-size: 20px;
     }
+    .noText {
+      color :rgba(255, 19, 19, 0.938);
+      font-weight: bolder;
+      font-size: 20px;
+    }
+    .celebrateText {
+      color :rgba(71, 255, 86, 0.938);
+      font-weight: bolder;
+      font-size: 25px;
+    }
+    .orangeText {
+      color :rgba(255, 145, 0, 0.938);
+      font-weight: bolder;
+      font-size: 25px;
+    }
     .wingicon { 
       width : 150px;
       height : 150px;
       perspective:  300px;
-      margin : 30px 0px 40px 0px;
+      margin : 30px 0px 75px 0px;
     }
     .wingicon .wingwingicon {
       width : 150px;
@@ -378,7 +411,7 @@
       text-align: center;
       font-size: 25px;
       font-weight: bolder;
-      margin: 30px 0px 0px 0px;
+      margin: 5px 0px 0px 0px;
       color: black;
     }
 
@@ -395,14 +428,16 @@
     color: #252525ee;
     }
 
-    .forbiddeninformBorder {
-      margin : 20px;
-    }
     .orangeCancleBtn {
       background-color: transparent;
       width: 30px;
       height: 30px;
     }
-    .infoText {
-
+    .smallicon {
+      width :40px;
+      height :40px;
+      margin : 10px;
+    }
+    .infoForbiddenText {
+      text-align: center;
     }

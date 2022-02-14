@@ -12,6 +12,10 @@ import { ReactComponent as PuzzleIcon } from "../../../assets/icons/puzzle.svg";
 import { ReactComponent as CancleIcon } from "../../../assets/icons/cancleorange.svg";
 import { ReactComponent as NoIcon } from "../../../assets/icons/no.svg";
 import { ReactComponent as ForbiddenIcon } from "../../../assets/icons/forbidden.svg";
+import { ReactComponent as FireworksIcon } from "../../../assets/icons/fireworks.svg"; 
+import { ReactComponent as ConfetiIcon } from "../../../assets/icons/confeti.svg"; 
+import { ReactComponent as ClapIcon } from "../../../assets/icons/clap.svg"; 
+import { ReactComponent as ThumbupIcon } from "../../../assets/icons/thumbup.svg"; 
 
 
 
@@ -37,8 +41,10 @@ const Keyword = (props) => {
     }
 
     const confirm = () => {
-      confirmMyAnswer(answer, gameId);
-      setAnswer("");
+    if(answer!==""&&answer!==" ") {
+        confirmMyAnswer(answer, gameId);
+        setAnswer("");
+        }
     }
 
     const confirmTarget = () => {
@@ -75,10 +81,15 @@ const Keyword = (props) => {
                                 onChange={handleGameNameInput}></input>
                     </form>
                 </div>
-                <button className={styles.yangconfirmBtn} onClick={confirm}>
-                    {" "}
-                    입력{" "}
-                </button>
+                <div>
+                    <button className={styles.yangconfirmBtn} onClick={confirm}>
+                        {" "}
+                        입력{" "}
+                    </button>
+                    <button className={styles.confirminputBtn} onClick={()=> {handleClose("1","answer")}}>
+                        다음에
+                    </button>
+                </div>
                 </main>
           </section>
 
@@ -89,14 +100,15 @@ const Keyword = (props) => {
             </header>
                 <main className={styles.main}>
                 <div className={styles.yangicon}>
-                    <CelebrateIcon className={styles.icon}/>
+                    <ClapIcon className={styles.icon}/>
                 </div>
                 <div className={styles.yanginformBorder}>
                     <div className={styles.informCorrectText}>
-                        <p className={styles.correctText}> <span className={styles.celText}>정답</span>입니다!!!</p>
+                        <p className={styles.correctText}> <ConfetiIcon className={styles.smallicon}/>당신의 키워드를 맞추셨어요!!<ConfetiIcon className={styles.smallicon}/></p>
+                        <p className={styles.correctText}> <ConfetiIcon className={styles.smallicon}/>축하드립니다~!!<ConfetiIcon className={styles.smallicon}/></p>
                     </div>
                 </div>
-                <button className={styles.confirmBtn} onClick={()=>{handleClose("1","correct")}}>
+                <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("1","correct")}}>
                     {" "}
                     아싸~{" "}
                 </button>
@@ -145,7 +157,7 @@ const Keyword = (props) => {
                 <div className={styles.informBorder}>
                     <div className={styles.infoText}>
                         <p className={styles.text}>참가자들이 순서대로   <span className={styles.warnText}>키워드</span>를 입력중입니다</p>
-                        <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>키워드</span>를 입력을 마치면</p>
+                        <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>키워드</span> 입력을 마치면</p>
                         <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
                         <p className={styles.text}>잠시만 기다려주세요</p>
                     </div>
@@ -163,9 +175,9 @@ const Keyword = (props) => {
                 <div className={styles.yanginformBorder}>
                     <div className={styles.infoText}>
                         <p className={styles.text}>양세찬 게임을 시작합니다~!</p>
-                        <p className={styles.text}>참가자들은 <span className={styles.greenText}>순서대로</span> 주어진 참가자에게 <span className={styles.warnText}>키워드</span>를 입력해주세요</p>
-                        <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>키워드</span>를 입력을 마치면</p>
-                        <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
+                        <p className={styles.text}>참가자들은 <span className={styles.greenText}>순서대로</span> 주어진 참가자에게 <span className={styles.warnText}>키워드</span>를 입력합니다</p>
+                        <p className={styles.text}>질문을 통해서 자신의<span className={styles.warnText}>키워드</span>를 맞춰보세요</p>
+                        <p className={styles.text}>그럼 <span className={styles.yellowText}>시작</span>하겠습니다~</p>
                     </div>
                 </div>
                 </main>
@@ -181,7 +193,7 @@ const Keyword = (props) => {
                 <div className={styles.yanginformBorder}>
                     <div className={styles.yanginfoText}>
                         <p className={styles.text}>당신의  <span className={styles.warnText}>키워드</span>는 뭘까요??? </p>
-                        <p className={styles.text}>화면 안 <span className={styles.targetText}>포스트잇</span>을 클릭해 맞춰보세요~</p>
+                        <p className={styles.text}>화면 안 <span className={styles.yellowText}>포스트잇</span>을 클릭해 맞춰보세요~</p>
                     </div>
                 </div>
                 </main>
@@ -214,7 +226,7 @@ const Keyword = (props) => {
                 <main className={styles.main}>
                 <div className={styles.informBorder}>
                     <ProblemIcon className={styles.icon}/>
-                    <div className={styles.infoText}>
+                    <div className={styles.infoForbiddenText}>
                         <span className={styles.targetText}>{targetNickName}</span>
                         <span className={styles.text}>   님의</span>
                         <p className={styles.text}> <span className={styles.warnText}>금지어</span>를 정해주세요!</p>
@@ -228,7 +240,11 @@ const Keyword = (props) => {
                                 onChange={handleTargetInput}></input>
                     </form>
                 </div>
-                <button className={styles.confirmBtn} onClick={confirmTarget}>
+                <button className={styles.confirmBtn} onClick={confirmTarget} onKeyPress = {(event)=> {
+                    if(event.key==='Enter') {
+                        confirmTarget();
+                    }
+                }}>
                     {" "}
                     키워드 등록{" "}
                 </button>
@@ -246,7 +262,7 @@ const Keyword = (props) => {
                 <div className={styles.informBorder}>
                     <div className={styles.infoText}>
                         <p className={styles.text}>참가자들이 순서대로<span className={styles.warnText}>금지어</span>를 입력중입니다</p>
-                        <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>금지어</span>를 입력을 마치면</p>
+                        <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>금지어</span> 입력을 마치면</p>
                         <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
                         <p className={styles.text}>잠시만 기다려주세요</p>
                     </div>
@@ -258,16 +274,16 @@ const Keyword = (props) => {
             <header>
             </header>
                 <main className={styles.main}>
-                <div className={styles.yangicon}>
+                <div className={styles.forbiddenicon}>
                     <QuestionIcon className={styles.icon}/>
                 </div>
                 <div className={styles.forbiddeninformBorder}>
-                    <div className={styles.yanginfoText}>
+                    <div className={styles.forbiddeninfoText}>
                         <p className={styles.text}>당신의 <span className={styles.warnText}>금지어</span>는 무엇일까요??? </p>
-                        <p className={styles.text}>화면 안 <span 포스트잇 styles={{color : "#ffff7f"}}>포스트잇</span>을 클릭해 맞춰보세요</p>
-                        <p className={styles.text}>금지어 발설시 <span className={styles.warnText}>경고</span>를 당할 수 있습니다</p>
+                        <p className={styles.text}>화면 안 <span className={styles.yellowText}>포스트잇</span>을 클릭해 맞춰보세요</p>
+                        <p className={styles.text}>금지어 발설시 <span className={styles.noText}>경고</span>를 당할 수 있습니다</p>
                         <p className={styles.text}>다른 참가자가 <span className={styles.warnText}>금지어</span> 를 말한다면</p>
-                        <p className={styles.text}>가차없이 <span className={styles.warnText}>사이렌<SirenIcon className={styles.sirenicon}/></span>을 울려주세요!!
+                        <p className={styles.text}>가차없이 <span className={styles.orangeText}>사이렌<SirenIcon className={styles.sirenicon}/></span>을 울려주세요!!
                         </p>
                     </div>
                 </div>
@@ -295,7 +311,11 @@ const Keyword = (props) => {
                     </form>
                 </div>
                 <div>
-                <button className={styles.confirminputBtn} onClick={confirm}>
+                <button className={styles.confirminputBtn} onClick={confirm} onKeyPress = {(event)=> {
+                    if(event.key==='Enter') {
+                        confirm();
+                    }
+                }}>
                     {" "}
                     입력{" "}
                 </button>
@@ -317,7 +337,7 @@ const Keyword = (props) => {
                 <div className={styles.informBorder}>
                     <div className={styles.infoText}>
                         <p className={styles.alertText}>당신!!!</p>
-                        <p className={styles.alertText}>방금 <span className={styles.warnText}>금지어</span>를 말하셨어요!!!!</p>
+                        <p className={styles.alertText}>방금 <span className={styles.saywarnText}>금지어</span>를 말하셨어요!!!!</p>
                     </div>
                 </div>
                 <button className={styles.confirmBtn} onClick={handleClose}>
@@ -337,7 +357,9 @@ const Keyword = (props) => {
                 </div>
                 <div className={styles.informBorder}>
                     <div className={styles.infoText}>
-                        <p className={styles.alertText}><span className={styles.targetText}>{sirenTargetNickName}</span>님이 <span className={styles.warnText}>금지어</span>를 말하셨습니다!!!!</p>
+                        <p className={styles.alertText}><span className={styles.targetText}>{sirenTargetNickName}</span>님이 <span className={styles.saywarnText}>금지어</span>를 말하셨습니다!!!!</p>
+                        <p className={styles.alertText}>어서 <span className={styles.celebrateText}>벌칙</span>을 진행해주세요!!!!</p>
+
                     </div>
                 </div>
                 <button className={styles.confirmBtn} onClick={handleClose}>
@@ -362,6 +384,73 @@ const Keyword = (props) => {
                         <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
                     </div>
                 </div>
+                </main>
+          </section>
+        )  : mode === "correctForbidden" ? (
+          <section className={styles.modalForm}>
+            <header>
+
+            </header>
+                <main className={styles.main}>
+                <div className={styles.yangicon}>
+                    <ClapIcon className={styles.icon}/>
+                </div>
+                <div className={styles.yanginformBorder}>
+                    <div className={styles.informCorrectText}>
+                        <p className={styles.correctText}> <ConfetiIcon className={styles.smallicon}/>당신의 금지어를 맞추셨어요!!<ConfetiIcon className={styles.smallicon}/></p>
+                        <p className={styles.correctText}> <ConfetiIcon className={styles.smallicon}/>축하드립니다~!!<ConfetiIcon className={styles.smallicon}/></p>
+                    </div>
+                </div>
+                <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("1","correct")}}>
+                    {" "}
+                    아싸~{" "}
+                </button>
+                </main>
+          </section>
+        )  : mode === "already" ? (
+          <section className={styles.modalForm}>
+            <header>
+
+            </header>
+                <main className={styles.main}>
+                <div className={styles.yangicon}>
+                    <ThumbupIcon className={styles.icon}/>
+                </div>
+                <div className={styles.yanginformBorder}>
+                    <div className={styles.informCorrectText}>
+                        <p className={styles.correctText}>이미 당신은  <span className={styles.saywarnText}>키워드</span>를 맞추셨어요!!</p>
+                        <p className={styles.correctText}> 축하드립니다~!!</p>
+                    </div>
+                </div>
+                <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("1","correct")}} onKeyPress = {(event)=> {
+                    if(event.key==='Enter') {
+                        handleClose("1","correcrt");
+                    }
+                }}>
+                    {" "}
+                    확인{" "}
+                </button>
+                </main>
+          </section>
+        )  :  mode === "alreadyForbidden" ? (
+          <section className={styles.modalForm}>
+            <header>
+
+            </header>
+                <main className={styles.main}>
+                <div className={styles.yangicon}>
+                    <ThumbupIcon className={styles.icon}/>
+                </div>
+                <div className={styles.yanginformBorder}>
+                    <div className={styles.informCorrectText}>
+                        <p className={styles.correctText}> <ConfetiIcon className={styles.smallicon}/>당신은 이미 <span className={styles.saywarnText}>금지어</span>를 맞추셨어요!!<ConfetiIcon className={styles.smallicon}/></p>
+                        <p className={styles.correctText}> <ConfetiIcon className={styles.smallicon}/>축하드립니다~!!<ConfetiIcon className={styles.smallicon}/></p>
+                    </div>
+                </div>
+                <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("1","correct")}}>
+                    {" "}
+                    확인{" "}
+                </button>
                 </main>
           </section>
         ) :

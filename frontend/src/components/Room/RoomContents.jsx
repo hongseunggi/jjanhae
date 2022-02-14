@@ -69,6 +69,8 @@ const RoomContents = ({
   const [siren, setSiren] = useState("N");
   const [sirenTarget, setSirenTarget] = useState({});
   const [sirenTargetNickName, setSirenTargetNickName] = useState({});
+  const [correctGamename , setCorrectGamename] = useState(false);
+  const [correctForbiddenName , setCorrectForbiddenName] = useState(false);
 
   // console.log(targetSubscriber);
 
@@ -263,9 +265,10 @@ const RoomContents = ({
             console.log(data.gameStatus);
             if(data.index===undefined&&data.gameStatus===1) {
               openKeywordInputModal("start");
+              setCorrectGamename(false);
               setTimeout(() => {
                 yangGame(data);
-              }, 6000);
+              }, 8000);
             }else {
               yangGame(data);
             }
@@ -275,9 +278,10 @@ const RoomContents = ({
           } else if (data.gameId === 2) {
             if(data.index===undefined&&data.gameStatus===1) {
               openKeywordInputModal("startForbidden");
+              setCorrectForbiddenName(false);
               setTimeout(() => {
                 forbidden(data);
-              }, 6000);
+              }, 8000);
             }else {
               forbidden(data);
             }
@@ -323,6 +327,7 @@ const RoomContents = ({
           if (data.answerYn === "Y") {
             // setModalMode("correct");
             openKeywordInputModal("correct");
+            setCorrectGamename(true);
             console.log("here!!!!");
           } else if (data.answerYn === "N") {
             console.log("wrong!!!!!!");
@@ -373,8 +378,9 @@ const RoomContents = ({
             localUserRef.current.getStreamManager().stream.streamId
           ) {
             if (data.answerYn === "Y") {
-              setModalMode("correct");
-              openKeywordInputModal("correct");
+              // setModalMode("correct");
+              setCorrectForbiddenName(true);
+              openKeywordInputModal("correctForbidden");
               console.log("here!!!!");
             } else if (data.answerYn === "N") {
               // setModalMode("wrong");
@@ -705,7 +711,16 @@ const RoomContents = ({
     });
   };
   const openKeywordInputModal = (changemode) => {
-    setModalMode(changemode);
+    //키워드 이미 맞췄다
+    if(correctForbiddenName===true) {
+      setModalMode("alreadyForbidden");
+      //금지어 이미 맞췄다
+    }else if(correctGamename===true) {
+      setModalMode("already");
+    //아직 마추지 못했다
+    }else {
+      setModalMode(changemode);
+    }
     setKeywordInputModal(true);
   };
   const closeKeywordInputModal = (changeMode) => {
