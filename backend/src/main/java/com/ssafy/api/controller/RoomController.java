@@ -317,17 +317,6 @@ public class RoomController {
             }
         }
 
-        // 비공개방일 시 패스워드 일치여부 확인
-//        System.out.println("room type "+room.getType());
-//        if(room.getType() == 0) {
-//            System.out.println("비공개방이므로 패스워드 일치여부 확인...");
-//            String password = enterRoomRequest.getPassword();
-//            System.out.println("password "+password);
-//            if(!password.equals(room.getPassword())) {
-//                System.out.println("비밀번호 불일치");
-//                return ResponseEntity.status(200).body(BaseResponseBody.of(204, "비밀번호가 일치하지 않습니다."));
-//            }
-//        }
 
         // 나갔다 들어온 유저인지 확인
         RoomHistory roomHistoryInTheRoom = roomHistoryService.findOneHistoryInRoom(user.getUserSeq(), room.getRoomSeq());
@@ -347,6 +336,49 @@ public class RoomController {
             roomHistoryInTheRoom.setUpdatedTime(LocalDateTime.now());
             roomHistoryService.updateRoomAction(roomHistoryInTheRoom);
         }
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+    }
+
+
+    @PatchMapping(value = "/img")
+    @ApiOperation(value = "방 이미지 링크", notes = "방 인증샷을 수정한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 403, message = "권한 없음"),
+            @ApiResponse(code = 404, message = "해당 방 없음"),
+            @ApiResponse(code = 500, message = "서버 오류"),
+
+    })
+    public  ResponseEntity<? extends BaseResponseBody> updateRoomImg(@ApiIgnore Authentication authentication, @RequestBody RoomImgPatchReq roomImgPatchReq) {
+        /**
+         * 방 인증샷을 수정한다.
+         * 권한 : 로그인한 유저
+         * */
+        System.out.println("방 인증샷을 수정합니다.");
+        String imageUrl = roomImgPatchReq.getImgUrl();
+        if(authentication == null){
+            System.out.println("얘 토큰 없다!!");
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+        }
+
+        // 해당 방 검색
+        Room room = roomService.findRoomByRoomSeq(roomImgPatchReq.getRoomSeq());
+
+        // room null 체크
+        System.out.println("room ; " + room);
+        if(room == null) {
+            System.out.println("존재하지 않는 방입니다");
+            return ResponseEntity.status(200).body(BaseResponseBody.of(204, "존재하지 않는 방입니다."));
+        }
+
+        // 그럴 일은 없겠지만 이미지 링크가 비어있다면
+        if(imageUrl.equals("")) {
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 값을 입력했습니다."));
+        }
+
+        // 정상적이라면 이미지 저장
+        roomService.updateRoomImg(room, imageUrl);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
