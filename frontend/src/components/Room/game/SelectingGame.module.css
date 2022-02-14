@@ -1,207 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 99999999;
-    /* background-color: rgba(235, 234, 228, 0.452); */
-    background-color: transparent;
-    border-radius: 10px;
-    /* margin : 10px 10px 0px 10px; */
-  }
-  .modalForm header {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .modalForm .title {
-    font-size: 30px;
-    margin : 0px 13px 0px 10px;
-    font-weight: bolder;
-    color : #252a34;
-;
-  }
-  .modal button {
-    outline: none;
-    cursor: pointer;
-    border: 0;
-  }
-  .modal > section {
-    width: 600px;
-    height: 550px;
-    /* margin: 0 auto; */
-    border-radius: 50px;
-    background-color: rgb(129, 127, 127);
-    /* 팝업이 열릴때 스르륵 열리는 효과 */
-    animation: modal-show 0.3s;
-    overflow: hidden;
-  }
-  .modalTitle {
-    display: flex;
-  }
-  
-  label {
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .modal > section > footer {
-    text-align: right;
-  }
-  .modal > section > footer button {
-    width: 100px;
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-size: 13px;
-  }
-  .modal > section > footer .confirmBtn {
-    background-color: #08d9d6;
-    margin-right: 20px;
-}
-.confirmBtn {
-    background-color: #08d9d6;
-    width: 80px;
-    height: 40px;
-    border-radius: 10px;
-    width: fit-content;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 13px;
-    text-align: center;
-  }
-  .modal.openModal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* 팝업이 열릴때 스르륵 열리는 효과 */
-    animation: modal-bg-show 0.3s;
-  }
-  .icon {
-    height: 120px;
-    width: 120px;
-  }
-  
-  .main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-  }
- 
-  .logo {
-    z-index: 1;
-    position: relative;
-    float: left;
-    width: 50px;
-    height: 50px;
-    margin-left: 2%;
-  }
-  .logoBorder {
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  .closeBtn {
-    float: right;
-    width: 30px;
-    height: 30px;
-    margin: 15px 30px 0px 0px;
-    border-radius: 8px;
-    background-color: #eee;
-  }
-  .informBorder {
-    align-items: center;
-    display: flex;
-    margin: 15px;
-    flex-direction: column;
-  }
-  .informText{
-      font-weight: bolder;
-      font-size: 20px;
-      width : 80%;
-  }
-  .inputKeyword {
-    border-radius: 10px;
-    height: 33px;
-    background-color: #eee;
-    padding: 10px;
-    font-size: 20px;
-  }
-
-  .text {
-    text-align: center;
-    font-size: 20px;
-    font-weight: bolder;
-  }
-  .targetText {
-    text-align: center;
-    font-size: 25px;
-    font-weight: bolder;
-    color: #ddda29;
-  }
-  .infoText {
-    text-align: center;
-  }
-
-  @keyframes modal-show {
-    from {
-      opacity: 0;
-      margin-top: -50px;
-    }
-    to {
-      opacity: 1;
-      margin-top: 0;
-    }
-  }
-  @keyframes modal-bg-show {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  .partyDetail {
-    display: flex;
-  }
-  
-  .descriptionForm,
-  .configData {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .descriptionForm .description {
-    height: 100px;
-    border: none;
-    border-radius: 20px;
-    background-color: #eee;
-    resize: none;
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-  
-  input:focus,
-  textarea:focus {
-    outline: none;
-  }
- 
-  .informCorrectText {
-    font-weight: bolder;
-    font-size: 20px;
-    width: 100%;
-  }
-  .correctText {
+.onSelectingGame, .onInfoGame {
+    position : absolute;
+    z-index : 9999999;
     width : 100%;
-    color : #252525;
-  }
-  
-  .informText {
+    height : 100%;
+    background-color: rgb(172, 172, 172);
+    display: flex;
+    align-content: center;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.selectingGame, .infoGame{
+}
+
+
+.infoText {
     position: relative;
     width: 50%;
     height: 20%;    
@@ -273,3 +86,24 @@
         animation: rotate-loading 3.5s linear 0s infinite normal;
         transform-origin: 50% 50%;
     }
+
+    .infoText .sendClockIcon {
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .goBtn {
+        background-color: transparent;
+        border: none;
+        width : 50%;
+        height : 50%;
+    }
+
+    .goIcon {
+        width: 100%;
+        height: 100%;
+    }
+        
