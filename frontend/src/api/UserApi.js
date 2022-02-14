@@ -102,6 +102,7 @@ const getUserList = async (roomSeq) => {
 const getUserProfile = async () => {
   console.log(axios.defaults.headers.Authorization);
   const result = await axios.get(`${BASE_URL}/profile`);
+  console.log(result);
   return result;
 };
 
