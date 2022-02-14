@@ -4,6 +4,7 @@ import { ReactComponent as GameIcon } from "../../../assets/icons/game.svg";
 import { ReactComponent as CelebrateIcon } from "../../../assets/icons/celebrate.svg";
 import { ReactComponent as QuestionIcon } from "../../../assets/icons/question.svg";
 import { ReactComponent as Sendclock } from "../../../assets/icons/sendclock.svg";
+import { ReactComponent as ProblemIcon } from "../../../assets/icons/problem.svg";
 import UserApi from "../../../api/UserApi";
 
 
@@ -12,7 +13,6 @@ const Keyword = (props) => {
     const {open, close, confirmMyAnswer, confirmTargetGameName, mode, name, targetNickName} = props;
     const [answer, setAnswer] = useState("");
     const [targetGameName, setTargetGameName] = useState("");
-    console.log(targetNickName);
 
     const handleGameNameInput = (event) => {
       setAnswer(event.target.value);
@@ -28,6 +28,7 @@ const Keyword = (props) => {
     }
 
     const confirmTarget = () => {
+      console.log("here")
       if(targetGameName!==""&&targetGameName!==" ") {
         confirmTargetGameName(targetGameName);
         setTargetGameName("");
@@ -158,14 +159,58 @@ const Keyword = (props) => {
                 </div>
                 <div className={styles.informBorder}>
                     <div className={styles.infoText}>
+                        <p className={styles.text}>당신의 키워드는 뭘까요??? </p>
+                        <p className={styles.text}>화면 안 포스트잇을 클릭해 맞춰보세요~</p>
+                    </div>
+                </div>
+                </main>
+          </section>
+        )
+         :  mode === "wrong" ? (
+          <section className={styles.modalForm}>
+            <header>
+            </header>
+                <main className={styles.main}>
+                <div className={styles.icon}>
+                    <QuestionIcon className={styles.icon}/>
+                </div>
+                <div className={styles.informBorder}>
+                    <div className={styles.infoText}>
                         <p className={styles.text}>당신의 키워드는 뭘까요??? 화면 안 포스트잇을 클릭해 맞춰보세요~
                         </p>
                     </div>
                 </div>
                 </main>
           </section>
-        )
-         : null}
+        ) :  mode === "assignForbidden" ? (
+          <section className={styles.modalForm}>
+            <header>
+            </header>
+                <main className={styles.main}>
+                <div className={styles.informBorder}>
+                    <ProblemIcon className={styles.icon}/>
+                    <div className={styles.infoText}>
+                        <span className={styles.targetText}>{targetNickName}</span>
+                        <span className={styles.text}>   님의</span>
+                        <p className={styles.text}>금지어를 정해주세요!</p>
+                    </div>
+                </div>
+                <div className={styles.informBorder}>
+                    <form>
+                        <input className={styles.inputKeyword}
+                                placeholder="입력하기"
+                                value={targetGameName}
+                                onChange={handleTargetInput}></input>
+                    </form>
+                </div>
+                <button className={styles.confirmBtn} onClick={confirmTarget}>
+                    {" "}
+                    키워드 등록{" "}
+                </button>
+                </main>
+          </section>
+        ) : 
+          null}
          </>
            : null }
       </div>

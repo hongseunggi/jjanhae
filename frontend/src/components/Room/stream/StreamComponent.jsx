@@ -9,6 +9,8 @@ import Videocam from "@material-ui/icons/Videocam";
 import VideocamOff from "@material-ui/icons/VideocamOff";
 import { useState, useEffect } from "react";
 import ToolbarComponent from "../toolbar/ToolbarComponent.jsx";
+import { ReactComponent as SirenIcon } from "../../../assets/icons/siren.svg";
+
 
 
 function StreamComponent({
@@ -68,6 +70,12 @@ function StreamComponent({
       }
     }
   }, [nickname]);
+
+  useEffect(() => {
+    let index = Math.floor(Math.random() * 21);
+    setBgcolor(color[index]);
+  }, []);
+
 
   return (
     <div
@@ -131,7 +139,58 @@ function StreamComponent({
                 ) : null}
               </div>
             </>
-          ) : (
+          ) : mode === "game2" ? (
+            <>
+                {sessionId ? (
+                <div className={styles.forbiddenGame}>
+                  <div className={styles.postitInput}>
+                    <div 
+                      className={styles.keyword} 
+                      onClick = {openKeywordInputModal}>금지어가 뭘까요?
+                      </div>
+                  </div>
+                  </div>
+                ) : (
+                  <div className={styles.forbiddenAlertGameBorder}>
+                    <div className={styles.forbiddenAlertGame}>
+                      <button className={styles.sirenBtn}>
+                      <SirenIcon className={styles.sirenIcon}/>
+                      </button>
+                    <div
+                      className={styles.forbiddenpostit}
+                      style={{ backgroundColor: `${bgcolor}` }}
+                      >
+                      {myNickname}
+                      </div>
+                    </div>
+                  </div>
+                    )}
+              <div className={styles.controlbox}>
+                {sessionId ? (
+                  <ToolbarComponent
+                    sessionId={sessionId}
+                    user={user}
+                    camStatusChanged={camStatusChanged}
+                    micStatusChanged={micStatusChanged}
+                  ></ToolbarComponent>
+                ) : null}
+              </div>
+
+              <div id={styles.statusIcons}>
+                {sessionId ? null : !user.isVideoActive() ? (
+                  <div id={styles.camIcon}>
+                    <VideocamOff id={styles.statusCam} color="secondary" />
+                  </div>
+                ) : null}
+
+                {sessionId ? null : !user.isAudioActive() ? (
+                  <div id={styles.micIcon}>
+                    <MicOff id={styles.statusMic} color="secondary" />
+                  </div>
+                ) : null}
+              </div>
+            </>
+          ): (
             <>
               <div className={styles.controlbox}>
                 {sessionId ? (
