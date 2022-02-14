@@ -374,7 +374,7 @@ public class UserController {
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 403, message = "권한 없음"),
-			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 204, message = "No Contents"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<BaseResponseBody> updateUserProfileImg(@ApiIgnore Authentication authentication, @RequestBody UserProfileImgPatchReq userProfileImgPatchReq) {
@@ -389,8 +389,8 @@ public class UserController {
 		// 토큰에서 사용자 정보를 가져왔으니 이게 비어있을린 없다!
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 		System.out.println(userProfileImgPatchReq.getImageUrl());
-		if(userProfileImgPatchReq.getImageUrl().equals("")) {
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 값을 입력했습니다."));
+		if("".equals(userProfileImgPatchReq.getImageUrl())) {
+			return ResponseEntity.status(204).body(BaseResponseBody.of(204, "유효하지 않은 값을 입력했습니다."));
 		}
 		userService.updateUserProfileImg(userDetails.getUsername(), userProfileImgPatchReq.getImageUrl());
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 이미지가 수정되었습니다."));
