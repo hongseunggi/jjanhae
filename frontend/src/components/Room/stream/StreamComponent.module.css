@@ -3,7 +3,7 @@
   width: 100%;
   padding: 5px 10px;
   position: absolute;
-  z-index: 999;
+  z-index: 99;
   top: -100%;
   color: #ffffff;
   text-align: left;
@@ -40,7 +40,7 @@ video {
   right: 0;
   width: 80px;
   height: 40px;
-  z-index: 999;
+  z-index: 99;
   position: absolute;
   color: #ffffff;
 }
@@ -87,8 +87,7 @@ video {
 .yangGame {
   position: absolute;
   width: 250px;
-  height : 20%;
-  left : 50px;
-  bottom : 0;
+  height: 20%;
+  left: 50px;
+  bottom: 0;
 }
-

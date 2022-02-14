@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Marquee from "react-fast-marquee";
 import ReactPlayer from "react-player";
 import styles from "./MusicPlayer.module.css";
@@ -6,20 +6,34 @@ import styles from "./MusicPlayer.module.css";
 import { ReactComponent as PlayerIcon } from "../../../assets/icons/player.svg";
 import { ReactComponent as PlayIcon } from "../../../assets/icons/play.svg";
 import { ReactComponent as StopIcon } from "../../../assets/icons/stop.svg";
+import { ReactComponent as NextIcon } from "../../../assets/icons/next.svg";
+import { ReactComponent as HamburgerIcon } from "../../../assets/icons/hamburger.svg";
+import MusicList from "../../Modals/RegistMusic/MusicList";
 
 let posX = 0;
 let posY = 0;
 
-const MusicPlayer = ({ music, user }) => {
+const MusicPlayer = ({ user }) => {
   const [onPlayerClick, setOnPlayerClick] = useState(false);
-  const [isPlayMusic, setIsPlayMusic] = useState(false);
   const [musicList, setMusicList] = useState([]);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
+  const [videoId, setVideoId] = useState("");
+  const [music, setMusic] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const videoIdRef = useRef(videoId);
+  videoIdRef.current = videoId;
+
+  const musicListRef = useRef(musicList);
+  musicListRef.current = musicList;
+
+  useEffect(() => {
+    console.log(musicList);
+  }, [musicList]);
 
   useEffect(() => {
     user.getStreamManager().stream.session.on("signal:music", (event) => {
       const data = event.data;
-      // const data = JSON.parse(event.data);
       console.log(data);
       switch (data.musicStatus) {
         case 1:
@@ -32,65 +46,135 @@ const MusicPlayer = ({ music, user }) => {
           break;
         case 3:
           //다음 곡
+          const musicInfo = data.music.split("^");
+          setMusic(`${musicInfo[0]} - ${musicInfo[1]}`);
+          setVideoId(musicInfo[2]);
+          setPlaying(true);
+
+          const musicInfos = data.musicList.split("|");
+          console.log(musicInfos);
+          const musicArr = [];
+          musicInfos.forEach((value) => {
+            musicArr.push(value);
+          });
+          setMusicList(musicArr);
           break;
         case 4:
-          //음악 처음 추가
+          //음악 추가
+          const dataInfo = data.musicList.split("|");
+          const musicAddArr = [];
+          if (dataInfo.length === 1) {
+            const musicInfo = dataInfo[0].split("^");
+            setMusic(`${musicInfo[0]} - ${musicInfo[1]}`);
+            setVideoId(musicInfo[2]);
+            setPlaying(true);
+          }
+          dataInfo.forEach((value) => {
+            musicAddArr.push(value);
+          });
+          setMusicList(musicAddArr);
           break;
         case 5:
-          //음악 추가
-          break;
-        case 6:
           //음악 삭제
+          const resultInfo = data.musicList.split("|");
+          const musicDeleteAfterArr = [];
+          if (resultInfo.length === 1) {
+            const musicInfo = resultInfo[0].split("^");
+            setMusic(`${musicInfo[0]} - ${musicInfo[1]}`);
+            setVideoId(musicInfo[2]);
+          }
+          resultInfo.forEach((value) => {
+            musicDeleteAfterArr.push(value);
+          });
+          setMusicList(musicDeleteAfterArr);
           break;
         default:
           console.log("err");
       }
     });
-  });
+  }, []);
 
-  const handleMusicPlayer = () => {
-    // setIsPlayMusic((prev) => !prev);
+  const handleModalClose = () => {
+    setOpen(false);
   };
 
-  const handleMusicStart = () => {
-    const data = {
-      musicStatus: 1,
-    };
+  const handleMusicStart = useCallback(
+    (e) => {
+      if (videoId) {
+        const data = {
+          musicStatus: 1,
+        };
 
-    user.getStreamManager().stream.session.signal({
-      type: "music",
-      data: JSON.stringify(data),
-    });
-    setPlaying(true);
-  };
+        user.getStreamManager().stream.session.signal({
+          type: "music",
+          data: JSON.stringify(data),
+        });
+        setPlaying(true);
+      }
+    },
+    [videoId]
+  );
 
-  const handleMusicStop = () => {
-    const data = {
-      musicStatus: 2,
-    };
+  const handleMusicStop = useCallback(
+    (e) => {
+      if (videoId) {
+        const data = {
+          musicStatus: 2,
+        };
 
-    user.getStreamManager().stream.session.signal({
-      type: "music",
-      data: JSON.stringify(data),
-    });
-    setPlaying(false);
-  };
+        user.getStreamManager().stream.session.signal({
+          type: "music",
+          data: JSON.stringify(data),
+        });
+        setPlaying(false);
+      }
+    },
+    [videoId]
+  );
 
   const handlePlayerClick = () => {
     setOnPlayerClick((prev) => !prev);
   };
 
-  const handleEndMusic = () => {
-    //music list 들어있나 확인
+  const handleMusicListClick = () => {
+    if (musicList.length !== 0) {
+      setOpen(true);
+    }
+  };
+
+  const handleMusicListDelete = useCallback((music) => {
+    const deleteMusicInfo = music.split("^");
+    console.log(deleteMusicInfo);
+    const deleteVideoId = deleteMusicInfo[2];
+    const singer = deleteMusicInfo[0];
+    const song = deleteMusicInfo[1];
     const data = {
-      musicStatus: 3,
+      musicStatus: 5,
+      videoId: deleteVideoId,
+      singer,
+      song,
     };
 
     user.getStreamManager().stream.session.signal({
       type: "music",
-      data,
+      data: JSON.stringify(data),
     });
+  }, []);
+
+  const handleEndMusic = () => {
+    //music list 들어있나 확인
+    if (musicListRef.current.length > 1) {
+      const data = {
+        musicStatus: 3,
+      };
+
+      user.getStreamManager().stream.session.signal({
+        type: "music",
+        data: JSON.stringify(data),
+      });
+    }
   };
+
   const dragStartHandler = (e) => {
     posX = e.clientX;
     posY = e.clientY;
@@ -110,12 +194,12 @@ const MusicPlayer = ({ music, user }) => {
   return (
     <div>
       <ReactPlayer
-        url={music}
+        url={`https://www.youtube.com/embed/${videoIdRef.current}`}
         playing={playing}
         controls
         onEnded={() => handleEndMusic()}
-        width="300px"
-        height="300px"
+        width="1px"
+        height="1px"
       />
       <div
         className={styles.player}
@@ -126,7 +210,7 @@ const MusicPlayer = ({ music, user }) => {
       >
         <div
           className={
-            isPlayMusic
+            playing
               ? `${styles.playerIcon} ${styles.playerStart}`
               : styles.playerIcon
           }
@@ -137,27 +221,67 @@ const MusicPlayer = ({ music, user }) => {
         {onPlayerClick ? (
           <>
             <Marquee
-              play={isPlayMusic}
-              pauseOnClick={isPlayMusic}
+              play={playing}
+              // pauseOnClick={playing}
               direction="right"
               gradient={false}
               className={styles.musicTitle}
             >
-              되돌리다 - 이승기
+              {music ? music : "음악을 추가해주세요."}
             </Marquee>
-
-            <div>
+            {/* (
+                <div onClick={handleMusicListClick}>{music}</div>
+              ) */}
+            <div className={styles.BtnRow}>
               {playing ? (
-                <StopIcon width="30" height="30" onClick={handleMusicStop} />
+                <StopIcon
+                  width="30"
+                  height="30"
+                  fill="#eee"
+                  onClick={handleMusicStop}
+                />
               ) : (
-                <PlayIcon width="30" height="30" onClick={handleMusicStart} />
+                <PlayIcon
+                  width="30"
+                  height="30"
+                  fill="#eee"
+                  onClick={handleMusicStart}
+                />
               )}
+              <NextIcon
+                width="30"
+                height="30"
+                fill="#eee"
+                className={styles.nextIcon}
+                onClick={handleEndMusic}
+              />
             </div>
           </>
         ) : (
-          <div>Music Player</div>
+          <>
+            <div className={styles.musicPlayerInitTitle}>Music Player</div>
+            <HamburgerIcon
+              width="30"
+              height="30"
+              fill="#eee"
+              onClick={handleMusicListClick}
+            />
+          </>
         )}
       </div>
+      {/* {musicList.length >= 1 ? ( */}
+      {open ? (
+        <MusicList
+          open={open}
+          onClose={handleModalClose}
+          onStart={handleMusicStart}
+          onStop={handleMusicStop}
+          onDelete={handleMusicListDelete}
+          musicList={musicList}
+          playing={playing}
+        />
+      ) : null}
+      {/* ) : null} */}
     </div>
   );
 };

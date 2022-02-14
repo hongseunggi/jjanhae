@@ -33,8 +33,6 @@ const RoomContents = ({
   const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
   const { myName } = useContext(NameContext);
-  console.log(musicList);
-  console.log(music);
   //console.log(loginStatus, myName);
   console.log("room content render", loginStatus);
   const [mySessionId, setMySessionId] = useState(sessionName);
@@ -59,6 +57,8 @@ const RoomContents = ({
   const localUserRef = useRef(localUser);
   localUserRef.current = localUser;
 
+  console.log(localUserRef.current);
+
   // 인생네컷
   const [count, setCount] = useState(5);
   const [images, setImages] = useState([]);
@@ -81,7 +81,7 @@ const RoomContents = ({
 
   useEffect(() => {
     setLoginStatus("3");
-
+    console.log(loginStatus);
     window.addEventListener("beforeunload", onbeforeunload);
     joinSession();
     return () => {
@@ -137,6 +137,15 @@ const RoomContents = ({
 
       sessionRef.current.on("exception", (exception) => {
         console.warn(exception);
+      });
+
+      sessionRef.current.on("signal:photo", (event) => {
+        const data = event.data;
+        console.log(data);
+        if (data.photoStatus === 1) {
+          console.log("사진 찍어요~");
+          onCapture();
+        }
       });
 
       getToken().then((token) => {
@@ -268,6 +277,17 @@ const RoomContents = ({
     setLocalUser(localUserInit);
   };
 
+  const sendSignalCameraStart = () => {
+    const data = {
+      photoStatus: 1,
+    };
+    const signalOptions = {
+      data: JSON.stringify(data),
+      type: "photo",
+    };
+    sessionRef.current.signal(signalOptions);
+  };
+
   const getToken = () => {
     return createSession(mySessionId).then((sessionId) =>
       createToken(sessionId)
@@ -346,6 +366,7 @@ const RoomContents = ({
 
   const onCapture = () => {
     let flag = 0;
+    setImages([]);
     setStatus(1);
     const loop = setInterval(() => {
       setCount((prev) => prev - 1);
@@ -366,6 +387,8 @@ const RoomContents = ({
         if (flag === 3) {
           setStatus(2);
           clearInterval(loop);
+          //api호출
+          //백엔드에 사진저장
         }
         // sleep(1500);
       }
@@ -373,8 +396,7 @@ const RoomContents = ({
   };
 
   const onRetry = () => {
-    setImages([]);
-    onCapture();
+    sendSignalCameraStart();
   };
 
   const onSave = () => {
@@ -382,6 +404,20 @@ const RoomContents = ({
       saveImg(canvas.toDataURL("image/png"), "오늘의 추억.png");
     });
   };
+
+  const handleVoiceFilter = () => {
+    console.log(localUserRef.current);
+    const data = { command: "pitch pitch=0.5" };
+    const type = "GStreamerFilter";
+    const options = { command: "pitch pitch=0.5" };
+    localUserRef.current
+      .getStreamManager()
+      .stream.applyFilter(type, options)
+      .then((result) => {
+        console.log(result);
+      });
+  };
+  // filter.options = { command: "pitch pitch=0.5" };
   const saveImg = (uri, filename) => {
     let link = document.createElement("a");
     document.body.appendChild(link);
@@ -409,9 +445,8 @@ const RoomContents = ({
             />
           )}
         {subscribersRef.current.map((sub, i) => {
-          ////console.log(sub);
+          console.log(sub);
           return (
-            //양세찬 게임 키워드 props로 같이 보내줘야할듯
             <StreamComponent
               key={i}
               user={sub}
@@ -428,12 +463,15 @@ const RoomContents = ({
             <SnapShotResult
               images={images}
               status={status}
-              onStart={onCapture}
+              onStart={sendSignalCameraStart}
               onRetry={onRetry}
               onSave={onSave}
             />
           ) : (
-            <Chat user={localUserRef.current} />
+            <>
+              <Chat user={localUserRef.current} />
+              {/* <button onClick={handleVoiceFilter}>목소리변조</button> */}
+            </>
           )}
           <MusicPlayer user={localUserRef.current} music={music} />
         </div>

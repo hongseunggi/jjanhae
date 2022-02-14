@@ -5,10 +5,11 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 99;
+  z-index: 100;
   background-color: rgba(255, 255, 255, 0.5);
   font-family: "손글씨체";
   font-weight: 700;
+  color: #000;
 }
 
 .modalForm {
@@ -19,24 +20,17 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 .closeBtn,
-.registBtn,
-input {
+.deleteBtn {
   outline: none;
   cursor: pointer;
   border: 0;
   background-color: transparent;
 }
-.closeBtn {
-  width: auto;
-}
-
-.registBtnRow {
-  text-align: right;
-}
-.registBtn {
-  font-size: 30px;
+.closeBtn,
+.deleteBtn {
   width: auto;
 }
 
@@ -45,28 +39,13 @@ input {
   color: #000;
   margin: 0;
 }
-input {
-  margin-bottom: 30px;
-  font-size: 30px;
-}
 .modal > section {
-  width: 550px;
-  height: 550px;
-  /* margin: 0 auto; */
+  width: 450px;
+  height: 650px;
   border-radius: 50px;
-  background-color: #fff9a3;
-  /* background-image: url(../../assets/images/Sketchbook.JPG); */
-  /* background-size: cover; */
-  /* 팝업이 열릴때 스르륵 열리는 효과 */
+  background-color: #eee;
   animation: modal-show 0.3s;
   overflow: hidden;
-}
-
-.inputData {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 80%;
 }
 
 .modal > section > footer {
@@ -77,16 +56,6 @@ input {
   padding: 6px 12px;
   border-radius: 10px;
   font-size: 13px;
-}
-
-.modal > section > footer .createBtn {
-  background-color: #08d9d6;
-  margin-right: 20px;
-}
-
-.modal > section > footer .closeBtn {
-  background-color: #ff5722;
-  color: #fff;
 }
 
 .modal.openModal {
@@ -115,7 +84,72 @@ input {
   }
 }
 
-input:focus,
-textarea:focus {
-  outline: none;
+.musicName {
+  font-size: 32px;
+  /* margin-right: 50px; */
+}
+.musicList {
+  /* width: 80%; */
+  height: 80%;
+  margin: 0;
+  padding: 0;
+  overflow: scroll;
+}
+.musicRow {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.musicInfoRow {
+  display: flex;
+}
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  background-color: tomato;
+  margin-right: 10px;
+}
+
+.musicInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.song {
+  font-size: 32px;
+}
+.singer {
+  font-size: 18px;
+  margin-top: -10px;
+  margin-left: 5px;
+}
+
+.currentMusic {
+  display: flex;
+  justify-content: space-between;
+  border-top: 0.5px solid rgba(0, 0, 0, 0.5);
+}
+.currentRight {
+  display: flex;
+  align-items: center;
+}
+.playerIcon {
+  margin-right: 20px;
+}
+
+.currentSong {
+  font-size: 28px;
+}
+.currentSinger {
+  font-size: 16px;
+  margin-top: -10px;
+}
+
+.currentThumbnail {
+  width: 50px;
+  height: 50px;
+  background-color: turquoise;
 }
