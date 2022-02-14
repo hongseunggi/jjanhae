@@ -47,6 +47,7 @@ import io.openvidu.server.rpc.RpcNotificationService;
 import io.openvidu.server.contents.MusicService;
 import io.openvidu.server.contents.GameService;
 import io.openvidu.server.contents.PhotoService;
+import io.openvidu.server.contents.SingService;
 
 
 public class SessionEventsHandler {
@@ -64,6 +65,9 @@ public class SessionEventsHandler {
 
 	@Autowired
 	protected PhotoService photoService;
+
+	@Autowired
+	protected SingService singService;
 
 	@Autowired
 	protected CallDetailRecord CDR;
@@ -435,14 +439,17 @@ public class SessionEventsHandler {
 
 		// ********* 여기서부터 type에 맞춰서 우리 서비스 실행하면 됨
 		if (message.has("type") && message.get("type").getAsString().equals("signal:music")){
-			System.out.println("[Music] Request");
+			System.out.println("[Music] Request ...");
 			musicService.controlMusic(participant, message, participants, rpcNotificationService);
 		} else if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
 			System.out.println("Request Game ...");
 			gameService.controlGame(participant, message, participants, rpcNotificationService);
 		} else if (message.has("type") && message.get("type").getAsString().equals("signal:photo")) {
-			System.out.println("[Photo] Request");
+			System.out.println("[Photo] Request ...");
 			photoService.controlPhoto(participant, message, participants, rpcNotificationService);
+		} else if (message.has("type") && message.get("type").getAsString().equals("signal:sing")) {
+			System.out.println("[Sing] Request ...");
+			singService.controlSing(participant, message, participants, rpcNotificationService);
 		}
 		// ******** 이외에는 채팅!
 		else {
