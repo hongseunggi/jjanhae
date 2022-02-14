@@ -517,17 +517,36 @@ public class GameService {
                 // 답과 숫자가 맞는지 판별
                 // 정답이 나오면 종료
                 String sessionId = message.get("sessionId").getAsString();
+                int index = data.get("index").getAsInt();
+                int size = participants.size();
+                if(index > size) {
+                    index -= size;
+                }
                 if(numberMap.get(sessionId) == data.get("number").getAsInt()) { // 정답일 시 updown = "same"
                     System.out.printf("%d is Answer!!\n", data.get("number").getAsInt());
+                    data.remove("index");
                     data.addProperty("updown", "same");
                     data.addProperty("gameStatus", 3); // 정답일 시 게임종료
                 } else if (numberMap.get(sessionId) > data.get("number").getAsInt()) { // 정답보다 작을 시 updown = "up"
                     System.out.printf("Answer : %d, User Input : %d => up!!\n", numberMap.get(sessionId),
                             data.get("number").getAsInt());
+                    System.out.println("Set Order ...");
+                    String counterClockWise = sCounterClockWise.get(sessionId);
+                    // 순서가 저장돼있는 order map에서 해당 순서의 streamId 꺼냄
+                    String curStreamId = sOrderMap.get(sessionId).get(counterClockWise.charAt(index-1)-'0');
+                    System.out.println("curStreamId : " + curStreamId);
+                    data.addProperty("streamId", curStreamId);
+                    data.addProperty("index", ++index);
                     data.addProperty("updown", "up");
                 } else { // 정답보다 클 시 updown = "down"
                     System.out.printf("Answer : %d, User Input : %d => down!!\n", numberMap.get(sessionId),
                             data.get("number").getAsInt());
+                    System.out.println("Set Order ...");
+                    String counterClockWise = sCounterClockWise.get(sessionId);
+                    String curStreamId = sOrderMap.get(sessionId).get(counterClockWise.charAt(index-1)-'0');
+                    System.out.println("curStreamId : " + curStreamId);
+                    data.addProperty("streamId", curStreamId);
+                    data.addProperty("index", ++index);
                     data.addProperty("updown", "down");
                 }
 
