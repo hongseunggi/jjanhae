@@ -3,7 +3,7 @@ import styles from "./GameList.module.css";
 import { ReactComponent as GameIcon } from "../../../assets/icons/game.svg";
 
 const Keyword = (props) => {
-  const { open, onClose } = props;
+  const { open, onClose, onChange } = props;
   const [game, setGame] = useState();
 
   const handleChange = (event) => {
@@ -11,7 +11,7 @@ const Keyword = (props) => {
   };
 
   const confirm = () => {
-    //console.log(game);
+    onChange(game);
     onClose();
   };
 
@@ -29,39 +29,39 @@ const Keyword = (props) => {
               <div className={styles.game}>
                 양세찬 게임
                 <input
-                  value="yangGame"
+                  value="1"
                   type="radio"
-                  checked={game === "yangGame"}
+                  checked={game === "1"}
                   onChange={handleChange}
                 />
               </div>
               <div className={styles.game}>
                 금지어 게임
                 <input
-                  value="forbiddenGame"
+                  value="2"
                   name="platform"
                   type="radio"
-                  checked={game === "forbiddenGame"}
+                  checked={game === "2"}
                   onChange={handleChange}
                 />
               </div>
               <div className={styles.game}>
                 노래 맞추기
                 <input
-                  value="musicGame"
+                  value="3"
                   name="platform"
                   type="radio"
-                  checked={game === "musicGame"}
+                  checked={game === "3"}
                   onChange={handleChange}
                 />
               </div>
               <div className={styles.game}>
                 업다운
                 <input
-                  value="updownGame"
+                  value="4"
                   name="platform"
                   type="radio"
-                  checked={game === "updownGame"}
+                  checked={game === "4"}
                   onChange={handleChange}
                 />
               </div>
