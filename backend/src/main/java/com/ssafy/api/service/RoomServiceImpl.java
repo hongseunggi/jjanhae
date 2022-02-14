@@ -6,13 +6,13 @@ import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.RoomRepositorySupport;
-import com.ssafy.db.repository.UserRepository;
-import com.ssafy.db.repository.UserRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  *	방 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -108,5 +108,9 @@ public class RoomServiceImpl implements RoomService {
         return roomRepository.findEndRoomListByRoomSeq(roomSeqList);
     }
 
-
+    @Override
+    public void updateRoomImg(Room room, String imageUrl){
+        room.setImageUrl(imageUrl);
+        roomRepository.save(room);
+    }
 }

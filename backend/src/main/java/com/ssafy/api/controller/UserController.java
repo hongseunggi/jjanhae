@@ -368,7 +368,7 @@ public class UserController {
 	}
 
 	@PatchMapping(value = "/profileimg")
-	@ApiOperation(value = "유저 정보 수정", notes = "이름, 이메일, 생일, 주종, 주량을 수정한다.")
+	@ApiOperation(value = "유저 정보 수정", notes = "프로필 이미지를 수정한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 403, message = "권한 없음"),

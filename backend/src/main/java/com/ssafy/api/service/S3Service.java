@@ -37,7 +37,7 @@ public class S3Service {
 
     @PostConstruct
     public void setS3Client(){
-        System.out.println("?????????????????????여기 됨???????????????");
+        System.out.println("S3 잘 됩니다~");
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
 
         s3Client = AmazonS3ClientBuilder.standard().
