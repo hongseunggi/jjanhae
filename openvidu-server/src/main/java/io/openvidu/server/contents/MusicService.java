@@ -25,7 +25,7 @@ public class MusicService {
 
     static RpcNotificationService rpcNotificationService;
 
-     // < sessionId, 노래목록 = [[비디오아이디, 가수, 노래, 주소], [비디오아이디, 가수, 노래, 주소], [비디오아이디, 가수, 노래, 주소]] >
+     // < sessionId, 노래목록 = [[가수, 노래, 비디오아이디, 주소], [가수, 노래, 비디오아이디, 주소], [가수, 노래, 비디오아이디, 주소]] >
     protected ConcurrentHashMap<String, ArrayList<ArrayList<String>>> requestSongsMap = new ConcurrentHashMap<>();
 
     public void controlMusic(Participant participant, JsonObject message, Set<Participant> participants,
@@ -48,14 +48,14 @@ public class MusicService {
         String dataString = message.get("data").getAsString();
         JsonObject data = (JsonObject) JsonParser.parseString(dataString);
 
-        String sessionId = message.get("sessionId").getAsString();
 
         // 입력받은 값들 출력
-        System.out.println("[Music] server get music data : " + data); //{"videoId":"5uk6cFPL19w","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
-        System.out.println("[Music] server get music params : " + params); // {"from":"con_AG3mOjqFdT","type":"signal:music"}
+        System.out.println("[Music] *** server get music data : " + data); //{"videoId":"5uk6cFPL19w","nickname":"OpenVidu_User43","streamId":"str_CAM_DM92_con_ZIlIJZTwJ8"}
+        System.out.println("[Music] *** server get music params : " + params); // {"from":"con_AG3mOjqFdT","type":"signal:music"}
 
         // 원하는 상태에 따른 수행 방식 변경
         int musicStatus = data.get("musicStatus").getAsInt();
+        String sessionId = message.get("sessionId").getAsString();
 
         switch (musicStatus) {
             case PLAYMUSIC: // 음악 재생
@@ -63,13 +63,13 @@ public class MusicService {
                 sendStatus(participants, params, data);
                 return;
             case NEXTMUSIC: // 음악 멈춤
-                nextMusic(sessionId, musicStatus, participants, params, data);
+                nextMusic(sessionId, participants, params, data);
                 return;
             case ADDMUSIC: // 음악 추가
-                addMusic(sessionId, musicStatus, participants, params, data);
+                addMusic(sessionId, participants, params, data);
                 return;
             case DELETEMUSIC: // 음악 삭제
-                delMusic(sessionId, musicStatus, participants, params, data);
+                delMusic(sessionId, participants, params, data);
                 return;
         }
 
@@ -81,14 +81,14 @@ public class MusicService {
      * musicStatus: 1, 2
      * */
     private void sendStatus(Set<Participant> participants, JsonObject params, JsonObject data) {
-        System.out.println("[Music] music status : " + data.get("musicStatus").getAsInt());
+        System.out.println("[Music] *** music status : " + data.get("musicStatus").getAsInt());
         params.add("data", data);
         // 브로드 캐스팅
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
         }
-        System.out.println("[Music] return params : " + params);
+        System.out.println("[Music] *** return params : " + params);
     }
 
 
@@ -96,30 +96,31 @@ public class MusicService {
      * 다음 곡 재생
      * musicStatus: 3
      * */
-    private void nextMusic(String sessionId, Integer musicStatus, Set<Participant> participants,
+    private void nextMusic(String sessionId, Set<Participant> participants,
                             JsonObject params, JsonObject data) {
-        System.out.println("[Music] next music please!! ");
+        System.out.println("[Music] *** next music please!! ");
 
-        ArrayList<ArrayList<String>> musicList = requestSongsMap.get(sessionId);
-
+        // 노래가 없는 경우
         if (requestSongsMap.get(sessionId) == null || requestSongsMap.get(sessionId).isEmpty()) {
             data.addProperty("musicList", "");
             params.add("data", data);
             for (Participant p : participants) {
-                data.addProperty("musicList", musicList.toString());
                 rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                         ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
             }
-            System.out.println("[Music] NO NEXT MUSIC!!! : " + params);
+            System.out.println("[Music] *** NO NEXT MUSIC!!! : " + params);
             return;
-        } else {
-            musicList = requestSongsMap.get(sessionId);
         }
-        System.out.println("[Music] now playlist : " + musicList);
-        System.out.println("[Music] first music : " + musicList.get(0));
+
+        ArrayList<ArrayList<String>> musicList = requestSongsMap.get(sessionId);
+        System.out.println("[Music] *** now playlist : " + musicList);
+        System.out.println("[Music] *** first music : " + musicList.get(0));
+
         // 제일 처음에 있는 노래 삭제
         musicList.remove(0);
         System.out.println("[Music] after delete : " + musicList);
+
+        // 만약에! 지웠는데 노래가 없다면
         if (musicList.isEmpty()) {
             data.addProperty("musicList", "");
             params.add("data", data);
@@ -127,14 +128,15 @@ public class MusicService {
                 rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                         ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
             }
-            System.out.println("[Music] NO NEXT MUSIC! OKAY? : " + params);
+            System.out.println("[Music] *** NO NEXT MUSIC! OKAY? : " + params);
             return;
         }
-        ArrayList<String> music = requestSongsMap.get(sessionId).get(0);
-        System.out.println("[Music] first music after delete : " + music);
 
+
+        // 지우고 나서 처음 노래
+        String firstMusic = musicList.get(0).get(0) + '^' + musicList.get(0).get(1) + '^' + musicList.get(0).get(2)+ '^' + musicList.get(0).get(3);
+        System.out.println("[Sing] *** first song after delete : " + firstMusic);
         String strMusicList = "";
-        String firstMusic = music.get(0) + "^" + music.get(1) + "^" + music.get(2);
         for(int i=0; i < musicList.size()-1; i++) {
             // strMusic = 가수^노래제목^키값^썸네일주소
             String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^'
@@ -146,34 +148,33 @@ public class MusicService {
         ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
         strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2) + '^' + finalMusic.get(3));
 
-        JsonObject result = new JsonObject();
-        result.addProperty("musicStatus", musicStatus);
-        result.addProperty("music", firstMusic);
-        result.addProperty("musicList", strMusicList);
+        data.addProperty("music", firstMusic);
+        data.addProperty("musicList", strMusicList);
 
-        params.add("data", result);
+        params.add("data", data);
         // 브로드 캐스팅
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
         }
-        System.out.println("[Music] next music return : " + params);
+        System.out.println("[Music] *** next music return : " + params);
     }
 
     /**
      * 음악 추가
      * musicStatus: 4
      * */
-    private void addMusic(String sessionId, Integer musicStatus, Set<Participant> participants,
+    private void addMusic(String sessionId, Set<Participant> participants,
                           JsonObject params, JsonObject data) {
+
+        // 요청 받은 값들
+        System.out.println("[Music] *** ADD MUSIC");
         String singer = data.get("singer").getAsString();
         String song = data.get("song").getAsString();
         String videoId = data.get("videoId").getAsString();
         String thumUrl = data.get("thumUrl").getAsString();
-        System.out.println("[Music] ADD THIS MUSIC : " + singer + ", " + song);
-        // 해당 세션에 아이디 추가
 
-        // 음악 한 곡 = [가수, 노래, 키값]
+        // 음악 한 곡 = [가수, 노래, 키값, 썸네일]
         ArrayList<String> music = new ArrayList<>();
         music.add(singer);
         music.add(song);
@@ -181,6 +182,7 @@ public class MusicService {
         music.add(thumUrl);
 
         ArrayList<ArrayList<String>> musicList = new ArrayList<>();
+
         if (requestSongsMap.get(sessionId) == null) {
             // 처음 노래를 추가한 경우
             musicList.add(music);
@@ -191,27 +193,27 @@ public class MusicService {
             musicList.add(music);
         }
 
+        // 리스트를 문자열로 감싸주는 과정
         String strMusicList = "";
+
         for(int i=0; i < musicList.size()-1; i++) {
             // strMusic = 가수^노래제목^키값^썸네일주소
             String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^'
                     + musicList.get(i).get(2) + '^' + musicList.get(i).get(3);
             strMusicList = strMusicList.concat(strMusic).concat("|");
         }
-        // 마지막 노래 다음에는 / 붙이지 않도록
+        // 마지막 노래 다음에는 | 붙이지 않도록
         ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
         strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2) + '^' + finalMusic.get(3));
 
-        JsonObject result = new JsonObject();
-        result.addProperty("musicStatus", musicStatus);
-        result.addProperty("musicList", strMusicList);
+        data.addProperty("musicList", strMusicList);
 
-        params.add("data", result);
+        params.add("data", data);
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-            System.out.println("[Music] ADD MUSIC return : " + params);
         }
+        System.out.println("[Music] *** ADD MUSIC return : " + params);
     }
 
 
@@ -219,40 +221,63 @@ public class MusicService {
      * 음악 삭제
      * musicStatus:5
      * */
-    private void delMusic(String sessionId, Integer musicStatus, Set<Participant> participants,
+    private void delMusic(String sessionId, Set<Participant> participants,
                             JsonObject params, JsonObject data) {
         String videoId = data.get("videoId").getAsString();
-        System.out.println("[Music] DELETE THIS MUSIC!! : " + videoId);
-        // 해당 세션에 아이디 추가
+        System.out.println("[Music] *** DELETE THIS MUSIC!! : " + videoId);
+
+        // 노래가 없는 경우
+        if (requestSongsMap.get(sessionId) == null || requestSongsMap.get(sessionId).isEmpty()) {
+            data.addProperty("musicList", "");
+            params.add("data", data);
+            for (Participant p : participants) {
+                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
+            }
+            System.out.println("[Music] *** NO MUSIC LEFT !!! : " + params);
+            return;
+        }
 
         ArrayList<ArrayList<String>> musicList = requestSongsMap.get(sessionId);
+
         // 지금 삭제하려는 음악 찾아서 삭제
-        System.out.println("[Music] Before delete : " + musicList);
+        System.out.println("[Music] *** Before delete : " + musicList);
         for(int i=0; i < musicList.size(); i++) {
             if (musicList.get(i).contains(videoId)) {
                 musicList.remove(i);
                 break;
             }
         }
-        System.out.println("[Music] After delete : " + musicList);
+        System.out.println("[Music] *** After delete : " + musicList);
+
+        // 만약에! 지웠는데 노래가 없다면
+        if (musicList.isEmpty()) {
+            data.addProperty("musicList", "");
+            params.add("data", data);
+            for (Participant p : participants) {
+                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
+            }
+            System.out.println("[Music] *** NO NEXT MUSIC! OKAY? : " + params);
+            return;
+        }
 
         // 음악 목록 string으로 감싸서 반환
         String strMusicList = "";
+
         for(int i=0; i < musicList.size()-1; i++) {
             // strMusic = 가수^노래제목^키값^썸네일주소
             String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^'
                     + musicList.get(i).get(2) + '^' + musicList.get(i).get(3);
             strMusicList = strMusicList.concat(strMusic).concat("|");
         }
-        // 마지막 노래 다음에는 / 붙이지 않도록
+        // 마지막 노래 다음에는 | 붙이지 않도록
         ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
         strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2) + '^' + finalMusic.get(3));
 
-        JsonObject result = new JsonObject();
-        result.addProperty("musicStatus", musicStatus);
-        result.addProperty("musicList", strMusicList);
+        data.addProperty("musicList", strMusicList);
 
-        params.add("data", result);
+        params.add("data", data);
         // 브로드 캐스팅
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),

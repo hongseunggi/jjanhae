@@ -89,6 +89,7 @@ import io.openvidu.server.webhook.CDRLoggerWebhook;
 import io.openvidu.server.contents.MusicService;
 import io.openvidu.server.contents.GameService;
 import io.openvidu.server.contents.PhotoService;
+import io.openvidu.server.contents.SingService;
 
 /**
  * OpenVidu Server application
@@ -145,6 +146,12 @@ public class OpenViduServer implements JsonRpcConfigurer {
 	@ConditionalOnMissingBean
 	public PhotoService photoService() {
 		return new PhotoService();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public SingService singService() {
+		return new SingService();
 	}
 
 	// JJANHAE
