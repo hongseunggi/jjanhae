@@ -4,7 +4,6 @@ import axios1 from "../../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "../stream/StreamComponent";
 import styles from "./SnapShot.module.css";
-import Chat from "../chat/Chat";
 import UserModel from "../../models/user-model";
 import html2canvas from "html2canvas";
 import SnapShotResult from "./SnapShotResult";
@@ -81,8 +80,6 @@ const SnapShot = ({ sessionName, userName, media }) => {
 
       // 상대방이 상태를 변경했을 때 실행 (카메라 / 마이크 등)
       sessionRef.current.on("signal:userChanged", (event) => {
-        console.log("1");
-        console.log(subscribersRef.current);
         subscribersRef.current.forEach((user) => {
           if (user.getConnectionId() === event.from.connectionId) {
             const data = JSON.parse(event.data);
@@ -96,8 +93,6 @@ const SnapShot = ({ sessionName, userName, media }) => {
             }
           }
         });
-        console.log("2");
-        console.log(subscribersRef.current);
         setSubscribers([...subscribersRef.current]);
       });
 

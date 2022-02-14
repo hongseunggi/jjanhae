@@ -11,9 +11,9 @@ import RoomApi from "../../api/RoomApi";
 
 import { ReactComponent as CameraIcon } from "../../assets/icons/camera.svg";
 import { ReactComponent as GameIcon } from "../../assets/icons/game.svg";
-import { ReactComponent as MusicIcon } from "../../assets/icons/music.svg";
+import { ReactComponent as RegistMusicIcon } from "../../assets/icons/library.svg";
 import { ReactComponent as HomeIcon } from "../../assets/icons/home.svg";
-import Marquee from "react-fast-marquee";
+import { ReactComponent as SongIcon } from "../../assets/icons/microphone.svg";
 
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
@@ -59,8 +59,34 @@ const Room = () => {
   useEffect(() => {
     console.log("room render");
     setContentTitle(title);
+    setLoginStatus("3");
+    // if (sessionId) {
+    //   console.log("오냐?");
+    //   sessionId.on("signal:photo", (event) => {
+    //     const data = event.data;
+    //     console.log(data);
+    //     if (data.photoStatus === 0) {
+    //       setMode("snapshot");
+    //     }
+    //   });
+    // }
+
+    if (sessionId !== "" && sessionId !== undefined) {
+      console.log("오냐?");
+      console.log(sessionId);
+
+      sessionId.on("signal:photo", (event) => {
+        const data = event.data;
+        console.log(data);
+        if (data.photoStatus === 0) {
+          setContentTitle("인생네컷");
+          setMode("snapshot");
+        }
+      });
+    }
+
     return () => setLoginStatus("2");
-  }, []);
+  }, [sessionId]);
 
   useEffect(() => {
     if(sessionId!==""&&sessionId!==undefined) {
@@ -114,10 +140,18 @@ const Room = () => {
     setMode("basic");
   };
   const handleCameraClick = () => {
-    setContentTitle("인생네컷");
-    setMode("snapshot");
-  };
+    // setContentTitle("인생네컷");
+    // setMode("snapshot");
+    console.dir(sessionId);
+    const data = {
+      photoStatus: 0,
+    };
 
+    sessionId.signal({
+      data: JSON.stringify(data),
+      type: "photo",
+    });
+  };
   const handleModalClose = () => {
     setOnGameList(false);
     setOnRegistMusic(false);
@@ -131,22 +165,27 @@ const Room = () => {
     setOnRegistMusic(true);
   };
 
-  const handleMusicSearch = (query) => {
-    console.log(query);
-    youtube.search(query).then((videos) => {
+  const handleMusicSearch = (singer, song) => {
+    console.log(singer);
+    console.log(song);
+    const music = `${singer}${song}`;
+    console.log(music);
+    youtube.search(music).then((videos) => {
       console.log(videos);
       const videoId = videos[0].id.videoId;
-      const url = `https://www.youtube.com/embed/${videoId}`;
+      const thumbnail = videos[0].snippet.thumbnails.default.url;
+      // const url = `https://www.youtube.com/embed/${videoId}`;
       const data = {
         musicStatus: 4,
-        videoId: url,
+        videoId: videoId,
+        thumUrl: thumbnail,
+        singer,
+        song,
       };
-      console.log(sessionId);
       sessionId.signal({
         type: "music",
         data: JSON.stringify(data),
       });
-      // setMusic(url);
     });
   };
 
@@ -234,9 +273,17 @@ const Room = () => {
             className={styles.icon}
             onClick={handleGameList}
           />
-          <MusicIcon
+          <SongIcon
             width="50"
             height="50"
+            fill="#eee"
+            // onClick={handleRegistMusic}
+            className={styles.icon}
+          />
+          <RegistMusicIcon
+            width="50"
+            height="50"
+            fill="#eee"
             onClick={handleRegistMusic}
             className={styles.icon}
           />
