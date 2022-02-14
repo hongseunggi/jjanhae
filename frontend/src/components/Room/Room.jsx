@@ -132,6 +132,17 @@ const Room = () => {
   };
 
   const handleHomeClick = () => {
+    console.log("stop game");
+    let curId = gameId*1;
+    //게임종료 api호출
+    let data = {
+      gameStatus : 3,
+      gameId : curId,
+    }
+    sessionId.signal({
+      data : JSON.stringify(data),
+      type : "game",
+    })
     setContentTitle(title);
     setMode("basic");
   };

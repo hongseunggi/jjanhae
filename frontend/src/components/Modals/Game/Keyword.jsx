@@ -11,6 +11,7 @@ import { ReactComponent as SirenIcon } from "../../../assets/icons/siren.svg";
 import { ReactComponent as PuzzleIcon } from "../../../assets/icons/puzzle.svg";
 import { ReactComponent as CancleIcon } from "../../../assets/icons/cancleorange.svg";
 import { ReactComponent as NoIcon } from "../../../assets/icons/no.svg";
+import { ReactComponent as ForbiddenIcon } from "../../../assets/icons/forbidden.svg";
 
 
 
@@ -161,8 +162,8 @@ const Keyword = (props) => {
                 </div>
                 <div className={styles.yanginformBorder}>
                     <div className={styles.infoText}>
-                        <p className={styles.text}>양세찬 게임을 시작합니다~!~~!~!~</p>
-                        <p className={styles.text}>참가자들은 <span className={styles.greenText}>순서대로</span> 주어진 참가자에게 <span className={styles.warnText}>키워드</span>를 입략해주세요</p>
+                        <p className={styles.text}>양세찬 게임을 시작합니다~!</p>
+                        <p className={styles.text}>참가자들은 <span className={styles.greenText}>순서대로</span> 주어진 참가자에게 <span className={styles.warnText}>키워드</span>를 입력해주세요</p>
                         <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>키워드</span>를 입력을 마치면</p>
                         <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
                     </div>
@@ -343,6 +344,24 @@ const Keyword = (props) => {
                     {" "}
                     벌칙가자{" "}
                 </button>
+                </main>
+          </section>
+        ) : mode === "startForbidden" ? (
+          <section className={styles.modalForm}>
+            <header>
+            </header>
+                <main className={styles.main}>
+                <div className={styles.yangicon}>
+                    <ForbiddenIcon className={styles.icon}/>
+                </div>
+                <div className={styles.yanginformBorder}>
+                    <div className={styles.infoText}>
+                        <p className={styles.text}>금지어 게임을 시작합니다~!</p>
+                        <p className={styles.text}>참가자들은 <span className={styles.greenText}>순서대로</span> 주어진 참가자에게 <span className={styles.warnText}>금지어</span>를 입력해주세요</p>
+                        <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>금지어</span>를 입력을 마치면</p>
+                        <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
+                    </div>
+                </div>
                 </main>
           </section>
         ) :

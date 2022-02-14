@@ -350,12 +350,14 @@
     .warnText {
       color :rgba(255, 99, 71, 0.938);
       font-weight: bolder;
+      font-size: 20px;
     }
 
     
     .celText {
       color :rgba(71, 120, 255, 0.938);
       font-weight: bolder;
+      font-size: 20px;
     }
     .wingicon { 
       width : 150px;
