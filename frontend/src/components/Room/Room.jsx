@@ -87,6 +87,14 @@ const Room = () => {
   };
 
   const handleGameList = () => {
+    const data = {
+      gameStatus: 1,
+      gameId : 3,
+    }
+    sessionId.signal({
+      type : "game",
+      data : JSON.stringify(data),
+    })
     setOnGameList(true);
   };
 

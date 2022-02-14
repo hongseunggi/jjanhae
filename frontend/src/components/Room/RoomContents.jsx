@@ -433,7 +433,7 @@ const RoomContents = ({
               onSave={onSave}
             />
           ) : (
-            <Chat user={localUserRef.current} />
+            <Chat user={localUserRef.current} mode={"game3"}/>
           )}
           <MusicPlayer user={localUserRef.current} music={music} />
         </div>
