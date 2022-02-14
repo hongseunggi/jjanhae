@@ -77,6 +77,10 @@ const Room = () => {
           setContentTitle("금지어 게임");
           setMode("game2");
           setbangZzang(data.streamId);
+        }else if (data.gameId===3) {
+          setContentTitle("UP DOWN 게임");
+          setMode("game3");
+          setbangZzang(data.streamId);
         }
       });
     }
@@ -120,14 +124,6 @@ const Room = () => {
   };
 
   const handleGameList = () => {
-    const data = {
-      gameStatus: 1,
-      gameId : 3,
-    }
-    sessionId.signal({
-      type : "game",
-      data : JSON.stringify(data),
-    })
     setOnGameList(true);
   };
 
@@ -156,14 +152,26 @@ const Room = () => {
 
   const changeMode = (mode) => {
     console.log(gameId);
-    const data={
-      gameStatus : 0,
-      gameId : mode,
+    if(mode === 3){
+      const data = {
+        gameStatus : 1,
+        gameId : mode,
+      }
+      sessionId.signal({
+        type : "game",
+        data : JSON.stringify(data), 
+      });
     }
-    sessionId.signal({
-      type : "game",
-      data : JSON.stringify(data), 
-    });
+    else{
+      const data={
+        gameStatus : 0,
+        gameId : mode,
+      }
+      sessionId.signal({
+        type : "game",
+        data : JSON.stringify(data), 
+      });
+    }
   };
 
   const changeMain = () => {
@@ -176,6 +184,8 @@ const Room = () => {
       changeMode(1);
     }else if(data==="2") {
       changeMode(2);
+    }else if(data==="4"){
+      changeMode(3);
     }
   }
   return (
