@@ -212,111 +212,123 @@ const RoomContents = ({
 
       //back으로 부터 받는 data처리
       sessionRef.current.on("signal:game", (event) => {
-       //초기요청 응답
-      //양세찬 
-      const data = event.data;
-      if(data.gameId===1||data.gameId===2) {
-        if(data.gamename!==""&&data.gamename!==undefined) {
-          let nicknameList = [];
-          nicknameList = nickname;
-          nicknameList.push({
-            connectionId : data.streamId,
-            keyword : data.gamename,
-          })
-          setNickname([...nicknameList]);
-          console.log(nicknameList);
-        }
-        
-        console.log(data.gameStatus);
-        console.log(data.gameId);
-        //내가 키워드를 정해줄 차례라면
-        if(data.gameId===1) {
-          if(data.gameStatus===1) {
-            if(data.streamId===localUserRef.current.getStreamManager().stream.streamId) {
-              console.log("my turn");
-              //상대방 키워드 입력해줄 모달 띄우기
-              setStreamId(data.streamId);
-              setTargetId(data.targetId);
-              setModalMode("assign");
-              openKeywordInputModal();
-              if(data.index!==undefined&&data.index!=="") {
-                setIndex(data.index);
-              }
-              //내가 정해줄 차례가 아니라면
-            } else {
-              console.log("not my turn");
-              setModalMode("wait");
-              openKeywordInputModal();
-            }
-          }else if(data.gameStatus===2) {
-            console.log(data.answerYn);
-            if(data.answerYn!==undefined&&data.answerYn!=="") {
-              if(data.streamId===localUserRef.current.getStreamManager().stream.streamId) {
-                if(data.answerYn==="Y") {
-                setModalMode("correct");
+        //초기요청 응답
+        //양세찬
+        const data = event.data;
+        if (data.gameId === 1 || data.gameId === 2) {
+          if (data.gamename !== "" && data.gamename !== undefined) {
+            let nicknameList = [];
+            nicknameList = nickname;
+            nicknameList.push({
+              connectionId: data.streamId,
+              keyword: data.gamename,
+            });
+            setNickname([...nicknameList]);
+            console.log(nicknameList);
+          }
+
+          console.log(data.gameStatus);
+          console.log(data.gameId);
+          //내가 키워드를 정해줄 차례라면
+          if (data.gameId === 1) {
+            if (data.gameStatus === 1) {
+              if (
+                data.streamId ===
+                localUserRef.current.getStreamManager().stream.streamId
+              ) {
+                console.log("my turn");
+                //상대방 키워드 입력해줄 모달 띄우기
+                setStreamId(data.streamId);
+                setTargetId(data.targetId);
+                setModalMode("assign");
                 openKeywordInputModal();
-                console.log("here!!!!");
-              }else if(data.answerYn==="N")  {
-                setModalMode("wrong");
+                if (data.index !== undefined && data.index !== "") {
+                  setIndex(data.index);
+                }
+                //내가 정해줄 차례가 아니라면
+              } else {
+                console.log("not my turn");
+                setModalMode("wait");
                 openKeywordInputModal();
               }
+            } else if (data.gameStatus === 2) {
+              console.log(data.answerYn);
+              if (data.answerYn !== undefined && data.answerYn !== "") {
+                if (
+                  data.streamId ===
+                  localUserRef.current.getStreamManager().stream.streamId
+                ) {
+                  if (data.answerYn === "Y") {
+                    setModalMode("correct");
+                    openKeywordInputModal();
+                    console.log("here!!!!");
+                  } else if (data.answerYn === "N") {
+                    setModalMode("wrong");
+                    openKeywordInputModal();
+                  }
+                }
+              } else {
+                setModalMode("letsplay");
+                openKeywordInputModal();
+                setTimeout(() => {
+                  setModalMode("answer");
+                  closeKeywordInputModal();
+                }, 5000);
+                console.log("키워드 설정 완료");
+              }
             }
-            }else {
-              setModalMode("letsplay");
-              openKeywordInputModal();
-              setTimeout(()=> {
-                setModalMode("answer");
-                closeKeywordInputModal();
-              },5000)
-              console.log("키워드 설정 완료");
+            //금지어
+          } else if (data.gameId === 2) {
+            console.log("here");
+            if (data.gameStatus === 1) {
+              if (
+                data.streamId ===
+                localUserRef.current.getStreamManager().stream.streamId
+              ) {
+                console.log("my turn");
+                //상대방 금지어 입력해줄 모달 띄우기
+                setStreamId(data.streamId);
+                setTargetId(data.targetId);
+                setModalMode("assignForbidden");
+                openKeywordInputModal();
+                if (data.index !== undefined && data.index !== "") {
+                  setIndex(data.index);
+                }
+                //내가 정해줄 차례가 아니라면
+              } else {
+                console.log("not my turn");
+                setModalMode("wait");
+                openKeywordInputModal();
+              }
+            } else if (data.gameStatus === 2) {
+              console.log(data.answerYn);
+              if (data.answerYn !== undefined && data.answerYn !== "") {
+                if (
+                  data.streamId ===
+                  localUserRef.current.getStreamManager().stream.streamId
+                ) {
+                  if (data.answerYn === "Y") {
+                    setModalMode("correct");
+                    openKeywordInputModal();
+                    console.log("here!!!!");
+                  } else if (data.answerYn === "N") {
+                    setModalMode("wrong");
+                    openKeywordInputModal();
+                  }
+                }
+              } else {
+                setModalMode("letsplay");
+                openKeywordInputModal();
+                setTimeout(() => {
+                  setModalMode("answer");
+                  closeKeywordInputModal();
+                }, 5000);
+                console.log("키워드 설정 완료");
+              }
             }
           }
-          //금지어
-        }else if(data.gameId===2) {
-          console.log("here");
-          if(data.gameStatus===1) {
-            if(data.streamId===localUserRef.current.getStreamManager().stream.streamId) {
-              console.log("my turn");
-              //상대방 금지어 입력해줄 모달 띄우기
-              setStreamId(data.streamId);
-              setTargetId(data.targetId);
-              setModalMode("assignForbidden");
-              openKeywordInputModal();
-              if(data.index!==undefined&&data.index!=="") {
-                setIndex(data.index);
-              }
-              //내가 정해줄 차례가 아니라면
-            } else {
-              console.log("not my turn");
-              setModalMode("wait");
-              openKeywordInputModal();
-            }
-          }else if(data.gameStatus===2) {
-            console.log(data.answerYn);
-            if(data.answerYn!==undefined&&data.answerYn!=="") {
-              if(data.streamId===localUserRef.current.getStreamManager().stream.streamId) {
-                if(data.answerYn==="Y") {
-                setModalMode("correct");
-                openKeywordInputModal();
-                console.log("here!!!!");
-              }else if(data.answerYn==="N")  {
-                setModalMode("wrong");
-                openKeywordInputModal();
-              }
-            }
-            }else {
-              setModalMode("letsplay");
-              openKeywordInputModal();
-              setTimeout(()=> {
-                setModalMode("answer");
-                closeKeywordInputModal();
-              },5000)
-              console.log("키워드 설정 완료");
-            }
-          }
         }
-      } 
-    });
+      });
     }
   }, [session]);
 
@@ -625,24 +637,6 @@ const RoomContents = ({
     else if (mode === "game2") giveGamename(data, 2);
     //target gamename 지정해주는 api호출
   };
-  const handleForbidden = (data) => {
-    sirenWing(data);
-    console.log(data);
-  };  
-
-  const sirenWing = (data) => {
-    const senddata = {
-      streamId: data.getStreamManager().stream.streamId,
-      gameId: 2,
-      gameStatus: 2,
-      sirenYn:"Y",
-    }
-    localUserRef.current.getStreamManager().stream.session.signal({
-      data: JSON.stringify(senddata),
-      type: "game",
-    });
-  }
-
   return (
     <div className={styles["contents-container"]}>
       <SelectingGame
