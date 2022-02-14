@@ -66,6 +66,7 @@
   font-weight: bold;
 }
 .msg-system{
+  margin-top: 1%;
   background-color: #3d3d3d;
   border-radius: 15px 15px 0px 0px;
   text-align: center;

@@ -33,6 +33,7 @@ const RoomContents = ({
   musicList,
   music,
   bangzzang,
+  back
 }) => {
   const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
@@ -707,7 +708,7 @@ const RoomContents = ({
             />
           ) : (
             <>
-              <Chat user={localUserRef.current} mode={mode} />
+              <Chat user={localUserRef.current} mode={mode} exitgame={back} />
               {/* <button onClick={handleVoiceFilter}>목소리변조</button> */}
             </>
           )}

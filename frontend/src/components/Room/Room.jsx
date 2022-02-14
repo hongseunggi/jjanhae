@@ -104,9 +104,11 @@ const Room = () => {
           setMode("game2");
           setbangZzang(data.streamId);
         }else if (data.gameId===3) {
-          setContentTitle("UP DOWN 게임");
-          setMode("game3");
-          setbangZzang(data.streamId);
+          if(mode != "game3"){
+            setContentTitle("UP DOWN 게임");
+            setMode("game3");
+            setbangZzang(data.streamId);
+          }
         }
       });
     }
@@ -248,6 +250,7 @@ const Room = () => {
               mode={mode}
               musicList={musicListRef.current}
               music={musicRef.current}
+              back = {handleHomeClick}
             />
           </div>
         </div>
