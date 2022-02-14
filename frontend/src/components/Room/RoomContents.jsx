@@ -3,6 +3,8 @@ import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
+import YangGameComponent from "././game/YangGameComponent";
+import SelectingGame from "././game/SelectingGame";
 
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
@@ -15,6 +17,7 @@ import html2canvas from "html2canvas";
 
 import MusicPlayer from "./music/MusicPlayer";
 import SessionIdContext from "../../contexts/SessionIdContext";
+import Keyword from "../Modals/Game/Keyword";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -29,12 +32,11 @@ const RoomContents = ({
   mode,
   musicList,
   music,
+  bangzzang,
 }) => {
   const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
   const { myName } = useContext(NameContext);
-  console.log(musicList);
-  console.log(music);
   //console.log(loginStatus, myName);
   console.log("room content render", loginStatus);
   const [mySessionId, setMySessionId] = useState(sessionName);
@@ -46,6 +48,24 @@ const RoomContents = ({
   const subscribersRef = useRef(subscribers);
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [allSet, setAllSet] = useState(false);
+  const [startPage, setStartPage] = useState(true);
+  const [keyword, setKeyword] = useState("");
+  const [subscriberkeyword, setSubscriberKeyword] = useState("");
+  const [userId, setUserId] = useState("");
+  const [nickname, setNickname] = useState([]);
+  const [myNickname, setMyNickname] = useState("");
+  const [gameStatus, setGameStatus] = useState("0");
+  const [streamId, setStreamId] = useState("");
+  const [targetId, setTargetId] = useState("");
+  const [targetGameName, setTargetGameName] = useState("");
+  const [index, setIndex] = useState("1");
+  const [keywordInputModal, setKeywordInputModal] = useState(false);
+  const [answer, setAnswer] = useState("");
+  const [modalMode, setModalMode] = useState("start");
+  const [participants, setParticipants] = useState([]);
+  const [targetNickName, setTargetNickName] = useState("");
 
   // console.log(targetSubscriber);
 
@@ -58,6 +78,8 @@ const RoomContents = ({
 
   const localUserRef = useRef(localUser);
   localUserRef.current = localUser;
+
+  console.log(localUserRef.current);
 
   // 인생네컷
   const [count, setCount] = useState(5);
@@ -81,7 +103,7 @@ const RoomContents = ({
 
   useEffect(() => {
     setLoginStatus("3");
-
+    console.log(loginStatus);
     window.addEventListener("beforeunload", onbeforeunload);
     joinSession();
     return () => {
@@ -139,6 +161,15 @@ const RoomContents = ({
         console.warn(exception);
       });
 
+      sessionRef.current.on("signal:photo", (event) => {
+        const data = event.data;
+        console.log(data);
+        if (data.photoStatus === 1) {
+          console.log("사진 찍어요~");
+          onCapture();
+        }
+      });
+
       getToken().then((token) => {
         sessionRef.current
           .connect(token, { clientData: myUserName })
@@ -177,6 +208,126 @@ const RoomContents = ({
               error.message
             );
           });
+      });
+
+      //back으로 부터 받는 data처리
+      sessionRef.current.on("signal:game", (event) => {
+        //초기요청 응답
+        //양세찬
+        const data = event.data;
+        if (data.gameId === 1 || data.gameId === 2) {
+          if (data.gamename !== "" && data.gamename !== undefined) {
+            let nicknameList = [];
+            nicknameList = nickname;
+            nicknameList.push({
+              connectionId: data.streamId,
+              keyword: data.gamename,
+            });
+            setNickname([...nicknameList]);
+            console.log(nicknameList);
+          }
+
+          console.log(data.gameStatus);
+          console.log(data.gameId);
+          //내가 키워드를 정해줄 차례라면
+          if (data.gameId === 1) {
+            if (data.gameStatus === 1) {
+              if (
+                data.streamId ===
+                localUserRef.current.getStreamManager().stream.streamId
+              ) {
+                console.log("my turn");
+                //상대방 키워드 입력해줄 모달 띄우기
+                setStreamId(data.streamId);
+                setTargetId(data.targetId);
+                setModalMode("assign");
+                openKeywordInputModal();
+                if (data.index !== undefined && data.index !== "") {
+                  setIndex(data.index);
+                }
+                //내가 정해줄 차례가 아니라면
+              } else {
+                console.log("not my turn");
+                setModalMode("wait");
+                openKeywordInputModal();
+              }
+            } else if (data.gameStatus === 2) {
+              console.log(data.answerYn);
+              if (data.answerYn !== undefined && data.answerYn !== "") {
+                if (
+                  data.streamId ===
+                  localUserRef.current.getStreamManager().stream.streamId
+                ) {
+                  if (data.answerYn === "Y") {
+                    setModalMode("correct");
+                    openKeywordInputModal();
+                    console.log("here!!!!");
+                  } else if (data.answerYn === "N") {
+                    setModalMode("wrong");
+                    openKeywordInputModal();
+                  }
+                }
+              } else {
+                setModalMode("letsplay");
+                openKeywordInputModal();
+                setTimeout(() => {
+                  setModalMode("answer");
+                  closeKeywordInputModal();
+                }, 5000);
+                console.log("키워드 설정 완료");
+              }
+            }
+            //금지어
+          } else if (data.gameId === 2) {
+            console.log("here");
+            if (data.gameStatus === 1) {
+              if (
+                data.streamId ===
+                localUserRef.current.getStreamManager().stream.streamId
+              ) {
+                console.log("my turn");
+                //상대방 금지어 입력해줄 모달 띄우기
+                setStreamId(data.streamId);
+                setTargetId(data.targetId);
+                setModalMode("assignForbidden");
+                openKeywordInputModal();
+                if (data.index !== undefined && data.index !== "") {
+                  setIndex(data.index);
+                }
+                //내가 정해줄 차례가 아니라면
+              } else {
+                console.log("not my turn");
+                setModalMode("wait");
+                openKeywordInputModal();
+              }
+            } else if (data.gameStatus === 2) {
+              console.log(data.answerYn);
+              if (data.answerYn !== undefined && data.answerYn !== "") {
+                if (
+                  data.streamId ===
+                  localUserRef.current.getStreamManager().stream.streamId
+                ) {
+                  if (data.answerYn === "Y") {
+                    setModalMode("correct");
+                    openKeywordInputModal();
+                    console.log("here!!!!");
+                  } else if (data.answerYn === "N") {
+                    setModalMode("wrong");
+                    openKeywordInputModal();
+                  }
+                }
+              } else {
+                setModalMode("letsplay");
+                openKeywordInputModal();
+                setTimeout(() => {
+                  setModalMode("answer");
+                  closeKeywordInputModal();
+                }, 5000);
+                console.log("키워드 설정 완료");
+              }
+            }
+          }
+        }
       });
     }
   }, [session]);
@@ -230,6 +381,17 @@ const RoomContents = ({
     console.log(subscribers);
   }, [subscribers]);
 
+  useEffect(() => {
+    console.log("here");
+    const nickname = subscribers.map((data) => {
+      if (targetId === data.getStreamManager().stream.streamId) {
+        return data.nickname;
+      }
+    });
+    console.log(nickname);
+    setTargetNickName(nickname);
+  }, [targetId]);
+
   const onbeforeunload = (e) => {
     //console.log("tlfgodehla");
 
@@ -266,6 +428,17 @@ const RoomContents = ({
       .publishAudio(localUserInit.isAudioActive());
     sendSignalUserChanged({ isAudioActive: localUserInit.isAudioActive() });
     setLocalUser(localUserInit);
+  };
+
+  const sendSignalCameraStart = () => {
+    const data = {
+      photoStatus: 1,
+    };
+    const signalOptions = {
+      data: JSON.stringify(data),
+      type: "photo",
+    };
+    sessionRef.current.signal(signalOptions);
   };
 
   const getToken = () => {
@@ -346,6 +519,7 @@ const RoomContents = ({
 
   const onCapture = () => {
     let flag = 0;
+    setImages([]);
     setStatus(1);
     const loop = setInterval(() => {
       setCount((prev) => prev - 1);
@@ -366,6 +540,8 @@ const RoomContents = ({
         if (flag === 3) {
           setStatus(2);
           clearInterval(loop);
+          //api호출
+          //백엔드에 사진저장
         }
         // sleep(1500);
       }
@@ -373,8 +549,7 @@ const RoomContents = ({
   };
 
   const onRetry = () => {
-    setImages([]);
-    onCapture();
+    sendSignalCameraStart();
   };
 
   const onSave = () => {
@@ -382,6 +557,20 @@ const RoomContents = ({
       saveImg(canvas.toDataURL("image/png"), "오늘의 추억.png");
     });
   };
+
+  const handleVoiceFilter = () => {
+    console.log(localUserRef.current);
+    const data = { command: "pitch pitch=0.5" };
+    const type = "GStreamerFilter";
+    const options = { command: "pitch pitch=0.5" };
+    localUserRef.current
+      .getStreamManager()
+      .stream.applyFilter(type, options)
+      .then((result) => {
+        console.log(result);
+      });
+  };
+  // filter.options = { command: "pitch pitch=0.5" };
   const saveImg = (uri, filename) => {
     let link = document.createElement("a");
     document.body.appendChild(link);
@@ -390,12 +579,94 @@ const RoomContents = ({
     link.click();
     document.body.removeChild(link);
   };
+  const closeSelectingPage = () => {
+    setIsSelecting(false);
+  };
+  const closeStartPage = () => {
+    console.log("close here");
+    setStartPage(false);
+  };
+  const openStartPage = () => {
+    setStartPage(true);
+  };
+  const giveGamename = (data, gamemode) => {
+    console.log(streamId);
+    console.log(targetId);
+    console.log(data);
+    console.log(index);
+    const senddata = {
+      streamId: streamId,
+      gameStatus: 1,
+      gameId: gamemode,
+      gamename: data,
+      index: index,
+    };
+    localUserRef.current.getStreamManager().stream.session.signal({
+      data: JSON.stringify(senddata),
+      type: "game",
+    });
+  };
+  const checkMyAnswer = (data) => {
+    const senddata = {
+      streamId: streamId,
+      gameStatus: 2,
+      gameId: 1,
+      gamename: data,
+    };
+    localUserRef.current.getStreamManager().stream.session.signal({
+      data: JSON.stringify(senddata),
+      type: "game",
+    });
+  };
+  const openKeywordInputModal = () => {
+    setKeywordInputModal(true);
+  };
+  const closeKeywordInputModal = () => {
+    setKeywordInputModal(false);
+  };
+  const confirmMyAnswer = (data) => {
+    closeKeywordInputModal();
+    setAnswer(data);
+    //게임 정답 맞추는 api호출
+    checkMyAnswer(data);
+  };
+  const confirmTargetGameName = (data) => {
+    closeKeywordInputModal();
+    setTargetGameName(data);
+    if (mode === "game1") giveGamename(data, 1);
+    else if (mode === "game2") giveGamename(data, 2);
+    //target gamename 지정해주는 api호출
+  };
   return (
     <div className={styles["contents-container"]}>
+      <SelectingGame
+        open={isSelecting}
+        close={closeSelectingPage}
+        startPage={startPage}
+        closeStartPage={closeStartPage}
+      />
       {mode === "snapshot" ? (
         <div className={styles.countContainer}>
           <p className={styles.count}>{count}</p>
         </div>
+      ) : mode === "game1" ? (
+        <Keyword
+          open={keywordInputModal}
+          close={closeKeywordInputModal}
+          confirmMyAnswer={confirmMyAnswer}
+          confirmTargetGameName={confirmTargetGameName}
+          mode={modalMode}
+          targetNickName={targetNickName}
+        />
+      ) : mode === "game2" ? (
+        <Keyword
+          open={keywordInputModal}
+          close={closeKeywordInputModal}
+          confirmMyAnswer={confirmMyAnswer}
+          confirmTargetGameName={confirmTargetGameName}
+          mode={modalMode}
+          targetNickName={targetNickName}
+        />
       ) : null}
       <div id="user-video" className={styles["video-container"]}>
         {localUserRef.current !== undefined &&
@@ -405,19 +676,21 @@ const RoomContents = ({
               sessionId={mySessionId}
               camStatusChanged={camStatusChanged}
               micStatusChanged={micStatusChanged}
+              subscribers={subscribers}
               mode={mode}
+              bangzzang={bangzzang}
+              openKeywordInputModal={openKeywordInputModal}
             />
           )}
         {subscribersRef.current.map((sub, i) => {
-          ////console.log(sub);
           return (
-            //양세찬 게임 키워드 props로 같이 보내줘야할듯
             <StreamComponent
               key={i}
               user={sub}
               targetSubscriber={targetSubscriber}
               subscribers={subscribers}
               mode={mode}
+              nickname={nickname}
             />
           );
         })}
@@ -428,12 +701,15 @@ const RoomContents = ({
             <SnapShotResult
               images={images}
               status={status}
-              onStart={onCapture}
+              onStart={sendSignalCameraStart}
               onRetry={onRetry}
               onSave={onSave}
             />
           ) : (
-            <Chat user={localUserRef.current} />
+            <>
+              <Chat user={localUserRef.current} />
+              {/* <button onClick={handleVoiceFilter}>목소리변조</button> */}
+            </>
           )}
           <MusicPlayer user={localUserRef.current} music={music} />
         </div>
