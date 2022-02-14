@@ -39,7 +39,7 @@ public class RoomHistoryServiceImpl implements RoomHistoryService{
     }
 
     @Override
-    public RoomHistory findOneHistoryAll(Long userSeq) {
+    public List<RoomHistory> findOneHistoryAll(Long userSeq) {
         return roomHistoryRepository.findOneHistoryDesc(userSeq);
     }
 

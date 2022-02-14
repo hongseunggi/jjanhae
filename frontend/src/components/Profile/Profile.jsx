@@ -12,6 +12,10 @@ import image4 from "../../assets/images/default4.png";
 import image5 from "../../assets/images/default5.png";
 import image6 from "../../assets/images/default6.png";
 import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
+import CalendarPage from "../Calendar/CalendarPage";
+import IntoRoom from "../Modals/RoomEnter/IntoRoom.jsx";
+import Rankfriend from "../Modals/Rankfriend/Rankfriend.jsx";
+
 
 const Profile = () => {
   const [name, setName] = useState("");
@@ -24,20 +28,20 @@ const Profile = () => {
   const [drinkLimit, setDrinkLimit] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const [myImg, setMyImg] = useState(image6);
-
+  const [openModal, setOpenModal] = useState(false);
   const { getUserProfile, getUpdateProfileResult, getUpdateProfileImgResult } =
     UserApi;
   const { getImgUploadResult } = ImgApi;
   // 친구들을 특정하기 위한 값이 필요 ex) id
   const [friends, setFriends] = useState([
-    { name: "김정연", count: 5, image: image1 },
-    { name: "유소연", count: 4, image: image2 },
-    { name: "배하은", count: 3, image: image3 },
-    { name: "홍승기", count: 2, image: image4 },
-    { name: "송민수", count: 1, image: image5 },
+    // { name: "김정연", count: 5, image: image1 },
+    // { name: "유소연", count: 4, image: image2 },
+    // { name: "배하은", count: 3, image: image3 },
+    // { name: "홍승기", count: 2, image: image4 },
+    // { name: "송민수", count: 1, image: image5 },
   ]);
   const [loading, setLoading] = useState(false);
-
+  const images = [image1, image2, image3, image4, image5];
   const handleEditMode = async (e) => {
     e.preventDefault();
     //console.log(name);
@@ -55,6 +59,7 @@ const Profile = () => {
         },
       };
       const { data } = await getUpdateProfileResult(body);
+    
       setTimeout(() => {
         setLoading(false);
       }, 1500);
@@ -135,6 +140,7 @@ const Profile = () => {
     //console.log(data);
     setName(data.name);
     setEmail(data.email);
+    setFriends(data.friends);
     let year = data.birthday.year;
     let month = data.birthday.month;
     let day = data.birthday.day;
@@ -148,18 +154,26 @@ const Profile = () => {
     setDrink(data.drink);
     setDrinkLimit(data.drinkLimit);
   };
-
+  const handleModal = (e) => {
+    e.preventDefault();
+    setOpenModal(!openModal);
+  }
   return (
-    <div className={styles.profileForm}>
+    <div>
+      <div className={styles.profileForm}>
+      {loading ? <LoadingSpinner></LoadingSpinner> : null}
       <main className={styles.profile}>
         <header className={styles.title}>
           <h1>{name}님의 프로필</h1>
         </header>
         <div className={styles.sections}>
+        
           <section className={styles.userProfile}>
-            {loading ? <LoadingSpinner></LoadingSpinner> : null}
+          
             <form className={styles.userInfoForm}>
+              
               <div className={styles.profileRow}>
+              
                 <label htmlFor="input-img">
                   <img
                     className={styles.profileImg}
@@ -178,10 +192,15 @@ const Profile = () => {
                 <div
                   className={
                     isEdit
-                      ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
-                      : styles.userInfoData
+                      ? `${styles.userInfoName} ${styles.userInfoDataEdit}`
+                      : styles.userInfoName
                   }
                 >
+                  <div>
+                  <button className={styles.rank} onClick={handleModal}>
+                      🏆
+                  </button>
+                  </div>
                   <label htmlFor="name">이름</label>
                   <input
                     id="name"
@@ -190,10 +209,8 @@ const Profile = () => {
                     disabled={!isEdit}
                     onChange={nameHandler}
                   />
+                  
                 </div>
-                <Link to="/user/calendar">
-                  <CalendarIcon width="40" height="40" />
-                </Link>
               </div>
               <div className={styles.inputRow}>
                 <div className={styles.userInfoData}>
@@ -309,10 +326,17 @@ const Profile = () => {
                 </button>
               </div>
             </form>
+            <div className={styles.calendar}> 
+            {openModal ? <Rankfriend onClose={handleModal} friend = {friends}></Rankfriend> : null}
+  
+            <CalendarPage></CalendarPage>
+          </div>
           </section>
-
-          <section className={styles.friendProfile}>
+          
+          {/* <section className={styles.friendProfile}>
+          {loading ? <LoadingSpinner></LoadingSpinner> : null}
             <div className={styles.friendTitle}>
+            
               <h1 className={styles.mainTitle}>나와 함께한 친구들</h1>
               <span className={styles.subTitle}>
                 (술자리 참여 횟수 기준 상위 5명)
@@ -321,21 +345,59 @@ const Profile = () => {
             <div className={styles.friends}>
               {friends.map((friend, index) => (
                 <div key={index} className={styles.friendInfo}>
-                  <img
+                  {friend.imgurl === 'default' ? (
+                    <img
                     className={styles.friendProfileImg}
-                    src={friend.image}
+                    src={images[index]}
                     alt="friend profile"
                   />
+
+                  ) : (
+                  <img
+                    className={styles.friendProfileImg}
+                    src={friend.imgurl}
+                    alt="friend profile"
+                  />
+
+                  )}
+                  
                   <div className={styles.friendData}>
                     <span>{friend.name}/</span>
-                    <span>{friend.count}회</span>
+                    <span>{friend.numberOf}회</span>
                   </div>
                 </div>
               ))}
+              {friends.map((friend, index) => {
+                if(index > 3) return;
+                else return (
+                <div key={index} className={styles.friendInfo}>
+                  {friend.imgurl === 'default' ? (
+                    <img
+                    className={styles.friendProfileImg}
+                    src={images[index]}
+                    alt="friend profile"
+                  />
+
+                  ) : (
+                  <img
+                    className={styles.friendProfileImg}
+                    src={friend.imgurl}
+                    alt="friend profile"
+                  />
+
+                  )}
+                  
+                  <div className={styles.friendData}>
+                    <span>{friend.name}/</span>
+                    <span>{friend.numberOf}회</span>
+                  </div>
+                </div>
+              )})}
             </div>
-          </section>
+          </section> */}
         </div>
       </main>
+    </div>
     </div>
   );
 };
