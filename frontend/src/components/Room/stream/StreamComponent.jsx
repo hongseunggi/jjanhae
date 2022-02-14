@@ -23,6 +23,7 @@ function StreamComponent({
   subscribers,
   openKeywordInputModal,
   nickname,
+  handleForbidden,
 }) {
   console.log(user);
   const [mutedSound, setMuted] = useState(false);
@@ -76,6 +77,9 @@ function StreamComponent({
     setBgcolor(color[index]);
   }, []);
 
+  const handleForbiddenWord = () => {
+    handleForbidden(user);
+  }
 
   return (
     <div
@@ -153,7 +157,9 @@ function StreamComponent({
                 ) : (
                   <div className={styles.forbiddenAlertGameBorder}>
                     <div className={styles.forbiddenAlertGame}>
-                      <button className={styles.sirenBtn}>
+                      <button 
+                        className={styles.sirenBtn}
+                        onClick={handleForbiddenWord}>
                       <SirenIcon className={styles.sirenIcon}/>
                       </button>
                     <div

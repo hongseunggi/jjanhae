@@ -4,7 +4,6 @@ import axios1 from "../../api/WebRtcApi";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import YangGameComponent from "././game/YangGameComponent";
-import SelectingGame from "././game/SelectingGame";
 
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
@@ -591,9 +590,25 @@ const RoomContents = ({
     else if(mode==="game2") giveGamename(data,2);
     //target gamename 지정해주는 api호출
   };
+  const handleForbidden = (data) => {
+    sirenWing(data);
+    console.log(data);
+  };  
+
+  const sirenWing = (data) => {
+    const senddata = {
+      streamId: data.getStreamManager().stream.streamId,
+      gameId: 2,
+      gameStatus: 2,
+      sirenYn:"Y",
+    }
+    localUserRef.current.getStreamManager().stream.session.signal({
+      data: JSON.stringify(senddata),
+      type: "game",
+    });
+  }
   return (
     <div className={styles["contents-container"]}>
-      <SelectingGame open={isSelecting} close={closeSelectingPage} startPage={startPage} closeStartPage={closeStartPage}/>
       {mode === "snapshot" ? (
         <div className={styles.countContainer}>
           <p className={styles.count}>{count}</p>
@@ -640,6 +655,7 @@ const RoomContents = ({
               subscribers={subscribers}
               mode={mode}
               nickname={nickname}
+              handleForbidden={handleForbidden}
             />
           );
         })}
