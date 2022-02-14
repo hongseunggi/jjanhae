@@ -5,6 +5,7 @@ import RoomConfig from "./Modals/RoomConfig/RoomConfig";
 import { Link } from "react-router-dom";
 import LoginStatusContext from "../contexts/LoginStatusContext";
 import Carousel from "./Carousel/Carousel";
+import MusicList from "./Modals/RegistMusic/MusicList";
 
 function Home() {
   const { loginStatus } = useContext(LoginStatusContext);
@@ -72,10 +73,6 @@ function Home() {
         </Row>
       </Container>
       <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} />
-      {/* <Keyword open={modalOpen} close={closeRoomConfigModal} /> */}
-      {/* <GameList open={modalOpen} close={closeRoomConfigModal} /> */}
-      {/* <Setting open={modalOpen} close={closeRoomConfigModal} /> */}
-      {/* <RegistMusic open={modalOpen} onClose={closeRoomConfigModal} /> */}
     </>
   );
 }
