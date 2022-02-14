@@ -369,7 +369,7 @@ public class GameService {
             System.out.println("decreased index : " + index);
 
             Map<String, String> wordMap = sWordMap.get(sessionId); // 해당 방의 닉네임맵
-            wordMap.put(curStreamId, data.get("word").getAsString());
+            wordMap.put(curStreamId, data.get("gamename").getAsString());
             Iterator<Map.Entry<String, String>> iter2 = wordMap.entrySet().iterator();
             while(iter2.hasNext()) {
                 System.out.println("open Map ...");
