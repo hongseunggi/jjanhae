@@ -12,6 +12,8 @@ import Home from "./components/Home.jsx";
 import "./assets/fonts/font.css";
 import Room from "./components/Room/Room";
 import { useEffect } from "react";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   // 1 : 비로그인 상태 2 : 로그인 상태 3 : 파티룸 입장 상태
@@ -28,6 +30,7 @@ function App() {
       <NameContext.Provider value={{ myName, setMyName }}>
         <LoginStatusContext.Provider value={{ loginStatus, setLoginStatus }}>
           <div className="App">
+          
             <Router basename={process.env.PUBLIC_URL}>
               <Routes>
                 <Route path="/" element={<Main />}>
@@ -39,6 +42,7 @@ function App() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>
+            <ToastContainer autoClose={1500} style={{width : "450px", display : "inline"}} theme="colored"></ToastContainer>
           </div>
         </LoginStatusContext.Provider>
       </NameContext.Provider>

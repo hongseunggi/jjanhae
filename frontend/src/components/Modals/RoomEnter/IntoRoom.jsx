@@ -11,6 +11,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import RoomApi from "../../../api/RoomApi";
+import { toast } from "react-toastify";
 
 const VIDEO = { video: true, audio: false };
 let localstream;
@@ -104,7 +105,16 @@ function IntoRoom({ onClose, room }) {
     };
     const { data } = await getRoomEnterResult(body);
     if (data.statusCode === 204) {
-      alert("이미 다른 방에 입장 중 이거나 종료된 방입니다.");
+      // alert("이미 다른 방에 입장 중 이거나 종료된 방입니다.")
+      toast.error(
+        <div className="hi" style={{ width: "350px" }}>
+          이미 다른 방에 입장 중 이거나 종료된 방입니다.
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
       onClose();
     } else {
       setMyVMstate({ video: isVideo, audio: isMic });

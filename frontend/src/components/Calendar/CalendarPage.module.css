@@ -3,14 +3,20 @@
 .calendadrFormBorder {
   display: flex;
   justify-content: center;
+  /* position: absolute; */
+  /* left: 35vw; */
+  /* margin-left: 35vw; */
   /* justify-content: space-around; */
   /* text-align: center; */
 }
 .calendarForm {
   display: flex;
   flex-direction: column;
-  margin-top: 5vh;
-  width: 60vw;
+  /* margin-top: 5vh; */
+  /* top : -50px; */
+
+  /* height: 470px; */
+  /* width: 60vw; */
 }
 .calendarHeader {
   position: relative;
@@ -20,35 +26,25 @@
   justify-content: center;
   color: tomato;
 }
-.calendarTitle {
-  position: relative;
-  font-size: 2.5rem;
-  font-weight: bolder;
-  color: #eeee;
-  text-align: left;
-  margin-left: 150px;
-}
-.calendarBodyBorder {
-  margin: 0 auto;
-}
+
 .calendarBody {
   border-color: whitesmoke;
 
-  margin-top: 30px;
+  margin-top: 1vh;
 }
 
 .month {
-  color: #eeee;
-  font-size: 2rem;
+  color: black;
+  font-size: 1.5vw;
   font-weight: bolder;
   text-align: left;
-  font-size: 2.5rem;
-
+  margin-top: 1vh;
+  /* margin-bottom: 0px; */
   width: 52.5vw;
 }
 .week {
   cursor:default;
-  width: 10px;
+  width: 1vw;
   height: 4rem;
   display: table-row;
 }
@@ -59,12 +55,12 @@
 .day {
   position: relative;
   display: table-cell;
-  padding: 0 15px;
+  padding: 0 1vw;
   justify-content: center;
   background-color: #eee;
   border-style: none dashed dashed none;
   border-width: 0.1rem;
-  border-color: black;
+  /* border-color: black; */
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   width: 7.5vw;
@@ -73,13 +69,14 @@
 .dayotherRowFirst {
   position: relative;
   display: table-cell;
-  color: #f3f3f3;
-  padding: 0 15px;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
   background-color: #eee;
   justify-content: center;
   border-style: none dashed dashed none;
+  /* border-style: ; */
   border-width: 0.1rem;
-  border-color: black;
+  /* border-color: black; */
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   width: 7.5vw;
@@ -88,13 +85,13 @@
 .dayLastRow {
   position: relative;
   display: table-cell;
-  color: #f3f3f3;
-  padding: 0 15px;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
   justify-content: center;
   border-radius: 0px 0px 0px 25px;
   border-style: none dashed none none;
   border-width: 0.1rem;
-  border-color : black;
+  /* border-color : black; */
   background-color: #eee;
   font-weight: bold;
   font-family: "Poppins", sans-serif;
@@ -104,11 +101,13 @@
 .dayLastRowEnd {
   position: relative;
   display: table-cell;
-  color: #f3f3f3;
-  padding: 0 15px;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
   justify-content: center;
   border-radius: 0px 0px 25px 0px;
   border-style: none none none none;
+  border-width: 0.1rem;
+  /* border-color: black; */
   background-color: #eee;
   font-weight: bold;
   font-family: "Poppins", sans-serif;
@@ -118,13 +117,13 @@
 .dayotherRowEnd {
   position: relative;
   display: table-cell;
-  color: #f3f3f3;
-  padding: 0 15px;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
   justify-content: center;
   border-style: none none dashed none;
   border-width: 0.1rem;
   background-color: #eee;
-  border-color: black;
+  /* border-color: black; */
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   width: 7.5vw;
@@ -133,13 +132,13 @@
 .dayotherRow {
   position: relative;
   display: table-cell;
-  color: #f3f3f3;
-  padding: 0 15px;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
   justify-content: center;
   border-style: none dashed dashed none;
   border-width: 0.1rem;
   background-color: #eee;
-  border-color: black;
+  /* border-color: black; */
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   width: 7.5vw;
@@ -148,13 +147,13 @@
 .dayLastRowother {
   position: relative;
   display: table-cell;
-  color: #f3f3f3;
-  padding: 0 15px;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
   justify-content: center;
   border-style: none dashed none none;
   border-width: 0.1rem;
   background-color: #eee;
-  border-color: black;
+  /* border-color: black; */
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   width: 7.5vw;
@@ -163,13 +162,13 @@
 .dayfirstRow {
   position: relative;
   display: table-cell;
-  color: #f3f3f3;
-  padding: 0 15px;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
   justify-content: center;
   background-color: #eee;
   border-style: none dashed dashed none;
   border-width: 0.1rem;
-  border-color: black;
+  /* border-color: black; */
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   width: 7.5vw;
@@ -178,27 +177,27 @@
 .dayfirstRowEnd {
   position: relative;
   display: table-cell;
-  color: #f3f3f3;
-  padding: 0 15px;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
   justify-content: center;
   border-style: none none dashed none;
   border-width: 0.1rem;
   background-color: #eee;
-  border-color: black;
+  /* border-color: black; */
   font-weight: bold;
   font-family: "Poppins", sans-serif;
   width: 7.5vw;
   height: 11.5vh;
 }
 .dayreal{
-  margin-top: 10px;
+  margin-top: 0.7vw;
   text-align: right;
   margin-bottom: 0;
   width: 100%;
 }
 .icon {
-  width: 50px;
-  height: 50px;
+  width: 3vw;
+  height: 3vw;
   background-color: transparent;
 }
 .sunday {
@@ -218,8 +217,8 @@
 }
 .partyicon {
   /* display: inline; */
-  width: 40px;
-  height: 40px;
+  width: 2.5vw;
+  height: 2.5vw;
   border: none;
   background-image: url('../../assets/icons/party.svg');
   background-size: contain;
@@ -253,13 +252,13 @@
 .container {
   position: relative;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 0.3vw;
 }
 .partyList {
   background: rgb(255, 86, 34);
   border-radius: 8px;
   position: absolute;
-  top: 65px;
+  top: 3vw;
   width: 100%;
   height: 150px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);

@@ -24,16 +24,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import RoomContents from "./RoomContents";
 import Youtube from "../../api/Youtube";
 import SessionIdContext from "../../contexts/SessionIdContext";
+import BangZzangContext from "../../contexts/BangZzangContext";
 
 const youtube = new Youtube(process.env.REACT_APP_YOUTUBE_API_KEY);
 
 const Room = () => {
   const { sessionId } = useContext(SessionIdContext);
-  console.log(sessionId);
   const { setLoginStatus } = useContext(LoginStatusContext);
   const { myVMstate } = useContext(VideoMicContext);
   const { myName } = useContext(NameContext);
-
   const [mode, setMode] = useState("basic");
   const [contentTitle, setContentTitle] = useState("");
   // const [onCamera, setOnCamera] = useState(false);
@@ -41,6 +40,9 @@ const Room = () => {
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [musicList, setMusicList] = useState([]);
   const [music, setMusic] = useState("");
+  const [gameId, setGameId] = useState("");
+  
+  const {setbangZzang} = useContext(BangZzangContext);
 
   const { title, roomseq } = useParams();
 
@@ -85,6 +87,37 @@ const Room = () => {
 
     return () => setLoginStatus("2");
   }, [sessionId]);
+
+  useEffect(() => {
+    if(sessionId!==""&&sessionId!==undefined) {
+      console.log(sessionId);
+      sessionId.on("signal:game", (event) => {
+        const data = event.data;
+        console.log(data);
+        console.log(data.gameId);
+        if(data.gameId===1) {
+          setContentTitle("양세찬 게임");
+          setMode("game1");
+          setbangZzang(data.streamId);
+        }else if (data.gameId===2) {
+          setContentTitle("금지어 게임");
+          setMode("game2");
+          setbangZzang(data.streamId);
+        }
+      });
+    }
+  }, [sessionId]);
+
+  useEffect(()=> {
+    console.log(mode);
+  },[mode])
+
+  useEffect(() => {
+    if(gameId!==""&&gameId!==undefined) {
+      console.log(gameId);
+      changeMode();
+    }
+  },[gameId])
 
   const onClickExit = async () => {
     const body = {
@@ -152,6 +185,30 @@ const Room = () => {
     });
   };
 
+  const changeMode = (mode) => {
+    console.log(gameId);
+    const data={
+      gameStatus : 0,
+      gameId : mode,
+    }
+    sessionId.signal({
+      type : "game",
+      data : JSON.stringify(data), 
+    });
+  };
+
+  const changeMain = () => {
+    setMode("basic");
+  };
+  
+  const handleModeChange = (data) => {
+    console.log(data);
+    if(data==="1") {
+      changeMode(1);
+    }else if(data==="2") {
+      changeMode(2);
+    }
+  }
   return (
     <div className={styles.container}>
       {loading ? <LoadingSpinner></LoadingSpinner> : null}
@@ -220,7 +277,7 @@ const Room = () => {
       <GameList
         open={onGameList}
         onClose={handleModalClose}
-        // onChange={handleModeChange}
+        onChange={handleModeChange}
       />
       <RegistMusic
         open={onRegistMusic}

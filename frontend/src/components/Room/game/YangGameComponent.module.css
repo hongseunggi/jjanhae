@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
+
 .postitInput {
     background-color:  #fff44f;
     height: 80%;
@@ -32,5 +34,16 @@
     align-content: center;
     justify-content: space-around;
     align-items: center;
+    color : #252525;
+    font-weight: bolder;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
 }
 
+.informText .sendClockIcon {
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}

@@ -13,8 +13,8 @@ import java.util.List;
  * 방 이력 모델 관련 디비 쿼리 생성을 위한 JPA Query Method 인터페이스 정의.
  */
 public interface RoomHistoryRepository extends JpaRepository<RoomHistory, Long> {
-    @Query(value = "select * from room_history where user_seq = :userSeq order by history_seq desc limit 1", nativeQuery = true)
-    public RoomHistory findOneHistoryDesc(@Param(value = "userSeq") Long userSeq);
+    @Query(value = "select * from room_history where user_seq = :userSeq order by history_seq desc", nativeQuery = true)
+    public List<RoomHistory> findOneHistoryDesc(@Param(value = "userSeq") Long userSeq);
 
     @Query(value = "select room_seq from room_history where user_seq = :userSeq" +
             " order by history_seq desc" , nativeQuery = true)
