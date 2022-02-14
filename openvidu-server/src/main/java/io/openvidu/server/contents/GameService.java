@@ -175,6 +175,7 @@ public class GameService {
             data.addProperty("targetId", orderMap.get(counterClockWise.charAt(0)-'0')); // 저장해야할 아이디
             data.addProperty("streamId", orderMap.get(counterClockWise
                     .charAt(counterClockWise.length()-1)-'0')); // targetId를 바꿔주는 Id
+            // end of yangsechan
 
         } else if (data.get("gameId").getAsInt() == FORBIDDEN) {
             System.out.println("Forbidden Game Prepare To Initial ...");
@@ -223,6 +224,48 @@ public class GameService {
             data.addProperty("targetId", orderMap.get(counterClockWise.charAt(0)-'0')); // 저장해야할 아이디
             data.addProperty("streamId", orderMap.get(counterClockWise
                     .charAt(counterClockWise.length()-1)-'0')); // targetId를 바꿔주는 Id
+            // end of forbidden
+            
+        } else if (data.get("gameId").getAsInt() == UPDOWN) {
+            System.out.println("Updown Game Prepare To Initial ...");
+            // 준비단계에서 미리 초기화 시켜두기
+            // nicknameMap에 streamId를 Key로 해서 모두 빈값으로 초기화시켜 놓는다.
+            Map<Integer, String> orderMap = new HashMap<>(); // 순서를 매핑시킴
+            int index = 1;
+            for (Participant p : participants) {
+                orderMap.put(index, p.getPublisherStreamId());
+                index++;
+            }
+
+            // 매핑된 순서 확인
+            System.out.println("mapping order check .....");
+            Iterator<Map.Entry<Integer, String>> entry = orderMap.entrySet().iterator();
+            while(entry.hasNext()) {
+                Map.Entry<Integer, String> e = entry.next();
+                System.out.printf("%d : %s\n", e.getKey(), e.getValue());
+            }
+
+            String sessionId = message.get("sessionId").getAsString();
+            sOrderMap.put(sessionId, orderMap); // 1이 누구이고 2는 누구인지 매핑
+
+            // 방인원수에 따라 시계방향 순서가 달라지므로 방 세션마다 반시계방향 순서를 저장해놓는다
+            String counterClockWise = "";
+            int size = 4;
+            if (participants.size() < 4) size = participants.size();
+            for (int i = 1; i <= size; i++) {
+                counterClockWise += Integer.toString(i); // 1234
+            }
+            for (int i = participants.size(); i >= size+1; i--) {
+                counterClockWise += Integer.toString(i); // 8765
+            }
+            System.out.println("counterClockWise : " + counterClockWise);
+            sCounterClockWise.put(message.get("sessionId").getAsString(), counterClockWise);
+            Iterator<Map.Entry<String, String>> iter = sCounterClockWise.entrySet().iterator();
+            while(iter.hasNext()) {
+                Map.Entry<String, String> cur = iter.next();
+                System.out.printf("%s, %s\n", cur.getKey(), cur.getValue());
+            }
+            // end of updown
         }
 
         data.addProperty("gameStatus", 1);
@@ -269,6 +312,23 @@ public class GameService {
             int number = (int) (Math.random() * 100) + 1;
             System.out.printf("sessionId : %s, number : %d\n", message.get("sessionId").getAsString(), number);
             numberMap.put(message.get("sessionId").getAsString(), number);
+
+            // 프론트에서 준 index를 받아온다.
+            int index = data.get("index").getAsInt();
+            int size = participants.size();
+            System.out.println("before index : " + index);
+            if(index > size) {
+                index -= size; // 숫자를 맞출때까지 돌려줘야 하므로
+            }
+            System.out.println("after index : " + index);
+            // 해당 index-1 순서의 streamId 리턴
+            String sessionId = message.get("sessionId").getAsString();
+            String counterClockWise = sCounterClockWise.get(sessionId);
+            // 순서가 저장돼있는 order map에서 해당 순서의 streamId 꺼냄
+            String curStreamId = sOrderMap.get(sessionId).get(counterClockWise.charAt(index-1)-'0');
+            System.out.println("curStreamId : " + curStreamId);
+            data.addProperty("streamId", curStreamId);
+            data.addProperty("index", ++index);
             data.addProperty("gameStatus", 2);
             // 생성해서 맵에 저장하고 있다가 후에 startGame에서 정답맞출때에 쓰임
 
@@ -460,7 +520,7 @@ public class GameService {
                 if(numberMap.get(sessionId) == data.get("number").getAsInt()) { // 정답일 시 updown = "same"
                     System.out.printf("%d is Answer!!\n", data.get("number").getAsInt());
                     data.addProperty("updown", "same");
-                    data.addProperty("gameStatus", 2); // 정답일 시 게임종료 // 승기요청으로 잠시 3->2로 수정
+                    data.addProperty("gameStatus", 3); // 정답일 시 게임종료
                 } else if (numberMap.get(sessionId) > data.get("number").getAsInt()) { // 정답보다 작을 시 updown = "up"
                     System.out.printf("Answer : %d, User Input : %d => up!!\n", numberMap.get(sessionId),
                             data.get("number").getAsInt());
