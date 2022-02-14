@@ -431,12 +431,23 @@ public class GameService {
                 String wordAnswer = wordMap.get(streamId);
                 System.out.println("map size : " + wordMap.size());
                 System.out.println("userAnswer : " + wordAnswer);
-                if(wordMap.size()!=0 && wordAnswer.equals(data.get("word").getAsString())) {
-                    System.out.printf("%s!! It's Answer!!!\n", streamId);
-                    data.addProperty("answerYn", "Y");
-                } else { // 정답 아닐 시 계속 진행
-                    System.out.printf("%s... No Answer.. ;(\n", streamId);
-                    data.addProperty("answerYn", "N");
+                String sirenYn = data.get("sirenYn").getAsString();
+                System.out.println("sirenYn : "+sirenYn);
+                if("N".equals(sirenYn)) { // siren을 누르지 않았을 때
+                    System.out.println("User don't click siren..");
+                    System.out.println("So Remove sirenYn");
+                    data.remove("sirenYn");
+                    // 정답일 시
+                    if(wordMap.size()!=0 && wordAnswer.equals(data.get("gamename").getAsString())) {
+                        System.out.printf("%s!! It's Answer!!!\n", streamId);
+                        data.addProperty("answerYn", "Y");
+                    } else {
+                        System.out.printf("%s... No Answer.. ;(\n", streamId);
+                        data.addProperty("answerYn", "N");
+                    }
+                } else { // siren을 눌렀을 시
+                    // 그대로 보내줌
+                    System.out.println("user click siren ...");
                 }
 
                 break;
@@ -448,7 +459,7 @@ public class GameService {
                 if(numberMap.get(sessionId) == data.get("number").getAsInt()) { // 정답일 시 updown = "same"
                     System.out.printf("%d is Answer!!\n", data.get("number").getAsInt());
                     data.addProperty("updown", "same");
-                    data.addProperty("gameStatus", 3); // 정답일 시 게임종료
+                    data.addProperty("gameStatus", 2); // 정답일 시 게임종료 // 승기요청으로 잠시 3->2로 수정
                 } else if (numberMap.get(sessionId) > data.get("number").getAsInt()) { // 정답보다 작을 시 updown = "up"
                     System.out.printf("Answer : %d, User Input : %d => up!!\n", numberMap.get(sessionId),
                             data.get("number").getAsInt());
