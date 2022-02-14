@@ -45,7 +45,7 @@ public class GameService {
 //    protected Map<String, String> nicknameMap = new ConcurrentHashMap<>();
     /** 금지어 게임은 sessionId:word */
     protected ConcurrentHashMap<String, Map<String, String>> sWordMap = new ConcurrentHashMap<>();
-    protected ConcurrentHashMap<String, String> wordMap = new ConcurrentHashMap<>();
+//    protected ConcurrentHashMap<String, String> wordMap = new ConcurrentHashMap<>();
     /** 업다운 게임은 sessionId:number */
     protected ConcurrentHashMap<String,Integer> numberMap = new ConcurrentHashMap<>();
 
@@ -428,6 +428,7 @@ public class GameService {
             case FORBIDDEN: // 금지어 게임
                 // 사용자가 경고버튼 누르면 어차피 siren = 1로 오므로 브로드캐스트만 하면됨
                 // 사용자가 종료버튼 누르면 끝나도록 (gameStatus = 3으로 요청이 어차피 오게 되므로 별도로 뭐 해줄필요없이 뿌리기만하면됨)
+                Map<String, String> wordMap = sWordMap.get(message.get("sessionId").getAsString());
                 String wordAnswer = wordMap.get(streamId);
                 System.out.println("map size : " + wordMap.size());
                 System.out.println("userAnswer : " + wordAnswer);
