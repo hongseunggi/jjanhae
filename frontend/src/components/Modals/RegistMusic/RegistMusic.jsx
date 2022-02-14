@@ -15,9 +15,11 @@ const RegistMusic = ({ open, onClose, onSubmit }) => {
   };
 
   const handleClick = () => {
-    const music = `${singer}${song}`;
-    console.log(music);
-    onSubmit(music);
+    // const music = `${singer}${song}`;
+    console.log(singer);
+    console.log(song);
+    onSubmit(singer, song);
+    onClose();
   };
   return (
     <div
