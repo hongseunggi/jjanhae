@@ -186,7 +186,7 @@ const Room = () => {
   };
 
   const changeMode = (mode) => {
-    console.log(gameId);
+    console.log(mode);
     const data={
       gameStatus : 0,
       gameId : mode,
