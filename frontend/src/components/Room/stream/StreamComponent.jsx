@@ -11,16 +11,12 @@ import { useState, useEffect } from "react";
 import ToolbarComponent from "../toolbar/ToolbarComponent.jsx";
 import { ReactComponent as SirenIcon } from "../../../assets/icons/siren.svg";
 
-
-
 function StreamComponent({
   user,
   sessionId,
   camStatusChanged,
   micStatusChanged,
   mode,
-  targetSubscriber,
-  subscribers,
   openKeywordInputModal,
   nickname,
   correctNickname,
@@ -34,9 +30,6 @@ function StreamComponent({
   const [myNickname, setMyNickname] = useState("");
   const [myCorrectNickname, setMyCorrectNickname] = useState("");
 
-  console.log(nickname,"hihi","1");
-  console.log(correctNickname,"hihi","2");
-    
   const color = [
     "#adeac9",
     "#ff98ad",
@@ -87,11 +80,12 @@ function StreamComponent({
   };
 
   useEffect(() => {
-    if(nickname!==""&&nickname!==undefined) {
-      console.log(nickname,"nickname");
-      console.log(nickname.length,"nicknamelength");
-    for (let i = 0; i < nickname.length; i++) {
-        if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
+    if (nickname !== "" && nickname !== undefined) {
+      for (let i = 0; i < nickname.length; i++) {
+        console.log(nickname);
+        if (
+          user.getStreamManager().stream.streamId === nickname[i].connectionId
+        ) {
           setMyNickname(nickname[i].keyword);
         }
       }
@@ -152,7 +146,7 @@ function StreamComponent({
           <OvVideoComponent user={user} mutedSound={mutedSound} />
           {mode === "snapshot" ? null : mode === "game1" ? (
             <>
-            <div className={styles.yangGame}>
+              <div className={styles.yangGame}>
                 {sessionId ? (
                   <div className={styles.postitInput}>
                     <div 
@@ -189,7 +183,7 @@ function StreamComponent({
                       </div>
                     </div>
                   </div>
-                    )}
+                )}
               </div>
               <div className={styles.controlbox}>
                 {sessionId ? (
@@ -218,7 +212,7 @@ function StreamComponent({
             </>
           ) : mode === "game2" ? (
             <>
-                {sessionId ? (
+              {sessionId ? (
                 <div className={styles.forbiddenGame}>
                   <div className={styles.forbiddenpostitInput}>
                     <div 
@@ -261,7 +255,7 @@ function StreamComponent({
                      </div>
                     </div>
                   </div>
-                    )}
+              )}
               <div className={styles.controlbox}>
                 {sessionId ? (
                   <ToolbarComponent
@@ -287,7 +281,7 @@ function StreamComponent({
                 ) : null}
               </div>
             </>
-          ): (
+          ) : (
             <>
               <div className={styles.controlbox}>
                 {sessionId ? (

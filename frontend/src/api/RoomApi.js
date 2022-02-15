@@ -2,6 +2,23 @@ import axios from "axios";
 // const BASE_URL = "http://localhost:8081/api/v1/rooms";
 const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/rooms";
 
+axios.interceptors.request.use(
+  function (config) {
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.Authorization =
+        "Bearer " + sessionStorage.getItem("accessToken");
+      console.log(config.headers.Authorization);
+    }
+    return config;
+  },
+  function (error) {
+    // 요청 에러 직전 호출됩니다.
+    console.log(error);
+    return Promise.reject(error);
+  }
+);
+
 const getCreateRoomResult = async (body) => {
   const result = await axios.post(`${BASE_URL}`, body);
   return result;
@@ -22,20 +39,28 @@ const getRoomSearchResult = async (target) => {
 };
 
 const getRoomEnterPrivateCheckResult = async (data) => {
-  const result = await axios.get(`${BASE_URL}/pwd?roomSeq=${data.roomSeq}&password=${data.password}`);
+  const result = await axios.get(
+    `${BASE_URL}/pwd?roomSeq=${data.roomSeq}&password=${data.password}`
+  );
   console.log(result);
   return result;
-}
+};
 
 const getRoomEnterResult = async (body) => {
   const result = await axios.post(`${BASE_URL}/enter`, body);
   console.log(result);
   return result;
-}
+};
 const getRoomExitResult = async (body) => {
   const result = await axios.patch(`${BASE_URL}/exit`, body);
   console.log(result);
-}
+};
+
+const setRoomSnapshotResult = async (body) => {
+  console.log(body);
+  const result = await axios.patch(`${BASE_URL}/img`, body);
+  console.log(result);
+};
 
 const RoomApi = {
   getCreateRoomResult,
@@ -43,7 +68,8 @@ const RoomApi = {
   getRoomSearchResult,
   getRoomEnterResult,
   getRoomEnterPrivateCheckResult,
-  getRoomExitResult
+  getRoomExitResult,
+  setRoomSnapshotResult,
 };
 
 export default RoomApi;
