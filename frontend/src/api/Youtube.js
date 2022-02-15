@@ -8,24 +8,12 @@ class Youtube {
     });
   }
 
-  mostPopular = async () => {
-    const response = await this.youtube.get("videos", {
-      params: {
-        part: "snippet",
-        chart: "mostPopular",
-        maxResults: 25,
-      },
-    });
-
-    return response.data.items;
-  };
-
   search = async (query) => {
     const response = await this.youtube.get("search", {
       params: {
         part: "snippet",
         q: query,
-        maxResults: 1,
+        maxResults: 5,
       },
     });
     return response.data.items;

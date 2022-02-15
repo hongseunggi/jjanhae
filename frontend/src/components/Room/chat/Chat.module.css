@@ -38,7 +38,7 @@
 
 .message-wrap {
   padding: 0 15px;
-  height: 67vh;
+  height: 72vh;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -65,13 +65,13 @@
   font-size: 12px;
   font-weight: bold;
 }
-.msg-system{
+.msg-system {
   margin-top: 1%;
   background-color: #3d3d3d;
   border-radius: 15px 15px 0px 0px;
   text-align: center;
 }
-.msg-system p{
+.msg-system p {
   font-size: 0.8em;
   color: white;
   font-family: "Poppins", sans-serif;

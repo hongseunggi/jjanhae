@@ -25,6 +25,8 @@ import RoomContents from "./RoomContents";
 import Youtube from "../../api/Youtube";
 import SessionIdContext from "../../contexts/SessionIdContext";
 import BangZzangContext from "../../contexts/BangZzangContext";
+import KaraokeList from "../Modals/Karaoke/KaraokeList";
+// import RoomContentsGrid from "./RoomContentsGrid";
 
 const youtube = new Youtube(process.env.REACT_APP_YOUTUBE_API_KEY);
 
@@ -35,14 +37,15 @@ const Room = () => {
   const { myName } = useContext(NameContext);
   const [mode, setMode] = useState("basic");
   const [contentTitle, setContentTitle] = useState("");
-  // const [onCamera, setOnCamera] = useState(false);
   const [onGameList, setOnGameList] = useState(false);
+  const [onKaraokeList, setOnKaraokeList] = useState(false);
   const [onRegistMusic, setOnRegistMusic] = useState(false);
-  const [musicList, setMusicList] = useState([]);
+  // const [musicList, setMusicList] = useState([]);
   const [music, setMusic] = useState("");
   const [gameId, setGameId] = useState("");
-  
-  const {setbangZzang} = useContext(BangZzangContext);
+  const [singMode, setSingMode] = useState(1);
+
+  const { setbangZzang } = useContext(BangZzangContext);
 
   const { title, roomseq } = useParams();
 
@@ -50,8 +53,8 @@ const Room = () => {
   const [loading, setLoading] = useState(false);
   const { getRoomExitResult } = RoomApi;
 
-  const musicListRef = useRef(musicList);
-  musicListRef.current = musicList;
+  // const musicListRef = useRef(musicList);
+  // musicListRef.current = musicList;
 
   const musicRef = useRef(music);
   musicRef.current = music;
@@ -60,21 +63,8 @@ const Room = () => {
     console.log("room render");
     setContentTitle(title);
     setLoginStatus("3");
-    // if (sessionId) {
-    //   console.log("오냐?");
-    //   sessionId.on("signal:photo", (event) => {
-    //     const data = event.data;
-    //     console.log(data);
-    //     if (data.photoStatus === 0) {
-    //       setMode("snapshot");
-    //     }
-    //   });
-    // }
 
     if (sessionId !== "" && sessionId !== undefined) {
-      console.log("오냐?");
-      console.log(sessionId);
-
       sessionId.on("signal:photo", (event) => {
         const data = event.data;
         console.log(data);
@@ -83,63 +73,72 @@ const Room = () => {
           setMode("snapshot");
         }
       });
-    }
-
-    return () => setLoginStatus("2");
-  }, [sessionId]);
-
-  useEffect(() => {
-    if(sessionId!==""&&sessionId!==undefined) {
-      console.log(sessionId);
       sessionId.on("signal:game", (event) => {
         const data = event.data;
         console.log(data);
         console.log(data.gameId);
-        if(data.gameStatus!==3) {
+        if (data.gameStatus !== 3) {
           setGameId(data.gameId);
-          if(data.gameId===1) {
+          if (data.gameId === 1) {
             setContentTitle("양세찬 게임");
             setMode("game1");
             setbangZzang(data.streamId);
-          }else if (data.gameId===2) {
+          } else if (data.gameId === 2) {
             setContentTitle("금지어 게임");
             setMode("game2");
             setbangZzang(data.streamId);
-          }
-          else if (data.gameId===3) {
+          } else if (data.gameId === 3) {
             console.log("????????되긴하니?");
             setContentTitle("UP DOWN 게임");
             setMode("game3");
             setbangZzang(data.streamId);
             // handleStartUpdown();
           }
-        }
-        else {
-          console.log("???????????????????????????????????????장난하냐 여기가 ㄷ실행되는거니?")
-          if(data.gameId === 3 && data.updown === undefined){
+        } else {
+          console.log(
+            "???????????????????????????????????????장난하냐 여기가 ㄷ실행되는거니?"
+          );
+          if (data.gameId === 3 && data.updown === undefined) {
             setGameId(0);
             setMode("basic");
           }
         }
       });
+      sessionId.on("signal:sing", (event) => {
+        const data = event.data;
+        if (data.singMode === 1) {
+          console.log(data.singMode);
+          setSingMode(1);
+          setContentTitle("노래방");
+        } else if (data.singMode === 2) {
+          setSingMode(2);
+          setContentTitle("복불복 노래방");
+        }
+        setMode("karaoke");
+      });
     }
-  }, [sessionId]);
-  const handleStartUpdown = () => {         
-    
-    
-            
-  }
 
-  useEffect(()=> {
-    console.log(mode);
-  },[mode])
+    return () => setLoginStatus("2");
+  }, [sessionId]);
+  // const handleStartUpdown = () => {
+
+  // }
 
   useEffect(() => {
-    if(gameId!==""&&gameId!==undefined) {
+    console.log(mode);
+    console.log(contentTitle);
+  }, [mode]);
+
+  useEffect(() => {
+    console.log(contentTitle);
+  }, [contentTitle]);
+
+  useEffect(() => {
+    if (gameId !== "" && gameId !== undefined) {
       console.log(gameId);
-      changeMode();
+      changeGameMode();
     }
-  },[gameId])
+  }, [gameId]);
 
   const onClickExit = async () => {
     const body = {
@@ -154,41 +153,54 @@ const Room = () => {
   };
 
   const handleHomeClick = () => {
+    if (mode === "karaoke") {
+      const data = {
+        singStatus: -1,
+        singMode,
+      };
+      sessionId.signal({
+        type: "sing",
+        data: JSON.stringify(data),
+      });
+    }
     console.log("stop game");
     console.log(gameId);
     let curId = gameId;
-    curId*=1;
+    curId *= 1;
     //게임종료 api호출
     let data = {
-      gameStatus : 3,
-      gameId : curId,
-    }
+      gameStatus: 3,
+      gameId: curId,
+    };
     sessionId.signal({
-      data : JSON.stringify(data),
-      type : "game",
-    })
+      data: JSON.stringify(data),
+      type: "game",
+    });
     setContentTitle(title);
     setMode("basic");
   };
+
   const handleGoTitle = () => {
     setContentTitle(title);
     setMode("basic");
-  }
-  const handleCameraClick = () => {
-    // setContentTitle("인생네컷");
-    // setMode("snapshot");
-    console.dir(sessionId);
-    const data = {
-      photoStatus: 0,
-    };
-
-    sessionId.signal({
-      data: JSON.stringify(data),
-      type: "photo",
-    });
   };
+
+  const handleCameraClick = () => {
+    if (mode !== "snapshot") {
+      const data = {
+        photoStatus: 0,
+      };
+
+      sessionId.signal({
+        data: JSON.stringify(data),
+        type: "photo",
+      });
+    }
+  };
+
   const handleModalClose = () => {
     setOnGameList(false);
+    setOnKaraokeList(false);
     setOnRegistMusic(false);
   };
 
@@ -196,20 +208,19 @@ const Room = () => {
     setOnGameList(true);
   };
 
+  const handleKaraokeList = () => {
+    setOnKaraokeList(true);
+  };
+
   const handleRegistMusic = () => {
     setOnRegistMusic(true);
   };
 
   const handleMusicSearch = (singer, song) => {
-    console.log(singer);
-    console.log(song);
     const music = `${singer}${song}`;
-    console.log(music);
     youtube.search(music).then((videos) => {
-      console.log(videos);
       const videoId = videos[0].id.videoId;
       const thumbnail = videos[0].snippet.thumbnails.default.url;
-      // const url = `https://www.youtube.com/embed/${videoId}`;
       const data = {
         musicStatus: 4,
         videoId: videoId,
@@ -224,61 +235,77 @@ const Room = () => {
     });
   };
 
-  const changeMode = (mode) => {
+  const changeGameMode = (mode) => {
     console.log(gameId);
-    if(mode === 3){
+    if (mode === 3) {
       const data = {
-        gameStatus : 0,
-        gameId : 3,
+        gameStatus: 0,
+        gameId: 3,
         // index : 1,
-      }
+      };
       console.log("실행됨?");
       sessionId.signal({
-        type : "game",
-        data : JSON.stringify(data), 
+        type: "game",
+        data: JSON.stringify(data),
       });
       const data2 = {
-        gameStatus : 1,
-        gameId : 3,
-        index : 1
-      }
+        gameStatus: 1,
+        gameId: 3,
+        index: 1,
+      };
       sessionId.signal({
-        data : JSON.stringify(data2),
-        type : "game"
+        data: JSON.stringify(data2),
+        type: "game",
       });
-    }
-    else if (mode !== undefined){
-      
-      console.log(mode,"????여기 실행은 아니겠죠?");
-      const data={
-        gameStatus : 0,
-        gameId : mode,
-      }
+    } else if (mode !== undefined) {
+      console.log(mode, "????여기 실행은 아니겠죠?");
+      const data = {
+        gameStatus: 0,
+        gameId: mode,
+      };
       sessionId.signal({
-        type : "game",
-        data : JSON.stringify(data), 
+        type: "game",
+        data: JSON.stringify(data),
       });
     }
   };
 
-  const changeMain = () => {
-    setMode("basic");
-  };
-  
-  const handleModeChange = (data) => {
+  const handleGameModeChange = (data) => {
     console.log(data);
-    if(data==="1") {
-      changeMode(1);
-    }else if(data==="2") {
-      changeMode(2);
-    }else if(data==="4"){
-      changeMode(3);
+    if (data === "1") {
+      changeGameMode(1);
+    } else if (data === "2") {
+      changeGameMode(2);
+    } else if (data === "4") {
+      changeGameMode(3);
     }
-  }
+  };
+
+  const changeKaraokeMode = (mode) => {
+    const data = {
+      singStatus: 0,
+      singMode: mode,
+    };
+    sessionId.signal({
+      type: "sing",
+      data: JSON.stringify(data),
+    });
+  };
+
+  const handleKaraokeModeChange = (data) => {
+    console.log(data);
+    if (data === "1") {
+      changeKaraokeMode(1);
+    } else if (data === "2") {
+      changeKaraokeMode(2);
+    }
+  };
+
   const goHome = () => {
     setMode("basic");
     setGameId(0);
-    };
+  };
+
   return (
     <div className={styles.container}>
       {loading ? <LoadingSpinner></LoadingSpinner> : null}
@@ -298,11 +325,12 @@ const Room = () => {
               userName={myName}
               media={myVMstate}
               mode={mode}
-              musicList={musicListRef.current}
+              singMode={singMode}
+              // musicList={musicListRef.current}
               music={musicRef.current}
-              back = {handleHomeClick}
-              goHome = {goHome}
-              home = {handleGoTitle}
+              back={handleHomeClick}
+              goHome={goHome}
+              home={handleGoTitle}
             />
           </div>
         </div>
@@ -332,7 +360,7 @@ const Room = () => {
             width="50"
             height="50"
             fill="#eee"
-            // onClick={handleRegistMusic}
+            onClick={handleKaraokeList}
             className={styles.icon}
           />
           <RegistMusicIcon
@@ -350,7 +378,12 @@ const Room = () => {
       <GameList
         open={onGameList}
         onClose={handleModalClose}
-        onChange={handleModeChange}
+        onChange={handleGameModeChange}
+      />
+      <KaraokeList
+        open={onKaraokeList}
+        onClose={handleModalClose}
+        onChange={handleKaraokeModeChange}
       />
       <RegistMusic
         open={onRegistMusic}

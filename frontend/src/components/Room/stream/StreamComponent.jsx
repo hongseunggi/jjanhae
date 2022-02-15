@@ -11,16 +11,12 @@ import { useState, useEffect } from "react";
 import ToolbarComponent from "../toolbar/ToolbarComponent.jsx";
 import { ReactComponent as SirenIcon } from "../../../assets/icons/siren.svg";
 
-
-
 function StreamComponent({
   user,
   sessionId,
   camStatusChanged,
   micStatusChanged,
   mode,
-  targetSubscriber,
-  subscribers,
   openKeywordInputModal,
   nickname,
 }) {
@@ -30,7 +26,6 @@ function StreamComponent({
   const [bgcolor, setBgcolor] = useState("");
   const [myNickname, setMyNickname] = useState("");
 
-    
   const color = [
     "#adeac9",
     "#ff98ad",
@@ -61,10 +56,12 @@ function StreamComponent({
   };
 
   useEffect(() => {
-    if(nickname!==""&&nickname!==undefined) {
-    for (let i = 0; i < nickname.length; i++) {
+    if (nickname !== "" && nickname !== undefined) {
+      for (let i = 0; i < nickname.length; i++) {
         console.log(nickname);
-        if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
+        if (
+          user.getStreamManager().stream.streamId === nickname[i].connectionId
+        ) {
           setMyNickname(nickname[i].keyword);
         }
       }
@@ -75,7 +72,6 @@ function StreamComponent({
     let index = Math.floor(Math.random() * 21);
     setBgcolor(color[index]);
   }, []);
-
 
   return (
     <div
@@ -97,22 +93,24 @@ function StreamComponent({
           <OvVideoComponent user={user} mutedSound={mutedSound} />
           {mode === "snapshot" ? null : mode === "game1" ? (
             <>
-            <div className={styles.yangGame}>
+              <div className={styles.yangGame}>
                 {sessionId ? (
                   <div className={styles.postitInput}>
-                    <div 
-                      className={styles.keyword} 
-                      onClick = {openKeywordInputModal}>당신의 키워드는?
-                      </div>
+                    <div
+                      className={styles.keyword}
+                      onClick={openKeywordInputModal}
+                    >
+                      당신의 키워드는?
+                    </div>
                   </div>
                 ) : (
                   <div
                     className={styles.postit}
                     style={{ backgroundColor: `${bgcolor}` }}
                   >
-                  {myNickname}
+                    {myNickname}
                   </div>
-                    )}
+                )}
               </div>
               <div className={styles.controlbox}>
                 {sessionId ? (
@@ -141,30 +139,32 @@ function StreamComponent({
             </>
           ) : mode === "game2" ? (
             <>
-                {sessionId ? (
+              {sessionId ? (
                 <div className={styles.forbiddenGame}>
                   <div className={styles.postitInput}>
-                    <div 
-                      className={styles.keyword} 
-                      onClick = {openKeywordInputModal}>금지어가 뭘까요?
-                      </div>
+                    <div
+                      className={styles.keyword}
+                      onClick={openKeywordInputModal}
+                    >
+                      금지어가 뭘까요?
+                    </div>
                   </div>
-                  </div>
-                ) : (
-                  <div className={styles.forbiddenAlertGameBorder}>
-                    <div className={styles.forbiddenAlertGame}>
-                      <button className={styles.sirenBtn}>
-                      <SirenIcon className={styles.sirenIcon}/>
-                      </button>
+                </div>
+              ) : (
+                <div className={styles.forbiddenAlertGameBorder}>
+                  <div className={styles.forbiddenAlertGame}>
+                    <button className={styles.sirenBtn}>
+                      <SirenIcon className={styles.sirenIcon} />
+                    </button>
                     <div
                       className={styles.forbiddenpostit}
                       style={{ backgroundColor: `${bgcolor}` }}
-                      >
+                    >
                       {myNickname}
-                      </div>
                     </div>
                   </div>
-                    )}
+                </div>
+              )}
               <div className={styles.controlbox}>
                 {sessionId ? (
                   <ToolbarComponent
@@ -190,7 +190,7 @@ function StreamComponent({
                 ) : null}
               </div>
             </>
-          ): (
+          ) : (
             <>
               <div className={styles.controlbox}>
                 {sessionId ? (
