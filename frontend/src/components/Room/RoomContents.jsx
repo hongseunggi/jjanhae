@@ -243,6 +243,8 @@ const RoomContents = ({
       sessionRef.current.on("signal:game", (event) => {
         //초기요청 응답
         //양세찬
+        let nicknameData = nickname;
+        console.log(nicknameData,"hihi1");
         const data = event.data;
         if(data.gameStatus===3) {
           console.log("gotoHome");
@@ -250,17 +252,16 @@ const RoomContents = ({
         }else {
           if (data.gameId === 1 || data.gameId === 2) {
             if (data.gamename !== "" && data.gamename !== undefined) {
-              let nicknameList = [];
-              nicknameList = nickname;
-              nicknameList.push({
+              nicknameData.push({
                 connectionId: data.streamId,
                 keyword: data.gamename,
               });
-              setNickname([...nicknameList]);
-              console.log(nicknameList);
+              setNickname([...nicknameData]);
+              console.log(nicknameData,"hihi5");
             }
   
-  
+            console.log(nicknameData,"hihi2");
+            console.log(nickname,"hihi3");
             console.log(data.gameStatus);
             console.log(data.gameId);
             //내가 키워드를 정해줄 차례라면
@@ -270,13 +271,13 @@ const RoomContents = ({
               console.log(data.index);
               console.log(data.gameStatus);
               if(data.index===undefined&&data.gameStatus===1) {
-                let nicknameList = [];
-                setNickname([...nicknameList]);
+                nicknameData.length=0;
+                setNickname([...nicknameData]);
                 openKeywordInputModal("start");
                 setCorrectGamename(false);
                 setTimeout(() => {
                   yangGame(data);
-                }, 8000);
+                }, 6000);
               }else {
                 yangGame(data);
               }
@@ -285,6 +286,8 @@ const RoomContents = ({
               //금지어
             } else if (data.gameId === 2) {
               if(data.index===undefined&&data.gameStatus===1) {
+                nicknameData.length=0;
+                setNickname([...nicknameData]);
                 openKeywordInputModal("startForbidden");
                 setCorrectForbiddenName(false);
                 setTimeout(() => {

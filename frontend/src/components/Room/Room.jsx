@@ -230,9 +230,9 @@ const Room = () => {
     }
   }
   const goHome = () => {
+    setContentTitle(title);
     setMode("basic");
     setGameId(0);
-    setContentTitle(title);
     };
   return (
     <div className={styles.container}>
