@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./GameList.module.css";
 import { ReactComponent as GameIcon } from "../../../assets/icons/game.svg";
 
-const Keyword = (props) => {
+const GameList = (props) => {
   const { open, onClose, onChange } = props;
   const [game, setGame] = useState();
 
@@ -83,4 +83,4 @@ const Keyword = (props) => {
   );
 };
 
-export default Keyword;
+export default GameList;

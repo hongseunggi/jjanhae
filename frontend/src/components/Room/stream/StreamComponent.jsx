@@ -23,6 +23,7 @@ function StreamComponent({
   subscribers,
   openKeywordInputModal,
   nickname,
+  sirenWingWing,
 }) {
   console.log(user);
   const [mutedSound, setMuted] = useState(false);
@@ -76,6 +77,13 @@ function StreamComponent({
     setBgcolor(color[index]);
   }, []);
 
+  const handleSiren = (target) => {
+    sirenWingWing(target);
+  }
+  const handleSubmitKeyword = (nextmode) => {
+    openKeywordInputModal(nextmode);
+  }
+
 
   return (
     <div
@@ -102,7 +110,7 @@ function StreamComponent({
                   <div className={styles.postitInput}>
                     <div 
                       className={styles.keyword} 
-                      onClick = {openKeywordInputModal}>당신의 키워드는?
+                      onClick = {()=> {handleSubmitKeyword("answer")}}>당신의 키워드는?
                       </div>
                   </div>
                 ) : (
@@ -146,14 +154,14 @@ function StreamComponent({
                   <div className={styles.postitInput}>
                     <div 
                       className={styles.keyword} 
-                      onClick = {openKeywordInputModal}>금지어가 뭘까요?
+                      onClick = {()=> openKeywordInputModal("answerForbidden")}>금지어가 뭘까요?
                       </div>
                   </div>
                   </div>
                 ) : (
                   <div className={styles.forbiddenAlertGameBorder}>
                     <div className={styles.forbiddenAlertGame}>
-                      <button className={styles.sirenBtn}>
+                      <button className={styles.sirenBtn} onClick={()=> {handleSiren(user)}}>
                       <SirenIcon className={styles.sirenIcon}/>
                       </button>
                     <div
