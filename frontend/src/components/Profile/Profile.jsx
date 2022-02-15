@@ -83,7 +83,7 @@ const Profile = () => {
     setLoading(true);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
-
+    console.log(formData);
     const { data } = await getImgUploadResult(formData);
     //console.log(data);
     setMyImg(data.url);

@@ -106,13 +106,29 @@ const Room = () => {
             setMode("game2");
             setbangZzang(data.streamId);
           }
-        }else {
-          setGameId(0);
-          setMode("basic");
+          else if (data.gameId===3) {
+            console.log("????????되긴하니?");
+            setContentTitle("UP DOWN 게임");
+            setMode("game3");
+            setbangZzang(data.streamId);
+            // handleStartUpdown();
+          }
+        }
+        else {
+          console.log("???????????????????????????????????????장난하냐 여기가 ㄷ실행되는거니?")
+          if(data.gameId === 3 && data.updown === undefined){
+            setGameId(0);
+            setMode("basic");
+          }
         }
       });
     }
   }, [sessionId]);
+  const handleStartUpdown = () => {         
+    
+    
+            
+  }
 
   useEffect(()=> {
     console.log(mode);
@@ -154,6 +170,10 @@ const Room = () => {
     setContentTitle(title);
     setMode("basic");
   };
+  const handleGoTitle = () => {
+    setContentTitle(title);
+    setMode("basic");
+  }
   const handleCameraClick = () => {
     // setContentTitle("인생네컷");
     // setMode("snapshot");
@@ -205,15 +225,40 @@ const Room = () => {
   };
 
   const changeMode = (mode) => {
-    console.log(mode);
-    const data={
-      gameStatus : 0,
-      gameId : mode,
+    console.log(gameId);
+    if(mode === 3){
+      const data = {
+        gameStatus : 0,
+        gameId : 3,
+        // index : 1,
+      }
+      console.log("실행됨?");
+      sessionId.signal({
+        type : "game",
+        data : JSON.stringify(data), 
+      });
+      const data2 = {
+        gameStatus : 1,
+        gameId : 3,
+        index : 1
+      }
+      sessionId.signal({
+        data : JSON.stringify(data2),
+        type : "game"
+      });
     }
-    sessionId.signal({
-      type : "game",
-      data : JSON.stringify(data), 
-    });
+    else if (mode !== undefined){
+      
+      console.log(mode,"????여기 실행은 아니겠죠?");
+      const data={
+        gameStatus : 0,
+        gameId : mode,
+      }
+      sessionId.signal({
+        type : "game",
+        data : JSON.stringify(data), 
+      });
+    }
   };
 
   const changeMain = () => {
@@ -226,6 +271,8 @@ const Room = () => {
       changeMode(1);
     }else if(data==="2") {
       changeMode(2);
+    }else if(data==="4"){
+      changeMode(3);
     }
   }
   const goHome = () => {
@@ -253,7 +300,9 @@ const Room = () => {
               mode={mode}
               musicList={musicListRef.current}
               music={musicRef.current}
+              back = {handleHomeClick}
               goHome = {goHome}
+              home = {handleGoTitle}
             />
           </div>
         </div>

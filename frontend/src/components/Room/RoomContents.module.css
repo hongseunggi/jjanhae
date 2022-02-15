@@ -14,6 +14,7 @@
 
 .contents-container {
   width: 100%;
+  height: 75vh;
   display: flex;
   justify-content: space-between;
 }
@@ -30,7 +31,7 @@
 
 .chat-container {
   max-width: 300px;
-  width: 30%;
+  width: 50%;
   height: 100%;
 }
 
