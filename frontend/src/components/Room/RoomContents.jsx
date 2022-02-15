@@ -80,6 +80,11 @@ const RoomContents = ({
   const [correctGamename, setCorrectGamename] = useState(false);
   const [correctForbiddenName, setCorrectForbiddenName] = useState(false);
 
+  const [correctNickname, setCorrectNickname] = useState([]);
+  const [correctPeopleId, setCorrectPeopleId] = useState();
+  const [correctPeopleName, setCorrectPeopleName] = useState();
+
+  // console.log(targetSubscriber);
   // 인원수
   const [participantNum, setParticpantNum] = useState(1);
   const participantNumRef = useRef(participantNum);
@@ -156,8 +161,14 @@ const RoomContents = ({
       }
     });
     setSirenTargetNickName(nickname);
-  }, [sirenTarget]);
-
+  },[sirenTarget])
+  
+  useEffect(() => {
+    const nickname = subscribers.map((data)=>{if(correctPeopleId===data.getStreamManager().stream.streamId) {
+      return data.nickname;
+    }})
+    setCorrectPeopleName(nickname);
+  },[correctPeopleId])
   // useEffect(()=> {
   //   if(modalMode==="yousayForbidden") setModalMode("answerForbidden")
   //   if(modalMode==="someonesayForbidden") setModalMode("answerForbidden")
@@ -267,55 +278,107 @@ const RoomContents = ({
       sessionRef.current.on("signal:game", (event) => {
         //초기요청 응답
         //양세찬
+        let nicknameData = nickname;
+        let correctNicknameData = correctNickname;
         const data = event.data;
         if (data.gameStatus === 3) {
           if (data.gameId !== 3) {
             console.log("gotoHome");
             goHome();
           }
-        } else {
-          if (data.gameId === 1 || data.gameId === 2) {
-            if (data.gamename !== "" && data.gamename !== undefined) {
-              let nicknameList = [];
-              nicknameList = nickname;
-              nicknameList.push({
+        }else {
+          if(data.gameId === 1 ) {
+            if (data.index !== undefined) {
+              //기존 다 날리고 가자
+              console.log("set");
+              //닉네임 정하기
+              console.log("닉네임 정하자");
+                //바뀌는 닉네임
+                nicknameData.push({
+                  connectionId: data.streamId,
+                  keyword: data.gamename,
+                });
+                setNickname([...nicknameData]);
+
+                correctNicknameData.push({
+                  connectionId: data.streamId,
+                  keyword: data.gamename,
+                });
+
+                setCorrectNickname([...correctNicknameData])
+              }
+              //닉네임 맞추는 단계
+              if(data.gameStatus===2&&data.index===undefined&&data.answerYn!==undefined) {
+                console.log("here????")
+                  nicknameData.push({
+                 connectionId: data.streamId,
+                 keyword: data.gamename,
+               });
+               setNickname([...nicknameData]);
+             }
+             if(data.index===undefined&&data.gameStatus===1) {
+               nicknameData.length=0;
+               correctNicknameData.length=0;
+               setNickname([...nicknameData]);
+               setCorrectNickname([...correctNicknameData]);
+              openKeywordInputModal("start");
+              setCorrectGamename(false);
+              setCorrectForbiddenName(false);
+              setTimeout(() => {
+                yangGame(data);
+              }, 5000);
+            }else {
+              yangGame(data);
+            }
+            
+  
+          }else if(data.gameId===2) {
+            if (data.index !== undefined) {
+              console.log("heyyy","1");
+              //닉네임 정하기
+              console.log("닉네임 정하자");
+              //바뀌는 닉네임
+              nicknameData.push({
                 connectionId: data.streamId,
                 keyword: data.gamename,
               });
-              setNickname([...nicknameList]);
-              console.log(nicknameList);
-            }
-
-            console.log(data.gameStatus);
-            console.log(data.gameId);
-            //내가 키워드를 정해줄 차례라면
-            if (data.gameId === 1) {
-              closeKeywordInputModal("answer");
-              //가장 처음온 요청인경우
-              console.log(data.index);
-              console.log(data.gameStatus);
-              if (data.index === undefined && data.gameStatus === 1) {
-                openKeywordInputModal("start");
-                setCorrectGamename(false);
-                setTimeout(() => {
-                  yangGame(data);
-                }, 8000);
-              } else {
-                yangGame(data);
+                setNickname([...nicknameData]);
+                
+                correctNicknameData.push({
+                  connectionId: data.streamId,
+                  keyword: data.gamename,
+                });
+                
+                setCorrectNickname([...correctNicknameData])
               }
+              
+              //닉네임 맞추는 단계
+              if(data.gameStatus===2&&data.index===undefined&&data.sirenYn===undefined) {
+                console.log("heyyy","2");
+                console.log(data.sirednYn,"실화");
+                nicknameData.push({
+                  connectionId: data.streamId,
+                  keyword: data.gamename,
+                });
+               setNickname([...nicknameData]);
+             }
 
-              //금지어
-            } else if (data.gameId === 2) {
-              if (data.index === undefined && data.gameStatus === 1) {
-                openKeywordInputModal("startForbidden");
-                setCorrectForbiddenName(false);
-                setTimeout(() => {
-                  forbidden(data);
-                }, 8000);
-              } else {
+             if(data.index===undefined&&data.gameStatus===1&&data.sirenYn===undefined) {
+               console.log("start");
+              nicknameData.length=0;
+              correctNicknameData.length=0;
+              setCorrectNickname([...correctNicknameData]); 
+              setNickname([...nicknameData]);
+              openKeywordInputModal("startForbidden");
+              setCorrectForbiddenName(false);
+              setCorrectGamename(false);
+              setTimeout(() => {
                 forbidden(data);
-              }
+              }, 5000);
+            }else {
+              forbidden(data);
             }
+  
           }
         }
       });
@@ -367,7 +430,9 @@ const RoomContents = ({
       }
     } else if (data.gameStatus === 2) {
       console.log(data.answerYn);
+      //정답 맞추기 시도했다
       if (data.answerYn !== undefined && data.answerYn !== "") {
+        //내가 했디
         if (
           data.streamId ===
           localUserRef.current.getStreamManager().stream.streamId
@@ -382,7 +447,15 @@ const RoomContents = ({
             // setModalMode("wrong");
             openKeywordInputModal("wrong");
           }
+          //내가 안했다
+        }else {
+          //누군가 맞췄다 
+          if(data.answerYn==="Y") {
+            openKeywordInputModal("someoneCorrect");
+            setCorrectPeopleId(data.streamId);
+          }
         }
+        //게임안내
       } else {
         // setModalMode("letsplay");
         openKeywordInputModal("letsplay");
@@ -397,76 +470,81 @@ const RoomContents = ({
 
   const forbidden = (data) => {
     console.log("here");
-    if (data.gameStatus === 1) {
-      if (
-        data.streamId ===
-        localUserRef.current.getStreamManager().stream.streamId
-      ) {
-        console.log("my turn");
-        //상대방 금지어 입력해줄 모달 띄우기
-        setStreamId(data.streamId);
-        setTargetId(data.targetId);
-        // setModalMode("assignForbidden");
-        openKeywordInputModal("assignForbidden");
-        if (data.index !== undefined && data.index !== "") {
-          setIndex(data.index);
-        }
-        //내가 정해줄 차례가 아니라면
-      } else {
-        console.log("not my turn");
-        // setModalMode("waitForbidden");
-        openKeywordInputModal("waitForbidden");
-      }
-      //금지어 입력 다했다
-    } else if (data.gameStatus === 2) {
-      console.log(data.answerYn);
-      if (data.answerYn !== undefined && data.answerYn !== "") {
+      if (data.gameStatus === 1) {
         if (
           data.streamId ===
           localUserRef.current.getStreamManager().stream.streamId
         ) {
-          if (data.answerYn === "Y") {
-            // setModalMode("correct");
-            setCorrectForbiddenName(true);
-            openKeywordInputModal("correctForbidden");
-            console.log("here!!!!");
-          } else if (data.answerYn === "N") {
-            // setModalMode("wrong");
-            openKeywordInputModal("wrong");
+          console.log("my turn");
+          //상대방 금지어 입력해줄 모달 띄우기
+          setStreamId(data.streamId);
+          setTargetId(data.targetId);
+          // setModalMode("assignForbidden");
+          openKeywordInputModal("assignForbidden");
+          if (data.index !== undefined && data.index !== "") {
+            setIndex(data.index);
           }
+          //내가 정해줄 차례가 아니라면
+        } else {
+          console.log("not my turn");
+          // setModalMode("waitForbidden");
+          openKeywordInputModal("waitForbidden");
         }
-      } else if (data.sirenYn !== undefined && data.sirenYn !== "") {
-        console.log(data.sirenYn);
-        //사이렌 울려라
-        if (data.sirenYn === "Y") {
-          console.log(data.streamId);
-          setSirenTarget(data.streamId);
-          //누가 날
+        //금지어 입력 다했다
+      } else if (data.gameStatus === 2) {
+        console.log(data.answerYn);
+        //정답 맞춘다
+        if (data.answerYn !== undefined && data.answerYn !== "") {
           if (
             data.streamId ===
             localUserRef.current.getStreamManager().stream.streamId
           ) {
-            // setModalMode("yousayForbidden");
-            openKeywordInputModal("yousayForbidden");
-            //저녀석 잡아라
-          } else {
-            // setModalMode("someonesayForbidden");
-            openKeywordInputModal("someonesayForbidden");
+            if (data.answerYn === "Y") {
+              // setModalMode("correct");
+              setCorrectForbiddenName(true);
+              openKeywordInputModal("correctForbidden");
+            } else if (data.answerYn === "N") {
+              // setModalMode("wrong");
+              openKeywordInputModal("wrong");
+            }
+          }else {
+            // 누군가 맞췄다 
+            if(data.answerYn==="Y") {
+              openKeywordInputModal("someoneCorrectForbidden");
+              setCorrectPeopleId(data.streamId);
+              console.log("here!!!!");
+            }
           }
-          //이제 금지어 찾아봐라
-        } else {
-          // setModalMode("letsplayForbidden");
-          openKeywordInputModal("letsplayForbidden");
-          setTimeout(() => {
-            setModalMode("answer");
-            closeKeywordInputModal();
-          }, 7000);
-          console.log("키워드 설정 완료");
+        } else if(data.sirenYn !== undefined && data.sirenYn !== "") {
+          console.log(data.sirenYn);
+          //사이렌 울려라
+          if(data.sirenYn==="Y") {
+            console.log(data.streamId);
+            setSirenTarget(data.streamId);
+            //누가 날
+            if (data.streamId === localUserRef.current.getStreamManager().stream.streamId) {
+              // setModalMode("yousayForbidden");
+              openKeywordInputModal("yousayForbidden");
+              //저녀석 잡아라
+            }else {
+              // setModalMode("someonesayForbidden");
+              openKeywordInputModal("someonesayForbidden");
+            }
+            //이제 금지어 찾아봐라
+          }else {
+            // setModalMode("letsplayForbidden");
+            openKeywordInputModal("letsplayForbidden");
+            setTimeout(() => {
+              setModalMode("answer");
+              closeKeywordInputModal();
+            }, 7000);
+            console.log("키워드 설정 완료");
+          }
+        }else {
         }
-      } else {
       }
-    }
-  };
+  }
+
 
   const leaveSession = () => {
     const mySession = sessionRef.current;
@@ -864,6 +942,7 @@ const RoomContents = ({
           mode={modalMode}
           targetNickName={targetNickName}
           gameId={1}
+          correctPeopleName={correctPeopleName}
         />
       ) : mode === "game2" ? (
         <Keyword
@@ -875,6 +954,7 @@ const RoomContents = ({
           targetNickName={targetNickName}
           gameId={2}
           sirenTargetNickName={sirenTargetNickName}
+          correctPeopleName={correctPeopleName}
         />
       ) : null}
       <div className={styles["user-videos-container"]}>

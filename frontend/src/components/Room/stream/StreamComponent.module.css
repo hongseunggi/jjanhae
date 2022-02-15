@@ -87,7 +87,14 @@ video {
   transition: all ease 1s 0s;
 }
 
-.yangGame,
+.yangGame {
+  position: absolute;
+  width: 250px;
+  height: 20%;
+  left: 50px;
+  bottom: 20px;
+}
+
 .forbiddenGame {
   position: absolute;
   width: 250px;
@@ -109,7 +116,7 @@ video {
 .forbiddenAlertGameBorder {
   display: flex;
 }
-.postitInput {
+.postitInput, .forbiddenpostitInput{
   background-color: #fff44f;
   height: 43px;
   width: 150px;
@@ -119,10 +126,11 @@ video {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  bottom: 3px;
+  bottom: -24px;
+  cursor: pointer;
 }
 
-.postit {
+.postit , .forbiddenpostit {
   /* background-color: #ff3399; */
   height: 43px;
   width: 150px;
@@ -140,6 +148,98 @@ video {
   font-family: "Poppins", sans-serif;
   cursor: pointer;
 }
+.inputpostit {
+  /* background-color: #ff3399; */
+  height: 43px;
+  width: 150px;
+  text-align: center;
+  font-size: 18px;
+  position: absolute;
+  color: #252525;
+  font-weight: bolder;
+  border-radius: 2px;
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+  align-content: center;
+  justify-content: space-around;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  position: relative;
+  left: 157px;
+  bottom: 22px;
+}
+.inputforbiddenpostit {
+  height: 43px;
+  width: 150px;
+  text-align: center;
+  font-size: 18px;
+  position: absolute;
+  color: #252525;
+  font-weight: bolder;
+  border-radius: 2px;
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+  align-content: center;
+  justify-content: space-around;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  position: relative;
+  left: 157px;
+  bottom: 58px;
+}
+.answerpostit, .answerpostitforbidden {
+  height: 24px;
+  width: 50px;
+  text-align: center;
+  font-size: 18px;
+  position: absolute;
+  color: #ffffff;
+  font-weight: bolder;
+  border-radius: 2px;
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  position: relative;
+  font-size: 12px;
+  width: 42px;
+  background-color: #ffffff;
+  color: #0036dd;
+  border-radius: 10px;
+  padding: 8px;
+  bottom: -5px;
+}
+.answerpostitforbidden {
+  bottom: -57px;
+  left: 53px;
+}
+.hmmpostit , .hmmpostitforbidden{
+  height: 22px;
+  width: 50px;
+  text-align: center;
+  font-weight: bolder;
+  flex-direction: row;
+  align-items: center;
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  position: relative;
+  background-color: white;
+  color: #ee0000;
+  border-radius: 10px;
+  padding: 11px;
+  left: 157px;
+  font-size: 11px;
+  bottom: 19px;
+  padding: 0px 10px 0px 14px;
+}
+.hmmpostitforbidden {
+  left: 210px;
+  bottom: 78px;
+}
 
 .forbiddenpostit {
   height: 43px;
@@ -147,8 +247,21 @@ video {
   left: 50px;
   position: relative;
   bottom: 9px;
+  
 }
-
+.yangkeyword {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: space-around;
+  align-items: center;
+  color: #252525;
+  font-weight: bolder;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+}
 .keyword,
 .subKeyword {
   text-align: center;
@@ -162,6 +275,13 @@ video {
   font-weight: bolder;
   font-family: "Poppins", sans-serif;
   cursor: pointer;
+}
+.forbiddenpostitInput {
+  color: #252525;
+  font-weight: bolder;
+  font-family: "Poppins", sans-serif;
+  position: relative;
+  bottom : 0px;
 }
 
 .informText .sendClockIcon {
