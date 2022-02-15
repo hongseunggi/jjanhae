@@ -13,7 +13,7 @@ import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
-
+import RoomApi from "../../api/RoomApi";
 import SnapShotResult from "./snapshot/SnapShotResult";
 import html2canvas from "html2canvas";
 
@@ -134,10 +134,21 @@ const RoomContents = ({
   useEffect(() => {
     setLoginStatus("3");
     console.log(loginStatus);
+    const preventGoBack = () => {
+      window.history.pushState(null, '', window.location.href);
+      console.log('prevent go back!');
+    };
+    
+    // window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', preventGoBack);
     window.addEventListener("beforeunload", onbeforeunload);
+    window.addEventListener("unload", handleleaveRoom);
     joinSession();
     return () => {
       window.removeEventListener("beforeunload", onbeforeunload);
+      window.removeEventListener('popstate', preventGoBack);
+      window.removeEventListener("unload", handleleaveRoom);
+      handleleaveRoom();
       leaveSession();
     };
   }, []);
@@ -544,8 +555,12 @@ const RoomContents = ({
         }
       }
   }
-
-
+  const handleleaveRoom = async () =>{
+    const body = {
+      roomSeq: sessionName * 1,
+    };
+    await getRoomExitResult(body);
+  }
   const leaveSession = () => {
     const mySession = sessionRef.current;
     //console.log(mySession);
@@ -587,9 +602,10 @@ const RoomContents = ({
 
   const onbeforeunload = (e) => {
     //console.log("tlfgodehla");
-
+    e.preventDefault();
+    e.returnValue = "나가실껀가요?";
     //console.log("dfsdfsdf");
-    leaveSession();
+    // leaveSession();
   };
 
   const sendSignalUserChanged = (data) => {

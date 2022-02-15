@@ -64,6 +64,7 @@ const Chat = (props) => {
 
           if(data.updown){
             console.log("???????????????????????????????????실행");
+            // messageListData.length = 0;
             messageListData.push({
               connectionId: data.curStreamId,
               nickname : data.nickname,
@@ -96,18 +97,15 @@ const Chat = (props) => {
                 message : `${props.user.getNickname()}님 입력 차례입니다.`
               })
             }
-            else if(props.user.getStreamManager().stream.streamId !== data.nextStreamId){
-              for(let i = 0; i < props.sub.length; i++){
-                if(props.sub[i].getStreamManager().stream.streamId === data.streamId){
-                  messageListData.push({
-                    connectionId: "SYSTEM",
-                    nickname : "SYSTEM",
-                    message : `${props.sub[i].getNickname()}님 입력 차례입니다.`
-                  })
-                  break;
-                }
-              }
+            else{
+              messageListData.push({
+                connectionId: "SYSTEM",
+                nickname : "SYSTEM",
+                message : `다른 유저가 입력 중 입니다. 기다려주세요`
+              })
             }
+              
+            
             scrollToBottom();
               setAnswerList([...messageListData])
               setCurrentInput(data.nextStreamId);
@@ -366,22 +364,43 @@ const Chat = (props) => {
         </div>
 
         {props.mode==='game3' ? (<div className={styles.messageInput}>
-          <input
+          {props.user.getStreamManager().stream.streamId === currnetInput ? (
+            <>
+            <input
+            className={styles.defaultinput}
             placeholder="정답을 입력하세요"
             id="chatInput"
             value={message}
             onChange={handleChange}
             onKeyPress={handlePressKey}
             autoComplete="off"
-            disabled={props.user.getStreamManager().stream.streamId === currnetInput ? false : true}
+            
           />
-          {/* <Tooltip title="전송"> */}
           <div className={styles.sendIcon}>
             <SendIcon className={styles.sendButton} onClick={sendAnswer} />
           </div>
+          </>
+          ) : (
+            <input
+            className={styles.disable}
+            placeholder="차례를 기다려주세요"
+            id="chatInput"
+            value={message}
+            onChange={handleChange}
+            onKeyPress={handlePressKey}
+            autoComplete="off"
+            disabled={true}
+          />
+          )}
+          
+          {/* <Tooltip title="전송"> */}
+          {/* <div className={styles.sendIcon}>
+            <SendIcon className={styles.sendButton} onClick={sendAnswer} />
+          </div> */}
           {/* </Tooltip> */}
         </div>):(<div className={styles.messageInput}>
           <input
+            className={styles.defaultinput}
             placeholder="메세지를 입력하세요"
             id="chatInput"
             value={message}
