@@ -64,7 +64,7 @@ const Chat = (props) => {
 
           if(data.updown){
             console.log("???????????????????????????????????실행");
-            messageListData.length = 0;
+            // messageListData.length = 0;
             messageListData.push({
               connectionId: data.curStreamId,
               nickname : data.nickname,
