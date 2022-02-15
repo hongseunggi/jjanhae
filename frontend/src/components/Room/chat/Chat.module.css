@@ -151,7 +151,9 @@
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
-.messageInput input {
+.messageInput 
+
+.defaultinput {
   width: 90%;
   height: 100%;
   border: none;
@@ -160,6 +162,21 @@
   margin-left: 10px;
   color: #000000;
   background-color: transparent;
+}
+.disable{
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  /* margin-left: 10px; */
+  background-color: rgba(0, 0, 0, 0.5);
+  color : red;
+  text-align: center;
+}
+.disable::placeholder{
+  
+  color : white;
 }
 
 .messageInput input:focus {
