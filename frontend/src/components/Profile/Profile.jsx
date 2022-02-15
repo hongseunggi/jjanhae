@@ -62,7 +62,7 @@ const Profile = () => {
     
       setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      }, 1000);
       setName(data.name);
       setEmail(data.email);
       let ny = data.birthday.year;
@@ -93,7 +93,7 @@ const Profile = () => {
     const result = await getUpdateProfileImgResult(body);
     setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 1000);
     //console.log(result);
   };
 

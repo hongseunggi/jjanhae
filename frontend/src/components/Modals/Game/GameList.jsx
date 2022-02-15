@@ -46,22 +46,12 @@ const Keyword = (props) => {
                 />
               </div>
               <div className={styles.game}>
-                노래 맞추기
+                업다운
                 <input
                   value="3"
                   name="platform"
                   type="radio"
                   checked={game === "3"}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className={styles.game}>
-                업다운
-                <input
-                  value="4"
-                  name="platform"
-                  type="radio"
-                  checked={game === "4"}
                   onChange={handleChange}
                 />
               </div>

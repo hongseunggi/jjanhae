@@ -276,7 +276,7 @@ const Room = () => {
       changeGameMode(1);
     } else if (data === "2") {
       changeGameMode(2);
-    } else if (data === "4") {
+    } else if (data === "3") {
       changeGameMode(3);
     }
   };

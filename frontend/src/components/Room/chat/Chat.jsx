@@ -180,10 +180,12 @@ const Chat = (props) => {
   }, [props.mode])
 
   const handlePressKey = (event) => {
+    
     if (event.key === "Enter" && props.mode === "game3") {
       sendAnswer();
     }
     else if(event.key === "Enter" && props.mode != "game3"){
+      event.preventDefault();  
       sendMessage();
     }
   };
@@ -204,12 +206,17 @@ const Chat = (props) => {
       }
     }
     setMessage("");
+    let value = document.getElementById("chatInput").value;
+    console.log(value);
+    value = value.replace(/\r\n$/g, '');
+    document.getElementById("chatInput").value = value;
+    
   };
   const sendAnswer= () => {
     if (props.user && message) {
       let messageData = message.replace(/ +(?= )/g, "");
         messageData = messageData.toUpperCase();
-
+      console.log("number"===typeof(messageData*1),messageData*1,messageData);
       if(continueGame){  
         console.log("????????실행?");
         if(messageData === "Y" || messageData === "O" || messageData === "0" || messageData === "OK" || messageData === "YES"){
@@ -237,7 +244,7 @@ const Chat = (props) => {
           setContinueGame(false);
         }
         else {
-          let messageListData = messageList;
+          let messageListData = answerList;
           messageListData.push({
             connectionId : "SYSTEM",
             nickname : "SYSTEM",
@@ -248,7 +255,8 @@ const Chat = (props) => {
         }
       }
     else{
-      if (messageData !== "" && messageData !== " " ) {
+      console.log("????????실행?");
+      if (messageData !== "" && messageData !== " " && !isNaN(messageData*1)) {
         const data = {
           gameStatus: 2,
           number : messageData*1,
@@ -262,6 +270,17 @@ const Chat = (props) => {
           type: "game",
         });
         
+      }
+      else{
+        console.log("????????실행?");
+        let messageListData = answerList;
+        messageListData.push({
+          connectionId : "SYSTEM",
+          nickname : "SYSTEM",
+          message : "숫자만 입력해 주세요!!!"
+        })
+        setMessageList([...messageListData])
+        scrollToBottom();
       }
     }
     }
@@ -399,7 +418,7 @@ const Chat = (props) => {
           </div> */}
           {/* </Tooltip> */}
         </div>):(<div className={styles.messageInput}>
-          <input
+          <textarea
             className={styles.defaultinput}
             placeholder="메세지를 입력하세요"
             id="chatInput"

@@ -161,6 +161,7 @@
   font-size: 14px;
   margin-left: 10px;
   color: #000000;
+  resize: none;
   background-color: transparent;
 }
 .disable{

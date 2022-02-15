@@ -7,16 +7,13 @@ import ImgApi from "../../api/ImgApi.js";
 import StreamComponent from "./stream/StreamComponent";
 import YangGameComponent from "././game/YangGameComponent";
 import SelectingGame from "././game/SelectingGame";
-
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
-import RoomApi from "../../api/RoomApi";
 import SnapShotResult from "./snapshot/SnapShotResult";
 import html2canvas from "html2canvas";
-
 import MusicPlayer from "./music/MusicPlayer";
 import SessionIdContext from "../../contexts/SessionIdContext";
 import Keyword from "../Modals/Game/Keyword";
@@ -90,6 +87,7 @@ const RoomContents = ({
   const participantNumRef = useRef(participantNum);
   participantNumRef.current = participantNum;
 
+  const {getRoomExitResult} = RoomApi;
   // voicefilter
   const [voiceFilter, setVoiceFilter] = useState(false);
   console.log(sessionName);
@@ -1016,7 +1014,10 @@ const RoomContents = ({
                 subscribers={subscribers}
                 mode={mode}
                 nickname={nickname}
-                sirenWingWing={sirenWingWing}
+                correctNickname={correctNickname}
+                sirenWingWing = {sirenWingWing}
+                correctPeopleName={correctPeopleName}
+
               />
             );
           })}
