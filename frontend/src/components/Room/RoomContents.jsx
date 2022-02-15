@@ -1,23 +1,24 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
+import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import YangGameComponent from "././game/YangGameComponent";
 import SelectingGame from "././game/SelectingGame";
-
+import { useNavigate } from "react-router-dom";
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
-
+import { toast } from "react-toastify";
 import SnapShotResult from "./snapshot/SnapShotResult";
 import html2canvas from "html2canvas";
-
 import MusicPlayer from "./music/MusicPlayer";
 import SessionIdContext from "../../contexts/SessionIdContext";
 import Keyword from "../Modals/Game/Keyword";
+import RoomApi from "../../api/RoomApi";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -34,6 +35,7 @@ const RoomContents = ({
   music,
   bangzzang,
 }) => {
+  const navigate = useNavigate();
   const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
   const { myName } = useContext(NameContext);
@@ -66,7 +68,7 @@ const RoomContents = ({
   const [modalMode, setModalMode] = useState("start");
   const [participants, setParticipants] = useState([]);
   const [targetNickName, setTargetNickName] = useState("");
-
+  const { getRoomExitResult } = RoomApi;
   // console.log(targetSubscriber);
 
   const sessionRef = useRef(session);
@@ -102,13 +104,49 @@ const RoomContents = ({
   };
 
   useEffect(() => {
+    if(axios.defaults.headers.Authorization === undefined){
+
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (accessToken) {
+        console.log("실행됩니다.");
+        axios.defaults.headers.Authorization =
+          "Bearer " + sessionStorage.getItem("accessToken");
+        console.log(axios.defaults.headers.Authorization);
+      }
+      else{
+        toast.error(
+          <div className="hi" style={{ width: "350px" }}>
+            로그인 후 이용가능 합니다. 로그인 해주세요
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            role: "alert",
+          }
+        );
+        navigate("/user/login");
+        
+      }
+    }
     setLoginStatus("3");
     console.log(loginStatus);
+    const preventGoBack = () => {
+      window.history.pushState(null, '', window.location.href);
+      console.log('prevent go back!');
+    };
+    
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', preventGoBack);
     window.addEventListener("beforeunload", onbeforeunload);
+    window.addEventListener("unload", handleleaveRoom);
+
     joinSession();
     return () => {
       window.removeEventListener("beforeunload", onbeforeunload);
+      window.removeEventListener('popstate', preventGoBack);
+      window.removeEventListener("unload", handleleaveRoom);
+      handleleaveRoom();
       leaveSession();
+
     };
   }, []);
 
@@ -336,7 +374,12 @@ const RoomContents = ({
     console.log(subscribers);
     setTargetSubscriber(subscribers[0]);
   }, [subscribers]);
-
+  const handleleaveRoom = async () =>{
+    const body = {
+      roomSeq: sessionName * 1,
+    };
+    await getRoomExitResult(body);
+  }
   const leaveSession = () => {
     const mySession = sessionRef.current;
     //console.log(mySession);
@@ -394,9 +437,10 @@ const RoomContents = ({
 
   const onbeforeunload = (e) => {
     //console.log("tlfgodehla");
-
+    e.preventDefault();
+    e.returnValue = "나가실껀가요?";
     //console.log("dfsdfsdf");
-    leaveSession();
+    // leaveSession();
   };
 
   const sendSignalUserChanged = (data) => {
