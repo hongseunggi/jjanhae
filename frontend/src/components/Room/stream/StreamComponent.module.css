@@ -126,6 +126,7 @@ video {
   justify-content: space-around;
   align-items: center;
   bottom: -24px;
+  cursor: pointer;
 }
 
 .postit , .forbiddenpostit {
