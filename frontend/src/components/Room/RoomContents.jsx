@@ -33,6 +33,7 @@ const RoomContents = ({
   musicList,
   music,
   bangzzang,
+  goHome,
 }) => {
   const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
@@ -243,49 +244,55 @@ const RoomContents = ({
         //초기요청 응답
         //양세찬
         const data = event.data;
-        if (data.gameId === 1 || data.gameId === 2) {
-          if (data.gamename !== "" && data.gamename !== undefined) {
-            let nicknameList = [];
-            nicknameList = nickname;
-            nicknameList.push({
-              connectionId: data.streamId,
-              keyword: data.gamename,
-            });
-            setNickname([...nicknameList]);
-            console.log(nicknameList);
-          }
-
-          console.log(data.gameStatus);
-          console.log(data.gameId);
-          //내가 키워드를 정해줄 차례라면
-          if (data.gameId === 1) {
-            closeKeywordInputModal("answer");
-            //가장 처음온 요청인경우
-            console.log(data.index);
+        if(data.gameStatus===3) {
+          console.log("gotoHome");
+          goHome();
+        }else {
+          if (data.gameId === 1 || data.gameId === 2) {
+            if (data.gamename !== "" && data.gamename !== undefined) {
+              let nicknameList = [];
+              nicknameList = nickname;
+              nicknameList.push({
+                connectionId: data.streamId,
+                keyword: data.gamename,
+              });
+              setNickname([...nicknameList]);
+              console.log(nicknameList);
+            }
+  
+  
             console.log(data.gameStatus);
-            if(data.index===undefined&&data.gameStatus===1) {
-              openKeywordInputModal("start");
-              setCorrectGamename(false);
-              setTimeout(() => {
+            console.log(data.gameId);
+            //내가 키워드를 정해줄 차례라면
+            if (data.gameId === 1) {
+              closeKeywordInputModal("answer");
+              //가장 처음온 요청인경우
+              console.log(data.index);
+              console.log(data.gameStatus);
+              if(data.index===undefined&&data.gameStatus===1) {
+                openKeywordInputModal("start");
+                setCorrectGamename(false);
+                setTimeout(() => {
+                  yangGame(data);
+                }, 8000);
+              }else {
                 yangGame(data);
-              }, 8000);
-            }else {
-              yangGame(data);
-            }
-            
-            
-            //금지어
-          } else if (data.gameId === 2) {
-            if(data.index===undefined&&data.gameStatus===1) {
-              openKeywordInputModal("startForbidden");
-              setCorrectForbiddenName(false);
-              setTimeout(() => {
+              }
+              
+              
+              //금지어
+            } else if (data.gameId === 2) {
+              if(data.index===undefined&&data.gameStatus===1) {
+                openKeywordInputModal("startForbidden");
+                setCorrectForbiddenName(false);
+                setTimeout(() => {
+                  forbidden(data);
+                }, 8000);
+              }else {
                 forbidden(data);
-              }, 8000);
-            }else {
-              forbidden(data);
+              }
             }
-          }
+        }
         }
       });
     }
