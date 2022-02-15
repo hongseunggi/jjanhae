@@ -287,7 +287,7 @@ const RoomContents = ({
               //닉네임 맞추는 단계
               if(data.gameStatus===2&&data.index===undefined&&data.answerYn!==undefined) {
                 console.log("here????")
-               nicknameData.push({
+                  nicknameData.push({
                  connectionId: data.streamId,
                  keyword: data.gamename,
                });
@@ -310,35 +310,37 @@ const RoomContents = ({
             
   
           }else if(data.gameId===2) {
-            console.log("heyyy",data.index);
             if (data.index !== undefined) {
+              console.log("heyyy","1");
               //닉네임 정하기
               console.log("닉네임 정하자");
-                //바뀌는 닉네임
-                nicknameData.push({
-                  connectionId: data.streamId,
-                  keyword: data.gamename,
-                });
+              //바뀌는 닉네임
+              nicknameData.push({
+                connectionId: data.streamId,
+                keyword: data.gamename,
+              });
                 setNickname([...nicknameData]);
-
+                
                 correctNicknameData.push({
                   connectionId: data.streamId,
                   keyword: data.gamename,
                 });
-
+                
                 setCorrectNickname([...correctNicknameData])
               }
-         
+              
               //닉네임 맞추는 단계
-              if(data.gameStatus===2&&data.index===undefined) {
-               nicknameData.push({
-                 connectionId: data.streamId,
-                 keyword: data.gamename,
-               });
+              if(data.gameStatus===2&&data.index===undefined&&data.sirenYn===undefined) {
+                console.log("heyyy","2");
+                console.log(data.sirednYn,"실화");
+                nicknameData.push({
+                  connectionId: data.streamId,
+                  keyword: data.gamename,
+                });
                setNickname([...nicknameData]);
              }
 
-             if(data.index===undefined&&data.gameStatus===1) {
+             if(data.index===undefined&&data.gameStatus===1&&data.sirenYn===undefined) {
                console.log("start");
               nicknameData.length=0;
               correctNicknameData.length=0;
