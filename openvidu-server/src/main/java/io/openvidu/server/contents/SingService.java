@@ -201,12 +201,18 @@ public class SingService {
             int halfSize = participantsList.size() / 2;
             // voiceFilter = "스트림아이디/스트림아이디"
             String voiceFilter = "";
-            for(int i = 0; i < halfSize-1; i++) {
-                String filtered = participantsList.get(i);
-                voiceFilter = voiceFilter.concat(filtered).concat("/");
+            if (halfSize < 1) {
+                // 한명 이하일 경우
+                voiceFilter = participantsList.get(0);
+            } else {
+                // 한명 이상일 경우
+                for(int i = 0; i < halfSize-1; i++) {
+                    String filtered = participantsList.get(i);
+                    voiceFilter = voiceFilter.concat(filtered).concat("/");
+                }
+                // 마지막에 / 가 붙지 않도록
+                voiceFilter = voiceFilter.concat(participantsList.get(halfSize-1));
             }
-            // 마지막에 / 가 붙지 않도록
-            voiceFilter = voiceFilter.concat(participantsList.get(halfSize-1));
 
             data.addProperty("voiceFilter", voiceFilter);
             System.out.println("[Sing] *** 걸린 참가자들" + voiceFilter);
