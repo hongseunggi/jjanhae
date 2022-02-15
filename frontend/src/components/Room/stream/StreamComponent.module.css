@@ -18,11 +18,11 @@
   height: 100%;
   z-index: 1000;
 }
-.video-container {
+/* .video-container {
   width: 250px;
   height: 250px;
   position: relative;
-}
+} */
 
 video {
   -o-object-fit: cover;
@@ -59,19 +59,20 @@ video {
   padding: 6px;
 }
 
-/* Contains the video element, used to fix video letter-boxing */
 .video-innerContainer {
   border-radius: 15px;
-  width: 400px;
-  height: 250px;
   position: relative;
   overflow: hidden;
-  margin-right: 20px;
 }
 
 .video-innerContainer.snapshotMode {
   margin: 0;
   border-radius: 0;
+}
+
+.video-innerContainer.karaokeMode {
+  width: 300px;
+  height: 200px;
 }
 .controlbox {
   width: 100px;
@@ -124,8 +125,7 @@ video {
 .postit {
   /* background-color: #ff3399; */
   height: 43px;
-  max-width: fit-content;
-  min-width: 150px;
+  width: 150px;
   text-align: center;
   font-size: 18px;
   position: absolute;
@@ -142,23 +142,11 @@ video {
 }
 
 .forbiddenpostit {
-  font-weight: bolder;
-  border-radius: 2px;
-  flex-direction: row;
-  align-items: center;
-  display: flex;
-  align-content: center;
-  justify-content: space-around;
-  font-family: "Poppins", sans-serif;
-  cursor: pointer;
   height: 43px;
+  width: 150px;
   left: 50px;
   position: relative;
   bottom: 9px;
-  color: #252525;
-  font-size: 20px;
-  max-width: fit-content;
-  min-width: 150px;
 }
 
 .keyword,
