@@ -5,7 +5,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     background-color: rgba(255, 255, 255, 0.5);
 }
 .buttonicon{
@@ -14,7 +14,7 @@
 .modalForm {
     position: relative;
     width: 780px;
-    height: fit-content;
+    height: 580px;
     /* margin: 0 auto; */
     border-radius: 50px;
     background-color: #eee;
@@ -26,8 +26,8 @@
 }
 .chartmodalForm {
     position: relative;
-    width: 26vw;
-    height: fit-content;
+    width: 500px;
+    height: 700px;
     /* margin: 0 auto; */
     border-radius: 50px;
     background-color: #eee;
@@ -46,10 +46,10 @@
 .ranklist{
     /* margin-top: 10px; */
     /* display: flex; */
-    width: 100%;
-    height: fit-content;
+    width: 390px;
+    height: 330px;
     border-radius: 0 0 10px 10px ;
-    margin: -1% auto;
+    margin: 0 auto;
     /* margin-bottom: 7px; */
     background-color: rgba(255,237, 115, 0.5);
     /* border-style: solid solid solid solid; */
@@ -58,12 +58,12 @@
 .imgbox{
     /* margin: 15px auto; */
     text-align: center;
-    margin-bottom: 1%;
+    /* margin-bottom: 15px; */
 }
 .ranklist img{
     /* display: inline-block; */
-    width: 14vw;
-    height: 13vw;
+    width: 200px;
+    height: 200px;
     margin: 15px auto;
     border-radius: 15px;
     /* margin-bottom: 15px; */
@@ -72,38 +72,32 @@
 .rankname {
     /* width: 100vw; */
     text-align: center;
-    font-size: 1.4rem;
-    display: block;
+    font-size: 1.5rem;
+    /* display: inline; */
     font-weight: bold;
-    /* margin-left: 10%; */
     /* margin: 0 5% 0 33%; */
 }
-.rankname div {
-    display: inline;
-}
 .ranknull {
-    padding-top: 9vw;
+    padding-top: 140px;
     font-size: 1.5rem;
     font-weight: bold;
 }
 .numberOf{
     /* display: inline; */
-    margin-top: 0.7vw;
+    margin-top: 10px;
     font-size: 1.2rem;
     font-weight: bold;
     text-align: center;
-    /* margin-left: 41%; */
-    padding-bottom: 3%;
+    /* margin-left: 100px; */
 }
 .tabs{
     /* margin: 0 auto; */
     /* margin-left: 15px; */
     /* background-color: black; */
-    /* width: 21vw; */
+    
     text-align: center;
     padding: 0;
-    margin-top: 5%;
-    /* height: 8vh; */
+    height: 50px;
     margin-bottom: 0;
     /* display: table-cell; */
     /* display: flex; */
@@ -111,14 +105,10 @@
 .tabs li{
     display: inline-block;
     /* margin: 0 auto; */
-    /* font-size: ; */
-    font-size: 1.2em;
-    /* margin-top: 10%; */
-    margin-left: 2%;
-    margin-right: 2%;
-    /* margin: 0 auto; */
-    width: 16%;
-    height: 30%;
+    margin-top: 26.1px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 70px;
     border-radius: 5px 5px 0 0;
     background-color: rgba(255,237, 115, 1);
     cursor: pointer;

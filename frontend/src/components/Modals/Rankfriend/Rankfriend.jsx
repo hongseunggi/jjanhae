@@ -77,9 +77,17 @@ function Rankfriend({ onClose, friend }) {
         <div className={style.rankname}> 
           {friend[value].name}
         </div>
-        <div className={style.numberOf}>
+        {value === 0 ? <div className={style.numberOf}>
           {friend[value].numberOf}회🥇
-        </div>
+        </div> : value === 1 ? <div className={style.numberOf}>
+          {friend[value].numberOf}회🥈
+        </div> : value === 2 ? <div className={style.numberOf}>
+          {friend[value].numberOf}회🥉
+        </div> : value === 3 ? <div className={style.numberOf}>
+          {friend[value].numberOf}회😅
+        </div> : <div className={style.numberOf}>
+          {friend[value].numberOf}회😂
+        </div>}
     </div>)
     } else if (!friend[value]){
       return (<div className={style.ranklist}>
