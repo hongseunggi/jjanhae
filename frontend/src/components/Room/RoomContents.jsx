@@ -463,16 +463,16 @@ const RoomContents = ({
               // setModalMode("correct");
               setCorrectForbiddenName(true);
               openKeywordInputModal("correctForbidden");
-              console.log("here!!!!");
             } else if (data.answerYn === "N") {
               // setModalMode("wrong");
               openKeywordInputModal("wrong");
             }
           }else {
-            //누군가 맞췄다 
+            // 누군가 맞췄다 
             if(data.answerYn==="Y") {
               openKeywordInputModal("someoneCorrectForbidden");
               setCorrectPeopleId(data.streamId);
+              console.log("here!!!!");
             }
           }
         } else if(data.sirenYn !== undefined && data.sirenYn !== "") {
@@ -877,6 +877,7 @@ const RoomContents = ({
           targetNickName={targetNickName}
           gameId={2}
           sirenTargetNickName = {sirenTargetNickName}
+          correctPeopleName={correctPeopleName}
         />
       ) : null}
       <div id="user-video" className={styles["video-container"]}>
