@@ -535,7 +535,7 @@ public class GameService {
                     // 순서가 저장돼있는 order map에서 해당 순서의 streamId 꺼냄
                     String curStreamId = sOrderMap.get(sessionId).get(counterClockWise.charAt(index-1)-'0');
                     System.out.println("curStreamId : " + curStreamId);
-                    data.addProperty("curStreamId", data.get("sessionId").getAsString());
+                    data.addProperty("curStreamId", data.get("streamId").getAsString());
                     data.addProperty("nextStreamId", curStreamId);
                     data.addProperty("index", ++index);
                     data.addProperty("updown", "up");
@@ -546,7 +546,7 @@ public class GameService {
                     String counterClockWise = sCounterClockWise.get(sessionId);
                     String curStreamId = sOrderMap.get(sessionId).get(counterClockWise.charAt(index-1)-'0');
                     System.out.println("curStreamId : " + curStreamId);
-                    data.addProperty("curStreamId", data.get("sessionId").getAsString());
+                    data.addProperty("curStreamId", data.get("streamId").getAsString());
                     data.addProperty("nextStreamId", curStreamId);
                     data.addProperty("index", ++index);
                     data.addProperty("updown", "down");
