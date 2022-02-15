@@ -20,7 +20,7 @@ const Chat = (props) => {
   };
   const reset = useRef(messageList);
   reset.current = messageList;
-  console.log("chat render");
+  console.log("chat render", props.mode);
   console.log(props.user,"실행");
   if(props.mode === "game3" && mode !== "game3"){
     // const data2 = {
@@ -77,6 +77,7 @@ const Chat = (props) => {
                                                       : "틀렸습니다! DOWN!",
             })
             if(data.updown === "same"){
+              console.log("실행되니 여기는?");
               messageListData.push({
                 connectionId : "SYSTEM",
                 nickname : "SYSTEM",
@@ -139,6 +140,7 @@ const Chat = (props) => {
                 }
               }
             }
+            console.log(messageListData);
             setAnswerList([...messageListData]);
             setCurrentInput(data.streamId);
             setIdx(data.index);

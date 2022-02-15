@@ -106,17 +106,20 @@ const Room = () => {
             setMode("game2");
             setbangZzang(data.streamId);
           }
-        }
-        else if (data.gameId===3) {
-          if(mode != "game3"){
+          else if (data.gameId===3) {
+            console.log("????????되긴하니?");
             setContentTitle("UP DOWN 게임");
             setMode("game3");
             setbangZzang(data.streamId);
             // handleStartUpdown();
           }
-        }else {
-          setGameId(0);
-          setMode("basic");
+        }
+        else {
+          console.log("???????????????????????????????????????장난하냐 여기가 ㄷ실행되는거니?")
+          if(data.gameId === 3 && data.updown === undefined){
+            setGameId(0);
+            setMode("basic");
+          }
         }
       });
     }
@@ -167,6 +170,10 @@ const Room = () => {
     setContentTitle(title);
     setMode("basic");
   };
+  const handleGoTitle = () => {
+    setContentTitle(title);
+    setMode("basic");
+  }
   const handleCameraClick = () => {
     // setContentTitle("인생네컷");
     // setMode("snapshot");
@@ -225,6 +232,7 @@ const Room = () => {
         gameId : 3,
         // index : 1,
       }
+      console.log("실행됨?");
       sessionId.signal({
         type : "game",
         data : JSON.stringify(data), 
@@ -239,7 +247,9 @@ const Room = () => {
         type : "game"
       });
     }
-    else{
+    else if (mode !== undefined){
+      
+      console.log(mode,"????여기 실행은 아니겠죠?");
       const data={
         gameStatus : 0,
         gameId : mode,
@@ -292,6 +302,7 @@ const Room = () => {
               music={musicRef.current}
               back = {handleHomeClick}
               goHome = {goHome}
+              home = {handleGoTitle}
             />
           </div>
         </div>

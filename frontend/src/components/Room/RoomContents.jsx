@@ -35,6 +35,7 @@ const RoomContents = ({
   bangzzang,
   back,
   goHome,
+  home
 }) => {
   const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
@@ -246,8 +247,10 @@ const RoomContents = ({
         //양세찬
         const data = event.data;
         if(data.gameStatus===3) {
-          console.log("gotoHome");
-          goHome();
+          if(data.gameId !== 3){
+            console.log("gotoHome");
+            goHome();
+          }
         }else {
           if (data.gameId === 1 || data.gameId === 2) {
             if (data.gamename !== "" && data.gamename !== undefined) {
@@ -694,6 +697,7 @@ const RoomContents = ({
     });
   };
   const checkMyAnswer = (data,gamemode) => {
+    console.log("?????????????????????????????????????");
     let senddata = {};
     console.log(gamemode);
     if(gamemode===1) {
@@ -837,7 +841,7 @@ const RoomContents = ({
             />
           ) : (
             <>
-              <Chat user={localUserRef.current} mode={mode} exitgame={back} sub={subscribers}/>
+              <Chat user={localUserRef.current} mode={mode} exitgame={home} sub={subscribers}/>
               {/* <button onClick={handleVoiceFilter}>목소리변조</button> */}
             </>
           )}
