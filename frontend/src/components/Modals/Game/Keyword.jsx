@@ -21,7 +21,7 @@ import { ReactComponent as ThumbupIcon } from "../../../assets/icons/thumbup.svg
 
 
 const Keyword = (props) => {
-    const {open, close, confirmMyAnswer, confirmTargetGameName, mode, targetNickName,gameId,sirenTargetNickName} = props;
+    const {open, close, confirmMyAnswer, confirmTargetGameName, mode, targetNickName,gameId,sirenTargetNickName,correctPeopleName} = props;
     const [answer, setAnswer] = useState("");
     const [targetGameName, setTargetGameName] = useState("");
     console.log(targetNickName);
@@ -466,6 +466,48 @@ const Keyword = (props) => {
                     </div>
                 </div>
                 <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("1","correct")}}>
+                    {" "}
+                    확인{" "}
+                </button>
+                </main>
+          </section>
+        )  :  mode === "someoneCorrect" ? (
+          <section className={styles.modalForm}>
+            <header>
+
+            </header>
+                <main className={styles.main}>
+                <div className={styles.yangicon}>
+                    <ThumbupIcon className={styles.icon}/>
+                </div>
+                <div className={styles.yanginformBorder}>
+                    <div className={styles.informCorrectText}>
+                        <p className={styles.correctText}> <span className={styles.targetText}>{correctPeopleName}</span>님이 <span className={styles.saywarnText}>키워드</span>를 맞추셨어요!!</p>
+                        <p className={styles.correctText}> <span className={styles.celebrateText}>어떻게 알았지??</span></p>
+                    </div>
+                </div>
+                <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("1","answer")}}>
+                    {" "}
+                    확인{" "}
+                </button>
+                </main>
+          </section>
+        )  :  mode === "someoneCorrectForbidden" ? (
+          <section className={styles.modalForm}>
+            <header>
+
+            </header>
+                <main className={styles.main}>
+                <div className={styles.yangicon}>
+                    <ThumbupIcon className={styles.icon}/>
+                </div>
+                <div className={styles.yanginformBorder}>
+                    <div className={styles.informCorrectText}>
+                        <p className={styles.correctText}> <span className={styles.targetText}>{correctPeopleName}</span>님이 <span className={styles.saywarnText}>금지어</span>를 맞추셨어요!!</p>
+                        <p className={styles.correctText}> <span className={styles.celebrateText}>어떻게 알았지??</span></p>
+                    </div>
+                </div>
+                <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("2","answerForbidden")}}>
                     {" "}
                     확인{" "}
                 </button>

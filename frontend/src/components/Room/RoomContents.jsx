@@ -76,7 +76,8 @@ const RoomContents = ({
   const [correctForbiddenName , setCorrectForbiddenName] = useState(false);
 
   const [correctNickname, setCorrectNickname] = useState([]);
-  const [correctPeople, setCorrectPeople] = useState();
+  const [correctPeopleId, setCorrectPeopleId] = useState();
+  const [correctPeopleName, setCorrectPeopleName] = useState();
 
   // console.log(targetSubscriber);
 
@@ -140,7 +141,13 @@ const RoomContents = ({
     }})
     setSirenTargetNickName(nickname);
   },[sirenTarget])
-
+  
+  useEffect(() => {
+    const nickname = subscribers.map((data)=>{if(correctPeopleId===data.getStreamManager().stream.streamId) {
+      return data.nickname;
+    }})
+    setCorrectPeopleName(nickname);
+  },[correctPeopleId])
   // useEffect(()=> {
   //   if(modalMode==="yousayForbidden") setModalMode("answerForbidden")
   //   if(modalMode==="someonesayForbidden") setModalMode("answerForbidden")
@@ -261,6 +268,9 @@ const RoomContents = ({
             //게임 선택 후 단계
             console.log(data.gamename === undefined,"yoyo");
             if (data.index !== undefined) {
+              //기존 다 날리고 가자
+              nicknameData.length=0;
+              correctNicknameData.length=0;
               console.log("set");
               //닉네임 정하기
               console.log("닉네임 정하자");
@@ -277,14 +287,8 @@ const RoomContents = ({
                 });
 
                 setCorrectNickname([...correctNicknameData])
-                console.log(nicknameData,"123");
-                console.log(correctNicknameData,"123");
-
               }
               //닉네임 맞추는 단계
-              console.log(data.gameStatus,"111");
-              console.log(data.index===undefined,"111");
-              console.log(data.index,"111");
               if(data.gameStatus===2&&data.index===undefined) {
                nicknameData.push({
                  connectionId: data.streamId,
@@ -387,7 +391,7 @@ const RoomContents = ({
           //누군가 맞췄다 
           if(data.answerYn==="Y") {
             openKeywordInputModal("someoneCorrect");
-            setCorrectPeople(data.streamId);
+            setCorrectPeopleId(data.streamId);
           }
         }
         //게임안내
@@ -428,6 +432,7 @@ const RoomContents = ({
         //금지어 입력 다했다
       } else if (data.gameStatus === 2) {
         console.log(data.answerYn);
+        //정답 맞춘다
         if (data.answerYn !== undefined && data.answerYn !== "") {
           if (
             data.streamId ===
@@ -441,6 +446,12 @@ const RoomContents = ({
             } else if (data.answerYn === "N") {
               // setModalMode("wrong");
               openKeywordInputModal("wrong");
+            }
+          }else {
+            //누군가 맞췄다 
+            if(data.answerYn==="Y") {
+              openKeywordInputModal("someoneCorrectForbidden");
+              setCorrectPeopleId(data.streamId);
             }
           }
         } else if(data.sirenYn !== undefined && data.sirenYn !== "") {
@@ -833,6 +844,7 @@ const RoomContents = ({
           mode={modalMode}
           targetNickName={targetNickName}
           gameId={1}
+          correctPeopleName={correctPeopleName}
         />
       ) : mode === "game2" ? (
         <Keyword
@@ -871,6 +883,7 @@ const RoomContents = ({
               nickname={nickname}
               correctNickname={correctNickname}
               sirenWingWing = {sirenWingWing}
+              correctPeopleName={correctPeopleName}
             />
           );
         })}

@@ -217,9 +217,9 @@ function StreamComponent({
             <>
                 {sessionId ? (
                 <div className={styles.forbiddenGame}>
-                  <div className={styles.postitInput}>
+                  <div className={styles.forbiddenpostitInput}>
                     <div 
-                      className={styles.keyword} 
+                      className={styles.forbiddenkeyword} 
                       onClick = {()=> openKeywordInputModal("answerForbidden")}>금지어가 뭘까요?
                       </div>
                   </div>
@@ -232,7 +232,7 @@ function StreamComponent({
                       <SirenIcon className={styles.sirenIcon}/>
                       </button>
                       <div
-                      className={styles.answerpostit}
+                      className={styles.answerpostitforbidden}
                       >
                       정답
                       </div>
@@ -245,7 +245,7 @@ function StreamComponent({
                     </div>
                     <div className={styles.hmmBorder}>
                     <div
-                      className={styles.hmmpostit}
+                      className={styles.hmmpostitforbidden}
                     >
                     시도
                     </div>
