@@ -97,6 +97,7 @@ const Room = () => {
         console.log(data.gameId);
         if(data.gameStatus!==3) {
           setGameId(data.gameId);
+          setContentTitle(title);
           if(data.gameId===1) {
             setContentTitle("양세찬 게임");
             setMode("game1");
@@ -231,6 +232,7 @@ const Room = () => {
   const goHome = () => {
     setMode("basic");
     setGameId(0);
+    setContentTitle(title);
     };
   return (
     <div className={styles.container}>

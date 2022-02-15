@@ -270,6 +270,8 @@ const RoomContents = ({
               console.log(data.index);
               console.log(data.gameStatus);
               if(data.index===undefined&&data.gameStatus===1) {
+                let nicknameList = [];
+                setNickname([...nicknameList]);
                 openKeywordInputModal("start");
                 setCorrectGamename(false);
                 setTimeout(() => {
