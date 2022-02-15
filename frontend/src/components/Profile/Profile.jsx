@@ -15,6 +15,9 @@ import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
 import CalendarPage from "../Calendar/CalendarPage";
 import IntoRoom from "../Modals/RoomEnter/IntoRoom.jsx";
 import Rankfriend from "../Modals/Rankfriend/Rankfriend.jsx";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 const Profile = () => {
@@ -40,6 +43,7 @@ const Profile = () => {
     // { name: "홍승기", count: 2, image: image4 },
     // { name: "송민수", count: 1, image: image5 },
   ]);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const images = [image1, image2, image3, image4, image5];
   const handleEditMode = async (e) => {
@@ -85,15 +89,32 @@ const Profile = () => {
     formData.append("file", e.target.files[0]);
 
     const { data } = await getImgUploadResult(formData);
-    //console.log(data);
-    setMyImg(data.url);
-    const body = {
-      imageUrl: data.url,
-    };
-    const result = await getUpdateProfileImgResult(body);
-    setTimeout(() => {
+    console.log(data);
+    
+    if(data.statusCode !== 200){
+      toast.error(
+        <div className="hi" style={{ width: "350px" }}>
+          jpg, png 형식의 이미지 파일을 업로드 해주세요.
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
       setLoading(false);
-    }, 1500);
+    }
+    else {
+      setMyImg(data.url);
+      const body = {
+        imageUrl: data.url,
+      };
+      const result = await getUpdateProfileImgResult(body);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+    
+    }
+    
     //console.log(result);
   };
 
@@ -129,9 +150,36 @@ const Profile = () => {
   //   return ()
   // }
 
-  useEffect(() => getProfile(), []);
+  useEffect(() =>{
+    if(axios.defaults.headers.Authorization === undefined){
+
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (accessToken) {
+        console.log("실행됩니다.");
+        axios.defaults.headers.Authorization =
+          "Bearer " + sessionStorage.getItem("accessToken");
+        console.log(axios.defaults.headers.Authorization);
+      }
+      else{
+        toast.error(
+          <div className="hi" style={{ width: "350px" }}>
+            로그인 후 이용가능 합니다. 로그인 해주세요
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            role: "alert",
+          }
+        );
+        navigate("/user/login");
+        
+      }
+    }
+    getProfile()
+    
+  } , []);
 
   const getProfile = async () => {
+    
     setLoading(true);
     const { data } = await getUserProfile();
     setTimeout(() => {

@@ -4,6 +4,10 @@ import style from "./RoomList.module.css";
 import RoomApi from "../../api/RoomApi";
 import SettingModalContainer from "./SettingModalContainer";
 import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 function RoomList() {
   const [loading, setLoading] = useState(false);
@@ -16,7 +20,7 @@ function RoomList() {
   const [keyword, setKeyword] = useState("");
   console.log("room list render");
   const { getRoomListResult, getRoomSearchResult } = RoomApi;
-
+  const navigate = useNavigate();
   const offsetCountRef = useRef(offsetCount);
   offsetCountRef.current = offsetCount;
 
@@ -108,6 +112,29 @@ function RoomList() {
   };
 
   useEffect(() => {
+    if(axios.defaults.headers.Authorization === undefined){
+
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (accessToken) {
+        console.log("실행됩니다.");
+        axios.defaults.headers.Authorization =
+          "Bearer " + sessionStorage.getItem("accessToken");
+        console.log(axios.defaults.headers.Authorization);
+      }
+      else{
+        toast.error(
+          <div className="hi" style={{ width: "350px" }}>
+            로그인 후 이용가능 합니다. 로그인 해주세요
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            role: "alert",
+          }
+        );
+        navigate("/user/login");
+        
+      }
+    }
     let observer;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {

@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { useState } from "react";
 import axios1 from "../../api/WebRtcApi";
+import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import YangGameComponent from "././game/YangGameComponent";
 import SelectingGame from "././game/SelectingGame";
-
+import { useNavigate } from "react-router-dom";
 import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
-
+import { toast } from "react-toastify";
 import SnapShotResult from "./snapshot/SnapShotResult";
 import html2canvas from "html2canvas";
 
@@ -34,6 +35,7 @@ const RoomContents = ({
   music,
   bangzzang,
 }) => {
+  const navigate = useNavigate();
   const { setSessionId } = useContext(SessionIdContext);
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
   const { myName } = useContext(NameContext);
@@ -102,6 +104,29 @@ const RoomContents = ({
   };
 
   useEffect(() => {
+    if(axios.defaults.headers.Authorization === undefined){
+
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (accessToken) {
+        console.log("실행됩니다.");
+        axios.defaults.headers.Authorization =
+          "Bearer " + sessionStorage.getItem("accessToken");
+        console.log(axios.defaults.headers.Authorization);
+      }
+      else{
+        toast.error(
+          <div className="hi" style={{ width: "350px" }}>
+            로그인 후 이용가능 합니다. 로그인 해주세요
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            role: "alert",
+          }
+        );
+        navigate("/user/login");
+        
+      }
+    }
     setLoginStatus("3");
     console.log(loginStatus);
     window.addEventListener("beforeunload", onbeforeunload);
