@@ -23,7 +23,6 @@ function StreamComponent({
   subscribers,
   openKeywordInputModal,
   nickname,
-  sirenWingWing,
 }) {
   console.log(user);
   const [mutedSound, setMuted] = useState(false);
@@ -64,12 +63,10 @@ function StreamComponent({
   useEffect(() => {
     if(nickname!==""&&nickname!==undefined) {
     for (let i = 0; i < nickname.length; i++) {
+        console.log(nickname);
         if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
           setMyNickname(nickname[i].keyword);
         }
-      }
-      if(nickname.length===0){
-        setMyNickname("");
       }
     }
   }, [nickname]);
@@ -78,13 +75,6 @@ function StreamComponent({
     let index = Math.floor(Math.random() * 21);
     setBgcolor(color[index]);
   }, []);
-
-  const handleSiren = (target) => {
-    sirenWingWing(target);
-  }
-  const handleSubmitKeyword = (nextmode) => {
-    openKeywordInputModal(nextmode);
-  }
 
 
   return (
@@ -112,7 +102,7 @@ function StreamComponent({
                   <div className={styles.postitInput}>
                     <div 
                       className={styles.keyword} 
-                      onClick = {()=> {handleSubmitKeyword("answer")}}>당신의 키워드는?
+                      onClick = {openKeywordInputModal}>당신의 키워드는?
                       </div>
                   </div>
                 ) : (
@@ -156,14 +146,14 @@ function StreamComponent({
                   <div className={styles.postitInput}>
                     <div 
                       className={styles.keyword} 
-                      onClick = {()=> openKeywordInputModal("answerForbidden")}>금지어가 뭘까요?
+                      onClick = {openKeywordInputModal}>금지어가 뭘까요?
                       </div>
                   </div>
                   </div>
                 ) : (
                   <div className={styles.forbiddenAlertGameBorder}>
                     <div className={styles.forbiddenAlertGame}>
-                      <button className={styles.sirenBtn} onClick={()=> {handleSiren(user)}}>
+                      <button className={styles.sirenBtn}>
                       <SirenIcon className={styles.sirenIcon}/>
                       </button>
                     <div

@@ -124,8 +124,7 @@ video {
 .postit {
   /* background-color: #ff3399; */
   height: 43px;
-  max-width: fit-content;
-  min-width: 150px;
+  width: 150px;
   text-align: center;
   font-size: 18px;
   position: absolute;
@@ -142,23 +141,11 @@ video {
 }
 
 .forbiddenpostit {
-  font-weight: bolder;
-  border-radius: 2px;
-  flex-direction: row;
-  align-items: center;
-  display: flex;
-  align-content: center;
-  justify-content: space-around;
-  font-family: "Poppins", sans-serif;
-  cursor: pointer;
   height: 43px;
+  width: 150px;
   left: 50px;
   position: relative;
   bottom: 9px;
-  color: #252525;
-  font-size: 20px;
-  max-width: fit-content;
-  min-width: 150px;
 }
 
 .keyword,
