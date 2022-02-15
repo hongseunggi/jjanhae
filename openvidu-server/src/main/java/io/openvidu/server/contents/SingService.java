@@ -181,33 +181,6 @@ public class SingService {
             return;
         }
 
-        // 예약된 노래들이 있는 경우
-        ArrayList<ArrayList<String>> musicList = singRoomsMap.get(sessionId);
-        ArrayList<String> firstMusic = musicList.get(0);
-        String strFirstMusic = firstMusic.get(0) + '^' + firstMusic.get(1) + '^' + firstMusic.get(2);
-        String strMusicList = "";
-
-        System.out.println("[Sing] *** Now SONG : " + firstMusic);
-        System.out.println("[Sing] *** reserved SONGS : " + musicList);
-
-        // 제일 처음에 있는 노래 삭제
-        musicList.remove(0);
-        System.out.println("[Sing] *** After del first song in list" + musicList);
-
-
-        for(int i=0; i < musicList.size()-1; i++) {
-            // strMusic = 가수^노래제목^키값
-            String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^' + musicList.get(i).get(2);
-            strMusicList = strMusicList.concat(strMusic).concat("|");
-        }
-        // 마지막 노래 다음에는 | 붙이지 않도록
-        ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
-        strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2));
-
-        data.addProperty("nowSing", strFirstMusic);
-        data.addProperty("reserveSongList", strMusicList);
-
-
         // 일반 모드와 필터 모드는 다르다!!
         int singMode = data.get("singMode").getAsInt();
 
@@ -238,6 +211,46 @@ public class SingService {
             data.addProperty("voiceFilter", voiceFilter);
             System.out.println("[Sing] *** 걸린 참가자들" + voiceFilter);
         }
+
+        // 예약된 노래들이 있는 경우
+        ArrayList<ArrayList<String>> musicList = singRoomsMap.get(sessionId);
+        ArrayList<String> firstMusic = musicList.get(0);
+        String strFirstMusic = firstMusic.get(0) + '^' + firstMusic.get(1) + '^' + firstMusic.get(2);
+        String strMusicList = "";
+
+        System.out.println("[Sing] *** Now SONG : " + firstMusic);
+        System.out.println("[Sing] *** reserved SONGS : " + musicList);
+
+        // 제일 처음에 있는 노래 삭제
+        musicList.remove(0);
+        System.out.println("[Sing] *** After del first song in list" + musicList);
+
+        // 지웠는데 남은 노래가 없다면
+        if (musicList.isEmpty()) {
+            data.addProperty("nowSing", strFirstMusic);
+            data.addProperty("reserveSongList", "");
+            params.add("data", data);
+            for (Participant p : participants) {
+                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
+            }
+            System.out.println("[Sing] *** playlist is EMPTY in this session : " + params);
+            return;
+        }
+
+        // 있다면
+
+        for(int i=0; i < musicList.size()-1; i++) {
+            // strMusic = 가수^노래제목^키값
+            String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^' + musicList.get(i).get(2);
+            strMusicList = strMusicList.concat(strMusic).concat("|");
+        }
+        // 마지막 노래 다음에는 | 붙이지 않도록
+        ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
+        strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2));
+
+        data.addProperty("nowSing", strFirstMusic);
+        data.addProperty("reserveSongList", strMusicList);
 
         params.add("data", data);
         for (Participant p : participants) {
