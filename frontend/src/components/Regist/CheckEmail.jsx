@@ -195,7 +195,7 @@ const CheckEmail = ({ progress }) => {
                 }
                 type="button"
                 onClick={handleClick}
-                disabled={!setIsEmailConfirm}
+                disabled={!isEmailConfirm}
               >
                 다음
               </button>

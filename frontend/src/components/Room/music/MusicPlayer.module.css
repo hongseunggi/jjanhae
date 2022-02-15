@@ -34,6 +34,9 @@
 .nextIcon {
   margin-left: 10px;
 }
+.volumeController {
+  position: absolute;
+}
 @keyframes rotate_image {
   100% {
     transform: rotate(360deg);

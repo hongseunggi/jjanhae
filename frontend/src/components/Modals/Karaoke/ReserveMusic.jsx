@@ -1,8 +1,8 @@
 import React, { createRef, useState } from "react";
 import { ReactComponent as CancelIcon } from "../../../assets/icons/cancel.svg";
-import styles from "./RegistMusic.module.css";
+import styles from "./ReserveMusic.module.css";
 
-const RegistMusic = ({ open, onClose, onSubmit }) => {
+const ReserveMusic = ({ open, onClose, onSubmit }) => {
   const [singer, setSinger] = useState("");
   const [song, setSong] = useState("");
   const singerRef = createRef();
@@ -28,7 +28,7 @@ const RegistMusic = ({ open, onClose, onSubmit }) => {
       {open ? (
         <section className={styles.modalForm}>
           <div className={styles.btnRow}>
-            <h1 className={styles.title}>신청곡</h1>
+            <h1 className={styles.title}>노래 예약</h1>
             <button className={styles.closeBtn} onClick={onClose}>
               <CancelIcon width="20" height="20" />
             </button>
@@ -59,4 +59,4 @@ const RegistMusic = ({ open, onClose, onSubmit }) => {
   );
 };
 
-export default RegistMusic;
+export default ReserveMusic;

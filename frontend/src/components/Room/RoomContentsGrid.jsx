@@ -22,18 +22,19 @@ import SessionIdContext from "../../contexts/SessionIdContext";
 import Keyword from "../Modals/Game/Keyword";
 import Karaoke from "./karaoke/Karaoke";
 
+import { Container, Row, Col } from "react-bootstrap";
+
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
 
 let localUserInit = new UserModel();
 let OV = undefined;
 
-const RoomContents = ({
+const RoomContentsGrid = ({
   sessionName,
   userName,
   media,
   mode,
-  singMode,
   musicList,
   music,
   bangzzang,
@@ -70,6 +71,7 @@ const RoomContents = ({
   const [keywordInputModal, setKeywordInputModal] = useState(false);
   const [answer, setAnswer] = useState("");
   const [modalMode, setModalMode] = useState("start");
+  const [participants, setParticipants] = useState([]);
   const [targetNickName, setTargetNickName] = useState("");
 
   // 인원수
@@ -77,8 +79,6 @@ const RoomContents = ({
   const participantNumRef = useRef(participantNum);
   participantNumRef.current = participantNum;
 
-  // voicefilter
-  const [voiceFilter, setVoiceFilter] = useState(false);
   console.log(sessionName);
 
   const sessionRef = useRef(session);
@@ -351,18 +351,7 @@ const RoomContents = ({
 
       sessionRef.current.on("signal:sing", (event) => {
         const data = event.data;
-        console.log(data);
-        console.log(localUserRef.current.getStreamManager().stream.streamId);
-        if (data.singStatus === 2 || data.singStatus === 3) {
-          if (
-            data.singMode === 2 &&
-            data.voiceFilter.includes(
-              localUserRef.current.getStreamManager().stream.streamId
-            )
-          ) {
-            setVoiceFilter(true);
-            handleVoiceFilter();
-          }
+        if (data.singMode === 2) {
         }
       });
     }
@@ -634,7 +623,7 @@ const RoomContents = ({
     console.log(localUserRef.current);
     // const data = { command: "pitch pitch=0.5" };
     const type = "GStreamerFilter";
-    const options = { command: "pitch pitch=1.5" };
+    const options = { command: "pitch pitch=0.7" };
     localUserRef.current
       .getStreamManager()
       .stream.applyFilter(type, options)
@@ -642,7 +631,6 @@ const RoomContents = ({
         console.log(result);
       });
   };
-
   // filter.options = { command: "pitch pitch=0.5" };
   const saveImg = (uri, filename) => {
     let link = document.createElement("a");
@@ -771,7 +759,7 @@ const RoomContents = ({
             )}
           {mode === "karaoke" ? (
             <div className={styles.videoplayer}>
-              <Karaoke user={localUserRef.current} singMode={singMode} />
+              <Karaoke user={localUserRef.current} />
             </div>
           ) : null}
 
@@ -802,7 +790,7 @@ const RoomContents = ({
           ) : (
             <>
               <Chat user={localUserRef.current} />
-              {/* <button onClick={handleVoiceFilter}>목소리변조</button> */}
+              <button onClick={handleVoiceFilter}>목소리변조</button>
             </>
           )}
           {mode !== "karaoke" ? (
@@ -814,4 +802,4 @@ const RoomContents = ({
   );
 };
 
-export default RoomContents;
+export default RoomContentsGrid;

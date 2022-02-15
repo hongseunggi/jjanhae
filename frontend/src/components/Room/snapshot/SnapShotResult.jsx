@@ -38,7 +38,7 @@ const SnapShotResult = ({ images, status, onStart, onRetry, onSave }) => {
                 images[0]
                   ? {
                       backgroundImage: `url(${images[0]})`,
-                      backgroundSize: "cover",
+                      backgroundSize: "contain",
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
                       backgroundColor: "black",
