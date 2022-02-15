@@ -31,14 +31,14 @@
   /* right: 0; */
   /* bottom: 0; */
   margin: auto;
-  height: calc(100% - 30px);
-  width: calc(100% - 30px);
+  height: 100%;
+  width: 100%;
   border-radius: 20px;
 }
 
 .message-wrap {
   padding: 0 15px;
-  height: calc(100% - 80px);
+  height: 72vh;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -65,6 +65,18 @@
   font-size: 12px;
   font-weight: bold;
 }
+.msg-system {
+  margin-top: 1%;
+  background-color: #3d3d3d;
+  border-radius: 15px 15px 0px 0px;
+  text-align: center;
+}
+.msg-system p {
+  font-size: 0.8em;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+}
 
 .msg-info p {
   font-size: 0.8em;
@@ -72,7 +84,17 @@
   font-family: "Poppins", sans-serif;
   font-weight: bold;
 }
-
+.msg-sysmessage {
+  position: relative;
+  border-radius: 0px 0px 10px 10px;
+  padding: 7px;
+  color: #000000;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  font-family: "Poppins", sans-serif;
+  display: inline-block;
+}
 .msg-content {
   position: relative;
   margin-top: 5px;
@@ -129,7 +151,9 @@
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
-.messageInput input {
+.messageInput 
+
+.defaultinput {
   width: 90%;
   height: 100%;
   border: none;
@@ -137,7 +161,23 @@
   font-size: 14px;
   margin-left: 10px;
   color: #000000;
+  resize: none;
   background-color: transparent;
+}
+.disable{
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  /* margin-left: 10px; */
+  background-color: rgba(0, 0, 0, 0.5);
+  color : red;
+  text-align: center;
+}
+.disable::placeholder{
+  
+  color : white;
 }
 
 .messageInput input:focus {

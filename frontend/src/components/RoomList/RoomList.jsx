@@ -43,7 +43,7 @@ function RoomList() {
     setEndCheck(true);
     setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 1000);
   };
   const sendKeywordEnter = async (e) => {
     if (e.code === "Enter") {
@@ -53,7 +53,7 @@ function RoomList() {
       setEndCheck(true);
       setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      }, 1000);
     }
   };
 

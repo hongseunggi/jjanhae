@@ -27,13 +27,16 @@
   color: #eaeaea;
   transform: translateY(-7px);
 }
+.title {
+  height: 48px;
+}
 .container {
   color: #eee;
   height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   padding: 0px 30px;
   position: relative;
   width: 100%;
@@ -42,7 +45,7 @@
 .innerContainer {
   display: flex;
   width: 100%;
-  height: 90%;
+  height: calc(100% - 154px);
   margin: 5px 15px 0px;
 }
 
@@ -55,19 +58,19 @@
 
 .main-contents {
   display: flex;
-  height: 100%;
+  height: calc(100% - 48px);
 }
 
-video {
+/* video {
   background-image: url("../../assets/images/default1.png");
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
   width: 250px;
   height: 200px;
   margin: 20px;
   border: 1px solid #eee;
-  /* margin-right: 10px; */
-}
+} */
 
 .chatting {
   min-width: 300px;
@@ -82,7 +85,7 @@ video {
 }
 .dock {
   width: 500px;
-  margin: 0 auto;
+  margin: auto auto;
   display: flex;
   justify-content: space-between;
   background-color: rgba(64, 69, 78, 1);

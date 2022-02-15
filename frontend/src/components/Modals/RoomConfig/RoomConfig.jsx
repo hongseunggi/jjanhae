@@ -5,6 +5,7 @@ import RoomApi from "../../../api/RoomApi";
 import imageUpload from "../../../assets/icons/imageUpload.png";
 import styles from "./RoomConfig.module.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RoomConfig = ({ open, onClose }) => {
   // const { open, close, header } = props;
@@ -70,7 +71,18 @@ const RoomConfig = ({ open, onClose }) => {
     } else if (drinkConfig === "third") {
       drinkLimit = 3;
     }
-
+    if(type === 0 && (password.length >= 0  && password.length < 3)){
+      toast.error(
+        <div className="hi" style={{ width: "350px" }}>
+          비밀번호를 3자리 이상으로 설정 해주세요.
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
+      return;
+    }
     const body = {
       name: title,
       thumbnail: thumbnailImg,

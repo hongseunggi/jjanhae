@@ -62,7 +62,7 @@ const Profile = () => {
     
       setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      }, 1000);
       setName(data.name);
       setEmail(data.email);
       let ny = data.birthday.year;
@@ -83,7 +83,7 @@ const Profile = () => {
     setLoading(true);
     const formData = new FormData();
     formData.append("file", e.target.files[0]);
-
+    console.log(formData);
     const { data } = await getImgUploadResult(formData);
     //console.log(data);
     setMyImg(data.url);
@@ -93,7 +93,7 @@ const Profile = () => {
     const result = await getUpdateProfileImgResult(body);
     setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 1000);
     //console.log(result);
   };
 

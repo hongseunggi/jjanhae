@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styles from "./GameList.module.css";
-import { ReactComponent as GameIcon } from "../../../assets/icons/game.svg";
+import styles from "./KaraokeList.module.css";
+import { ReactComponent as KaraokeIcon } from "../../../assets/icons/microphone.svg";
 
-const Keyword = (props) => {
+const KaraokeList = (props) => {
   const { open, onClose, onChange } = props;
   const [game, setGame] = useState();
 
@@ -23,11 +23,11 @@ const Keyword = (props) => {
         <section className={styles.modalForm}>
           <main className={styles.main}>
             <div className={styles.icon}>
-              <GameIcon className={styles.icon} fill="#000" />
+              <KaraokeIcon className={styles.icon} fill="#000" />
             </div>
             <div className={styles.gameListBorder}>
               <div className={styles.game}>
-                양세찬 게임
+                일반 노래방
                 <input
                   value="1"
                   type="radio"
@@ -36,22 +36,12 @@ const Keyword = (props) => {
                 />
               </div>
               <div className={styles.game}>
-                금지어 게임
+                복불복 노래방
                 <input
                   value="2"
                   name="platform"
                   type="radio"
                   checked={game === "2"}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className={styles.game}>
-                업다운
-                <input
-                  value="3"
-                  name="platform"
-                  type="radio"
-                  checked={game === "3"}
                   onChange={handleChange}
                 />
               </div>
@@ -73,4 +63,4 @@ const Keyword = (props) => {
   );
 };
 
-export default Keyword;
+export default KaraokeList;
