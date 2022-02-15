@@ -104,7 +104,7 @@ public class EmailServiceImpl implements EmailService {
                         "		아래 <b style=\"color: #02b875\">'인증코드'</b> 를 화면에 입력하여 이메일 중복찾기를 완료해 주세요.<br />"																													+
                         "		감사합니다."																																															+
                         "	</p>"																																																	+
-                        "	<a style=\"color: #FFF; text-decoration: none; text-align: center;\""																																	+
+                        "	<a style=\"color: #222; text-decoration: none; text-align: center;\""																																	+
                         "		<p"																																																	+
                         "			style=\"display: inline-block; width: 210px; height: 45px; margin: 30px 5px 40px; background: #02b875; line-height: 45px; vertical-align: middle; font-size: 16px;\">"							+
                         ePw + "			</p>"																																														+
