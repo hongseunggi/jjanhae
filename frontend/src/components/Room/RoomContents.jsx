@@ -264,13 +264,9 @@ const RoomContents = ({
             goHome();
           }
         }else {
-          if (data.gameId === 1 || data.gameId === 2) {
-            //게임 선택 후 단계
-            console.log(data.gamename === undefined,"yoyo");
+          if(data.gameId === 1 ) {
             if (data.index !== undefined) {
               //기존 다 날리고 가자
-              nicknameData.length=0;
-              correctNicknameData.length=0;
               console.log("set");
               //닉네임 정하기
               console.log("닉네임 정하자");
@@ -289,6 +285,51 @@ const RoomContents = ({
                 setCorrectNickname([...correctNicknameData])
               }
               //닉네임 맞추는 단계
+              if(data.gameStatus===2&&data.index===undefined&&data.answerYn!==undefined) {
+                console.log("here????")
+               nicknameData.push({
+                 connectionId: data.streamId,
+                 keyword: data.gamename,
+               });
+               setNickname([...nicknameData]);
+             }
+             if(data.index===undefined&&data.gameStatus===1) {
+               nicknameData.length=0;
+               correctNicknameData.length=0;
+               setNickname([...nicknameData]);
+               setCorrectNickname([...correctNicknameData]);
+              openKeywordInputModal("start");
+              setCorrectGamename(false);
+              setCorrectForbiddenName(false);
+              setTimeout(() => {
+                yangGame(data);
+              }, 5000);
+            }else {
+              yangGame(data);
+            }
+            
+  
+          }else if(data.gameId===2) {
+            console.log("heyyy",data.index);
+            if (data.index !== undefined) {
+              //닉네임 정하기
+              console.log("닉네임 정하자");
+                //바뀌는 닉네임
+                nicknameData.push({
+                  connectionId: data.streamId,
+                  keyword: data.gamename,
+                });
+                setNickname([...nicknameData]);
+
+                correctNicknameData.push({
+                  connectionId: data.streamId,
+                  keyword: data.gamename,
+                });
+
+                setCorrectNickname([...correctNicknameData])
+              }
+         
+              //닉네임 맞추는 단계
               if(data.gameStatus===2&&data.index===undefined) {
                nicknameData.push({
                  connectionId: data.streamId,
@@ -296,45 +337,23 @@ const RoomContents = ({
                });
                setNickname([...nicknameData]);
              }
-  
-  
-            console.log(data.gameStatus);
-            console.log(data.gameId);
-            //내가 키워드를 정해줄 차례라면
-            if (data.gameId === 1) {
-              closeKeywordInputModal("answer");
-              //가장 처음온 요청인경우
-              console.log("yoyo");
-              if(data.index===undefined&&data.gameStatus===1) {
-                nicknameData.length=0;
-                setNickname([...nicknameData]);
-                openKeywordInputModal("start");
-                setCorrectGamename(false);
-                setCorrectForbiddenName(false);
-                setTimeout(() => {
-                  yangGame(data);
-                }, 6000);
-              }else {
-                yangGame(data);
-              }
-              
-              
-              //금지어
-            } else if (data.gameId === 2) {
-              console.log("yoyo");
-              if(data.index===undefined&&data.gameStatus===1) {
-                nicknameData.length=0;
-                setNickname([...nicknameData]);
-                openKeywordInputModal("startForbidden");
-                setCorrectForbiddenName(false);
-                setCorrectGamename(false);
-                setTimeout(() => {
-                  forbidden(data);
-                }, 6000);
-              }else {
+
+             if(data.index===undefined&&data.gameStatus===1) {
+               console.log("start");
+              nicknameData.length=0;
+              correctNicknameData.length=0;
+              setCorrectNickname([...correctNicknameData]); 
+              setNickname([...nicknameData]);
+              openKeywordInputModal("startForbidden");
+              setCorrectForbiddenName(false);
+              setCorrectGamename(false);
+              setTimeout(() => {
                 forbidden(data);
-              }
+              }, 5000);
+            }else {
+              forbidden(data);
             }
+  
           }
         }
       });

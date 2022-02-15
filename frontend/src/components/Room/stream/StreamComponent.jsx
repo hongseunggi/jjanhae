@@ -110,6 +110,9 @@ function StreamComponent({
           setMyCorrectNickname(correctNickname[i].keyword);
         }
       }
+      if(correctNickname.length===0){
+        setMyCorrectNickname("");
+      }
     }
   }, [correctNickname]);
 
