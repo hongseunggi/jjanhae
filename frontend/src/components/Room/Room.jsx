@@ -95,14 +95,20 @@ const Room = () => {
         const data = event.data;
         console.log(data);
         console.log(data.gameId);
-        if(data.gameId===1) {
-          setContentTitle("양세찬 게임");
-          setMode("game1");
-          setbangZzang(data.streamId);
-        }else if (data.gameId===2) {
-          setContentTitle("금지어 게임");
-          setMode("game2");
-          setbangZzang(data.streamId);
+        if(data.gameStatus!==3) {
+          setGameId(data.gameId);
+          if(data.gameId===1) {
+            setContentTitle("양세찬 게임");
+            setMode("game1");
+            setbangZzang(data.streamId);
+          }else if (data.gameId===2) {
+            setContentTitle("금지어 게임");
+            setMode("game2");
+            setbangZzang(data.streamId);
+          }
+        }else {
+          setGameId(0);
+          setMode("basic");
         }
       });
     }
@@ -132,6 +138,19 @@ const Room = () => {
   };
 
   const handleHomeClick = () => {
+    console.log("stop game");
+    console.log(gameId);
+    let curId = gameId;
+    curId*=1;
+    //게임종료 api호출
+    let data = {
+      gameStatus : 3,
+      gameId : curId,
+    }
+    sessionId.signal({
+      data : JSON.stringify(data),
+      type : "game",
+    })
     setContentTitle(title);
     setMode("basic");
   };
@@ -186,7 +205,7 @@ const Room = () => {
   };
 
   const changeMode = (mode) => {
-    console.log(gameId);
+    console.log(mode);
     const data={
       gameStatus : 0,
       gameId : mode,
@@ -209,6 +228,10 @@ const Room = () => {
       changeMode(2);
     }
   }
+  const goHome = () => {
+    setMode("basic");
+    setGameId(0);
+    };
   return (
     <div className={styles.container}>
       {loading ? <LoadingSpinner></LoadingSpinner> : null}
@@ -230,6 +253,7 @@ const Room = () => {
               mode={mode}
               musicList={musicListRef.current}
               music={musicRef.current}
+              goHome = {goHome}
             />
           </div>
         </div>

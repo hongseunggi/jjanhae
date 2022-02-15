@@ -259,7 +259,7 @@
   border-radius: 8px;
   position: absolute;
   top: 3vw;
-  width: 100%;
+  width: 12rem;
   height: 150px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
   opacity: 0;
@@ -307,6 +307,13 @@
   border :none;
   margin-bottom: 3px;
   font-size: 15px;
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+.partyData:hover {
+  opacity: 1;
+  background-color: rgb(255, 255, 255);
+  font-weight: bolder;
+  border-radius: 5px;
 }
 .listTitle {
   margin-bottom: 0px;
