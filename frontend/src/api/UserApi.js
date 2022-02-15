@@ -4,6 +4,7 @@ const BASE_URL = "https://i6a507.p.ssafy.io/api/v1/user";
 
 axios.interceptors.request.use(
   function (config) {
+    console.log("실행?>?");
     const accessToken = sessionStorage.getItem("accessToken");
     if (accessToken) {
       config.headers.Authorization =
@@ -76,15 +77,12 @@ const getLoginResult = async (body) => {
 
 const getRoomDate = async (month) => {
   console.log(month);
-  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
-  // const result = await axios.get(`${BASE_URL}/conferences`);
   const result = await axios.get(`${BASE_URL}/room?month=${month}`);
   return result;
 }
 
 const getRoomList = async (date) => {
   console.log("date: " +date);
-  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
   const result = await axios.get(`${BASE_URL}/room?date=${date}`);
   return result;
 }
@@ -92,7 +90,6 @@ const getRoomList = async (date) => {
 
 const getUserList = async (roomSeq) => {
   console.log("roomSeq: " +roomSeq);
-  axios.defaults.headers.Authorization = "Bearer "+sessionStorage.getItem("accessToken");
   const result = await axios.get(`${BASE_URL}/history?roomSeq=${roomSeq}`);
   return result;
 }

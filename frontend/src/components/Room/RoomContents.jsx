@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { useState } from "react";
 import { OpenVidu } from "openvidu-browser";
+import axios from "axios";
 import axios1 from "../../api/WebRtcApi";
 import RoomApi from "../../api/RoomApi";
 import ImgApi from "../../api/ImgApi.js";
@@ -18,6 +19,9 @@ import MusicPlayer from "./music/MusicPlayer";
 import SessionIdContext from "../../contexts/SessionIdContext";
 import Keyword from "../Modals/Game/Keyword";
 import Karaoke from "./karaoke/Karaoke";
+import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify"
+
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -38,6 +42,7 @@ const RoomContents = ({
   goHome,
   home,
 }) => {
+  const navigate = useNavigate();
   const { setRoomSnapshotResult } = RoomApi;
   const { getImgUploadResult } = ImgApi;
   const { setSessionId } = useContext(SessionIdContext);
@@ -128,8 +133,31 @@ const RoomContents = ({
     console.log(participantNum);
     console.log(participantNumRef.current);
   }, [participantNum]);
-
   useEffect(() => {
+    if(axios.defaults.headers.Authorization === undefined){
+
+      const accessToken = sessionStorage.getItem("accessToken");
+      if (accessToken) {
+        console.log("실행됩니다.");
+        axios.defaults.headers.Authorization =
+          "Bearer " + sessionStorage.getItem("accessToken");
+        console.log(axios.defaults.headers.Authorization);
+      }
+      else{
+        toast.error(
+          <div className="hi" style={{ width: "350px" }}>
+            로그인 후 이용가능 합니다. 로그인 해주세요
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            role: "alert",
+          }
+        );
+        navigate("/user/login");
+        
+      }
+    }
+
     setLoginStatus("3");
     console.log(loginStatus);
     const preventGoBack = () => {
@@ -137,10 +165,11 @@ const RoomContents = ({
       console.log('prevent go back!');
     };
     
-    // window.history.pushState(null, '', window.location.href);
+    window.history.pushState(null, '', window.location.href);
     window.addEventListener('popstate', preventGoBack);
     window.addEventListener("beforeunload", onbeforeunload);
     window.addEventListener("unload", handleleaveRoom);
+
     joinSession();
     return () => {
       window.removeEventListener("beforeunload", onbeforeunload);
@@ -148,6 +177,7 @@ const RoomContents = ({
       window.removeEventListener("unload", handleleaveRoom);
       handleleaveRoom();
       leaveSession();
+
     };
   }, []);
 

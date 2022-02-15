@@ -19,7 +19,6 @@ const User = () => {
         <Route path="/findpwd" element={<FindPassword />} />
         <Route path="/newpwd" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/calendar" element={<CalendarPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
