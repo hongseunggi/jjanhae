@@ -85,7 +85,7 @@
 }
 .dock {
   width: 500px;
-  margin: 0 auto;
+  margin: auto auto;
   display: flex;
   justify-content: space-between;
   background-color: rgba(64, 69, 78, 1);

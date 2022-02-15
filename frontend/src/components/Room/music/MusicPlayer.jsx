@@ -11,7 +11,7 @@ import { ReactComponent as HamburgerIcon } from "../../../assets/icons/hamburger
 import MusicList from "../../Modals/RegistMusic/MusicList";
 import VolumeUp from "@mui/icons-material/VolumeUp";
 import Slider from "@mui/material/Slider";
-
+import Box from "@mui/material/Box";
 let posX = 0;
 let posY = 0;
 
@@ -218,6 +218,8 @@ const MusicPlayer = ({ user }) => {
         onEnded={() => handleEndMusic()}
         width="1px"
         height="1px"
+        volume={volume}
+        className={styles.videoPlayer}
       />
       <div
         className={styles.player}
@@ -247,9 +249,7 @@ const MusicPlayer = ({ user }) => {
             >
               {music ? music : "음악을 추가해주세요."}
             </Marquee>
-            {/* (
-                <div onClick={handleMusicListClick}>{music}</div>
-              ) */}
+
             <div className={styles.BtnRow}>
               {playing ? (
                 <StopIcon
@@ -285,18 +285,34 @@ const MusicPlayer = ({ user }) => {
               onClick={handleMusicListClick}
             />
             <VolumeUp sx={{ color: "#eee" }} onClick={handleVolumeControl} />
-            {openVolumeController ? (
-              <Slider
-                aria-label="Volume"
-                value={volume * 100}
-                onChange={handleVolumeChange}
-                className={styles.volumeController}
-              />
-            ) : null}
+            <div className={styles.volumeController}>
+              {openVolumeController ? (
+                <Box sx={{ height: 100 }}>
+                  <Slider
+                    sx={{
+                      '& input[type="range"]': {
+                        WebkitAppearance: "slider-vertical",
+                      },
+                    }}
+                    orientation="vertical"
+                    // defaultValue={volume}
+                    value={volume * 100}
+                    onChange={handleVolumeChange}
+                    onKeyDown={preventHorizontalKeyboardNavigation}
+                  />
+                </Box>
+              ) : // <Slider
+              //   aria-label="Volume"
+              //   value={volume * 100}
+              //   onChange={handleVolumeChange}
+              //   className={styles.volumeController}
+              // />
+              null}
+            </div>
           </>
         )}
       </div>
-      {/* {musicList.length >= 1 ? ( */}
+
       {open ? (
         <MusicList
           open={open}
@@ -308,7 +324,6 @@ const MusicPlayer = ({ user }) => {
           playing={playing}
         />
       ) : null}
-      {/* ) : null} */}
     </div>
   );
 };

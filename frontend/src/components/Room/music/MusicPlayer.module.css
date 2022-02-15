@@ -11,6 +11,10 @@
   left: 10px;
 }
 
+.videoPlayer {
+  visibility: hidden;
+}
+
 .playerIcon {
   margin-right: 10px;
 }
@@ -36,7 +40,10 @@
 }
 .volumeController {
   position: absolute;
+  bottom: 40px;
+  right: 7px;
 }
+
 @keyframes rotate_image {
   100% {
     transform: rotate(360deg);

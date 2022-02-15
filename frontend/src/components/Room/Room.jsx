@@ -77,14 +77,31 @@ const Room = () => {
         const data = event.data;
         console.log(data);
         console.log(data.gameId);
-        if (data.gameId === 1) {
-          setContentTitle("양세찬 게임");
-          setMode("game1");
-          setbangZzang(data.streamId);
-        } else if (data.gameId === 2) {
-          setContentTitle("금지어 게임");
-          setMode("game2");
-          setbangZzang(data.streamId);
+        if (data.gameStatus !== 3) {
+          setGameId(data.gameId);
+          if (data.gameId === 1) {
+            setContentTitle("양세찬 게임");
+            setMode("game1");
+            setbangZzang(data.streamId);
+          } else if (data.gameId === 2) {
+            setContentTitle("금지어 게임");
+            setMode("game2");
+            setbangZzang(data.streamId);
+          } else if (data.gameId === 3) {
+            console.log("????????되긴하니?");
+            setContentTitle("UP DOWN 게임");
+            setMode("game3");
+            setbangZzang(data.streamId);
+            // handleStartUpdown();
+          }
+        } else {
+          console.log(
+            "???????????????????????????????????????장난하냐 여기가 ㄷ실행되는거니?"
+          );
+          if (data.gameId === 3 && data.updown === undefined) {
+            setGameId(0);
+            setMode("basic");
+          }
         }
       });
       sessionId.on("signal:sing", (event) => {
@@ -103,6 +120,9 @@ const Room = () => {
 
     return () => setLoginStatus("2");
   }, [sessionId]);
+  // const handleStartUpdown = () => {
+
+  // }
 
   useEffect(() => {
     console.log(mode);
@@ -143,14 +163,30 @@ const Room = () => {
         data: JSON.stringify(data),
       });
     }
+    console.log("stop game");
+    console.log(gameId);
+    let curId = gameId;
+    curId *= 1;
+    //게임종료 api호출
+    let data = {
+      gameStatus: 3,
+      gameId: curId,
+    };
+    sessionId.signal({
+      data: JSON.stringify(data),
+      type: "game",
+    });
     setContentTitle(title);
     setMode("basic");
   };
+
+  const handleGoTitle = () => {
+    setContentTitle(title);
+    setMode("basic");
+  };
+
   const handleCameraClick = () => {
-    // setContentTitle("인생네컷");
-    // setMode("snapshot");
     if (mode !== "snapshot") {
-      console.dir(sessionId);
       const data = {
         photoStatus: 0,
       };
@@ -161,6 +197,7 @@ const Room = () => {
       });
     }
   };
+
   const handleModalClose = () => {
     setOnGameList(false);
     setOnKaraokeList(false);
@@ -180,15 +217,10 @@ const Room = () => {
   };
 
   const handleMusicSearch = (singer, song) => {
-    console.log(singer);
-    console.log(song);
     const music = `${singer}${song}`;
-    console.log(music);
     youtube.search(music).then((videos) => {
-      console.log(videos);
       const videoId = videos[0].id.videoId;
       const thumbnail = videos[0].snippet.thumbnails.default.url;
-      // const url = `https://www.youtube.com/embed/${videoId}`;
       const data = {
         musicStatus: 4,
         videoId: videoId,
@@ -205,14 +237,37 @@ const Room = () => {
 
   const changeGameMode = (mode) => {
     console.log(gameId);
-    const data = {
-      gameStatus: 0,
-      gameId: mode,
-    };
-    sessionId.signal({
-      type: "game",
-      data: JSON.stringify(data),
-    });
+    if (mode === 3) {
+      const data = {
+        gameStatus: 0,
+        gameId: 3,
+        // index : 1,
+      };
+      console.log("실행됨?");
+      sessionId.signal({
+        type: "game",
+        data: JSON.stringify(data),
+      });
+      const data2 = {
+        gameStatus: 1,
+        gameId: 3,
+        index: 1,
+      };
+      sessionId.signal({
+        data: JSON.stringify(data2),
+        type: "game",
+      });
+    } else if (mode !== undefined) {
+      console.log(mode, "????여기 실행은 아니겠죠?");
+      const data = {
+        gameStatus: 0,
+        gameId: mode,
+      };
+      sessionId.signal({
+        type: "game",
+        data: JSON.stringify(data),
+      });
+    }
   };
 
   const handleGameModeChange = (data) => {
@@ -221,6 +276,8 @@ const Room = () => {
       changeGameMode(1);
     } else if (data === "2") {
       changeGameMode(2);
+    } else if (data === "4") {
+      changeGameMode(3);
     }
   };
 
@@ -243,6 +300,12 @@ const Room = () => {
       changeKaraokeMode(2);
     }
   };
+
+  const goHome = () => {
+    setMode("basic");
+    setGameId(0);
+  };
+
   return (
     <div className={styles.container}>
       {loading ? <LoadingSpinner></LoadingSpinner> : null}
@@ -265,6 +328,9 @@ const Room = () => {
               singMode={singMode}
               // musicList={musicListRef.current}
               music={musicRef.current}
+              back={handleHomeClick}
+              goHome={goHome}
+              home={handleGoTitle}
             />
           </div>
         </div>
