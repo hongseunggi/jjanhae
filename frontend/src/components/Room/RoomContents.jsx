@@ -244,10 +244,8 @@ const RoomContents = ({
         //초기요청 응답
         //양세찬
         let nicknameData = nickname;
-        console.log(nicknameData,"hihi1");
         const data = event.data;
         if(data.gameStatus===3) {
-          console.log("gotoHome");
           goHome();
         }else {
           if (data.gameId === 1 || data.gameId === 2) {
@@ -257,24 +255,18 @@ const RoomContents = ({
                 keyword: data.gamename,
               });
               setNickname([...nicknameData]);
-              console.log(nicknameData,"hihi5");
             }
   
-            console.log(nicknameData,"hihi2");
-            console.log(nickname,"hihi3");
-            console.log(data.gameStatus);
-            console.log(data.gameId);
             //내가 키워드를 정해줄 차례라면
             if (data.gameId === 1) {
               closeKeywordInputModal("answer");
               //가장 처음온 요청인경우
-              console.log(data.index);
-              console.log(data.gameStatus);
               if(data.index===undefined&&data.gameStatus===1) {
                 nicknameData.length=0;
                 setNickname([...nicknameData]);
                 openKeywordInputModal("start");
                 setCorrectGamename(false);
+                setCorrectForbiddenName(false);
                 setTimeout(() => {
                   yangGame(data);
                 }, 6000);
@@ -290,6 +282,7 @@ const RoomContents = ({
                 setNickname([...nicknameData]);
                 openKeywordInputModal("startForbidden");
                 setCorrectForbiddenName(false);
+                setCorrectGamename(false);
                 setTimeout(() => {
                   forbidden(data);
                 }, 8000);

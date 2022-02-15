@@ -62,10 +62,8 @@ function StreamComponent({
   };
 
   useEffect(() => {
-    console.log(nickname,"hihi4");
     if(nickname!==""&&nickname!==undefined) {
     for (let i = 0; i < nickname.length; i++) {
-        console.log(nickname,"hihi",i);
         if (user.getStreamManager().stream.streamId === nickname[i].connectionId) {
           setMyNickname(nickname[i].keyword);
         }
@@ -73,8 +71,6 @@ function StreamComponent({
       if(nickname.length===0){
         setMyNickname("");
       }
-    }else {
-      console.log("here!!!","hihi");
     }
   }, [nickname]);
 
