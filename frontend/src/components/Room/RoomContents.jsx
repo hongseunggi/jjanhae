@@ -8,7 +8,7 @@ import StreamComponent from "./stream/StreamComponent";
 import YangGameComponent from "././game/YangGameComponent";
 import SelectingGame from "././game/SelectingGame";
 
-import styles from "./RoomContentsGrid.module.css";
+import styles from "./RoomContents.module.css";
 import Chat from "./chat/Chat";
 import UserModel from "../models/user-model";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
@@ -684,7 +684,7 @@ const RoomContents = ({
         }
         // sleep(1500);
       }
-    }, 500);
+    }, 1500);
   };
 
   const onSaveToProfile = async (formdata) => {
@@ -819,6 +819,7 @@ const RoomContents = ({
     //게임 정답 맞추는 api호출
     checkMyAnswer(data, gamemode);
   };
+
   const confirmTargetGameName = (data) => {
     closeKeywordInputModal();
     setTargetGameName(data);
@@ -826,6 +827,7 @@ const RoomContents = ({
     else if (mode === "game2") giveGamename(data, 2);
     //target gamename 지정해주는 api호출
   };
+
   const sirenWingWing = (target) => {
     console.log(target);
     console.log("wing~~~~~~~");

@@ -26,7 +26,7 @@ import Youtube from "../../api/Youtube";
 import SessionIdContext from "../../contexts/SessionIdContext";
 import BangZzangContext from "../../contexts/BangZzangContext";
 import KaraokeList from "../Modals/Karaoke/KaraokeList";
-import RoomContentsGrid from "./RoomContentsGrid";
+// import RoomContentsGrid from "./RoomContentsGrid";
 
 const youtube = new Youtube(process.env.REACT_APP_YOUTUBE_API_KEY);
 

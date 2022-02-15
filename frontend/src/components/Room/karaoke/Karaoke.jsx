@@ -178,7 +178,8 @@ const Karaoke = ({ user, singMode }) => {
     //music list 들어있나 확인
     if (musicListRef.current.length > 1) {
       const data = {
-        musicStatus: 3,
+        singStatus: 2,
+        singMode,
       };
 
       user.getStreamManager().stream.session.signal({
@@ -199,7 +200,7 @@ const Karaoke = ({ user, singMode }) => {
         url={`https://www.youtube.com/embed/${videoIdRef.current}`}
         playing={playing}
         volume={volume}
-        controls
+        // controls
         onEnded={() => handleEndMusic()}
         width="100%"
         height="75%"
@@ -276,7 +277,7 @@ const Karaoke = ({ user, singMode }) => {
             muted={true}
             volume={0}
             // controls
-            // onEnded={() => handleEndMusic()}
+            onEnded={() => handleEndMusic()}
             width="100%"
             height="100%"
           />
