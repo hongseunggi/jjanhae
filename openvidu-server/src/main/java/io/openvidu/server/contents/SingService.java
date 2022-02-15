@@ -18,12 +18,8 @@ public class SingService {
     static final int ADD_MUSIC = 1;
     /** 노래 재생 **/
     static final int PLAY_MUSIC = 2;
-    /** 다음 노래 **/
-    static final int NEXT_MUSIC = 3;
-    /** 노래 멈춤 **/
-    static final int STOP_MUSIC = 4;
-    /** 노래 멈춤 **/
-    static final int DEL_MUSIC = 5;
+    /** 노래 삭제 **/
+    static final int DEL_MUSIC = 3;
     /** 노래방 끝 **/
     static final int FINISH_NORAEBANG = -1;
     /** 일반 노래방 **/
@@ -64,7 +60,6 @@ public class SingService {
 
         // 원하는 상태에 따른 수행 방식 변경
         int singStatus = data.get("singStatus").getAsInt();
-        int singMode = data.get("singMode").getAsInt();
         String sessionId = message.get("sessionId").getAsString();
 
         switch (singStatus) {
@@ -76,13 +71,7 @@ public class SingService {
                 addSong(sessionId, participants, params, data);
                 return;
             case PLAY_MUSIC: // 노래 재생
-                playSong(sessionId, singMode, participants, params, data);
-                return;
-            case NEXT_MUSIC: // 다음 노래
-                nextSong(sessionId, singMode, participants, params, data);
-                return;
-            case STOP_MUSIC: // 노래 정지
-                stopSong(sessionId, participants, params, data);
+                playSong(sessionId, participants, params, data);
                 return;
             case DEL_MUSIC: // 노래 삭제
                 delSong(sessionId, participants, params, data);
@@ -178,7 +167,7 @@ public class SingService {
      * 음악 재생
      * singStatus: 2
      * */
-    private void playSong(String sessionId, Integer singMode, Set<Participant> participants, JsonObject params, JsonObject data) {
+    private void playSong(String sessionId, Set<Participant> participants, JsonObject params, JsonObject data) {
         System.out.println("[Sing] *** PLAY SONG NOW");
 
         if (singRoomsMap.get(sessionId) == null || singRoomsMap.get(sessionId).isEmpty()) {
@@ -194,10 +183,18 @@ public class SingService {
 
         // 예약된 노래들이 있는 경우
         ArrayList<ArrayList<String>> musicList = singRoomsMap.get(sessionId);
-        System.out.println("[Sing] *** reserved SONGS" + musicList);
-
-        String firstMusic = musicList.get(0).get(0) + '^' + musicList.get(0).get(1) + '^' + musicList.get(0).get(2);
+        ArrayList<String> firstMusic = musicList.get(0);
+        String strFirstMusic = firstMusic.get(0) + '^' + firstMusic.get(1) + '^' + firstMusic.get(2);
         String strMusicList = "";
+
+        System.out.println("[Sing] *** Now SONG : " + firstMusic);
+        System.out.println("[Sing] *** reserved SONGS : " + musicList);
+
+        // 제일 처음에 있는 노래 삭제
+        musicList.remove(0);
+        System.out.println("[Sing] *** After del first song in list" + musicList);
+
+
         for(int i=0; i < musicList.size()-1; i++) {
             // strMusic = 가수^노래제목^키값
             String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^' + musicList.get(i).get(2);
@@ -207,10 +204,13 @@ public class SingService {
         ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
         strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2));
 
-        data.addProperty("nowSing", firstMusic);
+        data.addProperty("nowSing", strFirstMusic);
         data.addProperty("reserveSongList", strMusicList);
 
+
         // 일반 모드와 필터 모드는 다르다!!
+        int singMode = data.get("singMode").getAsInt();
+
         if (singMode == FILTER_MODE) {
             // 필터를 적용할 사람의 수는 참여자 수의 반
             // 사용자 랜덤 선택을 위해 리스트를 복사해두고 섞음
@@ -247,161 +247,10 @@ public class SingService {
         System.out.println("[Sing] *** PLAY SONG return : " + params);
     }
 
-    /**
-     * 다음 음악 재생
-     * singStatus: 3
-     * */
-    private void nextSong(String sessionId, Integer singMode, Set<Participant> participants, JsonObject params, JsonObject data) {
-        System.out.println("[Sing] *** NEXT SONG");
-
-        if (singRoomsMap.get(sessionId) == null || singRoomsMap.get(sessionId).isEmpty()) {
-            // 노래가 없는 경우
-            data.addProperty("reserveSongList", "");
-            params.add("data", data);
-            for (Participant p : participants) {
-                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-            }
-            System.out.println("[Sing] *** playlist is EMPTY in this session : " + params);
-            return;
-        }
-
-        // 예약된 노래들이 있는 경우
-        ArrayList<ArrayList<String>> musicList = singRoomsMap.get(sessionId);
-        System.out.println("[Sing] *** NOW song list" + musicList);
-
-        // 제일 처음에 있는 노래 삭제
-        musicList.remove(0);
-        System.out.println("[Sing] *** After del first song in list" + musicList);
-
-        // 만약에! 지웠는데 노래가 없다면
-        if (musicList.isEmpty()) {
-            data.addProperty("reserveSongList", "");
-            params.add("data", data);
-            for (Participant p : participants) {
-                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
-            }
-            System.out.println("[Sing] *** playlist is EMPTY in this session : " + params);
-            return;
-        }
-
-        // 지우고 나서 처음 노래
-        String firstMusic = musicList.get(0).get(0) + '^' + musicList.get(0).get(1) + '^' + musicList.get(0).get(2);
-        System.out.println("[Sing] *** first song after delete : " + firstMusic);
-        String strMusicList = "";
-        for(int i=0; i < musicList.size()-1; i++) {
-            // strMusic = 가수^노래제목^키값
-            String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^' + musicList.get(i).get(2);
-            strMusicList = strMusicList.concat(strMusic).concat("|");
-        }
-        // 마지막 노래 다음에는 | 붙이지 않도록
-        ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
-        strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2));
-
-        data.addProperty("nowSing", firstMusic);
-        data.addProperty("reserveSongList", strMusicList);
-
-        // 일반 모드와 필터 모드는 다르다!!
-        if (singMode == FILTER_MODE) {
-            // 필터를 적용할 사람의 수는 참여자 수의 반
-            // 사용자 랜덤 선택을 위해 리스트를 복사해두고 섞음
-            System.out.println("[Sing] *** 참가자들" + participants);
-
-            // StreamId들만 저장할 리스트 생성
-            ArrayList<String> participantsList = new ArrayList<>();
-            for (Participant p : participants) {
-                // 참가자들의 streamId를 저장한다.
-                participantsList.add(p.getPublisherStreamId());
-            }
-            Collections.shuffle(participantsList);
-            System.out.println("[Sing] *** 섞은 참가자들 stream Id" + participantsList);
-            // 반만 뽑음!
-            int halfSize = participantsList.size() / 2;
-            // voiceFilter = "스트림아이디/스트림아이디"
-            String voiceFilter = "";
-            for(int i = 0; i < halfSize-1; i++) {
-                String filtered = participantsList.get(i);
-                voiceFilter = voiceFilter.concat(filtered).concat("/");
-            }
-            // 마지막에 / 가 붙지 않도록
-            voiceFilter = voiceFilter.concat(participantsList.get(halfSize-1));
-
-            data.addProperty("voiceFilter", voiceFilter);
-            System.out.println("[Sing] *** 걸린 참가자들" + voiceFilter);
-        }
-
-        params.add("data", data);
-        for (Participant p : participants) {
-            rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-                    ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-        }
-        System.out.println("[Sing] *** NEXT SONG return : " + params);
-    }
-
-    /**
-     * 음악 멈춤
-     * singStatus: 4
-     * */
-    private void stopSong(String sessionId,Set<Participant> participants, JsonObject params, JsonObject data) {
-        System.out.println("[Sing] *** STOP SONG");
-
-        if (singRoomsMap.get(sessionId) == null || singRoomsMap.get(sessionId).isEmpty()) {
-            // 노래가 없는 경우
-            data.addProperty("reserveSongList", "");
-            params.add("data", data);
-            for (Participant p : participants) {
-                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-            }
-            System.out.println("[Sing] *** playlist is EMPTY in this session : " + params);
-            return;
-        }
-
-        // 예약된 노래들이 있는 경우
-        ArrayList<ArrayList<String>> musicList = singRoomsMap.get(sessionId);
-        System.out.println("[Sing] *** NOW song list" + musicList);
-
-        // 제일 처음에 있는 노래 삭제
-        musicList.remove(0);
-        System.out.println("[Sing] *** After del first song in list" + musicList);
-
-        // 만약에! 지웠는데 노래가 없다면
-        if (musicList.isEmpty()) {
-            data.addProperty("reserveSongList", "");
-            params.add("data", data);
-            for (Participant p : participants) {
-                rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-                        ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params); // sendMessage
-            }
-            System.out.println("[Sing] *** playlist is EMPTY in this session : " + params);
-            return;
-        }
-
-        // 리스트 문자열로 만들기
-        String strMusicList = "";
-        for(int i=0; i < musicList.size()-1; i++) {
-            // strMusic = 가수^노래제목^키값
-            String strMusic = musicList.get(i).get(0) + '^' + musicList.get(i).get(1) + '^' + musicList.get(i).get(2);
-            strMusicList = strMusicList.concat(strMusic).concat("|");
-        }
-        // 마지막 노래 다음에는 | 붙이지 않도록
-        ArrayList<String> finalMusic = musicList.get(musicList.size()-1);
-        strMusicList = strMusicList.concat(finalMusic.get(0) + '^' + finalMusic.get(1) + '^' + finalMusic.get(2));
-
-        data.addProperty("reserveSongList", strMusicList);
-
-        params.add("data", data);
-        for (Participant p : participants) {
-            rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-                    ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
-        }
-        System.out.println("[Sing] *** NEXT SONG return : " + params);
-    }
 
     /**
      * 음악 삭제
-     * singStatus: 5
+     * singStatus: 3
      * */
     private void delSong(String sessionId, Set<Participant> participants, JsonObject params, JsonObject data) {
         System.out.println("[Sing] *** DELETE RESERVED SONG");
