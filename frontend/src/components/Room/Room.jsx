@@ -108,11 +108,17 @@ const Room = () => {
             setContentTitle("UP DOWN 게임");
             setMode("game3");
             setbangZzang(data.streamId);
+            // handleStartUpdown();
           }
         }
       });
     }
   }, [sessionId]);
+  const handleStartUpdown = () => {         
+    
+    
+            
+  }
 
   useEffect(()=> {
     console.log(mode);
@@ -195,12 +201,22 @@ const Room = () => {
     console.log(gameId);
     if(mode === 3){
       const data = {
-        gameStatus : 1,
-        gameId : mode,
+        gameStatus : 0,
+        gameId : 3,
+        // index : 1,
       }
       sessionId.signal({
         type : "game",
         data : JSON.stringify(data), 
+      });
+      const data2 = {
+        gameStatus : 1,
+        gameId : 3,
+        index : 1
+      }
+      sessionId.signal({
+        data : JSON.stringify(data2),
+        type : "game"
       });
     }
     else{

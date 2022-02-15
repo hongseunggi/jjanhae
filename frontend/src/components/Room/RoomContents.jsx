@@ -708,7 +708,7 @@ const RoomContents = ({
             />
           ) : (
             <>
-              <Chat user={localUserRef.current} mode={mode} exitgame={back} />
+              <Chat user={localUserRef.current} mode={mode} exitgame={back} sub={subscribers}/>
               {/* <button onClick={handleVoiceFilter}>목소리변조</button> */}
             </>
           )}

@@ -10,15 +10,28 @@ const Chat = (props) => {
   const [continueGame, setContinueGame] = useState(false);
   const [checkMode, setCheck] = useState(false);
   const [mode, setMode] = useState("");
+  const [idx, setIdx] = useState(0);
+  const [currnetInput, setCurrentInput] = useState("");
+  const [sub, setSub] = useState([]);
   const chatScroll = useRef();
+  
   const handleChange = (event) => {
     setMessage(event.target.value);
   };
   const reset = useRef(messageList);
   reset.current = messageList;
   console.log("chat render");
-  console.log(props.user);
+  console.log(props.user,"실행");
   if(props.mode === "game3" && mode !== "game3"){
+    // const data2 = {
+    //   gameStatus : 1,
+    //   gameId : 3,
+    //   index : 1
+    // }
+    // props.user.getStreamManager().stream.session.signal({
+    //   data : JSON.stringify(data2),
+    //   type : "game"
+    // });
     setMode("game3");
   }
   else if(props.mode !== mode){
@@ -26,7 +39,11 @@ const Chat = (props) => {
 
     setMode(props.mode);
   }
-
+  
+  useEffect(()=>{
+    console.log(props.sub,"실행");
+    setSub([...sub, props.sub]);
+  },[props.sub]);
   useEffect(() => {
     console.log("실행 here");
     // console.log("chat render", initGame, continueGame);
@@ -37,11 +54,18 @@ const Chat = (props) => {
 
           let messageListData = answerList;
 
+          
+          console.log("실행되고 있니?", data.streamId, props.user.getStreamManager(), data, props.sub, messageListData);
+          if(data.gameStatus === 3 && data.updown === undefined){
+            console.log("여기가 실행 되니?");
+            props.exitgame();
+          }
 
-          console.log("실행되고 있니?", data.streamId);
-          if(data.streamId !== undefined){
+
+          if(data.updown){
+            console.log("???????????????????????????????????실행");
             messageListData.push({
-              connectionId: data.streamId,
+              connectionId: data.curStreamId,
               nickname : data.nickname,
               message : data.number
             })
@@ -52,8 +76,6 @@ const Chat = (props) => {
                                                   : data.updown === "up" ? "틀렸습니다! UP!"
                                                       : "틀렸습니다! DOWN!",
             })
-            scrollToBottom();
-            setAnswerList([...messageListData])
             if(data.updown === "same"){
               messageListData.push({
                 connectionId : "SYSTEM",
@@ -65,15 +87,62 @@ const Chat = (props) => {
               scrollToBottom();
               return;
             }
+            if(props.user.getStreamManager().stream.streamId === data.nextStreamId){
+              console.log("실ㅇ행실행")
+              messageListData.push({
+                connectionId: "SYSTEM",
+                nickname : "SYSTEM",
+                message : `${props.user.getNickname()}님 입력 차례입니다.`
+              })
+            }
+            else if(props.user.getStreamManager().stream.streamId !== data.nextStreamId){
+              for(let i = 0; i < props.sub.length; i++){
+                if(props.sub[i].getStreamManager().stream.streamId === data.streamId){
+                  messageListData.push({
+                    connectionId: "SYSTEM",
+                    nickname : "SYSTEM",
+                    message : `${props.sub[i].getNickname()}님 입력 차례입니다.`
+                  })
+                  break;
+                }
+              }
+            }
+            scrollToBottom();
+              setAnswerList([...messageListData])
+              setCurrentInput(data.nextStreamId);
+              setIdx(data.index);
           }
           else{
+            console.log("??????????????????????????????????????????????여기ㄷ가 실행이라고?");
             messageListData.length = 0;
             messageListData.push({
               connectionId: "SYSTEM",
               nickname : "SYSTEM",
               message : "UP DOWN 게임 시작!!"
             })
+            if(props.user.getStreamManager().stream.streamId === data.streamId){
+              messageListData.push({
+                connectionId: "SYSTEM",
+                nickname : "SYSTEM",
+                message : `${props.user.getNickname()}님 입력 차례입니다.`
+              })
+            }
+            else{
+              for(let i = 0; i < props.sub.length; i++){
+                if(props.sub[i].getStreamManager().stream.streamId === data.streamId){
+                  messageListData.push({
+                    connectionId: "SYSTEM",
+                    nickname : "SYSTEM",
+                    message : `${props.sub[i].getNickname()}님 입력 차례입니다.`
+                  })
+                  break;
+                }
+              }
+            }
             setAnswerList([...messageListData]);
+            setCurrentInput(data.streamId);
+            setIdx(data.index);
+            setContinueGame(false);
           }
               
           
@@ -142,11 +211,13 @@ const Chat = (props) => {
         messageData = messageData.toUpperCase();
 
       if(continueGame){  
+        console.log("????????실행?");
         if(messageData === "Y" || messageData === "O" || messageData === "0" || messageData === "OK" || messageData === "YES"){
 
           const data = {
             gameStatus : 1,
             gameId : 3,
+            index : 1,
           }
           props.user.getStreamManager().stream.session.signal({
             type : "game",
@@ -183,7 +254,8 @@ const Chat = (props) => {
           number : messageData*1,
           nickname : props.user.getNickname(),
           gameId: 3,
-          streamId : props.user.connectionId
+          index : idx,
+          streamId : props.user.getStreamManager().stream.streamId
         };
         props.user.getStreamManager().stream.session.signal({
           data: JSON.stringify(data),
@@ -217,13 +289,14 @@ const Chat = (props) => {
           <span>채팅창</span>
         </div>
         <div className={styles["message-wrap"]} ref={chatScroll}>
-         {props.mode === "game3" ? (answerList.map((data, i) => (
-            <div
+         {props.mode === "game3" ? (answerList.map((data, i) => 
+           
+            (<div
               key={i}
               id="remoteUsers"
 
               className={
-                data.connectionId !== props.user.getConnectionId()
+                data.connectionId !== props.user.getStreamManager().stream.streamId
                   ? styles["message-left"]
                   : styles["message-right"]
               }
@@ -250,8 +323,9 @@ const Chat = (props) => {
                 </div>
               )}
               
-            </div>
-          ))) : ( messageList.map((data, i) => (
+            </div>)
+          
+          )) : ( messageList.map((data, i) => (
             <div
               key={i}
               id="remoteUsers"
@@ -297,6 +371,7 @@ const Chat = (props) => {
             onChange={handleChange}
             onKeyPress={handlePressKey}
             autoComplete="off"
+            disabled={props.user.getStreamManager().stream.streamId === currnetInput ? false : true}
           />
           {/* <Tooltip title="전송"> */}
           <div className={styles.sendIcon}>
