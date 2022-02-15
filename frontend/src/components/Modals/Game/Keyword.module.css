@@ -41,6 +41,9 @@
     /* 팝업이 열릴때 스르륵 열리는 효과 */
     animation: modal-show 0.3s;
     overflow: hidden;
+    position: relative;
+    top: -35px;
+    left: 45px;
   }
   .modalTitle {
     display: flex;
