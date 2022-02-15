@@ -285,7 +285,7 @@ const RoomContents = ({
                 setCorrectGamename(false);
                 setTimeout(() => {
                   forbidden(data);
-                }, 8000);
+                }, 6000);
               }else {
                 forbidden(data);
               }

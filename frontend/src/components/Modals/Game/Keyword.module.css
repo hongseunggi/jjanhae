@@ -219,11 +219,15 @@
   }
   .gameText {
     text-align: center;
-    color: #2959dd;
+    color: #386dff;
   }
   .yellowText {
     text-align: center;
     color : #fff226;
+  }
+  .purpleText {
+    text-align: center;
+    color : #ffa928;
   }
 
   @keyframes modal-show {

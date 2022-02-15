@@ -78,7 +78,13 @@ const Keyword = (props) => {
                         <input className={styles.inputKeyword}
                                 placeholder="입력하기"
                                 value={answer}
-                                onChange={handleGameNameInput}></input>
+                                onChange={handleGameNameInput}
+                                onKeyPress = {(event)=> {
+                                if(event.key==="Enter") {
+                                    confirm();
+                                }
+                                }}>
+                                </input>
                     </form>
                 </div>
                 <div>
@@ -133,10 +139,20 @@ const Keyword = (props) => {
                         <input className={styles.inputKeyword}
                                 placeholder="입력하기"
                                 value={targetGameName}
-                                onChange={handleTargetInput}></input>
+                                onChange={handleTargetInput}
+                                onKeyPress = {(event)=> {
+                                if(event.key==="Enter") {
+                                    confirmTarget();
+                                }
+                                }}>
+                                </input>
                     </form>
                 </div>
-                <button className={styles.confirmBtn} onClick={confirmTarget}>
+                <button className={styles.confirmBtn} onClick={confirmTarget} onKeyPress = {(event)=> {
+                    if(event.key==="Enter") {
+                        confirmTarget();
+                    }
+                }}>
                     {" "}
                     키워드 등록{" "}
                 </button>
@@ -159,7 +175,7 @@ const Keyword = (props) => {
                         <p className={styles.text}>참가자들이 순서대로   <span className={styles.warnText}>키워드</span>를 입력중입니다</p>
                         <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>키워드</span> 입력을 마치면</p>
                         <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
-                        <p className={styles.text}>잠시만 기다려주세요</p>
+                        <p className={styles.text}><span className={styles.yellowText}>잠시만 기다려주세요</span></p>
                     </div>
                 </div>
                 </main>
@@ -174,7 +190,7 @@ const Keyword = (props) => {
                 </div>
                 <div className={styles.yanginformBorder}>
                     <div className={styles.infoText}>
-                        <p className={styles.text}>양세찬 게임을 시작합니다~!</p>
+                        <p className={styles.text}><span className={styles.purpleText}>양세찬 게임</span>을 시작합니다~!</p>
                         <p className={styles.text}>참가자들은 <span className={styles.greenText}>순서대로</span> 주어진 참가자에게 <span className={styles.warnText}>키워드</span>를 입력합니다</p>
                         <p className={styles.text}>질문을 통해서 자신의<span className={styles.warnText}>키워드</span>를 맞춰보세요</p>
                         <p className={styles.text}>그럼 <span className={styles.yellowText}>시작</span>하겠습니다~</p>
@@ -193,7 +209,9 @@ const Keyword = (props) => {
                 <div className={styles.yanginformBorder}>
                     <div className={styles.yanginfoText}>
                         <p className={styles.text}>당신의  <span className={styles.warnText}>키워드</span>는 뭘까요??? </p>
-                        <p className={styles.text}>화면 안 <span className={styles.yellowText}>포스트잇</span>을 클릭해 맞춰보세요~</p>
+                        <p className={styles.text}><span className={styles.gameText}>질문</span>을 통해 자신의<span className={styles.warnText}>키워드</span>를 유추하고</p>
+                        <p className={styles.text}>화면 안 <span className={styles.yellowText}>포스트잇</span>을 클릭해</p>
+                        <p className={styles.text}><span className={styles.warnText}>키워드</span>를 맞춰보세요</p>
                     </div>
                 </div>
                 </main>
@@ -237,14 +255,16 @@ const Keyword = (props) => {
                         <input className={styles.inputKeyword}
                                 placeholder="입력하기"
                                 value={targetGameName}
-                                onChange={handleTargetInput}></input>
-                    </form>
+                                onChange={handleTargetInput}
+                                onKeyPress = {(event)=> {
+                                if(event.key==="Enter") {
+                                    confirmTarget();
+                                }
+                                }}>
+                        </input>
+                            </form>
                 </div>
-                <button className={styles.confirmBtn} onClick={confirmTarget} onKeyPress = {(event)=> {
-                    if(event.key==='Enter') {
-                        confirmTarget();
-                    }
-                }}>
+                <button className={styles.confirmBtn} onClick={confirmTarget} >
                     {" "}
                     키워드 등록{" "}
                 </button>
@@ -264,7 +284,7 @@ const Keyword = (props) => {
                         <p className={styles.text}>참가자들이 순서대로<span className={styles.warnText}>금지어</span>를 입력중입니다</p>
                         <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>금지어</span> 입력을 마치면</p>
                         <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
-                        <p className={styles.text}>잠시만 기다려주세요</p>
+                        <p className={styles.text}><span className={styles.yellowText}>잠시만 기다려주세요</span></p>
                     </div>
                 </div>
                 </main>
@@ -307,15 +327,17 @@ const Keyword = (props) => {
                         <input className={styles.inputKeyword}
                                 placeholder="입력하기"
                                 value={answer}
-                                onChange={handleGameNameInput}></input>
+                                onChange={handleGameNameInput}
+                                onKeyPress = {(event)=> {
+                                if(event.key==="Enter") {
+                                    confirm();
+                                }
+                                }}>
+                                </input>
                     </form>
                 </div>
                 <div>
-                <button className={styles.confirminputBtn} onClick={confirm} onKeyPress = {(event)=> {
-                    if(event.key==='Enter') {
-                        confirm();
-                    }
-                }}>
+                <button className={styles.confirminputBtn} onClick={confirm}>
                     {" "}
                     입력{" "}
                 </button>
@@ -378,7 +400,7 @@ const Keyword = (props) => {
                 </div>
                 <div className={styles.yanginformBorder}>
                     <div className={styles.infoText}>
-                        <p className={styles.text}>금지어 게임을 시작합니다~!</p>
+                        <p className={styles.text}><span className={styles.purpleText}>금지어 게임</span>을 시작합니다~!</p>
                         <p className={styles.text}>참가자들은 <span className={styles.greenText}>순서대로</span> 주어진 참가자에게 <span className={styles.warnText}>금지어</span>를 입력해주세요</p>
                         <p className={styles.text}>모든 참가자들이  <span className={styles.warnText}>금지어</span>를 입력을 마치면</p>
                         <p className={styles.text}>자동으로 <span className={styles.gameText}>게임</span>이 시작됩니다</p>
@@ -422,11 +444,7 @@ const Keyword = (props) => {
                         <p className={styles.correctText}> 축하드립니다~!!</p>
                     </div>
                 </div>
-                <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("1","correct")}} onKeyPress = {(event)=> {
-                    if(event.key==='Enter') {
-                        handleClose("1","correcrt");
-                    }
-                }}>
+                <button className={`${styles.confirmBtnOutline} ${styles.confirmBtn}`} onClick={()=>{handleClose("1","correct")}}>
                     {" "}
                     확인{" "}
                 </button>
