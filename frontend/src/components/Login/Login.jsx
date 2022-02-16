@@ -21,7 +21,6 @@ const Login = () => {
 
   // import login api
   const { getLoginResult } = UserApi;
-
   const { id, password } = input;
 
   //input 유효성 검사 에러 메시지
@@ -37,15 +36,11 @@ const Login = () => {
   const [idError, setIdError] = useState(false);
   const [pwdError, setPwdError] = useState(false);
 
-  //로그인 상태 확인
-  // const [isLogin, setIslogin] = useState(false);
-
   //navigator
   const navigate = useNavigate();
 
   //input 유효성 검사
   const handleInput = (event) => {
-    let pwdRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
     const { id, value } = event.target;
     setInput({
       ...input,
@@ -64,15 +59,6 @@ const Login = () => {
         setIdCheck(true);
         setIdMsg("");
       }
-      // if (value.length < 5 && value.length > 0) {
-      //   setIdMsg("5자 이상의 아이디를 입력해주세요.");
-      //   setIdError(true);
-      //   setIdCheck(false);
-      // } else if (value.length > 16) {
-      //   setIdError(true);
-      //   setIdCheck(false);
-      //   setIdMsg("16자 이하의 아이디를 입력해주세요.");
-      // } else
     }
     if (id === "password") {
       if (value.length === 0) {
@@ -84,13 +70,6 @@ const Login = () => {
         setPwdCheck(true);
         setPwdMsg("");
       }
-      // if (!pwdRule.test(value) && value.length > 0) {
-      //   setPwdError(true);
-      //   setPwdCheck(false);
-      //   setPwdMsg(
-      //     "비밀번호는  8~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요"
-      //   );
-      // } else
     }
   };
 
@@ -144,6 +123,7 @@ const Login = () => {
       setLoginStatus("2");
       // //console.log(data);
       setMyName(data.name);
+      localStorage.setItem("name", data.name);
       navigate("/");
     } catch ({ response }) {
       //console.log(response);

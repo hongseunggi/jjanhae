@@ -34,8 +34,8 @@ const RoomContents = ({
   media,
   mode,
   singMode,
-  musicList,
-  music,
+  // musicList,
+  // music,
   bangzzang,
   back,
   goHome,
@@ -59,14 +59,8 @@ const RoomContents = ({
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
   const [isSelecting, setIsSelecting] = useState(false);
-  const [allSet, setAllSet] = useState(false);
   const [startPage, setStartPage] = useState(true);
-  const [keyword, setKeyword] = useState("");
-  const [subscriberkeyword, setSubscriberKeyword] = useState("");
-  const [userId, setUserId] = useState("");
   const [nickname, setNickname] = useState([]);
-  const [myNickname, setMyNickname] = useState("");
-  const [gameStatus, setGameStatus] = useState("0");
   const [streamId, setStreamId] = useState("");
   const [targetId, setTargetId] = useState("");
   const [targetGameName, setTargetGameName] = useState("");
@@ -1100,7 +1094,7 @@ const RoomContents = ({
             </>
           )}
           {mode !== "karaoke" ? (
-            <MusicPlayer user={localUserRef.current} music={music} />
+            <MusicPlayer user={localUserRef.current} />
           ) : null}
         </div>
       )}
