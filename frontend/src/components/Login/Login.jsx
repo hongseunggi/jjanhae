@@ -58,7 +58,7 @@ const Login = () => {
       if (value === "") {
         setIdError(true);
         setIdCheck(false);
-        setIdMsg("아이디를 입력해");
+        setIdMsg("아이디를 입력해주세요");
       } else {
         setIdError(false);
         setIdCheck(true);

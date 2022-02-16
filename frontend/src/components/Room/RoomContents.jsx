@@ -20,8 +20,7 @@ import SessionIdContext from "../../contexts/SessionIdContext";
 import Keyword from "../Modals/Game/Keyword";
 import Karaoke from "./karaoke/Karaoke";
 import { useNavigate } from "react-router-dom";
-import {toast} from "react-toastify"
-
+import { toast } from "react-toastify";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -134,16 +133,14 @@ const RoomContents = ({
     console.log(participantNumRef.current);
   }, [participantNum]);
   useEffect(() => {
-    if(axios.defaults.headers.Authorization === undefined){
-
+    if (axios.defaults.headers.Authorization === undefined) {
       const accessToken = sessionStorage.getItem("accessToken");
       if (accessToken) {
         console.log("실행됩니다.");
         axios.defaults.headers.Authorization =
           "Bearer " + sessionStorage.getItem("accessToken");
         console.log(axios.defaults.headers.Authorization);
-      }
-      else{
+      } else {
         toast.error(
           <div className="hi" style={{ width: "350px" }}>
             로그인 후 이용가능 합니다. 로그인 해주세요
@@ -154,7 +151,6 @@ const RoomContents = ({
           }
         );
         navigate("/user/login");
-        
       }
     }
 
@@ -164,9 +160,9 @@ const RoomContents = ({
       window.history.pushState(null, "", window.location.href);
       console.log("prevent go back!");
     };
-    
-    window.history.pushState(null, '', window.location.href);
-    window.addEventListener('popstate', preventGoBack);
+
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", preventGoBack);
     window.addEventListener("beforeunload", onbeforeunload);
     window.addEventListener("unload", handleleaveRoom);
 
@@ -177,7 +173,6 @@ const RoomContents = ({
       window.removeEventListener("unload", handleleaveRoom);
       handleleaveRoom();
       leaveSession();
-
     };
   }, []);
 
@@ -1121,7 +1116,7 @@ const RoomContents = ({
                 exitgame={home}
                 sub={subscribers}
               />
-              <button onClick={handleVoiceFilter}>목소리변조</button>
+              {/* <button onClick={handleVoiceFilter}>목소리변조</button> */}
             </>
           )}
           {mode !== "karaoke" ? (
