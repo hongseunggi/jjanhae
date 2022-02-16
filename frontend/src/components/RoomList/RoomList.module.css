@@ -63,6 +63,13 @@
   display: none;
   width: 0 !important;
 }
+.emptyAlert {
+  color: #eee;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .room {
   position: relative;
   /* background-color: ; */

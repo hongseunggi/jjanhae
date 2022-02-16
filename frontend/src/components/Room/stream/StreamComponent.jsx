@@ -89,27 +89,28 @@ function StreamComponent({
           setMyNickname(nickname[i].keyword);
         }
       }
-      if(nickname.length===0){
+      if (nickname.length === 0) {
         setMyNickname("");
       }
     }
   }, [nickname]);
 
-  
   useEffect(() => {
-    if(correctNickname!==""&&correctNickname!==undefined) {
-      console.log(correctNickname,"correctNickname");
-    for (let i = 0; i < correctNickname.length; i++) {
-        if (user.getStreamManager().stream.streamId === correctNickname[i].connectionId) {
+    if (correctNickname !== "" && correctNickname !== undefined) {
+      console.log(correctNickname, "correctNickname");
+      for (let i = 0; i < correctNickname.length; i++) {
+        if (
+          user.getStreamManager().stream.streamId ===
+          correctNickname[i].connectionId
+        ) {
           setMyCorrectNickname(correctNickname[i].keyword);
         }
       }
-      if(correctNickname.length===0){
+      if (correctNickname.length === 0) {
         setMyCorrectNickname("");
       }
     }
   }, [correctNickname]);
-
 
   useEffect(() => {
     let bgindex = Math.floor(Math.random() * 39);
@@ -120,11 +121,10 @@ function StreamComponent({
 
   const handleSiren = (target) => {
     sirenWingWing(target);
-  }
+  };
   const handleSubmitKeyword = (nextmode) => {
     openKeywordInputModal(nextmode);
-  }
-
+  };
 
   return (
     <div
@@ -144,42 +144,38 @@ function StreamComponent({
           // onMouseLeave={handleChangeControlBox}
         >
           <OvVideoComponent user={user} mutedSound={mutedSound} />
-          {mode === "snapshot" ? null : mode === "game1" ? (
+          {mode === "game1" ? (
             <>
               <div className={styles.yangGame}>
                 {sessionId ? (
                   <div className={styles.postitInput}>
-                    <div 
-                      className={styles.yangkeyword} 
-                      onClick = {()=> {handleSubmitKeyword("answer")}}>당신의 키워드는?
-                      </div>
+                    <div
+                      className={styles.yangkeyword}
+                      onClick={() => {
+                        handleSubmitKeyword("answer");
+                      }}
+                    >
+                      당신의 키워드는?
+                    </div>
                   </div>
                 ) : (
                   <div>
                     <div className={styles.answerBorder}>
-                      <div
-                        className={styles.answerpostit}
-                      >
-                      정답
-                      </div>
+                      <div className={styles.answerpostit}>정답</div>
                       <div
                         className={styles.postit}
                         style={{ backgroundColor: `${bgcolor}` }}
                       >
-                      {myCorrectNickname}
+                        {myCorrectNickname}
                       </div>
                     </div>
                     <div className={styles.hmmBorder}>
-                      <div
-                        className={styles.hmmpostit}
-                      >
-                      시도
-                      </div>
+                      <div className={styles.hmmpostit}>시도</div>
                       <div
                         className={styles.inputpostit}
                         style={{ backgroundColor: `${bgothercolor}` }}
                       >
-                      {myNickname}
+                        {myNickname}
                       </div>
                     </div>
                   </div>
@@ -215,46 +211,45 @@ function StreamComponent({
               {sessionId ? (
                 <div className={styles.forbiddenGame}>
                   <div className={styles.forbiddenpostitInput}>
-                    <div 
-                      className={styles.forbiddenkeyword} 
-                      onClick = {()=> openKeywordInputModal("answerForbidden")}>금지어가 뭘까요?
-                      </div>
+                    <div
+                      className={styles.forbiddenkeyword}
+                      onClick={() => openKeywordInputModal("answerForbidden")}
+                    >
+                      금지어가 뭘까요?
+                    </div>
                   </div>
-                  </div>
-                ) : (
-                  <div>
+                </div>
+              ) : (
+                <div>
                   <div className={styles.forbiddenAlertGameBorder}>
                     <div className={styles.forbiddenAlertGame}>
-                    <button className={styles.sirenBtn} onClick={()=> {handleSiren(user)}}>
-                      <SirenIcon className={styles.sirenIcon}/>
+                      <button
+                        className={styles.sirenBtn}
+                        onClick={() => {
+                          handleSiren(user);
+                        }}
+                      >
+                        <SirenIcon className={styles.sirenIcon} />
                       </button>
+                      <div className={styles.answerpostitforbidden}>정답</div>
                       <div
-                      className={styles.answerpostitforbidden}
+                        className={styles.forbiddenpostit}
+                        style={{ backgroundColor: `${bgcolor}` }}
                       >
-                      정답
-                      </div>
-                    <div
-                      className={styles.forbiddenpostit}
-                      style={{ backgroundColor: `${bgcolor}` }}
-                      >
-                      {myCorrectNickname}
+                        {myCorrectNickname}
                       </div>
                     </div>
                     <div className={styles.hmmBorder}>
-                    <div
-                      className={styles.hmmpostitforbidden}
-                    >
-                    시도
+                      <div className={styles.hmmpostitforbidden}>시도</div>
                     </div>
-                      </div>
-                      <div
-                        className={styles.inputforbiddenpostit}
-                        style={{ backgroundColor: `${bgcolor}` }}
-                        >
-                        {myNickname}
-                     </div>
+                    <div
+                      className={styles.inputforbiddenpostit}
+                      style={{ backgroundColor: `${bgcolor}` }}
+                    >
+                      {myNickname}
                     </div>
                   </div>
+                </div>
               )}
               <div className={styles.controlbox}>
                 {sessionId ? (
@@ -283,7 +278,13 @@ function StreamComponent({
             </>
           ) : (
             <>
-              <div className={styles.controlbox}>
+              <div
+                className={
+                  mode === "snapshot"
+                    ? `${styles.controlbox} ${styles.snapshotMode}`
+                    : styles.controlbox
+                }
+              >
                 {sessionId ? (
                   <ToolbarComponent
                     sessionId={sessionId}
