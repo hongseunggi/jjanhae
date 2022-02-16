@@ -5,7 +5,7 @@ import styles from "./ConferenceDetail.module.css";
 import moment from "moment";
 
 const ConferenceDetail = (props) => {
-  const { open, close, date, time, userList, partyImg } = props;
+  const { open, close, date, time, userList, partyImg = Image } = props;
   console.log(partyImg);
   const [participant, setParticipant] = useState([]);
   const [roomDetail, setRoomDetail] = useState();

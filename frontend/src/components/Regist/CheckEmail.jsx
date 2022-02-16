@@ -100,6 +100,7 @@ const CheckEmail = ({ progress }) => {
           role: "alert",
         }
       );
+      setEmailConfirmErrorMsg("인증이 완료되었습니다.");
     } catch (error) {
       toast.error(
         <div style={{ width: "400px" }}>인증번호를 확인해주세요.</div>,

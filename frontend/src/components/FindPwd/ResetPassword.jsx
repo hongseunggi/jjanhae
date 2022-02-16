@@ -3,6 +3,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import styles from "../Regist/RegisterTemplate.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import UserApi from "../../api/UserApi.js";
+import { toast } from "react-toastify";
 
 const ResetPassword = ({ progress }) => {
   const [password, setPassword] = useState("");
@@ -98,11 +99,26 @@ const ResetPassword = ({ progress }) => {
         password: password,
         authCode: authCode,
       });
-      console.log(data);
+      toast.success(
+        <div style={{ width: "400px" }}>비밀번호 재설정이 완료되었습니다.</div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
       setPwdErrorMsg("");
       navigate("/user/login");
     } catch (error) {
-      alert("잘못된 접근입니다.");
+      toast.info(
+        <div style={{ width: "400px" }}>
+          <div>잘못된 접근입니다.</div>
+          <span>처음부터 다시 시도해주세요.</span>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
     }
   };
 

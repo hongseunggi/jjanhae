@@ -373,9 +373,7 @@ const RoomContents = ({
             }
           } else if (data.gameId === 2) {
             if (data.index !== undefined) {
-              console.log("heyyy", "1");
               //닉네임 정하기
-              console.log("닉네임 정하자");
               //바뀌는 닉네임
               nicknameData.push({
                 connectionId: data.streamId,
@@ -397,8 +395,6 @@ const RoomContents = ({
               data.index === undefined &&
               data.sirenYn === undefined
             ) {
-              console.log("heyyy", "2");
-              console.log(data.sirednYn, "실화");
               nicknameData.push({
                 connectionId: data.streamId,
                 keyword: data.gamename,
@@ -411,7 +407,6 @@ const RoomContents = ({
               data.gameStatus === 1 &&
               data.sirenYn === undefined
             ) {
-              console.log("start");
               nicknameData.length = 0;
               correctNicknameData.length = 0;
               setCorrectNickname([...correctNicknameData]);
@@ -434,6 +429,7 @@ const RoomContents = ({
         console.log(data);
         console.log(localUserRef.current.getStreamManager().stream.streamId);
         if (data.singStatus === 2 && data.singMode === 2) {
+          console.log("너도 오냐?");
           removeVoiceFilter();
           if (
             data.voiceFilter.includes(
@@ -444,6 +440,7 @@ const RoomContents = ({
             handleVoiceFilter();
           }
         } else if (data.singStatus === -1) {
+          console.log("오냐?");
           removeVoiceFilter();
         }
       });
@@ -591,7 +588,6 @@ const RoomContents = ({
           }, 7000);
           console.log("키워드 설정 완료");
         }
-      } else {
       }
     }
   };
@@ -679,30 +675,6 @@ const RoomContents = ({
     setLocalUser(localUserInit);
   };
 
-  const camOn = () => {
-    console.log("캠 상태 변경!!!");
-    localUserInit.setVideoActive(true);
-    localUserInit
-      .getStreamManager()
-      .publishVideo(localUserInit.isVideoActive());
-
-    setLocalUser(localUserInit);
-    sendSignalUserChanged({ isVideoActive: localUserInit.isVideoActive() });
-  };
-
-  const micOn = () => {
-    console.log("마이크 상태 변경!!!");
-    localUserInit.setAudioActive(true);
-    localUserInit
-      .getStreamManager()
-      .publishAudio(localUserInit.isAudioActive());
-    sendSignalUserChanged({ isAudioActive: localUserInit.isAudioActive() });
-    setLocalUser(localUserInit);
-  };
-  // if (mode === "snapshot") {
-  //   camOn();
-  //   micOn();
-  // }
   const sendSignalCameraStart = () => {
     const data = {
       photoStatus: 1,
@@ -842,7 +814,7 @@ const RoomContents = ({
         }
         // sleep(1500);
       }
-    }, 500);
+    }, 1500);
   };
 
   const onSaveToProfile = async (formdata) => {
@@ -888,7 +860,15 @@ const RoomContents = ({
   };
 
   const removeVoiceFilter = () => {
-    localUserRef.current.getStreamManager().stream.removeFilter();
+    localUserRef.current
+      .getStreamManager()
+      .stream.removeFilter()
+      .then(() => {
+        console.log("필터 제거");
+      })
+      .catch(() => {
+        console.log("필터 없어용");
+      });
   };
 
   // filter.options = { command: "pitch pitch=0.5" };
