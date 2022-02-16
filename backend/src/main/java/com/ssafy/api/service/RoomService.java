@@ -5,7 +5,6 @@ import com.ssafy.api.request.SortRoomListRequest;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,7 +19,6 @@ public interface RoomService {
     List<Room> selectRoomList(SortRoomListRequest sortRoomListRequest);
     List<Room> selectRoomByTitle(String title);
     List<Room> findEndRoomListByRoomSeq(List roomSeqList);
-
-
+    void updateRoomImg(Room room, String imageUrl);
 
 }
