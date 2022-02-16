@@ -372,7 +372,7 @@ public class RoomController {
         }
 
         // 그럴 일은 없겠지만 이미지 링크가 비어있다면
-        if(imageUrl.equals("")) {
+        if("".equals(imageUrl)) {
             return ResponseEntity.status(404).body(BaseResponseBody.of(404, "유효하지 않은 값을 입력했습니다."));
         }
 
