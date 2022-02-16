@@ -91,7 +91,7 @@
 .ReserveBtns > div {
   background-color: #eee;
   border-radius: 15px;
-  font-size: 14px;
+  font-size: 12px;
 }
 .smallvideo {
   grid-column: 4 / 10;
