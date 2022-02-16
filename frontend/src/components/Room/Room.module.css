@@ -61,16 +61,12 @@
   height: calc(100% - 48px);
 }
 
-/* video {
-  background-image: url("../../assets/images/default1.png");
+video {
+  background-image: url("../../assets/logo.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 250px;
-  height: 200px;
-  margin: 20px;
-  border: 1px solid #eee;
-} */
+}
 
 .chatting {
   min-width: 300px;

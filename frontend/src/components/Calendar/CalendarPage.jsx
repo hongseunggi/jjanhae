@@ -42,12 +42,13 @@ const CalendarPage = () => {
   });
   const [roomSeq, setRoomSeq] = useState();
   const [userList, setUserList] = useState([]);
-  const [room , setRoom] = useState({});
+  const [room, setRoom] = useState({});
+  const [partyImg, setPartyImg] = useState("");
   const [startTime, setStartTime] = useState();
   const [totalTime, setTotalTime] = useState();
   const [time, setTime] = useState({
-    startTime:"",
-    endTime:"",
+    startTime: "",
+    endTime: "",
   });
 
   const [listModalOpen, setListModalOpen] = useState(false);
@@ -76,7 +77,7 @@ const CalendarPage = () => {
     setStartMonth(value.clone().startOf("month").subtract(1, "day"));
     setEndMonth(value.clone().endOf("month"));
 
-    const result = await getRoomDate(value.format("M")*1);
+    const result = await getRoomDate(value.format("M") * 1);
     //console.log(result);
     //받아온 party data state에 저장
     handleParyDataList(result.data.conferencesDateList);
@@ -84,16 +85,15 @@ const CalendarPage = () => {
 
   useEffect(async () => {
     //console.log(item.day);
-    if(item.day!="") {
+    if (item.day != "") {
       const result = await getRoomList(item.day);
       //console.log(result);
       let roomList = [];
-      roomList = result.data.roomList; 
+      roomList = result.data.roomList;
       //console.log(roomList)
-      setRoomList({roomList});
+      setRoomList({ roomList });
     }
-  }, [item.day])
-
+  }, [item.day]);
 
   const handleParyDataList = (result) => {
     const arr = [];
@@ -137,14 +137,12 @@ const CalendarPage = () => {
   useEffect(() => {
     //console.log(room);
     setTime({
-      startTime : room.startTime,
-      endTime : room.endTime
+      startTime: room.startTime,
+      endTime: room.endTime,
     });
-  }, [room])
+  }, [room]);
 
-  useEffect(() => {
-  },[time])
-
+  useEffect(() => {}, [time]);
 
   useEffect(() => {}, [detailModalOpen]);
 
@@ -178,7 +176,7 @@ const CalendarPage = () => {
     // //console.log(dataArr[0].substring(0,dataArr[0].length-1));
     setItem({
       month: value.format("M"),
-      day: dataArr[0].substring(0,dataArr[0].length-1),
+      day: dataArr[0].substring(0, dataArr[0].length - 1),
     });
     //해당 날짜에 진행한 파티목록 가져오는 api호출
     // const result = await getRoomList(item.day);
@@ -214,9 +212,11 @@ const CalendarPage = () => {
   const getRoomDetail = async (roomSeq) => {
     setRoomSeq(roomSeq);
     const { data } = await getUserList(roomSeq);
+    console.log(data);
     let userList = data.userList;
     setUserList({ userList });
     setRoom(data.room);
+    setPartyImg(data.room.imageUrl);
     //console.log(room);
 
     openDetailModal();
@@ -295,126 +295,162 @@ const CalendarPage = () => {
     <>
       <div className={styles.calendadrFormBorder}>
         <div className={styles.calendarForm}>
-          <ConferenceList
+          {/* <ConferenceList
             open={listModalOpen}
             close={closeListModal}
             partyList={partyList}
             getDetailModalOpen={getDetailModalOpen}
-          />
+          /> */}
           <ConferenceDetail
             open={detailModalOpen}
             close={closeDetailModal}
             date={item}
             time={time}
             userList={userList.userList}
+            partyImg={partyImg}
           ></ConferenceDetail>
           <div className={styles.calendarBodyBorder}>
-          <div className={styles.calendarHeader}>
-            {/* <div className={styles.calendarTitle}>술자리 기록</div> */}
-            <div className={styles.calendarTop}>
-              <div className={styles.month}>{currentMonth()}</div>
-              {/* <CalendarIcon className={styles.icon} /> */}
+            <div className={styles.calendarHeader}>
+              {/* <div className={styles.calendarTitle}>술자리 기록</div> */}
+              <div className={styles.calendarTop}>
+                <div className={styles.month}>{currentMonth()}</div>
+                {/* <CalendarIcon className={styles.icon} /> */}
+              </div>
             </div>
-          </div>
           </div>
           <div className={styles.calendarBodyBorder}>
             <div className={styles.calendarBody}>
-              {days.map((value, index)=>{
-                if(index === 0){
-                  return(
-                    <div key={index} className={styles.title}>{value}</div>
-                  )
-                }
-                else if(index === days.length-1){
-                  return(
-                    <div key={index} className={styles.titleLast}>{value}</div>
-                  )
-                }
-                else{
-                  return(
-                    <div key={index} className={styles.titleOther}>{value}</div>
-                  )
+              {days.map((value, index) => {
+                if (index === 0) {
+                  return (
+                    <div key={index} className={styles.title}>
+                      {value}
+                    </div>
+                  );
+                } else if (index === days.length - 1) {
+                  return (
+                    <div key={index} className={styles.titleLast}>
+                      {value}
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={index} className={styles.titleOther}>
+                      {value}
+                    </div>
+                  );
                 }
               })}
               {calendar.map((week, index) => {
-                if(index === 0){
-                  return (
-                  <div key={index} className={styles.week}>
-                    {week.map((day, index) => {
-                      if(index === 0){
-                        return (<div key={index} className={styles.day}>
-                          <p className={styles.dayreal}>{calcYoil(day)}</p>
-                          {checkParty(day)}
-                        </div>)
-                      }
-                      else if(index === week.length-1){
-                        return(<div key={index} className={styles.dayfirstRowEnd}>
-                          <p className={styles.dayreal}>{calcYoil(day)}</p>
-                          {checkParty(day)}
-                        </div>)
-                      }
-                      else{
-                        return(<div key={index} className={styles.dayfirstRow}>
-                          <p className={styles.dayreal}>{calcYoil(day)}</p>
-                          {checkParty(day)}
-                        </div>)
-                      }
-                    })}
-                  </div>)
-                }
-                else if(index === calendar.length-1){
+                if (index === 0) {
                   return (
                     <div key={index} className={styles.week}>
                       {week.map((day, index) => {
-                        if(index === 0){
-                          return (<div key={index} className={styles.dayLastRow}>
-                            <p className={styles.dayreal}>{calcYoil(day)}</p>
-                            {checkParty(day)}
-                          </div>)
-                        }
-                        else if(index === week.length-1){
-                          return(<div key={index} className={styles.dayLastRowEnd}>
-                            <p className={styles.dayreal}>{calcYoil(day)}</p>
-                            {checkParty(day)}
-                          </div>)
-                        }
-                        else{
-                          return(<div key={index} className={styles.dayLastRowother}>
-                            <p className={styles.dayreal}>{calcYoil(day)}</p>
-                            {checkParty(day)}
-                          </div>)
+                        if (index === 0) {
+                          return (
+                            <div key={index} className={styles.day}>
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
+                        } else if (index === week.length - 1) {
+                          return (
+                            <div key={index} className={styles.dayfirstRowEnd}>
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div key={index} className={styles.dayfirstRow}>
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
                         }
                       })}
-                    </div>)
-                }
-                else{
+                    </div>
+                  );
+                } else if (index === calendar.length - 1) {
                   return (
-                  <div key={index} className={styles.week}>
-                    {week.map((day, index) => {
-                      if(index === 0){
-                        return (<div key={index} className={styles.dayotherRowFirst}>
-                          <p className={styles.dayreal}>{calcYoil(day)}</p>
-                          {checkParty(day)}
-                        </div>)
-                      }
-                      else if(index === week.length-1){
-                        return(<div key={index} className={styles.dayotherRowEnd}>
-                          <p className={styles.dayreal}>{calcYoil(day)}</p>
-                          {checkParty(day)}
-                        </div>)
-                      }
-                      else{
-                        return (<div key={index} className={styles.dayotherRow}>
-                          <p className={styles.dayreal}>{calcYoil(day)}</p>
-                          {checkParty(day)}
-                        </div>)
-                      }
-                    })}
-                  </div>)
+                    <div key={index} className={styles.week}>
+                      {week.map((day, index) => {
+                        if (index === 0) {
+                          return (
+                            <div key={index} className={styles.dayLastRow}>
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
+                        } else if (index === week.length - 1) {
+                          return (
+                            <div key={index} className={styles.dayLastRowEnd}>
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div key={index} className={styles.dayLastRowother}>
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
+                        }
+                      })}
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={index} className={styles.week}>
+                      {week.map((day, index) => {
+                        if (index === 0) {
+                          return (
+                            <div
+                              key={index}
+                              className={styles.dayotherRowFirst}
+                            >
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
+                        } else if (index === week.length - 1) {
+                          return (
+                            <div key={index} className={styles.dayotherRowEnd}>
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div key={index} className={styles.dayotherRow}>
+                              <div className={styles.dayreal}>
+                                {calcYoil(day)}
+                              </div>
+                              {checkParty(day)}
+                            </div>
+                          );
+                        }
+                      })}
+                    </div>
+                  );
                 }
-                
-                
-                
               })}
             </div>
           </div>
@@ -423,6 +459,5 @@ const CalendarPage = () => {
     </>
   );
 };
-
 
 export default CalendarPage;

@@ -139,11 +139,17 @@
 .inputData.birthInput {
   margin-bottom: 30px;
 }
-.inputData.complete {
+.inputData.completed {
   height: 30px;
   border: none;
   margin-bottom: 20px;
   padding: 0;
+}
+
+.inputData.complete {
+  /* border: 0.5px solid chartreuse; */
+  background-color: rgba(27, 50, 100, 0.5);
+  /* border: none; */
 }
 
 .inputData.inputError {
@@ -206,6 +212,10 @@
   color: #eee;
   font-weight: 600;
   border: none;
+}
+.checkBtn.disabled {
+  background-color: rgba(219, 219, 219, 0.5);
+  cursor: default;
 }
 .confirmBtn {
   width: 100px;
