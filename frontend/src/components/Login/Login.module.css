@@ -9,6 +9,7 @@
   align-items: center;
   /* margin-top: 50px; */
   color: #eee;
+  height: calc(100vh - 120px);
 }
 .welcomeInfo {
   display: flex;
@@ -47,7 +48,7 @@
 
 .form {
   width: 600px;
-  height: 620px;
+  height: 580px;
   display: flex;
   flex-direction: column;
   /* border: 0.1px solid; */
@@ -250,7 +251,7 @@ button {
   }
   .form {
     width: 700px;
-    height: 780px;
+    height: 700px;
     padding: 50px;
   }
 

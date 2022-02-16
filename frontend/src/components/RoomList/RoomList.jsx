@@ -193,6 +193,11 @@ function RoomList() {
       </Row>
 
       <Row className={style.list} style={{}}>
+        {rooms.length === 0 ? (
+          <div className={style.emptyAlert}>
+            <div>현재 진행중인 파티룸이 존재하지 않습니다.</div>
+          </div>
+        ) : null}
         {rooms.map((room, index) => {
           return (
             <Col key={index} md={4}>

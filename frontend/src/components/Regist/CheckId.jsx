@@ -134,7 +134,7 @@ const CheckId = ({ progress }) => {
                     : styles.nextBtn
                 }
                 type="button"
-                disabled={error}
+                disabled={!complete}
                 onClick={handleClick}
               >
                 다음
