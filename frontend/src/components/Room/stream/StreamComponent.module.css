@@ -219,7 +219,7 @@ video {
   display: flex;
   font-family: "Poppins", sans-serif;
   cursor: pointer;
-  /* position: relative; */
+  position: relative;
   font-size: 12px;
   width: 42px;
   background-color: #ffffff;
@@ -231,6 +231,7 @@ video {
 .answerpostitforbidden {
   bottom: 48px;
   left: 55px;
+  position: absolute;
 }
 .hmmpostit,
 .hmmpostitforbidden {
