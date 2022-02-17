@@ -1,349 +1,350 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
 
 .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 99;
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-  .modalForm {
-    /* padding: 30px 30px; */
-  }
-  .modalForm header {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .modalForm .title {
-    font-size: 30px;
-    margin : 0px 13px 0px 10px;
-    font-weight: bolder;
-    color : #252a34;
-;
-  }
-  .modal button {
-    outline: none;
-    cursor: pointer;
-    border: 0;
-  }
-  .modal > section {
-    width: 780px;
-    height: 450px;
-    /* margin: 0 auto; */
-    border-radius: 50px;
-    background-color: #fff;
-    /* 팝업이 열릴때 스르륵 열리는 효과 */
-    animation: modal-show 0.3s;
-    overflow: hidden;
-  }
-  .modalTitle {
-    display: flex;
-  }
-  .partyDetail {
-    margin-bottom: 20px;
-  }
-  .partyDetailTop {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-  .partyDetailRight .partyImageForm {
-    width: 100%;
-    height: 200px;
-    position: relative;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-  .partyDetailTop .partyImageForm {
-    /* width: 100%;
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.modalForm {
+  /* padding: 30px 30px; */
+}
+.modalForm header {
+  display: flex;
+  justify-content: center;
+}
+
+.modalForm .title {
+  font-size: 30px;
+  margin: 0px 13px 0px 10px;
+  font-weight: bolder;
+  color: #252a34;
+}
+.modal button {
+  outline: none;
+  cursor: pointer;
+  border: 0;
+}
+.modal > section {
+  width: 780px;
+  height: 450px;
+  /* margin: 0 auto; */
+  border-radius: 50px;
+  background-color: #fff;
+  /* 팝업이 열릴때 스르륵 열리는 효과 */
+  animation: modal-show 0.3s;
+  overflow: hidden;
+}
+.modalTitle {
+  display: flex;
+}
+.partyDetail {
+  margin-bottom: 20px;
+}
+.partyDetailTop {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.partyDetailRight .partyImageForm {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.partyDetailTop .partyImageForm {
+  /* width: 100%;
     height: 200px;
     position: relative;
     margin-right: 30px;
     display: contents; */
-  }
-  .partyDetailRight .partyImage {
-    position: relative;
-    width: 450px;
-    height: 250px;
-    border-radius: 20px;
-    margin: 30px 40px 40px 40px;
-  }
-  .partyDetailTop .partyImage {
-    position: relative;
-    width: 90%;
-    height: 230px;
-    /* border-radius: 20px; */
-  }
-  
-  label {
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  
-  
-  .configData {
-    justify-content: center;
-  }
-  .configData .roomPwd input {
-    border: none;
-    background-color: #eee;
-    border-radius: 20px;
-    padding-left: 10px;
-  }
-  
-  .configData .radioData {
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-  }
-  .radioWrap {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  input[type="radio"],
-  input[type="radio"]:checked {
-    appearance: none;
-    width: 0.9rem;
-    height: 0.9rem;
-    border-radius: 100%;
-    margin-right: 0.3rem;
-  }
-  
-  input[type="radio"] {
-    background-color: #fff;
-    border: 1px solid #ff5722;
-  }
-  
-  input[type="radio"]:checked {
-    background-color: #ff5722;
-  }
-  
-  .modal > section > footer {
-    text-align: right;
-  }
-  .modal > section > footer button {
-    width: 100px;
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-size: 13px;
-  }
-  
-  .modal > section > footer .createBtn {
-    background-color: #08d9d6;
-    margin-right: 20px;
-  }
-  
-  .modal > section > footer .closeBtn {
-    background-color: #ff2e63;
-    color: #fff;
-    margin-right: 20px;
-  }
-  
-  .modal.openModal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* 팝업이 열릴때 스르륵 열리는 효과 */
-    animation: modal-bg-show 0.3s;
-  }
-  .icon {
-    height: 50px;
-    width: 50px;
-  }
-  .partyDetailFrom {
-    margin-top: 30px;
-  }
-  .partyPeople {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-    padding-top : 20px;
-    font-family: 'Poppins', sans-serif;
-    margin-top: 80px;
-  }
-  .peopleTitle , .partyStartTimeTitle, .partyImageTitle {
-    font-weight: bolder;
-    display: flex;
-    font-size: 20px;
-    margin-bottom: 15px;
-    align-items: center;
-    display: inline-block;
-    border-radius: 10px;
-    width: fit-content;
-    padding : 4px;
-  }
+}
+.partyDetailRight .partyImage {
+  position: relative;
+  width: 450px;
+  height: 250px;
+  border-radius: 20px;
+  margin: 30px 40px 40px 40px;
+}
+.partyDetailTop .partyImage {
+  position: relative;
+  width: 90%;
+  height: 230px;
+  /* border-radius: 20px; */
+}
 
-  .partyStartTimeTitle {
-    width : 95px;
-  }
+label {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
 
-  .partyStartTimeTitle + div {
-    font-weight: bolder;
-  }
-  
-  .partyImageTitle {
-    font-weight: bolder;
-    font-size: 20px;
-    margin : 20px 0px 25px 10px;
-    margin-inline-start: 130px;
-  }
+.configData {
+  justify-content: center;
+}
+.configData .roomPwd input {
+  border: none;
+  background-color: #eee;
+  border-radius: 20px;
+  padding-left: 10px;
+}
 
-  .peopleList {
-    display: flex;
-    width: 60%;
-    padding: 0px 15px 10px 0px;
-    align-content: stretch;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-items: baseline;
-    font-weight: bolder;
-    justify-content: space-evenly;
-    font-family: 'Poppins', sans-serif;
-  }
-  .peopleName {
-    color : rgb(0, 0, 0);
-    font-size: 18px;
-    margin-right: 10px;
-    margin-bottom: 5px;
-    font-family: 'Poppins', sans-serif;
-  }
-  .partyDetailLeft, .partyDetailRight {
-    box-sizing: border-box;
-    display: flex;
-  }
-  .partyDetailLeft {
-    width:30%;
-    margin-left: 20px;
-  }
-  
-  .partyDetailRight {
-    width: 70%;
-    height: 100%;
-    /* margin-left: 20px; */
-    display: block;
-    font-family: 'Poppins', sans-serif;
-  }
+.configData .radioData {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+.radioWrap {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
 
-  .partyDetailBottom {
-    display: flex;
-    margin: 20px 10px;
-    justify-content: center;
-    height: 150px;
-  }
-  .partyDetailBottomData {
-    border-radius: 10px;
-    width : 100%;
-    background-color: #252a3423;
-    display: flex;
-    justify-content: space-around;
-  }
-  .partyStartTimeBorder, .partyElapsedTimeBorder {
-    width : 80%;
-    padding-top : 25px;
-  }
-  .partyDetailFormBorder {
-    /* margin-top: 50px; */
-    display: flex;
-    height: 100%;
-  }
-  .partyDetailRightBackground {
-    height: 100%;
-    border-radius: 20px;
-    background: rgba(255, 46, 99, 0.31);
-    box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: space-around; */
-    align-items: center;
-  }
-  .main {
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-  }
-  .partyDetailLeftData {
-    margin-top: 20px;
-    text-align: center;
-    width: 100%;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-  .logo {
-    z-index: 1;
-    position: relative;
-    float: left;
-    width: 50px;
-    height: 50px;
-    margin-left: 2%;
-  }
-  .logoBorder {
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  .closeBtn {
-    float: right;
-    width: 30px;
-    height: 30px;
-    margin: 15px 30px 0px 0px;
-    border-radius: 8px;
-    background-color: #eee;
-  }
-  .rightTop{
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-  }
+input[type="radio"],
+input[type="radio"]:checked {
+  appearance: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 100%;
+  margin-right: 0.3rem;
+}
 
-  @keyframes modal-show {
-    from {
-      opacity: 0;
-      margin-top: -50px;
-    }
-    to {
-      opacity: 1;
-      margin-top: 0;
-    }
+input[type="radio"] {
+  background-color: #fff;
+  border: 1px solid #ff5722;
+}
+
+input[type="radio"]:checked {
+  background-color: #ff5722;
+}
+
+.modal > section > footer {
+  text-align: right;
+}
+.modal > section > footer button {
+  width: 100px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.modal > section > footer .createBtn {
+  background-color: #08d9d6;
+  margin-right: 20px;
+}
+
+.modal > section > footer .closeBtn {
+  background-color: #ff2e63;
+  color: #fff;
+  margin-right: 20px;
+}
+
+.modal.openModal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 팝업이 열릴때 스르륵 열리는 효과 */
+  animation: modal-bg-show 0.3s;
+}
+.icon {
+  height: 50px;
+  width: 50px;
+}
+.partyDetailFrom {
+  margin-top: 30px;
+}
+.partyPeople {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  padding-top: 20px;
+  font-family: "Poppins", sans-serif;
+  margin-top: 80px;
+}
+.peopleTitle,
+.partyStartTimeTitle,
+.partyImageTitle {
+  font-weight: bolder;
+  display: flex;
+  font-size: 20px;
+  margin-bottom: 15px;
+  align-items: center;
+  display: inline-block;
+  border-radius: 10px;
+  width: fit-content;
+  padding: 4px;
+}
+
+.partyStartTimeTitle {
+  width: 95px;
+}
+
+.partyStartTimeTitle + div {
+  font-weight: bolder;
+}
+
+.partyImageTitle {
+  font-weight: bolder;
+  font-size: 20px;
+  margin: 20px 0px 25px 10px;
+  margin-inline-start: 130px;
+}
+
+.peopleList {
+  display: flex;
+  width: 125%;
+  padding: 0px 15px 10px 0px;
+  align-content: stretch;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: baseline;
+  font-weight: bolder;
+  justify-content: space-evenly;
+  font-family: "Poppins", sans-serif;
+}
+.peopleName {
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  font-family: "Poppins", sans-serif;
+}
+.partyDetailLeft,
+.partyDetailRight {
+  box-sizing: border-box;
+  display: flex;
+}
+.partyDetailLeft {
+  width: 30%;
+  margin-left: 20px;
+}
+
+.partyDetailRight {
+  width: 70%;
+  height: 100%;
+  /* margin-left: 20px; */
+  display: block;
+  font-family: "Poppins", sans-serif;
+}
+
+.partyDetailBottom {
+  display: flex;
+  margin: 20px 10px;
+  justify-content: center;
+  height: 150px;
+}
+.partyDetailBottomData {
+  border-radius: 10px;
+  width: 100%;
+  background-color: #252a3423;
+  display: flex;
+  justify-content: space-around;
+}
+.partyStartTimeBorder,
+.partyElapsedTimeBorder {
+  width: 80%;
+  padding-top: 25px;
+}
+.partyDetailFormBorder {
+  /* margin-top: 50px; */
+  display: flex;
+  height: 100%;
+}
+.partyDetailRightBackground {
+  height: 100%;
+  border-radius: 20px;
+  background: rgba(255, 46, 99, 0.31);
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  align-items: center;
+}
+.main {
+  height: 100%;
+  font-family: "Poppins", sans-serif;
+}
+.partyDetailLeftData {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.logo {
+  z-index: 1;
+  position: relative;
+  float: left;
+  width: 50px;
+  height: 50px;
+  margin-left: 2%;
+}
+.logoBorder {
+  width: 100%;
+  margin-bottom: 30px;
+}
+.closeBtn {
+  float: right;
+  width: 30px;
+  height: 30px;
+  margin: 15px 30px 0px 0px;
+  border-radius: 8px;
+  background-color: #eee;
+}
+.rightTop {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+@keyframes modal-show {
+  from {
+    opacity: 0;
+    margin-top: -50px;
   }
-  @keyframes modal-bg-show {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  to {
+    opacity: 1;
+    margin-top: 0;
   }
-  
-  .partyDetail {
-    display: flex;
+}
+@keyframes modal-bg-show {
+  from {
+    opacity: 0;
   }
-  
-  .descriptionForm,
-  .configData {
-    display: flex;
-    flex-direction: column;
+  to {
+    opacity: 1;
   }
-  
-  .descriptionForm .description {
-    height: 100px;
-    border: none;
-    border-radius: 20px;
-    background-color: #eee;
-    resize: none;
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-  
-  input:focus,
-  textarea:focus {
-    outline: none;
-  }
-  
+}
+
+.partyDetail {
+  display: flex;
+}
+
+.descriptionForm,
+.configData {
+  display: flex;
+  flex-direction: column;
+}
+
+.descriptionForm .description {
+  height: 100px;
+  border: none;
+  border-radius: 20px;
+  background-color: #eee;
+  resize: none;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+}
