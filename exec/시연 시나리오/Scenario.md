@@ -202,16 +202,17 @@
 
 #### TOP5 사용자 조회
 >![](https://images.velog.io/images/hongseunggi/post/463b3031-c99c-49dc-8f39-8dcc86efc59a/image.png)  
->위 그림과 같이 같이 참여 했던 사용자 top5를 확인 할 수 있으며 해당 사용자는 한명과 파티를 진행한 적 밖에 없기 때문에 top2 부터는 데이터가 부족하단 메세지가 아래 그림과 같이 표시됩니다.
+>위 그림과 같이 같이 참여 했던 사용자 top5를 확인 할 수 있습니다
 
+>![](https://images.velog.io/images/hongseunggi/post/ef8db47e-3bef-470c-9765-fcb0046f2892/image.png)  
+>다른 사용자와 파티에 참여한 이력이 없으면 "데이터가 부족합니다"라는 메세지를 표시합니다.
 
-![](https://images.velog.io/images/hongseunggi/post/ef8db47e-3bef-470c-9765-fcb0046f2892/image.png)
 ![](https://images.velog.io/images/hongseunggi/post/e8fed2c4-3585-42bf-9615-76e6a4448854/image.png)
 ![](https://images.velog.io/images/hongseunggi/post/a804229f-1aa2-4825-8def-ec3b8cc8098c/image.png)
 ![](https://images.velog.io/images/hongseunggi/post/3e49c2c3-d4d5-4d8a-a715-97118ad8b4d6/image.png)
 ![](https://images.velog.io/images/hongseunggi/post/f2749398-f4f4-4c90-87de-faa6f1b63d98/image.png)
 ![](https://images.velog.io/images/hongseunggi/post/d849f919-daee-4c4e-81ab-ad5d9ad031cb/image.png)
-- 다른 사용자의 경우 파티에 여럿이 참여한 경험이 많을 수록, 위 그림과 같이 top5 내역을 제대로 확인 가능 합니다.
+>다른 사용자의 경우 파티에 여럿이 참여한 경험이 많을 수록, 위 그림과 같이 top5 내역을 제대로 확인 가능 합니다.
 
 
 
