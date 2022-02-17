@@ -159,7 +159,7 @@ const RoomConfig = ({ open, onClose }) => {
                 <div className={styles.radioWrap}>
                   <div className={styles.radioData}>
                     <input
-                      id="config"
+                      id="public"
                       type="radio"
                       value="public"
                       checked={roomConfig === "public"}
@@ -169,7 +169,7 @@ const RoomConfig = ({ open, onClose }) => {
                   </div>
                   <div className={styles.radioData}>
                     <input
-                      id="config"
+                      id="private"
                       type="radio"
                       value="private"
                       checked={roomConfig === "private"}
@@ -192,7 +192,7 @@ const RoomConfig = ({ open, onClose }) => {
                 <div className={styles.radioWrap}>
                   <div className={styles.radioData}>
                     <input
-                      id="config"
+                      id="first"
                       type="radio"
                       value="first"
                       checked={drinkConfig === "first"}
@@ -202,7 +202,7 @@ const RoomConfig = ({ open, onClose }) => {
                   </div>
                   <div className={styles.radioData}>
                     <input
-                      id="config"
+                      id="second"
                       type="radio"
                       value="second"
                       checked={drinkConfig === "second"}
@@ -212,7 +212,7 @@ const RoomConfig = ({ open, onClose }) => {
                   </div>
                   <div className={styles.radioData}>
                     <input
-                      id="config"
+                      id="third"
                       type="radio"
                       value="third"
                       checked={drinkConfig === "third"}

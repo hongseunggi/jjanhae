@@ -4,6 +4,7 @@ import styles from "../Regist/RegisterTemplate.module.css";
 import { useNavigate } from "react-router-dom";
 import UserApi from "../../api/UserApi.js";
 import FindAccountResult from "./FindAccountResult";
+import { toast } from "react-toastify";
 
 const FindAccount = ({ progress = 50 }) => {
   const [id, setId] = useState("");
@@ -18,6 +19,7 @@ const FindAccount = ({ progress = 50 }) => {
   const [emailError, setEmailError] = useState(false);
   const [emailConfirmError, setEmailConfirmError] = useState(false);
 
+  const [isEmail, setIsEmail] = useState(false);
   const [isEmailConfirm, setIsEmailConfirm] = useState(false);
 
   const [nameCheck, setNameCheck] = useState(false);
@@ -52,11 +54,11 @@ const FindAccount = ({ progress = 50 }) => {
     if (!emailRegex.test(emailCurrent)) {
       setEmailErrorMsg("이메일 형식이 올바르지 않습니다.");
       setEmailError(true);
-      // setIsEmail(false);
+      setIsEmail(false);
     } else {
       setEmailErrorMsg("");
       setEmailError(false);
-      // setIsEmail(true);
+      setIsEmail(true);
     }
   }, []);
 
@@ -69,16 +71,36 @@ const FindAccount = ({ progress = 50 }) => {
   // 이메일 인증번호 검사
   const handleEmailCheck = async () => {
     // 이메일 인증번호 검사 api 호출
+
     try {
       const { data } = await getEmailCheckResult("findId", {
         name: name,
         email: email,
       });
+      toast.info(
+        <div style={{ width: "400px" }}>
+          <div>이메일을 발송하였습니다.</div>
+          <span>이메일이 오지 않을 경우 입력한 정보를 다시 확인해주세요.</span>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
       setIsSend(true);
-      setEmailErrorMsg("이메일을 발송했습니다. 인증번호를 확인해주세요.");
+      // setEmailErrorMsg("이메일을 발송했습니다. 인증번호를 확인해주세요.");
     } catch ({ response }) {
       console.log(response);
-      setEmailErrorMsg("가입시 작성한 이메일을 입력해주세요.");
+      toast.error(
+        <div style={{ width: "400px" }}>
+          가입시 작성한 이메일을 올바르게 입력해주세요.
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
+      // setEmailErrorMsg("가입시 작성한 이메일을 입력해주세요.");
     }
   };
 
@@ -92,10 +114,24 @@ const FindAccount = ({ progress = 50 }) => {
       setIsEmailConfirm(true);
       setEmailConfirmError(false);
       setId(data.userId);
-      setEmailConfirmErrorMsg("인증이 완료되었습니다.");
+      toast.success(
+        <div style={{ width: "400px" }}>인증이 완료되었습니다.</div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
+      // setEmailConfirmErrorMsg("인증이 완료되었습니다.");
     } catch ({ response }) {
       setEmailConfirmError(true);
-      setEmailConfirmErrorMsg("인증번호를 확인해주세요.");
+      toast.error(
+        <div style={{ width: "400px" }}>인증번호를 확인해주세요.</div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
+      // setEmailConfirmErrorMsg("인증번호를 확인해주세요.");
     }
   };
 
@@ -173,9 +209,13 @@ const FindAccount = ({ progress = 50 }) => {
                           />
                           <button
                             type="button"
-                            className={styles.checkBtn}
+                            className={
+                              !isEmail
+                                ? `${styles.checkBtn} ${styles.disabled}`
+                                : styles.checkBtn
+                            }
                             onClick={handleEmailCheck}
-                            disabled={emailError}
+                            disabled={!isEmail}
                           >
                             인증 요청
                           </button>

@@ -5,7 +5,7 @@ import styles from "./ConferenceDetail.module.css";
 import moment from "moment";
 
 const ConferenceDetail = (props) => {
-  const { open, close, date, time, userList, partyImg } = props;
+  const { open, close, date, time, userList, partyImg = Image } = props;
   console.log(partyImg);
   const [participant, setParticipant] = useState([]);
   const [roomDetail, setRoomDetail] = useState();
@@ -37,6 +37,45 @@ const ConferenceDetail = (props) => {
     //console.log(time);
   }, [time]);
 
+  console.log(time,"time");
+
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  
+  useEffect(() => {
+    let hour = "";
+    let minute = "";
+    if(time.startTime!==undefined&&time.endTime!==undefined&&time.startTime!==''&&time.endTime!=='') {
+      console.log("임마");
+      if (time.startTime.time.hour <= 9) {
+        hour += "0" + time.startTime.time.hour;
+      } else hour = time.startTime.time.hour;
+  
+      if (time.startTime.time.minute <= 9) {
+        minute += "0" + time.startTime.time.minute;
+      } else minute = time.startTime.time.minute;
+  
+      setStartTime(hour + ":" + minute);
+    }
+  },[time]);
+
+  useEffect(() => {
+    let hour = "";
+    let minute = "";
+    if(time.startTime!==undefined&&time.endTime!==undefined&&time.startTime!==''&&time.endTime!=='') {
+      console.log("임마");
+      if (time.endTime.time.hour <= 9) {
+        hour += "0" + time.endTime.time.hour;
+      } else hour = time.endTime.time.hour;
+      
+      if (time.endTime.time.minute <= 9) {
+        minute += "0" + time.endTime.time.minute;
+      } else minute = time.endTime.time.minute;
+      
+      setEndTime(hour + ":" + minute);
+    }
+  },[time]);
+
   return (
     <div
       className={open ? `${styles.openModal} ${styles.modal}` : styles.modal}
@@ -57,7 +96,7 @@ const ConferenceDetail = (props) => {
                     <div className={styles.partyStartTimeBorder}>
                       <div className={styles.partyStartTimeTitle}>시작시간</div>
                       <div className={styles.partyStartTime}>
-                        {time.startTime.time.hour} :{time.startTime.time.minute}
+                        {startTime}
                       </div>
                     </div>
                     <div className={styles.partyElapsedTimeBorder}>
@@ -65,7 +104,7 @@ const ConferenceDetail = (props) => {
                         종료 시간
                       </div>
                       <div className={styles.partyStartTime}>
-                        {time.endTime.time.hour} :{time.endTime.time.minute}{" "}
+                        {endTime}{" "}
                       </div>
                     </div>
                   </div>

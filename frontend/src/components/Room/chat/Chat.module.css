@@ -38,7 +38,7 @@
 
 .message-wrap {
   padding: 0 15px;
-  height: 72vh;
+  height: 90%;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -147,11 +147,10 @@
   width: 100%;
   background-color: #ffffff;
   align-items: center;
-  height: 50px;
+  height: 10%;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
-.messageInput 
 
 .defaultinput {
   width: 90%;
@@ -164,7 +163,7 @@
   resize: none;
   background-color: transparent;
 }
-.disable{
+.disable {
   width: 100%;
   height: 100%;
   border: none;
@@ -172,12 +171,11 @@
   font-size: 14px;
   /* margin-left: 10px; */
   background-color: rgba(0, 0, 0, 0.5);
-  color : red;
+  color: red;
   text-align: center;
 }
-.disable::placeholder{
-  
-  color : white;
+.disable::placeholder {
+  color: white;
 }
 
 .messageInput input:focus {

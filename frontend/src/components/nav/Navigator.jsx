@@ -11,6 +11,7 @@ function Navigator() {
 
   const handleLogOut = () => {
     setLoginStatus("1");
+    localStorage.removeItem("name");
     sessionStorage.removeItem("accessToken");
     // axios.defaults.headers.Authorization = undefined;
   };
@@ -59,7 +60,8 @@ function Navigator() {
         </Container>
       );
     case "3":
-      return (<></>
+      return (
+        <></>
         // <Container fluid>
         //   <Row className="nav">
         //     <Col>
@@ -69,8 +71,8 @@ function Navigator() {
         //     </Col>
         //     <Col>
         //       <button>
-                
-        //       </button> 
+
+        //       </button>
         //       <Link to="/conferences/list" className={styles.link}>
         //         EXIT
         //       </Link>

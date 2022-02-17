@@ -20,8 +20,7 @@ import SessionIdContext from "../../contexts/SessionIdContext";
 import Keyword from "../Modals/Game/Keyword";
 import Karaoke from "./karaoke/Karaoke";
 import { useNavigate } from "react-router-dom";
-import {toast} from "react-toastify"
-
+import { toast } from "react-toastify";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -35,8 +34,8 @@ const RoomContents = ({
   media,
   mode,
   singMode,
-  musicList,
-  music,
+  // musicList,
+  // music,
   bangzzang,
   back,
   goHome,
@@ -60,14 +59,8 @@ const RoomContents = ({
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
   const [isSelecting, setIsSelecting] = useState(false);
-  const [allSet, setAllSet] = useState(false);
   const [startPage, setStartPage] = useState(true);
-  const [keyword, setKeyword] = useState("");
-  const [subscriberkeyword, setSubscriberKeyword] = useState("");
-  const [userId, setUserId] = useState("");
   const [nickname, setNickname] = useState([]);
-  const [myNickname, setMyNickname] = useState("");
-  const [gameStatus, setGameStatus] = useState("0");
   const [streamId, setStreamId] = useState("");
   const [targetId, setTargetId] = useState("");
   const [targetGameName, setTargetGameName] = useState("");
@@ -134,16 +127,14 @@ const RoomContents = ({
     console.log(participantNumRef.current);
   }, [participantNum]);
   useEffect(() => {
-    if(axios.defaults.headers.Authorization === undefined){
-
+    if (axios.defaults.headers.Authorization === undefined) {
       const accessToken = sessionStorage.getItem("accessToken");
       if (accessToken) {
         console.log("실행됩니다.");
         axios.defaults.headers.Authorization =
           "Bearer " + sessionStorage.getItem("accessToken");
         console.log(axios.defaults.headers.Authorization);
-      }
-      else{
+      } else {
         toast.error(
           <div className="hi" style={{ width: "350px" }}>
             로그인 후 이용가능 합니다. 로그인 해주세요
@@ -154,7 +145,6 @@ const RoomContents = ({
           }
         );
         navigate("/user/login");
-        
       }
     }
 
@@ -164,9 +154,9 @@ const RoomContents = ({
       window.history.pushState(null, "", window.location.href);
       console.log("prevent go back!");
     };
-    
-    window.history.pushState(null, '', window.location.href);
-    window.addEventListener('popstate', preventGoBack);
+
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", preventGoBack);
     window.addEventListener("beforeunload", onbeforeunload);
     window.addEventListener("unload", handleleaveRoom);
 
@@ -177,7 +167,6 @@ const RoomContents = ({
       window.removeEventListener("unload", handleleaveRoom);
       handleleaveRoom();
       leaveSession();
-
     };
   }, []);
 
@@ -378,9 +367,7 @@ const RoomContents = ({
             }
           } else if (data.gameId === 2) {
             if (data.index !== undefined) {
-              console.log("heyyy", "1");
               //닉네임 정하기
-              console.log("닉네임 정하자");
               //바뀌는 닉네임
               nicknameData.push({
                 connectionId: data.streamId,
@@ -402,8 +389,6 @@ const RoomContents = ({
               data.index === undefined &&
               data.sirenYn === undefined
             ) {
-              console.log("heyyy", "2");
-              console.log(data.sirednYn, "실화");
               nicknameData.push({
                 connectionId: data.streamId,
                 keyword: data.gamename,
@@ -416,7 +401,6 @@ const RoomContents = ({
               data.gameStatus === 1 &&
               data.sirenYn === undefined
             ) {
-              console.log("start");
               nicknameData.length = 0;
               correctNicknameData.length = 0;
               setCorrectNickname([...correctNicknameData]);
@@ -439,6 +423,7 @@ const RoomContents = ({
         console.log(data);
         console.log(localUserRef.current.getStreamManager().stream.streamId);
         if (data.singStatus === 2 && data.singMode === 2) {
+          console.log("너도 오냐?");
           removeVoiceFilter();
           if (
             data.voiceFilter.includes(
@@ -449,6 +434,7 @@ const RoomContents = ({
             handleVoiceFilter();
           }
         } else if (data.singStatus === -1) {
+          console.log("오냐?");
           removeVoiceFilter();
         }
       });
@@ -596,7 +582,6 @@ const RoomContents = ({
           }, 7000);
           console.log("키워드 설정 완료");
         }
-      } else {
       }
     }
   };
@@ -684,30 +669,6 @@ const RoomContents = ({
     setLocalUser(localUserInit);
   };
 
-  const camOn = () => {
-    console.log("캠 상태 변경!!!");
-    localUserInit.setVideoActive(true);
-    localUserInit
-      .getStreamManager()
-      .publishVideo(localUserInit.isVideoActive());
-
-    setLocalUser(localUserInit);
-    sendSignalUserChanged({ isVideoActive: localUserInit.isVideoActive() });
-  };
-
-  const micOn = () => {
-    console.log("마이크 상태 변경!!!");
-    localUserInit.setAudioActive(true);
-    localUserInit
-      .getStreamManager()
-      .publishAudio(localUserInit.isAudioActive());
-    sendSignalUserChanged({ isAudioActive: localUserInit.isAudioActive() });
-    setLocalUser(localUserInit);
-  };
-  // if (mode === "snapshot") {
-  //   camOn();
-  //   micOn();
-  // }
   const sendSignalCameraStart = () => {
     const data = {
       photoStatus: 1,
@@ -847,7 +808,7 @@ const RoomContents = ({
         }
         // sleep(1500);
       }
-    }, 500);
+    }, 1500);
   };
 
   const onSaveToProfile = async (formdata) => {
@@ -893,7 +854,15 @@ const RoomContents = ({
   };
 
   const removeVoiceFilter = () => {
-    localUserRef.current.getStreamManager().stream.removeFilter();
+    localUserRef.current
+      .getStreamManager()
+      .stream.removeFilter()
+      .then(() => {
+        console.log("필터 제거");
+      })
+      .catch(() => {
+        console.log("필터 없어용");
+      });
   };
 
   // filter.options = { command: "pitch pitch=0.5" };
@@ -1121,11 +1090,11 @@ const RoomContents = ({
                 exitgame={home}
                 sub={subscribers}
               />
-              <button onClick={handleVoiceFilter}>목소리변조</button>
+              {/* <button onClick={handleVoiceFilter}>목소리변조</button> */}
             </>
           )}
           {mode !== "karaoke" ? (
-            <MusicPlayer user={localUserRef.current} music={music} />
+            <MusicPlayer user={localUserRef.current} />
           ) : null}
         </div>
       )}
