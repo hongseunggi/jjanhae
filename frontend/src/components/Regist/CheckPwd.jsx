@@ -119,7 +119,7 @@ const CheckPwd = ({ progress }) => {
                 <div className={styles.input}>
                   <label htmlFor="id">아이디</label>
                   <input
-                    className={`${styles.inputData} ${styles.complete}`}
+                    className={`${styles.inputData} ${styles.completed}`}
                     id="id"
                     value={input.userId}
                     type="text"

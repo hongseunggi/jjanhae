@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./Room.module.css";
 import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
 import RoomApi from "../../api/RoomApi";
@@ -34,14 +28,13 @@ const Room = () => {
   const { sessionId } = useContext(SessionIdContext);
   const { setLoginStatus } = useContext(LoginStatusContext);
   const { myVMstate } = useContext(VideoMicContext);
-  const { myName } = useContext(NameContext);
+  // const { myName } = useContext(NameContext);
+  const myName = localStorage.getItem("name");
   const [mode, setMode] = useState("basic");
   const [contentTitle, setContentTitle] = useState("");
   const [onGameList, setOnGameList] = useState(false);
   const [onKaraokeList, setOnKaraokeList] = useState(false);
   const [onRegistMusic, setOnRegistMusic] = useState(false);
-  // const [musicList, setMusicList] = useState([]);
-  const [music, setMusic] = useState("");
   const [gameId, setGameId] = useState("");
   const [singMode, setSingMode] = useState(1);
 
@@ -52,12 +45,6 @@ const Room = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { getRoomExitResult } = RoomApi;
-
-  // const musicListRef = useRef(musicList);
-  // musicListRef.current = musicList;
-
-  const musicRef = useRef(music);
-  musicRef.current = music;
 
   useEffect(() => {
     console.log("room render");
@@ -120,9 +107,6 @@ const Room = () => {
 
     return () => setLoginStatus("2");
   }, [sessionId]);
-  // const handleStartUpdown = () => {
-
-  // }
 
   useEffect(() => {
     console.log(mode);
@@ -151,31 +135,34 @@ const Room = () => {
       navigate("/conferences/list");
     }, 1500);
   };
-
-  const handleHomeClick = () => {
-    if (mode === "karaoke") {
-      const data = {
-        singStatus: -1,
-        singMode,
-      };
-      sessionId.signal({
-        type: "sing",
-        data: JSON.stringify(data),
-      });
-    }
-    console.log("stop game");
-    console.log(gameId);
-    let curId = gameId;
-    curId *= 1;
-    //게임종료 api호출
-    let data = {
-      gameStatus: 3,
-      gameId: curId,
+  const sendSignalForRemoveVoiceFilter = () => {
+    const data = {
+      singStatus: -1,
+      singMode,
     };
     sessionId.signal({
+      type: "sing",
       data: JSON.stringify(data),
-      type: "game",
     });
+  };
+  const handleHomeClick = () => {
+    if (mode === "karaoke") {
+      console.log("보이스필터 제거");
+      sendSignalForRemoveVoiceFilter();
+    }
+    if (mode !== "basic" && mode !== "snapshot" && mode !== "karaoke") {
+      let curId = gameId;
+      curId *= 1;
+      //게임종료 api호출
+      let data = {
+        gameStatus: 3,
+        gameId: curId,
+      };
+      sessionId.signal({
+        data: JSON.stringify(data),
+        type: "game",
+      });
+    }
     setContentTitle(title);
     setMode("basic");
   };
@@ -186,6 +173,9 @@ const Room = () => {
   };
 
   const handleCameraClick = () => {
+    if (mode === "karaoke") {
+      sendSignalForRemoveVoiceFilter();
+    }
     if (mode !== "snapshot") {
       const data = {
         photoStatus: 0,
@@ -235,9 +225,14 @@ const Room = () => {
     });
   };
 
-  const changeGameMode = (mode) => {
+  const changeGameMode = (gameMode) => {
+    if (mode === "karaoke") {
+      console.log("보이스필터 제거");
+      sendSignalForRemoveVoiceFilter();
+    }
+    console.log(gameMode);
     console.log(gameId);
-    if (mode === 3) {
+    if (gameMode === 3) {
       const data = {
         gameStatus: 0,
         gameId: 3,
@@ -257,11 +252,10 @@ const Room = () => {
         data: JSON.stringify(data2),
         type: "game",
       });
-    } else if (mode !== undefined) {
-      console.log(mode, "????여기 실행은 아니겠죠?");
+    } else if (gameMode !== undefined) {
       const data = {
         gameStatus: 0,
-        gameId: mode,
+        gameId: gameMode,
       };
       sessionId.signal({
         type: "game",
@@ -326,8 +320,6 @@ const Room = () => {
               media={myVMstate}
               mode={mode}
               singMode={singMode}
-              // musicList={musicListRef.current}
-              music={musicRef.current}
               back={handleHomeClick}
               goHome={goHome}
               home={handleGoTitle}

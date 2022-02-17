@@ -64,7 +64,7 @@ const FindAccountResult = ({ id, progress = 100 }) => {
                   <input
                     className={styles.inputData}
                     id="id"
-                    value={securityId}
+                    value={id}
                     type="text"
                     autoComplete="off"
                     disabled

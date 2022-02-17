@@ -9,7 +9,7 @@ import UserApi from "../../api/UserApi.js";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
 import GoogleLoginBtn from "./GoogleLogin";
-import GoogleLogin from "react-google-login";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { setLoginStatus } = useContext(LoginStatusContext);
@@ -21,7 +21,6 @@ const Login = () => {
 
   // import login api
   const { getLoginResult } = UserApi;
-
   const { id, password } = input;
 
   //input 유효성 검사 에러 메시지
@@ -37,15 +36,11 @@ const Login = () => {
   const [idError, setIdError] = useState(false);
   const [pwdError, setPwdError] = useState(false);
 
-  //로그인 상태 확인
-  // const [isLogin, setIslogin] = useState(false);
-
   //navigator
   const navigate = useNavigate();
 
   //input 유효성 검사
   const handleInput = (event) => {
-    let pwdRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
     const { id, value } = event.target;
     setInput({
       ...input,
@@ -55,15 +50,7 @@ const Login = () => {
     setLoginMsg("");
 
     if (id === "id") {
-      if (value.length < 5 && value.length > 0) {
-        setIdMsg("5자 이상의 아이디를 입력해주세요.");
-        setIdError(true);
-        setIdCheck(false);
-      } else if (value.length > 16) {
-        setIdError(true);
-        setIdCheck(false);
-        setIdMsg("16자 이하의 아이디를 입력해주세요.");
-      } else if (value === "") {
+      if (value === "") {
         setIdError(true);
         setIdCheck(false);
         setIdMsg("아이디를 입력해주세요");
@@ -74,13 +61,7 @@ const Login = () => {
       }
     }
     if (id === "password") {
-      if (!pwdRule.test(value) && value.length > 0) {
-        setPwdError(true);
-        setPwdCheck(false);
-        setPwdMsg(
-          "비밀번호는  8~20자 영어, 숫자, 특수문자의 조합으로 입력해주세요"
-        );
-      } else if (value.length === 0) {
+      if (value.length === 0) {
         setPwdError(true);
         setPwdCheck(false);
         setPwdMsg("비밀번호를 입력해주세요");
@@ -95,11 +76,24 @@ const Login = () => {
   const checkValidation = (...input) => {
     if (id.length === 0) {
       setIdError(true);
+      // setIdCheck(false);
       setIdMsg("아이디를 입력해주세요");
+    } else {
+      // setIdCheck(true);
     }
     if (password.length === 0) {
       setPwdError(true);
       setPwdMsg("비밀번호를 입력해주세요");
+      // setPwdCheck(false);
+    } else {
+      // setPwdCheck(true);
+    }
+  };
+
+  const onCheckEnter = (e) => {
+    console.log(e);
+    if (e.key === "Enter") {
+      handleSubmit(e);
     }
   };
 
@@ -129,6 +123,7 @@ const Login = () => {
       setLoginStatus("2");
       // //console.log(data);
       setMyName(data.name);
+      localStorage.setItem("name", data.name);
       navigate("/");
     } catch ({ response }) {
       //console.log(response);
@@ -136,6 +131,16 @@ const Login = () => {
         response.data.statusCode === userError ||
         response.data.statusCode === pwdError
       ) {
+        toast.error(
+          <div style={{ width: "400px" }}>
+            <div>비밀번호가 일치하지 않습니다.</div>
+            <span>입력하신 정보를 다시 확인해주세요.</span>
+          </div>,
+          {
+            position: toast.POSITION.TOP_CENTER,
+            role: "alert",
+          }
+        );
         setLoginMsg(response.data.message);
       }
     }
@@ -153,7 +158,11 @@ const Login = () => {
         <img src={infoLogo} alt="로고" className={styles.InfoLogo} />
       </div>
       <div className={styles.formBorder}>
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit}
+          onKeyPress={onCheckEnter}
+        >
           {/* <img src={logo} alt="logo" className={styles.logo} /> */}
           <div className={styles.inputTitle}>
             <h1>짠해</h1>
@@ -212,10 +221,10 @@ const Login = () => {
             <button className={styles.loginBtn} type="submit">
               로그인
             </button>
-            <span className={styles.crossline}>
+            {/* <span className={styles.crossline}>
               <span className={styles.textOr}>또는</span>
             </span>
-            <GoogleLoginBtn className={styles.GoogleLogin} />
+            <GoogleLoginBtn className={styles.GoogleLogin} /> */}
             {/* 토큰 확인
             {isLogin ? <p>{window.localStorage.getItem("id")}</p> : <> </>} */}
           </div>

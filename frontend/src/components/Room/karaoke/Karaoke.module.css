@@ -74,7 +74,7 @@
 .nextBtn {
   background-color: violet;
   border-radius: 15px;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .ReserveBtns {
@@ -91,13 +91,13 @@
 .ReserveBtns > div {
   background-color: #eee;
   border-radius: 15px;
-  font-size: 14px;
+  font-size: 12px;
 }
 .smallvideo {
   grid-column: 4 / 10;
   grid-row: 1 / 5;
   background-color: black;
-  background-image: url("../../../assets/logo.png");
+  /* background-image: url("../../../assets/logo.png"); */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

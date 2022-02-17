@@ -3,8 +3,6 @@ import UserApi from "../../api/UserApi.js";
 import ImgApi from "../../api/ImgApi.js";
 import styles from "./Profile.module.css";
 import editIcon from "../../assets/icons/edit.png";
-import { ReactComponent as CalendarIcon } from "../../assets/icons/calendar.svg";
-import { Link } from "react-router-dom";
 import image1 from "../../assets/images/default1.png";
 import image2 from "../../assets/images/default2.png";
 import image3 from "../../assets/images/default3.png";
@@ -13,12 +11,10 @@ import image5 from "../../assets/images/default5.png";
 import image6 from "../../assets/images/default6.png";
 import LoadingSpinner from "../Modals/LoadingSpinner/LoadingSpinner";
 import CalendarPage from "../Calendar/CalendarPage";
-import IntoRoom from "../Modals/RoomEnter/IntoRoom.jsx";
 import Rankfriend from "../Modals/Rankfriend/Rankfriend.jsx";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 
 const Profile = () => {
   const [name, setName] = useState("");
@@ -63,7 +59,7 @@ const Profile = () => {
         },
       };
       const { data } = await getUpdateProfileResult(body);
-    
+
       setTimeout(() => {
         setLoading(false);
       }, 1000);
@@ -205,137 +201,70 @@ const Profile = () => {
   const handleModal = (e) => {
     e.preventDefault();
     setOpenModal(!openModal);
-  }
+  };
   return (
     <div>
       <div className={styles.profileForm}>
-      {loading ? <LoadingSpinner></LoadingSpinner> : null}
-      <main className={styles.profile}>
-        <header className={styles.title}>
-          <h1>{name}님의 프로필</h1>
-        </header>
-        <div className={styles.sections}>
-        
-          <section className={styles.userProfile}>
-          
-            <form className={styles.userInfoForm}>
-              
-              <div className={styles.profileRow}>
-              
-                <label htmlFor="input-img">
-                  <img
-                    className={styles.profileImg}
-                    src={myImg}
-                    alt="profile"
-                    style={{ cursor: "pointer" }}
-                  />
-                </label>
-                <input
-                  type="file"
-                  id="input-img"
-                  accept="image/png, image/jpeg"
-                  style={{ display: "none" }}
-                  onChange={imgInputhandler}
-                />
-                <div
-                  className={
-                    isEdit
-                      ? `${styles.userInfoName} ${styles.userInfoDataEdit}`
-                      : styles.userInfoName
-                  }
-                >
-                  <div>
-                  <button className={styles.rank} onClick={handleModal}>
-                      🏆
-                  </button>
-                  </div>
-                  <label htmlFor="name">이름</label>
-                  <input
-                    id="name"
-                    type="text"
-                    value={name}
-                    disabled={!isEdit}
-                    onChange={nameHandler}
-                  />
-                  
-                </div>
-              </div>
-              <div className={styles.inputRow}>
-                <div className={styles.userInfoData}>
-                  <label htmlFor="id">아이디</label>
-                  <input id="id" type="text" value={id} disabled />
-                </div>
-              </div>
-
-              <div className={styles.inputRow}>
-                <div className={styles.userInfoData}>
-                  <label htmlFor="email">이메일</label>
-                  <input id="email" type="text" value={email} disabled />
-                </div>
-              </div>
-              <div className={styles.inputRow}>
-                <div
-                  className={
-                    isEdit
-                      ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
-                      : styles.userInfoData
-                  }
-                >
-                  <label htmlFor="birthday">생년월일</label>
-                  {isEdit ? (
-                    <div>
-                      <input
-                        className={styles.editbirth}
-                        type="text"
-                        value={year * 1}
-                        onChange={yearHandler}
-                      ></input>
-                      -
-                      <input
-                        className={styles.editbirth}
-                        type="text"
-                        value={month * 1}
-                        onChange={monthHandler}
-                      ></input>
-                      -
-                      <input
-                        className={styles.editbirth}
-                        type="text"
-                        value={day * 1}
-                        onChange={dayHandler}
-                      ></input>
-                    </div>
-                  ) : (
-                    <input
-                      id="birthday"
-                      type="text"
-                      value={`${year}-${month}-${day}`}
-                      disabled
+        {loading ? <LoadingSpinner></LoadingSpinner> : null}
+        <main className={styles.profile}>
+          <header className={styles.title}>
+            <h1>{name}님의 프로필</h1>
+          </header>
+          <div className={styles.sections}>
+            <section className={styles.userProfile}>
+              <form className={styles.userInfoForm}>
+                <div className={styles.profileRow}>
+                  <label htmlFor="input-img">
+                    <img
+                      className={styles.profileImg}
+                      src={myImg}
+                      alt="profile"
+                      style={{ cursor: "pointer" }}
                     />
-                  )}
-                </div>
-              </div>
-              <div className={styles.inputRow}>
-                <div className={styles.inputRowHalf}>
+                  </label>
+                  <input
+                    type="file"
+                    id="input-img"
+                    accept="image/png, image/jpeg"
+                    style={{ display: "none" }}
+                    onChange={imgInputhandler}
+                  />
                   <div
                     className={
                       isEdit
-                        ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
-                        : styles.userInfoData
+                        ? `${styles.userInfoName} ${styles.userInfoDataEdit}`
+                        : styles.userInfoName
                     }
                   >
-                    <label htmlFor="drink">선호주종</label>
-                    {isEdit ? (
-                      <select onChange={drinkHandler} value={drink}>
-                        <option value="소주">소주</option>
-                        <option value="맥주">맥주</option>
-                      </select>
-                    ) : (
-                      <input id="drink" type="text" value={drink} disabled />
-                    )}
+                    <div>
+                      <button className={styles.rank} onClick={handleModal}>
+                        🏆
+                      </button>
+                    </div>
+                    <label htmlFor="name">이름</label>
+                    <input
+                      id="name"
+                      type="text"
+                      value={name}
+                      disabled={!isEdit}
+                      onChange={nameHandler}
+                    />
                   </div>
                 </div>
-                <div className={styles.inputRowHalf}>
+                <div className={styles.inputRow}>
+                  <div className={styles.userInfoData}>
+                    <label htmlFor="id">아이디</label>
+                    <input id="id" type="text" value={id} disabled />
+                  </div>
+                </div>
+
+                <div className={styles.inputRow}>
+                  <div className={styles.userInfoData}>
+                    <label htmlFor="email">이메일</label>
+                    <input id="email" type="text" value={email} disabled />
+                  </div>
+                </div>
+                <div className={styles.inputRow}>
                   <div
                     className={
                       isEdit
@@ -343,45 +272,116 @@ const Profile = () => {
                         : styles.userInfoData
                     }
                   >
-                    <label htmlFor="drinkLimit">주량</label>
+                    <label htmlFor="birthday">생년월일</label>
                     {isEdit ? (
-                      <input
-                        autoComplete="off"
-                        id="drinkLimit"
-                        value={drinkLimit}
-                        type="number"
-                        placeholder="주량(병)"
-                        onChange={drinkLimitHandler}
-                      />
+                      <div>
+                        <input
+                          className={styles.editbirth}
+                          type="text"
+                          value={year * 1}
+                          onChange={yearHandler}
+                        ></input>
+                        -
+                        <input
+                          className={styles.editbirth}
+                          type="text"
+                          value={month * 1}
+                          onChange={monthHandler}
+                        ></input>
+                        -
+                        <input
+                          className={styles.editbirth}
+                          type="text"
+                          value={day * 1}
+                          onChange={dayHandler}
+                        ></input>
+                      </div>
                     ) : (
                       <input
-                        id="drinkLimit"
+                        id="birthday"
                         type="text"
-                        value={drinkLimit}
+                        value={`${year}-${month}-${day}`}
                         disabled
                       />
                     )}
                   </div>
                 </div>
+                <div className={styles.inputRow}>
+                  <div className={styles.inputRowHalf}>
+                    <div
+                      className={
+                        isEdit
+                          ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
+                          : styles.userInfoData
+                      }
+                    >
+                      <label htmlFor="drink">선호주종</label>
+                      {isEdit ? (
+                        <select onChange={drinkHandler} value={drink}>
+                          <option value="소주">소주</option>
+                          <option value="맥주">맥주</option>
+                        </select>
+                      ) : (
+                        <input id="drink" type="text" value={drink} disabled />
+                      )}
+                    </div>
+                  </div>
+                  <div className={styles.inputRowHalf}>
+                    <div
+                      className={
+                        isEdit
+                          ? `${styles.userInfoData} ${styles.userInfoDataEdit}`
+                          : styles.userInfoData
+                      }
+                    >
+                      <label htmlFor="drinkLimit">주량</label>
+                      {isEdit ? (
+                        <input
+                          autoComplete="off"
+                          id="drinkLimit"
+                          value={drinkLimit}
+                          type="number"
+                          placeholder="주량(병)"
+                          onChange={drinkLimitHandler}
+                        />
+                      ) : (
+                        <input
+                          id="drinkLimit"
+                          type="text"
+                          value={drinkLimit}
+                          disabled
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.editRow}>
+                  <button
+                    type="submit"
+                    onClick={handleEditMode}
+                    className={styles.editBtn}
+                  >
+                    <img
+                      src={editIcon}
+                      alt="edit"
+                      className={styles.editIcon}
+                    />
+                  </button>
+                </div>
+              </form>
+              <div className={styles.calendar}>
+                {openModal ? (
+                  <Rankfriend
+                    onClose={handleModal}
+                    friend={friends}
+                  ></Rankfriend>
+                ) : null}
+
+                <CalendarPage></CalendarPage>
               </div>
-              <div className={styles.editRow}>
-                <button
-                  type="submit"
-                  onClick={handleEditMode}
-                  className={styles.editBtn}
-                >
-                  <img src={editIcon} alt="edit" className={styles.editIcon} />
-                </button>
-              </div>
-            </form>
-            <div className={styles.calendar}> 
-            {openModal ? <Rankfriend onClose={handleModal} friend = {friends}></Rankfriend> : null}
-  
-            <CalendarPage></CalendarPage>
-          </div>
-          </section>
-          
-          {/* <section className={styles.friendProfile}>
+            </section>
+
+            {/* <section className={styles.friendProfile}>
           {loading ? <LoadingSpinner></LoadingSpinner> : null}
             <div className={styles.friendTitle}>
             
@@ -443,9 +443,9 @@ const Profile = () => {
               )})}
             </div>
           </section> */}
-        </div>
-      </main>
-    </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

@@ -20,8 +20,7 @@ import SessionIdContext from "../../contexts/SessionIdContext";
 import Keyword from "../Modals/Game/Keyword";
 import Karaoke from "./karaoke/Karaoke";
 import { useNavigate } from "react-router-dom";
-import {toast} from "react-toastify"
-
+import { toast } from "react-toastify";
 
 const OPENVIDU_SERVER_URL = "https://i6a507.p.ssafy.io:5443";
 const OPENVIDU_SERVER_SECRET = "jjanhae";
@@ -35,8 +34,8 @@ const RoomContents = ({
   media,
   mode,
   singMode,
-  musicList,
-  music,
+  // musicList,
+  // music,
   bangzzang,
   back,
   goHome,
@@ -60,14 +59,8 @@ const RoomContents = ({
   subscribersRef.current = subscribers;
   const [targetSubscriber, setTargetSubscriber] = useState({});
   const [isSelecting, setIsSelecting] = useState(false);
-  const [allSet, setAllSet] = useState(false);
   const [startPage, setStartPage] = useState(true);
-  const [keyword, setKeyword] = useState("");
-  const [subscriberkeyword, setSubscriberKeyword] = useState("");
-  const [userId, setUserId] = useState("");
   const [nickname, setNickname] = useState([]);
-  const [myNickname, setMyNickname] = useState("");
-  const [gameStatus, setGameStatus] = useState("0");
   const [streamId, setStreamId] = useState("");
   const [targetId, setTargetId] = useState("");
   const [targetGameName, setTargetGameName] = useState("");
@@ -92,9 +85,9 @@ const RoomContents = ({
   const participantNumRef = useRef(participantNum);
   participantNumRef.current = participantNum;
 
-  const {getRoomExitResult} = RoomApi;
+  const { getRoomExitResult } = RoomApi;
   // voicefilter
-  const [voiceFilter, setVoiceFilter] = useState(false);
+  // const [voiceFilter, setVoiceFilter] = useState(false);
   console.log(sessionName);
 
   const sessionRef = useRef(session);
@@ -134,16 +127,14 @@ const RoomContents = ({
     console.log(participantNumRef.current);
   }, [participantNum]);
   useEffect(() => {
-    if(axios.defaults.headers.Authorization === undefined){
-
+    if (axios.defaults.headers.Authorization === undefined) {
       const accessToken = sessionStorage.getItem("accessToken");
       if (accessToken) {
         console.log("실행됩니다.");
         axios.defaults.headers.Authorization =
           "Bearer " + sessionStorage.getItem("accessToken");
         console.log(axios.defaults.headers.Authorization);
-      }
-      else{
+      } else {
         toast.error(
           <div className="hi" style={{ width: "350px" }}>
             로그인 후 이용가능 합니다. 로그인 해주세요
@@ -154,30 +145,28 @@ const RoomContents = ({
           }
         );
         navigate("/user/login");
-        
       }
     }
 
     setLoginStatus("3");
     console.log(loginStatus);
     const preventGoBack = () => {
-      window.history.pushState(null, '', window.location.href);
-      console.log('prevent go back!');
+      window.history.pushState(null, "", window.location.href);
+      console.log("prevent go back!");
     };
-    
-    window.history.pushState(null, '', window.location.href);
-    window.addEventListener('popstate', preventGoBack);
+
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", preventGoBack);
     window.addEventListener("beforeunload", onbeforeunload);
     window.addEventListener("unload", handleleaveRoom);
 
     joinSession();
     return () => {
       window.removeEventListener("beforeunload", onbeforeunload);
-      window.removeEventListener('popstate', preventGoBack);
+      window.removeEventListener("popstate", preventGoBack);
       window.removeEventListener("unload", handleleaveRoom);
       handleleaveRoom();
       leaveSession();
-
     };
   }, []);
 
@@ -200,14 +189,16 @@ const RoomContents = ({
       }
     });
     setSirenTargetNickName(nickname);
-  },[sirenTarget])
-  
+  }, [sirenTarget]);
+
   useEffect(() => {
-    const nickname = subscribers.map((data)=>{if(correctPeopleId===data.getStreamManager().stream.streamId) {
-      return data.nickname;
-    }})
+    const nickname = subscribers.map((data) => {
+      if (correctPeopleId === data.getStreamManager().stream.streamId) {
+        return data.nickname;
+      }
+    });
     setCorrectPeopleName(nickname);
-  },[correctPeopleId])
+  }, [correctPeopleId]);
   // useEffect(()=> {
   //   if(modalMode==="yousayForbidden") setModalMode("answerForbidden")
   //   if(modalMode==="someonesayForbidden") setModalMode("answerForbidden")
@@ -217,6 +208,7 @@ const RoomContents = ({
     if (sessionRef.current) {
       console.log(sessionRef.current);
       // 상대방이 들어왔을 때 실행
+
       sessionRef.current.on("streamCreated", (event) => {
         setParticpantNum(participantNumRef.current + 1);
         let subscriber = sessionRef.current.subscribe(event.stream, undefined);
@@ -325,55 +317,11 @@ const RoomContents = ({
             console.log("gotoHome");
             goHome();
           }
-        }else {
-          if(data.gameId === 1 ) {
+        } else {
+          if (data.gameId === 1) {
             if (data.index !== undefined) {
               //기존 다 날리고 가자
               console.log("set");
-              //닉네임 정하기
-              console.log("닉네임 정하자");
-                //바뀌는 닉네임
-                nicknameData.push({
-                  connectionId: data.streamId,
-                  keyword: data.gamename,
-                });
-                setNickname([...nicknameData]);
-
-                correctNicknameData.push({
-                  connectionId: data.streamId,
-                  keyword: data.gamename,
-                });
-
-                setCorrectNickname([...correctNicknameData])
-              }
-              //닉네임 맞추는 단계
-              if(data.gameStatus===2&&data.index===undefined&&data.answerYn!==undefined) {
-                console.log("here????")
-                  nicknameData.push({
-                 connectionId: data.streamId,
-                 keyword: data.gamename,
-               });
-               setNickname([...nicknameData]);
-             }
-             if(data.index===undefined&&data.gameStatus===1) {
-               nicknameData.length=0;
-               correctNicknameData.length=0;
-               setNickname([...nicknameData]);
-               setCorrectNickname([...correctNicknameData]);
-              openKeywordInputModal("start");
-              setCorrectGamename(false);
-              setCorrectForbiddenName(false);
-              setTimeout(() => {
-                yangGame(data);
-              }, 5000);
-            }else {
-              yangGame(data);
-            }
-            
-  
-          }else if(data.gameId===2) {
-            if (data.index !== undefined) {
-              console.log("heyyy","1");
               //닉네임 정하기
               console.log("닉네임 정하자");
               //바뀌는 닉네임
@@ -381,32 +329,81 @@ const RoomContents = ({
                 connectionId: data.streamId,
                 keyword: data.gamename,
               });
-                setNickname([...nicknameData]);
-                
-                correctNicknameData.push({
-                  connectionId: data.streamId,
-                  keyword: data.gamename,
-                });
-                
-                setCorrectNickname([...correctNicknameData])
-              }
-              
-              //닉네임 맞추는 단계
-              if(data.gameStatus===2&&data.index===undefined&&data.sirenYn===undefined) {
-                console.log("heyyy","2");
-                console.log(data.sirednYn,"실화");
-                nicknameData.push({
-                  connectionId: data.streamId,
-                  keyword: data.gamename,
-                });
-               setNickname([...nicknameData]);
-             }
+              setNickname([...nicknameData]);
 
-             if(data.index===undefined&&data.gameStatus===1&&data.sirenYn===undefined) {
-               console.log("start");
-              nicknameData.length=0;
-              correctNicknameData.length=0;
-              setCorrectNickname([...correctNicknameData]); 
+              correctNicknameData.push({
+                connectionId: data.streamId,
+                keyword: data.gamename,
+              });
+
+              setCorrectNickname([...correctNicknameData]);
+            }
+            //닉네임 맞추는 단계
+            if (
+              data.gameStatus === 2 &&
+              data.index === undefined &&
+              data.answerYn !== undefined
+            ) {
+              console.log("here????");
+              nicknameData.push({
+                connectionId: data.streamId,
+                keyword: data.gamename,
+              });
+              setNickname([...nicknameData]);
+            }
+            if (data.index === undefined && data.gameStatus === 1) {
+              nicknameData.length = 0;
+              correctNicknameData.length = 0;
+              setNickname([...nicknameData]);
+              setCorrectNickname([...correctNicknameData]);
+              openKeywordInputModal("start");
+              setCorrectGamename(false);
+              setCorrectForbiddenName(false);
+              setTimeout(() => {
+                yangGame(data);
+              }, 5000);
+            } else {
+              yangGame(data);
+            }
+          } else if (data.gameId === 2) {
+            if (data.index !== undefined) {
+              //닉네임 정하기
+              //바뀌는 닉네임
+              nicknameData.push({
+                connectionId: data.streamId,
+                keyword: data.gamename,
+              });
+              setNickname([...nicknameData]);
+
+              correctNicknameData.push({
+                connectionId: data.streamId,
+                keyword: data.gamename,
+              });
+
+              setCorrectNickname([...correctNicknameData]);
+            }
+
+            //닉네임 맞추는 단계
+            if (
+              data.gameStatus === 2 &&
+              data.index === undefined &&
+              data.sirenYn === undefined
+            ) {
+              nicknameData.push({
+                connectionId: data.streamId,
+                keyword: data.gamename,
+              });
+              setNickname([...nicknameData]);
+            }
+
+            if (
+              data.index === undefined &&
+              data.gameStatus === 1 &&
+              data.sirenYn === undefined
+            ) {
+              nicknameData.length = 0;
+              correctNicknameData.length = 0;
+              setCorrectNickname([...correctNicknameData]);
               setNickname([...nicknameData]);
               openKeywordInputModal("startForbidden");
               setCorrectForbiddenName(false);
@@ -414,10 +411,9 @@ const RoomContents = ({
               setTimeout(() => {
                 forbidden(data);
               }, 5000);
-            }else {
+            } else {
               forbidden(data);
             }
-  
           }
         }
       });
@@ -426,16 +422,20 @@ const RoomContents = ({
         const data = event.data;
         console.log(data);
         console.log(localUserRef.current.getStreamManager().stream.streamId);
-        if (data.singStatus === 2 || data.singStatus === 3) {
+        if (data.singStatus === 2 && data.singMode === 2) {
+          console.log("너도 오냐?");
+          removeVoiceFilter();
           if (
-            data.singMode === 2 &&
             data.voiceFilter.includes(
               localUserRef.current.getStreamManager().stream.streamId
             )
           ) {
-            setVoiceFilter(true);
+            // setVoiceFilter(true);
             handleVoiceFilter();
           }
+        } else if (data.singStatus === -1) {
+          console.log("오냐?");
+          removeVoiceFilter();
         }
       });
     }
@@ -487,9 +487,9 @@ const RoomContents = ({
             openKeywordInputModal("wrong");
           }
           //내가 안했다
-        }else {
-          //누군가 맞췄다 
-          if(data.answerYn==="Y") {
+        } else {
+          //누군가 맞췄다
+          if (data.answerYn === "Y") {
             openKeywordInputModal("someoneCorrect");
             setCorrectPeopleId(data.streamId);
           }
@@ -509,86 +509,88 @@ const RoomContents = ({
 
   const forbidden = (data) => {
     console.log("here");
-      if (data.gameStatus === 1) {
+    if (data.gameStatus === 1) {
+      if (
+        data.streamId ===
+        localUserRef.current.getStreamManager().stream.streamId
+      ) {
+        console.log("my turn");
+        //상대방 금지어 입력해줄 모달 띄우기
+        setStreamId(data.streamId);
+        setTargetId(data.targetId);
+        // setModalMode("assignForbidden");
+        openKeywordInputModal("assignForbidden");
+        if (data.index !== undefined && data.index !== "") {
+          setIndex(data.index);
+        }
+        //내가 정해줄 차례가 아니라면
+      } else {
+        console.log("not my turn");
+        // setModalMode("waitForbidden");
+        openKeywordInputModal("waitForbidden");
+      }
+      //금지어 입력 다했다
+    } else if (data.gameStatus === 2) {
+      console.log(data.answerYn);
+      //정답 맞춘다
+      if (data.answerYn !== undefined && data.answerYn !== "") {
         if (
           data.streamId ===
           localUserRef.current.getStreamManager().stream.streamId
         ) {
-          console.log("my turn");
-          //상대방 금지어 입력해줄 모달 띄우기
-          setStreamId(data.streamId);
-          setTargetId(data.targetId);
-          // setModalMode("assignForbidden");
-          openKeywordInputModal("assignForbidden");
-          if (data.index !== undefined && data.index !== "") {
-            setIndex(data.index);
+          if (data.answerYn === "Y") {
+            // setModalMode("correct");
+            setCorrectForbiddenName(true);
+            openKeywordInputModal("correctForbidden");
+          } else if (data.answerYn === "N") {
+            // setModalMode("wrong");
+            openKeywordInputModal("wrong");
           }
-          //내가 정해줄 차례가 아니라면
         } else {
-          console.log("not my turn");
-          // setModalMode("waitForbidden");
-          openKeywordInputModal("waitForbidden");
+          // 누군가 맞췄다
+          if (data.answerYn === "Y") {
+            openKeywordInputModal("someoneCorrectForbidden");
+            setCorrectPeopleId(data.streamId);
+            console.log("here!!!!");
+          }
         }
-        //금지어 입력 다했다
-      } else if (data.gameStatus === 2) {
-        console.log(data.answerYn);
-        //정답 맞춘다
-        if (data.answerYn !== undefined && data.answerYn !== "") {
+      } else if (data.sirenYn !== undefined && data.sirenYn !== "") {
+        console.log(data.sirenYn);
+        //사이렌 울려라
+        if (data.sirenYn === "Y") {
+          console.log(data.streamId);
+          setSirenTarget(data.streamId);
+          //누가 날
           if (
             data.streamId ===
             localUserRef.current.getStreamManager().stream.streamId
           ) {
-            if (data.answerYn === "Y") {
-              // setModalMode("correct");
-              setCorrectForbiddenName(true);
-              openKeywordInputModal("correctForbidden");
-            } else if (data.answerYn === "N") {
-              // setModalMode("wrong");
-              openKeywordInputModal("wrong");
-            }
-          }else {
-            // 누군가 맞췄다 
-            if(data.answerYn==="Y") {
-              openKeywordInputModal("someoneCorrectForbidden");
-              setCorrectPeopleId(data.streamId);
-              console.log("here!!!!");
-            }
+            // setModalMode("yousayForbidden");
+            openKeywordInputModal("yousayForbidden");
+            //저녀석 잡아라
+          } else {
+            // setModalMode("someonesayForbidden");
+            openKeywordInputModal("someonesayForbidden");
           }
-        } else if(data.sirenYn !== undefined && data.sirenYn !== "") {
-          console.log(data.sirenYn);
-          //사이렌 울려라
-          if(data.sirenYn==="Y") {
-            console.log(data.streamId);
-            setSirenTarget(data.streamId);
-            //누가 날
-            if (data.streamId === localUserRef.current.getStreamManager().stream.streamId) {
-              // setModalMode("yousayForbidden");
-              openKeywordInputModal("yousayForbidden");
-              //저녀석 잡아라
-            }else {
-              // setModalMode("someonesayForbidden");
-              openKeywordInputModal("someonesayForbidden");
-            }
-            //이제 금지어 찾아봐라
-          }else {
-            // setModalMode("letsplayForbidden");
-            openKeywordInputModal("letsplayForbidden");
-            setTimeout(() => {
-              setModalMode("answer");
-              closeKeywordInputModal();
-            }, 7000);
-            console.log("키워드 설정 완료");
-          }
-        }else {
+          //이제 금지어 찾아봐라
+        } else {
+          // setModalMode("letsplayForbidden");
+          openKeywordInputModal("letsplayForbidden");
+          setTimeout(() => {
+            setModalMode("answer");
+            closeKeywordInputModal();
+          }, 7000);
+          console.log("키워드 설정 완료");
         }
       }
-  }
-  const handleleaveRoom = async () =>{
+    }
+  };
+  const handleleaveRoom = async () => {
     const body = {
       roomSeq: sessionName * 1,
     };
     await getRoomExitResult(body);
-  }
+  };
   const leaveSession = () => {
     const mySession = sessionRef.current;
     //console.log(mySession);
@@ -777,7 +779,7 @@ const RoomContents = ({
         console.log(flag);
 
         html2canvas(document.getElementById("user-video")).then((canvas) => {
-          setImages([...imagesRef.current, canvas.toDataURL()]);
+          setImages([...imagesRef.current, canvas.toDataURL("image/jpeg")]);
           flag++;
 
           // onSaveAs(canvas.toDataURL("image/png"), "image-download.png");
@@ -794,8 +796,8 @@ const RoomContents = ({
             array.push(blobBin.charCodeAt(i));
           }
           console.log(array);
-          let file = new Blob([new Uint8Array(array)], { type: "image/png" }); // Blob 생성
-          let newfile = new File([file], `room${sessionName}.png`);
+          let file = new Blob([new Uint8Array(array)], { type: "image/jpeg" }); // Blob 생성
+          let newfile = new File([file], `room${sessionName}.jpeg`);
           console.log(newfile);
           let formdata = new FormData(); // formData 생성
           formdata.append("file", newfile); // file data 추가
@@ -831,16 +833,35 @@ const RoomContents = ({
     });
   };
 
+  // const randomNum = (min, max) => {
+  //   const randNum = Math.floor(Math.random() * (max - min) + min);
+  //   return randNum;
+  // };
+
   const handleVoiceFilter = () => {
-    console.log(localUserRef.current);
-    // const data = { command: "pitch pitch=0.5" };
+    const filterList = [0.6, 0.7, 0.8, 1.5, 1.6, 1.7];
     const type = "GStreamerFilter";
-    const options = { command: "pitch pitch=1.5" };
+    const rnum = Math.floor(Math.random() * 5);
+    console.log(rnum);
+    const options = { command: `pitch pitch=${filterList[rnum]}` };
+    // const options = { command: `pitch pitch=0.6` };
     localUserRef.current
       .getStreamManager()
       .stream.applyFilter(type, options)
       .then((result) => {
         console.log(result);
+      });
+  };
+
+  const removeVoiceFilter = () => {
+    localUserRef.current
+      .getStreamManager()
+      .stream.removeFilter()
+      .then(() => {
+        console.log("필터 제거");
+      })
+      .catch(() => {
+        console.log("필터 없어용");
       });
   };
 
@@ -893,7 +914,6 @@ const RoomContents = ({
     });
   };
   const checkMyAnswer = (data, gamemode) => {
-    console.log("?????????????????????????????????????");
     let senddata = {};
     console.log(gamemode);
     if (gamemode === 1) {
@@ -1045,9 +1065,8 @@ const RoomContents = ({
                 mode={mode}
                 nickname={nickname}
                 correctNickname={correctNickname}
-                sirenWingWing = {sirenWingWing}
+                sirenWingWing={sirenWingWing}
                 correctPeopleName={correctPeopleName}
-
               />
             );
           })}
@@ -1075,7 +1094,7 @@ const RoomContents = ({
             </>
           )}
           {mode !== "karaoke" ? (
-            <MusicPlayer user={localUserRef.current} music={music} />
+            <MusicPlayer user={localUserRef.current} />
           ) : null}
         </div>
       )}

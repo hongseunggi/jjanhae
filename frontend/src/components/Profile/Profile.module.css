@@ -14,7 +14,7 @@
   color: #eee;
   font-size: 2.5rem;
   margin-bottom: 2vh;
-  margin-top : 1vh;
+  margin-top: 1vh;
   width: 100%;
 }
 .profile {
@@ -36,7 +36,7 @@
   height: fit-content;
 }
 
-.calendar{
+.calendar {
   margin: 0px auto;
   width: 60vw;
   /* height: ; */
@@ -62,13 +62,10 @@
   width: 30vw;
   padding: 1.5vw;
   border-style: none dotted none none;
-
 }
 .userInfoForm .profileRow {
   display: flex;
-  /* margin-bottom: 2vh; */
-    
-
+  margin-bottom: 30px;
 }
 .userInfoForm .userInfoData {
   font-size: 21px;
@@ -92,7 +89,6 @@
   /* width: 100%; */
   display: flex;
   justify-content: space-between;
-
 }
 
 .userInfoForm .inputRow .inputRowHalf {
@@ -119,13 +115,13 @@
   padding: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   width: 100%;
+  font-size: 25px;
 }
 
 .editbirth {
   width: 50px;
   text-align: center;
 }
-
 
 .userInfoName.userInfoDataEdit input {
   border-bottom: 1.5px solid rgba(0, 0, 0, 1);
@@ -138,8 +134,8 @@
   position: absolute;
   /* width: 100%; */
   text-align: right;
-  top : 65vh;
-  left : 27vw;
+  top: 65vh;
+  left: 27vw;
 }
 
 .editRow .editBtn {
@@ -152,7 +148,7 @@
   height: 1.5vw;
   /* background-color:rgba(255, 255, 255, 0); */
 }
-.rank{
+.rank {
   font-size: 2vw;
   width: fit-content;
   height: fit-content;
@@ -172,14 +168,13 @@
 }
 .friendTitle {
   position: absolute;
-  top : 20px;
-  left : 25px;
+  top: 20px;
+  left: 25px;
   display: flex;
   align-items: center;
   /* margin: ; */
   /* margin : 25px 25px; */
   /* margin-bottom: 20px; */
-
 }
 .mainTitle {
   font-size: 32px;
@@ -195,7 +190,7 @@
   width: fit-content;
   justify-content: center;
   max-width: 600px;
-  margin : 50px auto;
+  margin: 50px auto;
 }
 .friendInfo {
   width: 160px;
@@ -224,37 +219,6 @@
 .sunday-weekday {
   background-color: red;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* @media screen and (min-width: 1800px) {
   .userProfile {
