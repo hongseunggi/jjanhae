@@ -3,7 +3,7 @@
 
 ## 🎯 ***SCENARIO***
 
-### ***🖥화면 소개***
+### ***🖥시연 순서별 화면 소개***
 #### 메인 화면😎
 >![](https://images.velog.io/images/hongseunggi/post/b74124d3-facb-485b-b58d-4e3e608e8c2e/image.png)
 >서비스 입장시 처음 보이는 화면  
