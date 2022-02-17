@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService {
         msgg += "<body>";
         msgg +=
                 " <div" 																																																	+
-                        "	style=\"font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 400px; height: 600px; border-top: 4px solid #02b875; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">"		+
+                        "	style=\"font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 550px; height: 600px; border-top: 4px solid #02b875; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">"		+
                         "	<h1 style=\"margin: 0; padding: 0 5px; font-size: 28px; font-weight: 400;\">"																															+
                         "		<span style=\"font-size: 15px; margin: 0 0 10px 3px;\">랜선 술파티 서비스 짠해</span><br />"																													+
                         "		<span style=\"color: #02b875\">메일인증</span> 안내입니다."																																				+
@@ -58,7 +58,7 @@ public class EmailServiceImpl implements EmailService {
                         name																																																+
                         "		님 안녕하세요.<br />"																																													+
                         "		짠해에 가입해 주셔서 진심으로 감사드립니다.<br />"																																						+
-                        "		아래 <b style=\"color: #02b875\">'메일 인증'</b> 버튼을 클릭하여 아이디 찾기를 완료해 주세요.<br />"																													+
+                        "		아래 <b style=\"color: #02b875\">'인증코드'</b> 를 화면에 올바르게 입력한 후 다음 단계를 진행해주세요.<br />"																													+
                         "		감사합니다."																																															+
                         "	</p>"																																																	+
                         "	<a style=\"color: #FFF; text-decoration: none; text-align: center;\""																																	+
@@ -94,8 +94,8 @@ public class EmailServiceImpl implements EmailService {
         msgg += "<body>";
         msgg +=
                 " <div" 																																																	+
-                        "	style=\"font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 400px; height: 600px; border-top: 4px solid #02b875; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">"		+
-                        "	<h1 style=\"margin: 0; padding: 0 5px; font-size: 28px; font-weight: 400;\">"																															+
+                        "	style=\"font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 550px; height: 600px; border-top: 4px solid #02b875; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">"		+
+                        "	<h1 style=\"margin: 0; padding: 0 5px; font-size: 28px; font-weight: 550;\">"																															+
                         "		<span style=\"font-size: 15px; margin: 0 0 10px 3px;\">랜선 술파티 서비스 짠해</span><br />"																													+
                         "		<span style=\"color: #02b875\">메일인증</span> 안내입니다."																																				+
                         "	</h1>\n"																																																+
@@ -136,14 +136,13 @@ public class EmailServiceImpl implements EmailService {
         msgg += "<body>";
         msgg +=
                 " <div" 																																																	+
-                        "	style=\"font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 400px; height: 600px; border-top: 4px solid #02b875; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">"		+
+                        "	style=\"font-family: 'Apple SD Gothic Neo', 'sans-serif' !important; width: 550px; height: 600px; border-top: 4px solid #02b875; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">"		+
                         "	<h1 style=\"margin: 0; padding: 0 5px; font-size: 28px; font-weight: 400;\">"																															+
                         "		<span style=\"font-size: 15px; margin: 0 0 10px 3px;\">랜선 술파티 서비스 짠해</span><br />"																													+
                         "		<span style=\"color: #02b875\">메일인증</span> 안내입니다."																																				+
                         "	</h1>\n"																																																+
                         "	<p style=\"font-size: 16px; line-height: 26px; margin-top: 50px; padding: 0 5px;\">"																													+
                         "		안녕하세요.<br />"																																													+
-                        "		짠해에 가입해 주셔서 진심으로 감사드립니다.<br />"																																						+
                         "		아래 <b style=\"color: #02b875\">'메일 인증'</b> 버튼을 클릭하여 비밀번호 찾기를 완료해 주세요.<br />"																													+
                         "		감사합니다."																																															+
                         "	</p>"																																																	+
