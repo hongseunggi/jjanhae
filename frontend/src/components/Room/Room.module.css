@@ -1,0 +1,135 @@
+.nav {
+  width: 100%;
+  height: 64px;
+  display: inline-block;
+}
+.link {
+  z-index: 1;
+  position: relative;
+  float: right;
+  margin-top: 32px;
+  margin-right: 5%;
+  font-weight: bold;
+  letter-spacing: 2.5px;
+  border: none;
+  width: 80px;
+  background-color: rgba(0, 0, 0, 0);
+  color: #eaeaea;
+  font-size: 20px;
+  text-decoration: none;
+  text-shadow: 0rem 1rem 0.5rem rgba(234, 234, 234, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+.link:hover {
+  text-shadow: 0rem 1.5rem 2rem rgba(234, 234, 234, 0.5);
+  color: #eaeaea;
+  transform: translateY(-7px);
+}
+.title {
+  height: 48px;
+}
+.container {
+  color: #eee;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  padding: 0px 30px;
+  position: relative;
+  width: 100%;
+  /* margin : 0px 0px 0px 0px; */
+}
+.innerContainer {
+  display: flex;
+  width: 100%;
+  height: calc(100% - 154px);
+  margin: 5px 15px 0px;
+}
+
+.contents {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-contents {
+  display: flex;
+  height: calc(100% - 48px);
+}
+
+video {
+  background-image: url("../../assets/logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.chatting {
+  min-width: 300px;
+  /* height: 700px; */
+  background-color: #eee;
+  border-radius: 10px;
+}
+
+.dockBar {
+  height: 100px;
+  display: flex;
+}
+.dock {
+  width: 500px;
+  margin: auto auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(64, 69, 78, 1);
+  padding: 20px 40px;
+  border-radius: 40px;
+  position: relative;
+  bottom: -40px;
+  transition: all ease 1s 0s;
+}
+
+.dock:hover {
+  transition: all ease 1s 0s;
+  bottom: 0px;
+}
+
+/* .snapshotBtn {
+  display: flex;
+  width: 300px;
+  justify-content: space-around;
+}
+
+.retryBtn,
+.saveBtn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+}
+
+.retryBtn p,
+.saveBtn p {
+  margin: 0;
+} */
+
+.icon {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1800px) {
+  /* .container {
+    height: calc(100vh - 120px);
+  } */
+  video {
+    width: 300px;
+    height: 300px;
+  }
+
+  .chatting {
+    min-width: 400px;
+  }
+}

@@ -1,0 +1,80 @@
+.snapshotForm {
+  max-width: 400px;
+  height: 100%;
+  position: relative;
+}
+
+.image-container {
+  max-width: 400px;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  /* backdrop-filter: blur(10px); */
+}
+/* .blur:hover {
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+} */
+
+.images {
+  width: 100%;
+  height: 92%;
+}
+
+.image-form {
+  padding: 5px 10px;
+  width: 100%;
+  height: 25%;
+  display: flex;
+  justify-content: center;
+}
+.image {
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  height: 8%;
+}
+
+.logoImg {
+  width: 50px;
+  height: 50px;
+}
+
+.start {
+  position: absolute;
+  top: 45%;
+  left: 35%;
+  z-index: 99;
+}
+
+.snapshotBtn {
+  display: flex;
+  justify-content: space-around;
+  width: 300px;
+  position: absolute;
+  top: 45%;
+  /* left: 20%; */
+  z-index: 99;
+}
+
+.checkResultBtn,
+.startBtn,
+.retryBtn,
+.saveBtn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+}
+
+.checkResultBtn {
+  color: #eee;
+  border: 1px solid #eee;
+}

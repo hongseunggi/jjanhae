@@ -1,0 +1,51 @@
+.player {
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  /* width: 30%; */
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.videoPlayer {
+  visibility: hidden;
+}
+
+.playerIcon {
+  margin-right: 10px;
+}
+.playerIcon.playerStart {
+  animation: rotate_image 5s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.musicTitle {
+  width: 100%;
+  font-size: 18px;
+}
+.BtnRow {
+  display: flex;
+}
+
+.musicPlayerInitTitle {
+  margin-right: 10px;
+}
+
+.nextIcon {
+  margin-left: 10px;
+}
+.volumeController {
+  position: absolute;
+  bottom: 40px;
+  right: 7px;
+}
+
+@keyframes rotate_image {
+  100% {
+    transform: rotate(360deg);
+  }
+}

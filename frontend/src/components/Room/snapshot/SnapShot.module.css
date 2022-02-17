@@ -1,0 +1,33 @@
+.contents-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.video-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  /* width: 100%; */
+  width: fit-content;
+  height: fit-content;
+  /* background-color: tomato; */
+}
+
+.chat-container {
+  max-width: 300px;
+  width: 30%;
+  height: 100%;
+}
+
+.countContainer {
+  position: absolute;
+  z-index: 999;
+  top: 40%;
+  left: 50%;
+}
+
+.count {
+  font-size: 50px;
+}

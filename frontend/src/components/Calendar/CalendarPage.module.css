@@ -1,0 +1,368 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap");
+
+.calendadrFormBorder {
+  display: flex;
+  justify-content: center;
+  /* position: absolute; */
+  /* left: 35vw; */
+  /* margin-left: 35vw; */
+  /* justify-content: space-around; */
+  /* text-align: center; */
+}
+.calendarForm {
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 5vh; */
+  /* top : -50px; */
+
+  /* height: 470px; */
+  /* width: 60vw; */
+}
+.calendarHeader {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  justify-content: center;
+  color: tomato;
+}
+
+.calendarBody {
+  border-color: whitesmoke;
+
+  margin-top: 1vh;
+}
+
+.month {
+  color: black;
+  font-size: 1.5vw;
+  font-weight: bolder;
+  text-align: left;
+  margin-top: 1vh;
+  /* margin-bottom: 0px; */
+  width: 52.5vw;
+}
+.week {
+  cursor:default;
+  width: 1vw;
+  height: 4rem;
+  display: table-row;
+}
+.weekday{
+  cursor:default;
+  color:black;
+}
+.day {
+  position: relative;
+  display: table-cell;
+  padding: 0 1vw;
+  justify-content: center;
+  background-color: #eee;
+  border-style: none dashed dashed none;
+  border-width: 0.1rem;
+  /* border-color: black; */
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayotherRowFirst {
+  position: relative;
+  display: table-cell;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
+  background-color: #eee;
+  justify-content: center;
+  border-style: none dashed dashed none;
+  /* border-style: ; */
+  border-width: 0.1rem;
+  /* border-color: black; */
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayLastRow {
+  position: relative;
+  display: table-cell;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
+  justify-content: center;
+  border-radius: 0px 0px 0px 25px;
+  border-style: none dashed none none;
+  border-width: 0.1rem;
+  /* border-color : black; */
+  background-color: #eee;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayLastRowEnd {
+  position: relative;
+  display: table-cell;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
+  justify-content: center;
+  border-radius: 0px 0px 25px 0px;
+  border-style: none none none none;
+  border-width: 0.1rem;
+  /* border-color: black; */
+  background-color: #eee;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayotherRowEnd {
+  position: relative;
+  display: table-cell;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
+  justify-content: center;
+  border-style: none none dashed none;
+  border-width: 0.1rem;
+  background-color: #eee;
+  /* border-color: black; */
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayotherRow {
+  position: relative;
+  display: table-cell;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
+  justify-content: center;
+  border-style: none dashed dashed none;
+  border-width: 0.1rem;
+  background-color: #eee;
+  /* border-color: black; */
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayLastRowother {
+  position: relative;
+  display: table-cell;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
+  justify-content: center;
+  border-style: none dashed none none;
+  border-width: 0.1rem;
+  background-color: #eee;
+  /* border-color: black; */
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayfirstRow {
+  position: relative;
+  display: table-cell;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
+  justify-content: center;
+  background-color: #eee;
+  border-style: none dashed dashed none;
+  border-width: 0.1rem;
+  /* border-color: black; */
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayfirstRowEnd {
+  position: relative;
+  display: table-cell;
+  /* color: #f3f3f3; */
+  padding: 0 1vw;
+  justify-content: center;
+  border-style: none none dashed none;
+  border-width: 0.1rem;
+  background-color: #eee;
+  /* border-color: black; */
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 11.5vh;
+}
+.dayreal{
+  margin-top: 0.7vw;
+  text-align: right;
+  margin-bottom: 0;
+  width: 100%;
+}
+.icon {
+  width: 3vw;
+  height: 3vw;
+  background-color: transparent;
+}
+.sunday {
+  color: #ff2e63;
+}
+.saturday {
+  color: #08d9d6;
+}
+.sundisable{
+  color: rgba(255, 46, 99, 0.4);
+}
+.satdisable{
+  color: rgba(8, 217, 214, 0.4);
+}
+.wkddisable{
+  color: rgb(0, 0, 0, 0.4)
+}
+.partyicon {
+  /* display: inline; */
+  width: 2.5vw;
+  height: 2.5vw;
+  border: none;
+  background-image: url('../../assets/icons/party.svg');
+  background-size: contain;
+  background-color: transparent;
+}
+.partyicon:hover {
+  /* animation: shake 1s; */
+	transform: rotate( -25deg );
+}
+/* @keyframes shake {
+  0% {
+    transform: rotate( 0deg );
+  }
+  25% {
+    transform: rotate( -45deg );
+  }
+  50% {
+    transform: rotate( 0deg );
+  }
+  75%{
+    transform: rotate( 45deg );
+  }
+  100%{
+    transform: rotate( 0deg );
+  }
+} */
+.iconBtn {
+  background-color: transparent;
+  border: none;
+}
+.container {
+  position: relative;
+  text-align: center;
+  margin-top: 0.3vw;
+}
+.partyList {
+  background: rgb(255, 86, 34);
+  border-radius: 8px;
+  position: absolute;
+  top: 3vw;
+  width: 12rem;
+  height: 150px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  /* display: none; */
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.0s;
+  z-index: 1;
+  /* color : rgba(0, 0, 0, 0.933); */
+  color: #eee;
+  font-weight: bold;
+  overflow: auto;
+  padding-top: 10px;
+  font-size: 20px;
+}
+.partyList::-webkit-scrollbar {
+  width: 8px;
+  background-color: black;
+}
+.partyList::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+}
+.partyList::-webkit-scrollbar-track {
+  background-color: rgba(255, 86, 34, 0.37);
+  border-radius: 15px;
+}
+.partyList.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.partyList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.partyList li {
+  border-bottom: 1px solid #ffffff;
+  color: #eeee;
+}
+
+.partyData {
+  background-color: transparent;
+  border :none;
+  margin-bottom: 3px;
+  font-size: 15px;
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+.partyData:hover {
+  opacity: 1;
+  background-color: rgb(255, 255, 255);
+  font-weight: bolder;
+  border-radius: 5px;
+}
+.listTitle {
+  margin-bottom: 0px;
+  width: 100%;
+  /* border-bottom: 1px solid #eee; */
+}
+.title{
+  cursor:default;
+  position: relative;
+  display: table-cell;
+  color: #f3f3f3;
+  padding: 10px 15px;
+  justify-content: center;
+  text-align: center;
+  border : none;
+  border-radius: 15px 0px 0px;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  background-color: tomato;
+  width: 7.5vw;
+  height: 4.5vh;
+}
+.titleOther{
+  cursor:default;
+  position: relative;
+  display: table-cell;
+  color: #f3f3f3;
+  justify-content: center;
+  text-align: center;
+  background-color: tomato;
+  border : none;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 4.5vh;
+}
+.titleLast{
+  cursor:default;
+  position: relative;
+  display: table-cell;
+  color: #f3f3f3;
+  padding: 10px 15px;
+  background-color: tomato;
+  justify-content: center;
+  text-align: center;
+  border : none;
+  border-radius: 0px 15px 0px 0px; 
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  width: 7.5vw;
+  height: 4.5vh;
+}

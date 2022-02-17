@@ -1,0 +1,452 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poppins:wght@400;500;600&display=swap');
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99999999;
+    /* background-color: rgba(235, 234, 228, 0.452); */
+    background-color: transparent;
+    border-radius: 10px;
+    /* margin : 10px 10px 0px 10px; */
+  }
+  .modalForm header {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .modalForm .title {
+    font-size: 30px;
+    margin : 0px 13px 0px 10px;
+    font-weight: bolder;
+    color : #252a34;
+;
+  }
+  .modal button {
+    outline: none;
+    cursor: pointer;
+    border: 0;
+    /* width: fit-content; */
+    height: fit-content;
+  }
+  .modal > section {
+    width: 600px;
+    height: 550px;
+    /* margin: 0 auto; */
+    border-radius: 50px;
+    background-color: rgb(129, 127, 127);
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-show 0.3s;
+    overflow: hidden;
+    position: relative;
+    top: -35px;
+    left: 45px;
+  }
+  .modalTitle {
+    display: flex;
+  }
+  
+  label {
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .modal > section > footer {
+    text-align: right;
+  }
+  .modal > section > footer button {
+    width: 100px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+  .modal > section > footer .confirmBtn {
+    background-color: #08d9d6;
+    margin-right: 20px;
+}
+.confirmBtn ,.retryBtn   {
+    background-color: #08d9d6;
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    width: fit-content;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 13px;
+    text-align: center;
+    margin : 45px;
+  }
+  .retryBtn  {
+    margin : 25px;
+  }
+  .modal.openModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    animation: Keyword_modal-bg-show__MpkRI 0.3s;
+    top: 76px;
+    right: 328px;
+  }
+  .icon {
+    height: 148px;
+    width: 150px;
+    margin: 50px 0px 10px 0px;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .main {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-evenly; */
+    align-items: center;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+  }
+ 
+  .logo {
+    z-index: 1;
+    position: relative;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-left: 2%;
+  }
+  .logoBorder {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .closeBtn {
+    float: right;
+    width: 30px;
+    height: 30px;
+    margin: 15px 30px 0px 0px;
+    border-radius: 8px;
+    background-color: #eee;
+  }
+  .informBorder {
+    align-items: center;
+    display: flex;
+    margin: 15px;
+    flex-direction: column;
+  }
+
+  .yanginformBorder {
+    align-items: center;
+    display: flex;
+    margin:  100px 0px 20px 0px;
+    flex-direction: column;
+  }
+  .forbiddeninformBorder {
+    align-items: center;
+    display: flex;
+    margin:  65px 0px 20px 0px;
+    flex-direction: column;
+  }
+  .failBorder {
+    align-items: center;
+    display: flex;
+    margin:  100px 0px 20px 0px;
+    flex-direction: column;
+  }
+.yanginfoText {
+  font-weight: bolder;
+  font-size: 18px;
+  width : fit-content;
+}
+.forbiddenicon {
+  height: 148px;
+  width: 150px;
+  margin: -25px 0px 10px 0px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.yangconfirmBtn {
+  background-color: #08d9d6;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    margin : 50px 30px 0px 30px;
+    color: #252525ee;
+}
+.yangicon, .failicon {
+  height: 148px;
+  width: 150px;
+  margin: 0px 0px 10px 0px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+  .informText{
+      font-weight: bolder;
+      font-size: 20px;
+      width : 80%;
+  }
+  .inputKeyword {
+    border-radius: 10px;
+    height: 33px;
+    background-color: #eee;
+    padding: 10px;
+    font-size: 20px;
+    /* width: 500px; */
+    /* height: 32px; */
+    /* font-size: 15px; */
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    /* padding-left: 10px; */
+    /* background-color: rgb(233, 233, 233); */
+  }
+
+  .text {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bolder;
+    margin-bottom: 2rem;
+  }
+  .targetText {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bolder;
+    color: #ddda29;
+  }
+  .greenText {
+    text-align: center;
+    color: #29dd6e;
+  }
+  .gameText {
+    text-align: center;
+    color: #386dff;
+  }
+  .yellowText {
+    text-align: center;
+    color : #fff226;
+  }
+  .purpleText {
+    text-align: center;
+    color : #ffa928;
+  }
+
+  @keyframes modal-show {
+    from {
+      opacity: 0;
+      margin-top: -50px;
+    }
+    to {
+      opacity: 1;
+      margin-top: 0;
+    }
+  }
+  @keyframes modal-bg-show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .partyDetail {
+    display: flex;
+  }
+  
+  .descriptionForm,
+  .configData {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .descriptionForm .description {
+    height: 100px;
+    border: none;
+    border-radius: 20px;
+    background-color: #eee;
+    resize: none;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  input:focus,
+  textarea:focus {
+    outline: none;
+  }
+ 
+  .informCorrectText {
+    font-weight: bolder;
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  .correctText {
+    width : 100%;
+    color : #252525;
+    font-size: 23px;
+    margin-bottom: 0px;
+  }
+  
+  .informText {
+    position: relative;
+    width: 50%;
+    height: 20%;    
+    color: #eeee;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: rgba(255, 99, 71, 0.938);
+    text-align: center;
+    align-items: center;
+    border-radius: 15px;
+    font-weight: bold;
+    left : 25%;
+}
+
+.sendClockIcon {
+    width : 100px;
+    height : 100px;
+}
+
+    @keyframes rotate-loading {
+        0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+        100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+    }
+
+    @-moz-keyframes rotate-loading {
+        0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+        100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+    }
+
+    @-webkit-keyframes rotate-loading {
+        0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+        100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+    }
+
+    @-o-keyframes rotate-loading {
+        0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+        100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+    }
+
+    @keyframes rotate-loading {
+        0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+        100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+    }
+
+    @-moz-keyframes rotate-loading {
+        0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+        100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+    }
+
+    @-webkit-keyframes rotate-loading {
+        0%  {transform: rotate(0deg);-ms-transform: rotate(0deg); -webkit-transform: rotate(0deg); -o-transform: rotate(0deg); -moz-transform: rotate(0deg);}
+        100% {transform: rotate(360deg);-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); -o-transform: rotate(360deg); -moz-transform: rotate(360deg);}
+    }
+
+    @keyframes wingwingSiren {
+        0%  {transform: rotateY(0deg);-ms-transform: rotateY(0deg); -webkit-transform: rotateY(0deg); -o-transform: rotateY(0deg); -moz-transform: rotateY(0deg);}
+        100% {transform: rotateY(360deg);-ms-transform: rotateY(360deg); -webkit-transform: rotateY(360deg); -o-transform: rotateY(360deg); -moz-transform: rotateY(360deg);}
+    }
+
+    @keyframes wingwingSiren {
+      100% { transform: rotateY(360deg); }
+      }
+
+    .sendClockIcon {
+        -moz-animation: rotate-loading 1.5s linear 0s infinite normal;
+        -moz-transform-origin: 50% 50%;
+        -o-animation: rotate-loading 1.5s linear 0s infinite normal;
+        -o-transform-origin: 50% 50%;
+        -webkit-animation: rotate-loading 1.5s linear 0s infinite normal;
+        -webkit-transform-origin: 50% 50%;
+        animation: rotate-loading 3.5s linear 0s infinite normal;
+        transform-origin: 50% 50%;
+    }
+
+    .sirenicon {
+      width: 25px;
+      height: 25px;
+    }
+
+    .warnText , .saywarnText {
+      color :rgba(255, 99, 71, 0.938);
+      font-weight: bolder;
+      font-size: 20px;
+    }
+    .saywarnText {
+      font-size: 25px;
+    }
+    .celText {
+      color :rgba(71, 120, 255, 0.938);
+      font-weight: bolder;
+      font-size: 20px;
+    }
+    .noText {
+      color :rgba(255, 19, 19, 0.938);
+      font-weight: bolder;
+      font-size: 20px;
+    }
+    .celebrateText {
+      color :rgba(71, 255, 86, 0.938);
+      font-weight: bolder;
+      font-size: 25px;
+    }
+    .orangeText {
+      color :rgba(255, 145, 0, 0.938);
+      font-weight: bolder;
+      font-size: 25px;
+    }
+    .wingicon { 
+      width : 150px;
+      height : 150px;
+      perspective:  300px;
+      margin : 30px 0px 75px 0px;
+    }
+    .wingicon .wingwingicon {
+      width : 150px;
+      height : 200px;
+      border : none;
+      transition: 1s;
+      animation: wingwingSiren 1s linear infinite;transform-origin: 50% 50%;
+    /*  */
+    }
+
+    .alertText {
+      text-align: center;
+      font-size: 25px;
+      font-weight: bolder;
+      margin: 5px 0px 0px 0px;
+      color: black;
+    }
+
+    .confirminputBtn {
+    background-color: #08d9d6;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    margin : 50px 30px 0px 30px;
+    color: #252525ee;
+    }
+
+    .orangeCancleBtn {
+      background-color: transparent;
+      width: 30px;
+      height: 30px;
+    }
+    .smallicon {
+      width :40px;
+      height :40px;
+      margin : 10px;
+    }
+    .infoForbiddenText {
+      text-align: center;
+    }

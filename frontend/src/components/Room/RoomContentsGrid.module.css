@@ -1,0 +1,83 @@
+* {
+  box-sizing: border-box;
+}
+.contents-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.user-videos-container {
+  width: calc(100% - 350px);
+  height: 100%;
+}
+
+.video-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* grid-template-rows: 1fr 1fr; */
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+.video-container.twoXtwo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.video-container.twoXthree {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.video-container.twoXfour {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+.video-container.karaoke {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+}
+.videoplayer {
+  grid-column: 2 / 4;
+  grid-row: 1 / 3;
+}
+
+.chat-container {
+  width: 350px;
+  height: 100%;
+}
+
+.countContainer {
+  position: absolute;
+  z-index: 999;
+  top: 40%;
+  left: 50%;
+}
+
+.count {
+  font-size: 50px;
+}
+
+.selectingGame {
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+}

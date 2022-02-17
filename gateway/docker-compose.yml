@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  gateway:
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./data/nginx/conf.d:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+  certbot:
+    container_name: certbot
+    image: certbot/certbot
+    restart: always
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+  react:
+    image: nginx-react
+  api:
+    image: jjanhae
+    environment:
+      - TZ=Asia/Seoul
+  kurento:
+    image: kurento/kurento-media-server
+    #jenkins:
+    #image: jenkins
+    #sql:
+    #image: my-sql
+    #kurento:
+    #image: ...
