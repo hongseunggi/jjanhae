@@ -383,4 +383,34 @@ public class RoomController {
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
     }
 
+
+    @GetMapping(value = "/title", params = {"roomSeq"})
+    @ApiOperation(value = "방 제목", notes = "방 제목을 리턴한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 403, message = "권한 없음"),
+            @ApiResponse(code = 404, message = "해당 방 없음"),
+            @ApiResponse(code = 500, message = "서버 오류"),
+
+    })
+    public  ResponseEntity<? extends BaseResponseBody> getTitle(@ApiIgnore Authentication authentication, @RequestParam Long roomSeq) {
+        /**
+         * 방 제목을 리턴한다.
+         * 권한 : 로그인한 유저
+         * */
+        System.out.println("방 제목을 리턴한다.");
+
+        if(authentication == null) {
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "로그인이 필요합니다."));
+        }
+
+        System.out.println("얻어오려는 방 번호(roomSeq) : " + roomSeq);
+        Room room = roomService.findRoomByRoomSeq(roomSeq);
+        if(room == null) {
+            return ResponseEntity.status(204).body(BaseResponseBody.of(204, "해당 방은 존재하지 않는 방입니다."));
+        }
+        System.out.println("room title : " + room.getTitle());
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, room.getTitle()));
+    }
+
 }
