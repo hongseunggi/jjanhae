@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
 function RoomList() {
   const [loading, setLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -84,7 +83,7 @@ function RoomList() {
       let body = {
         sort: sortRef.current,
         order: orderRef.current,
-        limit: 6,
+        limit: 5,
         offset: offsetCountRef.current,
       };
       const { data } = await getRoomListResult(body);
@@ -112,16 +111,14 @@ function RoomList() {
   };
 
   useEffect(() => {
-    if(axios.defaults.headers.Authorization === undefined){
-
+    if (axios.defaults.headers.Authorization === undefined) {
       const accessToken = sessionStorage.getItem("accessToken");
       if (accessToken) {
         console.log("실행됩니다.");
         axios.defaults.headers.Authorization =
           "Bearer " + sessionStorage.getItem("accessToken");
         console.log(axios.defaults.headers.Authorization);
-      }
-      else{
+      } else {
         toast.error(
           <div className="hi" style={{ width: "350px" }}>
             로그인 후 이용가능 합니다. 로그인 해주세요
@@ -132,7 +129,6 @@ function RoomList() {
           }
         );
         navigate("/user/login");
-        
       }
     }
     let observer;

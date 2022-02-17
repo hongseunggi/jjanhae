@@ -118,7 +118,7 @@ function IntoRoom({ onClose, room }) {
       onClose();
     } else {
       setMyVMstate({ video: isVideo, audio: isMic });
-      navigate(`/conferences/detail/${room.title}/${room.roomSeq}`);
+      navigate(`/conferences/detail/${room.roomSeq}`);
       onClose();
     }
   };

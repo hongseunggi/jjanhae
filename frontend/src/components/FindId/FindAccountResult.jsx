@@ -4,20 +4,20 @@ import styles from "../Regist/RegisterTemplate.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
 const FindAccountResult = ({ id, progress = 100 }) => {
-  const maskingId = (str) => {
-    let originStr = str;
-    let maskingStr;
-    let strLength;
+  // const maskingId = (str) => {
+  //   let originStr = str;
+  //   let maskingStr;
+  //   let strLength;
 
-    strLength = originStr.length;
-    if (strLength < 3) {
-      maskingStr = originStr.replace(/(?<=.{1})./gi, "*");
-    } else {
-      maskingStr = originStr.replace(/(?<=.{2})./gi, "*");
-    }
-    return maskingStr;
-  };
-  const securityId = maskingId(id);
+  //   strLength = originStr.length;
+  //   if (strLength < 3) {
+  //     maskingStr = originStr.replace(/(?<=.{1})./gi, "*");
+  //   } else {
+  //     maskingStr = originStr.replace(/(?<=.{2})./gi, "*");
+  //   }
+  //   return maskingStr;
+  // };
+  // const securityId = maskingId(id);
 
   const navigate = useNavigate();
 
@@ -73,8 +73,12 @@ const FindAccountResult = ({ id, progress = 100 }) => {
               </div>
             </div>
             <ul className={styles.alertMsg}>
-              <li>개인정보 보호를 위해 정보 일부를 *로 표시하였습니다.</li>
+              {/* <li>개인정보 보호를 위해 정보 일부를 *로 표시하였습니다.</li> */}
               <li>표시된 아이디로 짠해에 로그인 할 수 있습니다.</li>
+              <li>
+                비밀번호 찾기를 원하시면 하단의 비밀번호 찾기 버튼을
+                클릭해주세요.
+              </li>
             </ul>
             <div className={styles.btnRow}>
               <Link to="/user/findPwd">

@@ -14,18 +14,18 @@ const User = () => {
   return (
     <div>
       <SessionIdContext.Provider value={{ sessionId, setSessionId }}>
-      <SubscribersContext.Provider value={{ subscribers, setSubscribers}}>
-      <BangZzangContext.Provider value={{ bangZzang, setbangZzang}}>
-        <Routes>
-          {/* <Route path="" element={<Navigate to={}} /> */}
-          <Route path="/list" element={<RoomList />} />
-          <Route path="/detail/:title/:roomseq" element={<Room />} />t
-        </Routes>
-        </BangZzangContext.Provider>
+        <SubscribersContext.Provider value={{ subscribers, setSubscribers }}>
+          <BangZzangContext.Provider value={{ bangZzang, setbangZzang }}>
+            <Routes>
+              {/* <Route path="" element={<Navigate to={}} /> */}
+              <Route path="/list" element={<RoomList />} />
+              <Route path="/detail/:roomseq" element={<Room />} />t
+            </Routes>
+          </BangZzangContext.Provider>
         </SubscribersContext.Provider>
       </SessionIdContext.Provider>
     </div>
-);
+  );
 };
 
 export default User;
