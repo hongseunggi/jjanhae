@@ -37,18 +37,27 @@ const Room = () => {
   const [onRegistMusic, setOnRegistMusic] = useState(false);
   const [gameId, setGameId] = useState("");
   const [singMode, setSingMode] = useState(1);
-
+  const [roomTitle, setRoomTitle] = useState("");
   const { setbangZzang } = useContext(BangZzangContext);
 
-  const { title, roomseq } = useParams();
+  const { roomseq } = useParams();
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { getRoomExitResult } = RoomApi;
+  const { getRoomExitResult, getRoomTitle } = RoomApi;
+
+  const getRoomTitleToServer = async () => {
+    const result = await getRoomTitle(roomseq);
+    setRoomTitle(result.data.message);
+  };
+  useEffect(() => {
+    setContentTitle(roomTitle);
+  }, [roomTitle]);
 
   useEffect(() => {
     console.log("room render");
-    setContentTitle(title);
+    getRoomTitleToServer();
+    // setContentTitle(roomTitle);
     setLoginStatus("3");
 
     if (sessionId !== "" && sessionId !== undefined) {
@@ -163,12 +172,12 @@ const Room = () => {
         type: "game",
       });
     }
-    setContentTitle(title);
+    setContentTitle(roomTitle);
     setMode("basic");
   };
 
   const handleGoTitle = () => {
-    setContentTitle(title);
+    setContentTitle(roomTitle);
     setMode("basic");
   };
 

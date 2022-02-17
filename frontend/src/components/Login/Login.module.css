@@ -14,16 +14,20 @@
 .welcomeInfo {
   display: flex;
   flex-direction: column;
-
   justify-content: center;
   margin-right: 80px;
+}
+
+.welcomeMsg {
+  padding-left: 120px;
+  margin-bottom: 30px;
 }
 .welcomeInfo span {
   margin-bottom: 40px;
 }
 .InfoLogo {
-  width: 300px;
-  height: 300px;
+  width: 600px;
+  height: 400px;
   margin: 0 auto;
 }
 

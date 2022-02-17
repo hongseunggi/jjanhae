@@ -4,7 +4,8 @@ import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
 import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
 import { ReactComponent as GoogleIcon } from "../../assets/icons/google.svg";
-import infoLogo from "../../assets/infoLogo.png";
+// import infoLogo from "../../assets/infoLogo.png";
+import infoLogo from "../../assets/images/teamImg.png";
 import UserApi from "../../api/UserApi.js";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
@@ -124,6 +125,16 @@ const Login = () => {
       // //console.log(data);
       setMyName(data.name);
       localStorage.setItem("name", data.name);
+      toast.success(
+        <div style={{ width: "400px" }}>
+          <div>로그인에 성공했습니다.</div>
+          <span>짠해와 함께 즐거운시간 보내세요 :)</span>
+        </div>,
+        {
+          position: toast.POSITION.TOP_CENTER,
+          role: "alert",
+        }
+      );
       navigate("/");
     } catch ({ response }) {
       //console.log(response);
@@ -141,7 +152,7 @@ const Login = () => {
             role: "alert",
           }
         );
-        setLoginMsg(response.data.message);
+        // setLoginMsg(response.data.message);
       }
     }
   };
@@ -150,11 +161,13 @@ const Login = () => {
   return (
     <div className={styles.contents}>
       <div className={styles.welcomeInfo}>
-        <h1>짠해에 오신 것을 환영합니다.</h1>
-        <span>
-          '짠해'에서는 다양한 컨텐츠를 활용하여 사람들과 친해지고, <br />{" "}
-          소통하는데 도움을 줍니다.
-        </span>
+        <div className={styles.welcomeMsg}>
+          <h1>짠해에 오신 것을 환영합니다.</h1>
+          <span>
+            '짠해'에서는 다양한 컨텐츠를 활용하여 사람들과 친해지고, <br />{" "}
+            소통하는데 도움을 줍니다.
+          </span>
+        </div>
         <img src={infoLogo} alt="로고" className={styles.InfoLogo} />
       </div>
       <div className={styles.formBorder}>
@@ -264,25 +277,25 @@ const Login = () => {
   );
 };
 
-function KakaoBtn() {
-  return (
-    <div>
-      <button className={styles.kakaoBtn}>
-        <KakaoIcon className={styles.icon} />
-        카카오 로그인
-      </button>
-    </div>
-  );
-}
+// function KakaoBtn() {
+//   return (
+//     <div>
+//       <button className={styles.kakaoBtn}>
+//         <KakaoIcon className={styles.icon} />
+//         카카오 로그인
+//       </button>
+//     </div>
+//   );
+// }
 
-function GoogleBtn() {
-  return (
-    <div>
-      <button className={styles.googleBtn} onClick={GoogleLoginBtn}>
-        <GoogleIcon className={styles.icon} />
-        구글 로그인
-      </button>
-    </div>
-  );
-}
+// function GoogleBtn() {
+//   return (
+//     <div>
+//       <button className={styles.googleBtn} onClick={GoogleLoginBtn}>
+//         <GoogleIcon className={styles.icon} />
+//         구글 로그인
+//       </button>
+//     </div>
+//   );
+// }
 export default Login;

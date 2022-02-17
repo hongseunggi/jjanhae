@@ -5,6 +5,7 @@ import styles from "./Navigator.module.css";
 import Logo from "../../assets/logo.png";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Navigator() {
   const { loginStatus, setLoginStatus } = useContext(LoginStatusContext);
@@ -13,6 +14,16 @@ function Navigator() {
     setLoginStatus("1");
     localStorage.removeItem("name");
     sessionStorage.removeItem("accessToken");
+    toast.success(
+      <div style={{ width: "400px" }}>
+        <div>성공적으로 로그아웃되었습니다.</div>
+        <span>짠해와 즐거운 시간이 되셨나요?</span>
+      </div>,
+      {
+        position: toast.POSITION.TOP_CENTER,
+        role: "alert",
+      }
+    );
     // axios.defaults.headers.Authorization = undefined;
   };
 
@@ -59,27 +70,7 @@ function Navigator() {
           </Row>
         </Container>
       );
-    case "3":
-      return (
-        <></>
-        // <Container fluid>
-        //   <Row className="nav">
-        //     <Col>
-        //       {/* <Link to="/" className={styles.logo}>
-        //         <img src={Logo} className={styles.logo} alt="logo"></img>
-        //       </Link> */}
-        //     </Col>
-        //     <Col>
-        //       <button>
 
-        //       </button>
-        //       <Link to="/conferences/list" className={styles.link}>
-        //         EXIT
-        //       </Link>
-        //     </Col>
-        //   </Row>
-        // </Container>
-      );
     default:
       return; //console.log("error");
   }
