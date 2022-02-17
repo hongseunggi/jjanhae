@@ -60,9 +60,9 @@ const Profile = () => {
       };
       const { data } = await getUpdateProfileResult(body);
 
-      setTimeout(() => {
+      // setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      // }, 1000);
       setName(data.name);
       setEmail(data.email);
       let ny = data.birthday.year;
@@ -105,9 +105,9 @@ const Profile = () => {
         imageUrl: data.url,
       };
       const result = await getUpdateProfileImgResult(body);
-      setTimeout(() => {
+      // setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      // }, 1500);
     
     }
     
@@ -178,9 +178,9 @@ const Profile = () => {
     
     setLoading(true);
     const { data } = await getUserProfile();
-    setTimeout(() => {
+    // setTimeout(() => {
       setLoading(false);
-    }, 700);
+    // }, 700);
     //console.log(data);
     setName(data.name);
     setEmail(data.email);
