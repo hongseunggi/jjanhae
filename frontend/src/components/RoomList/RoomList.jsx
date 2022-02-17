@@ -44,9 +44,9 @@ function RoomList() {
     const { data } = await getRoomSearchResult(keyword);
     setRooms(data.content);
     setEndCheck(true);
-    // setTimeout(() => {
-    setLoading(false);
-    // }, 1000);
+    setTimeout(() => {
+      setLoading(false);
+    }, 800);
   };
   const sendKeywordEnter = async (e) => {
     if (e.code === "Enter") {
@@ -54,9 +54,9 @@ function RoomList() {
       const { data } = await getRoomSearchResult(keyword);
       setRooms(data.content);
       setEndCheck(true);
-      // setTimeout(() => {
-      setLoading(false);
-      // }, 1000);
+      setTimeout(() => {
+        setLoading(false);
+      }, 800);
     }
   };
 
@@ -75,9 +75,9 @@ function RoomList() {
   const loadItem = async () => {
     if (!endCheckRef.current) {
       setLoading(true);
-      // setTimeout(() => {
-      setLoading(false);
-      // }, 1500);
+      setTimeout(() => {
+        setLoading(false);
+      }, 800);
       setIsLoaded(true);
 
       let body = {
