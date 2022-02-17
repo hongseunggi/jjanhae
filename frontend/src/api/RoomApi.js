@@ -46,6 +46,12 @@ const getRoomEnterPrivateCheckResult = async (data) => {
   return result;
 };
 
+const getRoomTitle = async (roomSeq) => {
+  const result = await axios.get(`${BASE_URL}/title?roomSeq=${roomSeq}`);
+  console.log(result);
+  return result;
+};
+
 const getRoomEnterResult = async (body) => {
   const result = await axios.post(`${BASE_URL}/enter`, body);
   console.log(result);
@@ -70,6 +76,7 @@ const RoomApi = {
   getRoomEnterPrivateCheckResult,
   getRoomExitResult,
   setRoomSnapshotResult,
+  getRoomTitle,
 };
 
 export default RoomApi;

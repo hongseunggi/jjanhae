@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import LoginStatusContext from "../contexts/LoginStatusContext";
 import Carousel from "./Carousel/Carousel";
 import MusicList from "./Modals/RegistMusic/MusicList";
-
+import Image from "../assets/images/default1.png";
 function Home() {
   const { loginStatus } = useContext(LoginStatusContext);
   //console.log(loginStatus);
@@ -71,6 +71,48 @@ function Home() {
             <Carousel />
           </Col>
         </Row>
+        {/* <Row
+          fluid="true"
+          id="row"
+          className="rowClass h-100"
+          style={{
+            marginLeft: "0",
+            marginRight: "0",
+          }}
+        >
+          <Col className="carousel">
+            <img src={Image} alt="info" />
+          </Col>
+          <Col lg={1} className="dummy"></Col>
+          <Col lg={4} className="h-25">
+            <div className="intro_text">WELCOME OUR MEET</div>
+
+            <div className="welcome_text">우리가 짠해?</div>
+            <div className="swelcome_text">아니 우린 짠해!</div>
+            <Row className="buttonbox">{buttonRender()}</Row>
+          </Col>
+        </Row>
+        <Row
+          fluid="true"
+          id="row"
+          className="rowClass h-100"
+          style={{
+            marginLeft: "0",
+            marginRight: "0",
+          }}
+        >
+          <Col lg={1} className="dummy"></Col>
+          <Col lg={4} className="h-25">
+            <div className="intro_text">WELCOME OUR MEET</div>
+
+            <div className="welcome_text">우리가 짠해?</div>
+            <div className="swelcome_text">아니 우린 짠해!</div>
+            <Row className="buttonbox">{buttonRender()}</Row>
+          </Col>
+          <Col className="carousel">
+            <Carousel />
+          </Col>
+        </Row> */}
       </Container>
       <RoomConfig open={modalOpen} onClose={closeRoomConfigModal} />
     </>

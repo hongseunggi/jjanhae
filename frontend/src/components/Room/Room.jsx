@@ -47,11 +47,12 @@ const Room = () => {
 
   const { setbangZzang } = useContext(BangZzangContext);
 
-  const { title, roomseq } = useParams();
+  // const { title, roomseq } = useParams();
+  const { roomseq } = useParams();
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { getRoomExitResult } = RoomApi;
+  const { getRoomExitResult, getRoomTitle } = RoomApi;
 
   // const musicListRef = useRef(musicList);
   // musicListRef.current = musicList;
@@ -59,9 +60,14 @@ const Room = () => {
   const musicRef = useRef(music);
   musicRef.current = music;
 
+  const getRoomTitleToServer = async () => {
+    const result = await getRoomTitle(roomseq);
+    console.log(result);
+  };
   useEffect(() => {
     console.log("room render");
-    setContentTitle(title);
+    getRoomTitleToServer();
+    // setContentTitle(title);
     setLoginStatus("3");
 
     if (sessionId !== "" && sessionId !== undefined) {
@@ -95,9 +101,6 @@ const Room = () => {
             // handleStartUpdown();
           }
         } else {
-          console.log(
-            "???????????????????????????????????????장난하냐 여기가 ㄷ실행되는거니?"
-          );
           if (data.gameId === 3 && data.updown === undefined) {
             setGameId(0);
             setMode("basic");
@@ -176,12 +179,12 @@ const Room = () => {
       data: JSON.stringify(data),
       type: "game",
     });
-    setContentTitle(title);
+    // setContentTitle(title); //////
     setMode("basic");
   };
 
   const handleGoTitle = () => {
-    setContentTitle(title);
+    // setContentTitle(title); //////
     setMode("basic");
   };
 

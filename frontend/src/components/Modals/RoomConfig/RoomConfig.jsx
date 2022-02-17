@@ -71,7 +71,7 @@ const RoomConfig = ({ open, onClose }) => {
     } else if (drinkConfig === "third") {
       drinkLimit = 3;
     }
-    if(type === 0 && (password.length >= 0  && password.length < 3)){
+    if (type === 0 && password.length >= 0 && password.length < 3) {
       toast.error(
         <div className="hi" style={{ width: "350px" }}>
           비밀번호를 3자리 이상으로 설정 해주세요.
@@ -96,7 +96,7 @@ const RoomConfig = ({ open, onClose }) => {
     const { data } = await getCreateRoomResult(body);
     //// -> 리턴 되는 data 가지고 뭘 한다면 이 밑에 작성
     //console.log(data);
-    navigate(`/conferences/detail/${title}/${data.roomSeq}`);
+    navigate(`/conferences/detail/${data.roomSeq}`);
     //// -> 이 밑 부분에 화상회의 방 ? 으로 라우트 시켜주는게 들어가야 할 듯 합니다. 일단 닫기로 했습니다.
     onClose();
   };

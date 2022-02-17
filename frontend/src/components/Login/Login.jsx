@@ -4,7 +4,8 @@ import styles from "./Login.module.css";
 import { Link } from "react-router-dom";
 import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
 import { ReactComponent as GoogleIcon } from "../../assets/icons/google.svg";
-import infoLogo from "../../assets/infoLogo.png";
+// import infoLogo from "../../assets/infoLogo.png";
+import infoLogo from "../../assets/images/teamImg.png";
 import UserApi from "../../api/UserApi.js";
 import LoginStatusContext from "../../contexts/LoginStatusContext";
 import NameContext from "../../contexts/NameContext";
@@ -58,7 +59,7 @@ const Login = () => {
       if (value === "") {
         setIdError(true);
         setIdCheck(false);
-        setIdMsg("아이디를 입력해");
+        setIdMsg("아이디를 입력해주세요.");
       } else {
         setIdError(false);
         setIdCheck(true);
@@ -175,7 +176,9 @@ const Login = () => {
           '짠해'에서는 다양한 컨텐츠를 활용하여 사람들과 친해지고, <br />{" "}
           소통하는데 도움을 줍니다.
         </span>
-        <img src={infoLogo} alt="로고" className={styles.InfoLogo} />
+        <div className={styles.teamImg}>
+          <img src={infoLogo} alt="로고" className={styles.InfoLogo} />
+        </div>
       </div>
       <div className={styles.formBorder}>
         <form
