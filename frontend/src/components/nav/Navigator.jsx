@@ -70,7 +70,8 @@ function Navigator() {
           </Row>
         </Container>
       );
-
+    case "3":
+      return <></>;
     default:
       return; //console.log("error");
   }

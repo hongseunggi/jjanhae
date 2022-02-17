@@ -102,15 +102,18 @@ const Room = () => {
       });
       sessionId.on("signal:sing", (event) => {
         const data = event.data;
-        if (data.singMode === 1) {
+        console.log(data);
+        if (data.singMode === 1 && data.singStatus !== -1) {
           console.log(data.singMode);
           setSingMode(1);
           setContentTitle("노래방");
-        } else if (data.singMode === 2) {
+          setMode("karaoke");
+        } else if (data.singMode === 2 && data.singStatus !== -1) {
+          console.log("hihi");
           setSingMode(2);
           setContentTitle("복불복 노래방");
+          setMode("karaoke");
         }
-        setMode("karaoke");
       });
     }
 
@@ -172,6 +175,7 @@ const Room = () => {
         type: "game",
       });
     }
+    console.log("홈 클릭");
     setContentTitle(roomTitle);
     setMode("basic");
   };
