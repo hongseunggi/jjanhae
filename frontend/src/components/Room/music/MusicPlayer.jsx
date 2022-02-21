@@ -214,11 +214,11 @@ const MusicPlayer = ({ user }) => {
       <ReactPlayer
         url={`https://www.youtube.com/embed/${videoIdRef.current}`}
         playing={playing}
-        controls
         onEnded={() => handleEndMusic()}
-        width="1px"
-        height="1px"
+        width="100px"
+        height="100px"
         volume={volume}
+        muted={false}
         className={styles.videoPlayer}
       />
       <div
