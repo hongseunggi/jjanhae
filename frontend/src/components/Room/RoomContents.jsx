@@ -436,6 +436,9 @@ const RoomContents = ({
         } else if (data.singStatus === -1) {
           console.log("오냐?");
           removeVoiceFilter();
+          goHome();
+          //       setContentTitle(roomTitle);
+          // setMode("basic");
         }
       });
     }
@@ -881,9 +884,9 @@ const RoomContents = ({
     console.log("close here");
     setStartPage(false);
   };
-  const openStartPage = () => {
-    setStartPage(true);
-  };
+  // const openStartPage = () => {
+  //   setStartPage(true);
+  // };
   const giveGamename = (data, gamemode) => {
     console.log(streamId);
     console.log(targetId);
