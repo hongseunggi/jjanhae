@@ -13,7 +13,7 @@ class Youtube {
       params: {
         part: "snippet",
         q: query,
-        maxResults: 5,
+        maxResults: 10,
       },
     });
     return response.data.items;
