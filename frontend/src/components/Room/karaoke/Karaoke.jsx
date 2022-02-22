@@ -93,8 +93,8 @@ const Karaoke = ({ user, singMode }) => {
   }, []);
 
   const handleMusicSearch = (singer, song) => {
-    // const music = `[KY ENTERTAINMENT] ${singer}${song}`;
-    const music = `${singer}${song}lyrics`;
+    const music = `MR 노래방${singer}${song}`;
+    // const music = `${singer}${song}lyrics`;
     console.log(music);
     youtube.search(music).then((videos) => {
       console.log(videos);
@@ -102,8 +102,10 @@ const Karaoke = ({ user, singMode }) => {
         console.log(video);
         console.log(video.snippet.channelTitle);
         if (
-          video.snippet.channelTitle !== "금영 노래방 공식 유튜브 채널" &&
-          video.snippet.channelTitle !== "TJ KARAOKE TJ 노래방 공식 유튜브채널"
+          // video.snippet.channelTitle !== "금영 노래방 공식 유튜브 채널" &&
+          // video.snippet.channelTitle !==
+          // "TJ KARAOKE TJ 노래방 공식 유튜브채널" &&
+          video.snippet.channelTitle === "MR 노래방 l MR karaoke"
         ) {
           return video;
         } else {
