@@ -69,5 +69,5 @@
     "postcss": "^8.4.5",
     "postcss-loader": "^6.2.1"
   },
-  "homepage": "https://i6a507.p.ssafy.io/"
+  "homepage": "http://ec2-3-35-174-218.ap-northeast-2.compute.amazonaws.com/"
 }
