@@ -4,7 +4,7 @@ sudo rm -rf /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server
 echo jjanhae - change direcotry to openvidu
 cd /home/ubuntu/CustomOpenvidu/openvidu
 echo jjanhae - create new openvidu-server directory
-mkdir openvidu-server
+sudo mkdir openvidu-server
 echo jjanhae - copy openvidu-server
 sudo cp -r /jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
 echo jjanhae - copy key
