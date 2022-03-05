@@ -1,4 +1,4 @@
-sudo cp /home/ubuntu/jjanhae.p12 /jenkins/workspace/backend-buil/backend/src/main/resources
+sudo cp /home/ubuntu/jjanhae.p12 /jenkins/workspace/backend-buil/backend
 DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain -t jjanhae .
 # docker rm jjanhae -f
 # docker run -d -p 8081:8081 --name jjanhae jjanhae
