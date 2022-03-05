@@ -1,6 +1,6 @@
 import axios from "axios";
 // const BASE_URL = "http://localhost:8081/api/v1/rooms";
-const BASE_URL = "http://ec2-3-35-174-218.ap-northeast-2.compute.amazonaws.com:8081/api/v1/rooms";
+const BASE_URL = "https://jjanhae.com:8081/api/v1/rooms";
 
 axios.interceptors.request.use(
   function (config) {
