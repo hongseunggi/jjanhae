@@ -1,5 +1,6 @@
 echo jjanhae - delete existed openvidu-server
 sudo rm -rf /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server
+
 echo jjanhae - change direcotry to openvidu
 cd /home/ubuntu/CustomOpenvidu/openvidu
 echo jjanhae - create new openvidu-server directory
