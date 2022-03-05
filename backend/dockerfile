@@ -11,7 +11,7 @@ RUN ./gradlew bootJar
 FROM adoptopenjdk/openjdk8:x86_64-alpine-jre8u292-b10
 WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar ./app.jar
-COPY /home/ubuntu/jjanhae.com.p12 ./
+COPY /home/ubuntu/jjanhae.p12 ./
 EXPOSE 8081
 ENTRYPOINT ["java", "-jar", "app.jar"]
 CMD ["--datasource.username=jjanhae", "--datasource.password=password"]
