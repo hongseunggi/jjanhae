@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/jjanhae/static/css/main.7df1c258.css",
-    "main.js": "/jjanhae/static/js/main.c210de8d.js",
+    "main.js": "/jjanhae/static/js/main.0f13b45f.js",
     "static/media/손글씨체.eot?iefix": "/jjanhae/static/media/손글씨체.8d32048b18f995dacfa1.eot",
     "static/media/손글씨체.ttf": "/jjanhae/static/media/손글씨체.ed68ecce74ceb389f803.ttf",
     "static/media/carouselimage2.PNG": "/jjanhae/static/media/carouselimage2.c5b2c3717e93b830847b.PNG",
@@ -68,10 +68,10 @@
     "static/media/delete.svg": "/jjanhae/static/media/delete.15ed141026ab1ed23bce5fc2a210b651.svg",
     "index.html": "/jjanhae/index.html",
     "main.7df1c258.css.map": "/jjanhae/static/css/main.7df1c258.css.map",
-    "main.c210de8d.js.map": "/jjanhae/static/js/main.c210de8d.js.map"
+    "main.0f13b45f.js.map": "/jjanhae/static/js/main.0f13b45f.js.map"
   },
   "entrypoints": [
     "static/css/main.7df1c258.css",
-    "static/js/main.c210de8d.js"
+    "static/js/main.0f13b45f.js"
   ]
 }
