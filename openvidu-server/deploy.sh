@@ -7,7 +7,7 @@ mkdir openvidu-server
 echo jjanhae - copy openvidu-server
 sudo cp -r /home/jenkins/workspace/jjanhae-dev-openvidu-server-build/openvidu-server ./
 echo jjanhae - copy key
-sudo cp /home/ubuntu/i6a507.p.ssafy.io.p12 /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/src/main/resources
+sudo cp /home/ubuntu/jjanhae.p12 /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/src/main/resources
 
 echo jjanhae - move to openvidu-server
 cd /home/ubuntu/CustomOpenvidu/openvidu/openvidu-server/
