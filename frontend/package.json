@@ -42,7 +42,9 @@
   },
   "scripts": {
     "start": "react-scripts --max_old_space_size=4096 start",
-    "build": "BUILD_PATH='./build' react-scripts --max_old_space_size=4096 build",
+    "predeploy" : "npm run build",
+    "deploy": "gh-pages -d build",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -69,5 +71,5 @@
     "postcss": "^8.4.5",
     "postcss-loader": "^6.2.1"
   },
-  "homepage": "https://ec2-3-35-174-218.ap-northeast-2.compute.amazonaws.com/"
+  "homepage": "http://hongseunggi.github.io/jjanhae"
 }
